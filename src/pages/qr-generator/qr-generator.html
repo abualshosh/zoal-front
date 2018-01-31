@@ -1,0 +1,44 @@
+<!--
+  Generated template for the TransfaerToCardPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>QR</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding >
+
+  <form [formGroup]="todo"  >
+  <ion-list>
+
+    <ion-card>  <ion-item>
+        <ion-label floating>Card</ion-label>
+        <ion-select style="padding-left:5%;" (ionChange)="onChange()" interface="action-sheet" formControlName="Card" >
+          <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
+
+        </ion-select>
+      </ion-item>
+    </ion-card>
+    
+</ion-list>
+
+  </form>
+  <ion-card class="cn" *ngIf="!createdCode">
+<h2>Please select a Card To Generate QR Code
+</h2> </ion-card>
+  <ion-card *ngIf="createdCode">
+ <ngx-qrcode [qrc-value]="createdCode"></ngx-qrcode>
+ <ion-card-content>
+   <p>Card: {{ createdCode }}</p>
+ </ion-card-content>
+</ion-card>
+
+  </ion-content>

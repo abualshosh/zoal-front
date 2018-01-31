@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "634382074230",
+    "firebase_url": "https://zoal-pay.firebaseio.com",
+    "project_id": "zoal-pay",
+    "storage_bucket": "zoal-pay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634382074230:android:c03bfcd1779070a7",
+        "android_client_info": {
+          "package_name": "com.nexttech.zoalpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634382074230-3mffnevob9r2gd6ad1a064i4lc2gshdg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHsOizYubpos-0okTnZGSNds7Vw-ESsCY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

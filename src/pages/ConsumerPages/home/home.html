@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    
+    <ion-title>{{'Cards' | translate}}</ion-title>
+  
+    
+    <ion-buttons end>
+        <button ion-button item-end (click)="AddCardModel()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content height="100%" >
+  <div color="primary" class="item-profile" text-center #profilePic >
+      <ngx-qrcode *ngIf="selectedCard.pan" [qrc-value]="selectedCard.pan"></ngx-qrcode>
+ <ion-fab bottom right edge >
+  <button ion-fab color="fabs" (click)=Scan()><ion-icon name="build"></ion-icon></button>
+</ion-fab>
+
+  </div>
+
+
+<ion-list class="conset">
+  <ion-item>
+  <p>PAN</p>
+  <ion-note item-end>
+  {{selectedCard.pan}}
+  </ion-note>
+  </ion-item>
+  <ion-item>
+  <p>EXP Date</p>
+  <ion-note item-end>
+  {{selectedCard.expDate}}
+  </ion-note>
+  </ion-item>
+</ion-list>
+
+<button class="subbutn" ion-button color="danger" (click)="delectCard(selectedCard)">Delete Card</button>
+<div class="fot">
+
+  <!-- <ion-list no-lines>
+
+
+    <ion-card  *ngFor="let Card of cards" >
+        <ion-item>
+     {{'CARDNAME' | translate}}:  <ion-note end>
+      {{Card.pan}}</ion-note>
+
+        </ion-item>
+        <ion-item>
+    {{'CardPAN' | translate}}:
+      <ion-note end>{{Card.panview}}</ion-note>
+        </ion-item>
+        <ion-item>
+      {{'ExpDate'|translate}}:
+      <ion-note end>{{Card.expDate}}</ion-note>
+        </ion-item>
+      <button ion-button color="danger" clear icon-only item-right (click)="delectCard(Card)">
+      <ion-icon name='trash' is-active="false" ></ion-icon>
+    </button>
+  </ion-card>
+  </ion-list> -->
+</div>
+
+</ion-content>
+
+<ion-footer>
+
+
+
+  <ion-scroll scrollX style="height:120px;">
+
+  <section >
+<ion-col no-padding col-20 *ngFor="let Card of cards" >
+<ion-card no-padding  (click)="select(Card)" [ngClass]="{'selected vCard' : Card.selected, 'unselected vCard' : !Card.selected }">
+
+    <!-- <img src="assets/img/ccard.jpg"/> -->
+    <div class="card-title">{{Card.pan}}</div>
+    <div class="card-subtitle">{{Card.expDate}}</div>
+
+</ion-card>
+
+        </ion-col>
+     
+      </section>
+      
+</ion-scroll>
+</ion-footer>

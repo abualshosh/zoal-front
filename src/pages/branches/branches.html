@@ -1,0 +1,53 @@
+<ion-header >
+    
+
+
+  <ion-toolbar color="secondary" >
+      <ion-title>
+          Transaction Detials
+        </ion-title>
+      <ion-buttons start>
+          <button ion-button (click)="dismiss()">
+            <span ion-text color="light" showWhen="ios">Cancel</span>
+            <ion-icon color="light" name="md-close" ></ion-icon>
+          </button>
+        </ion-buttons>
+    
+    
+  </ion-toolbar>
+  
+
+</ion-header>
+
+
+<ion-content no-padding >
+<div>
+   
+    <ion-item color="primary" no-lines style="text-align: center;" >
+      <p>Successful</p>
+      <ion-icon color="light" name="checkmark-circle" style="zoom:2.0;"></ion-icon>
+    </ion-item>
+</div>
+
+  <ion-grid  *ngFor="let item of items | keys" >
+    <ion-row  *ngFor="let itm of item.value | keys">
+      <ion-item class="no-padding">
+      <ion-col text-wrap>
+  
+          {{itm.key | translate }}:
+ 
+        </ion-col>
+       
+          <ion-col item-end>
+              <ion-note item-end>
+       
+            {{itm.value}}
+          </ion-note>
+              </ion-col>
+           
+            </ion-item>
+    </ion-row>
+    </ion-grid>
+
+      <button class="subbutn" ion-button  (click)="dismiss()" color="secondary">{{'Close'|translate}}</button>
+</ion-content>

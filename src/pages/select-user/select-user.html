@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar color='primary'>
+    <ion-title>Select User</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-searchbar (ionInput)="getItems($event)" placeholder="search"></ion-searchbar>
+  <ion-list>
+     <button ion-item (click)="dismiss(item)" *ngFor="let item of currentItems">
+
+      <ion-avatar item-start>
+        <!-- <img [src]="item.profilePic" /> -->
+      </ion-avatar>
+      <div >
+        <h2>{{item.fullName}}</h2>
+        <p>{{item.userName}}</p>
+</div>
+
+      <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+    </button>
+   <!-- <span *ngFor="let contact of contactlist" >
+     <ion-item >
+    {{contact.displayName}}
+    <p>{{contact.phoneNumbers[0].value}}</p>
+     </ion-item>
+   </span> -->
+  </ion-list>
+</ion-content>

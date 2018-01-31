@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar color='primary'>
+    <ion-title>{{ 'SEARCH_TITLE' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-searchbar (ionInput)="getItems($event)" placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"></ion-searchbar>
+<button ion-button block (click)='uploadContacts()'>Import Contacts</button>
+  <ion-list>
+     <button ion-item (click)="openItem(item)" *ngFor="let item of currentItems">
+
+      <ion-avatar item-start>
+         <img [src]="this.api.url+'/profileimage/'+item.userName" /> 
+      </ion-avatar>
+      <div >
+       <h2>{{item.fullName}}</h2>
+       <p>{{item.userName}}</p>
+</div>
+      <!-- <div *ngIf="item.profileOne.userName!=this.username">
+        <h2>{{item.profileOne.userName}}</h2>
+        <p>{{item.profileOne.fullName}}</p>
+</div>
+<div *ngIf="item.profileTow.userName!=this.username">
+<h2>{{item.profileTow.userName}}</h2>
+<p>{{item.profileTow.fullName}}</p>
+</div> -->
+      <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+    </button>
+   <!-- <span *ngFor="let contact of contactlist" >
+     <ion-item >
+    {{contact.displayName}}
+    <p>{{contact.phoneNumbers[0].value}}</p>
+     </ion-item>
+   </span> -->
+  </ion-list>
+</ion-content>

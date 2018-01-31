@@ -1,0 +1,27 @@
+page-signup {
+
+  .form{
+    padding-top: 10%;
+}
+
+.splash-logo {
+    padding-top: 15%;
+    margin: auto;
+    background: url('../assets/img/appicon.png') repeat transparent;
+    background-size: 100%;
+    width: 128px;
+    height: 128px;
+  }
+  .splash-intro {
+    font-size: 18px;
+    font-weight: bold;
+    max-width: 80%;
+    margin: auto;
+  }
+  .splash-info {
+    position: relative;
+    z-index: 2;
+    margin-top: 10px;
+    text-align: center;
+  }
+}

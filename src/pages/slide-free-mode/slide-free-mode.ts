@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides, IonicPage } from 'ionic-angular';
+import { NavController, Slides, IonicPage ,ModalController} from 'ionic-angular';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
-import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
+import {Storage} from '@ionic/storage';
+import {Card} from '../../models/cards';
 
 @IonicPage()
 @Component({
@@ -11,38 +12,40 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 export class SlideFreeModePage {
   @ViewChild('slider') slider: Slides;
   createdCode = null;
-  slides = [
-    {
-      title: 'Dream\'s Adventure',
-      imageUrl: 'assets/img/lists/wishlist-1.jpg',
-      songs: 2,
-      private: false
-    },
-    {
-      title: 'For the Weekend',
-      imageUrl: 'assets/img/lists/wishlist-2.jpg',
-      songs: 4,
-      private: false
-    },
-    {
-      title: 'Family Time',
-      imageUrl: 'assets/img/lists/wishlist-3.jpg',
-      songs: 5,
-      private: true
-    },
-    {
-      title: 'My Trip',
-      imageUrl: 'assets/img/lists/wishlist-4.jpg',
-      songs: 12,
-      private: true
-    }
-  ];
+  Paymentpages: any[] = [
+    { title: 'TOPUP', component: 'ZaintopupPage' , icon:'phone-portrait' , var:"TOPUP"},
+    { title: 'billpayment', component: 'ZaintopupPage' , icon:'phone-landscape' , var:"bill"},
+    { title: 'NEC', component: 'ServicesPage' , icon:'flash' , var:""},
+    { title: 'Custom Service', component: 'CustomesPage' , icon:'briefcase' , var:""},
+    { title: 'E15', component: 'E15Page' , icon:'document' , var:""},
+    { title: 'Higher Education', component: 'MohePage' , icon:'school' , var:""},
+  ]
+  Consumerpages: any[] = [
+    { title: 'Cards', component: 'HomePage' , icon:'card' , var:""},
+    { title: 'TranToCard', component: 'TransfaerToCardPage' , icon:'person' , var:""},
+    { title: 'CARDLESS', component: 'CardLessPage' , icon:'print' , var:""},
+    { title: 'BalInq', component: 'FormsPage' , icon:'information-circle' , var:""},
+    { title: 'ChangeIPin', component: 'ChangeIpinPage' , icon:'construct' , var:""},
+  ]
+  Gmpppages: any[] = [
+    { title: 'Transfer', component: 'GmppTransPage' , icon:'swap' , var:""},
+    { title: 'Pruchas', component: 'GmppPruchasPage' , icon:'cart' , var:""},
+    { title: 'CashOut', component: 'GmppCashOutPage' , icon:'cash' , var:""},
+    { title: 'BalInq', component: 'GmppBalancePage' , icon:'information-circle' , var:""},
+    { title: 'BankCard(ATM)', component: 'GmppBankCardPage' , icon:'card' , var:""},
+    { title: 'AccountSittings', component: 'LockPage' , icon:'construct' , var:""},
+  ]
   public pet: any = 'puppies';
   scanData: {};
+  public cards:Card[]=[];
+  profile:any;
   options: BarcodeScannerOptions;
-  constructor(private nativePageTransitions: NativePageTransitions, private barcodeScanner: BarcodeScanner, public navCtrl: NavController) {
+  constructor(public storage:Storage,public modalCtrl:ModalController, private barcodeScanner: BarcodeScanner, public navCtrl: NavController) {
     this.createdCode = "12321312312312";
-    // for (let i = 0; i < 20; i++) {
+    this.profile = JSON.parse(localStorage.getItem("profile"));
+    this.storage.get('cards').then((val) => {
+     this.cards=val;
+    });    // for (let i = 0; i < 20; i++) {
     //   this.slides.push(this.slides[i % 4]);
     // }
   }
@@ -64,27 +67,80 @@ export class SlideFreeModePage {
       console.log("Error occured : " + err);
     });
   }
-  open(page) {
-    let options: NativeTransitionOptions = {
-      "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
-      "duration": 400, // in milliseconds (ms), default 400
-      "slowdownfactor": -1, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
-      "slidePixels": -1, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
-      "iosdelay": 100, // ms to wait for the iOS webview to update before animation kicks in, default 60
-      "androiddelay": 150, // same as above but for Android, default 70
-      "winphonedelay": 250, // same as above but for Windows Phone, default 200,
-      "fixedPixelsTop": 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
-      "fixedPixelsBottom": 0  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
-    };
 
-    if (page == "MohePage") {
-      // this.nativePageTransitions.slide(options);
+  openGmppSignup(){
+    let modal=this.modalCtrl.create('SignupModalPage', {},{ cssClass: 'inset-modals' });
+    modal.present();
+  }
+  openGmpp(page,name){
+    this.profile = JSON.parse(localStorage.getItem("profile"));
+    console.log(this.profile)
+   
+  if(!this.profile.phoneNumber){
+    let modal=this.modalCtrl.create('SignupModalPage', {},{ cssClass: 'inset-modals' });
+    modal.present();
+  }else{
+    this.open(page,name);
+  }
+  }
+  openConsumer(page,name){
+
+  this.storage.get('cards').then((val) => {
+   this.cards=val;
+  
+   
+  if(!this.cards){
+  
+    let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });
+    modal.present();
+ 
+ 
+  }else{
+    if(this.cards.length <= 0){
+      let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });
+      modal.present();
+   
+    }else{
+      this.open(page,name);
+    }
+    
+  }
+});
+  }
+  openPayment(page,name){
+    this.profile = JSON.parse(localStorage.getItem("profile"));
+    this.storage.get('cards').then((val) => {
+     this.cards=val;
+    
+   if(!this.cards && !this.profile.phoneNumber){
+    let modal=this.modalCtrl.create('WalkthroughModalPage', {},{ cssClass: 'inset-modals' });
+    modal.present();
+  }else{
+    if(this.cards){
+        if(this.cards.length <= 0 && !this.profile.phoneNumber){
+          let modal=this.modalCtrl.create('WalkthroughModalPage', {},{ cssClass: 'inset-modals' });
+          modal.present();
+        }else{
+          this.open(page,name);
+        }
+      
+      }else{
+        this.open(page,name);
+      }
+
+  }
+});
+  }
+  open(page,name) {
+
+//this.openGmppSignup();
+    if (name) {
+       
       this.navCtrl.push(page, {
-        title: "",
-        name: "ARAB"
+        name: name
       });
     } else {
-      // this.nativePageTransitions.slide(options);
+    
       this.navCtrl.push(page);
     }
   }

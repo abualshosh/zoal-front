@@ -19,7 +19,12 @@ username:any;
 upcontacts:any=[];
   constructor(public api:Api,private contacts: Contacts,public navCtrl: NavController, public navParams: NavParams, public items: Items) {
 this.username=localStorage.getItem('username');
-   this.currentItems=JSON.parse(localStorage.getItem("connections"));
+  // this.currentItems=JSON.parse(localStorage.getItem("connections"));
+   var dummy={"fullName":"Test","userName":"922190200"};
+   this.currentItems.push(dummy);    
+   this.currentItems.push(dummy);   
+   this.currentItems.push(dummy);   
+   this.currentItems.push(dummy);   
 //
 //this.currentItems= this.items.query();
    }
@@ -44,17 +49,20 @@ this.username=localStorage.getItem('username');
   }
 uploadContacts(){
   var opts = {
-           filter : "M",
+         //  filter : "M",
            multiple: true,
-           hasPhoneNumber:true,
-           fields:  [ 'displayName', 'name' ]
+           hasPhoneNumber:true
          };
 
-         this.contacts.find([ 'displayName', 'name' ],opts).then((contacts) => {
+         this.contacts.find([ '*' ],opts).then((contacts) => {
+           alert(contacts.length);
            for(var i=0;i<contacts.length;i++){
              let cont=contacts[i].phoneNumbers[0].value;
-            contacts[i].phoneNumbers[0].value= cont.replace(/ /g,'').trim().slice(-9);
-            this.upcontacts.push({"login":contacts[i].phoneNumbers[0].value});
+            contacts[i].phoneNumbers[0].value= cont.replace(/ /g,'').replace(')','').replace('-','').trim().slice(-9);
+            if (!isNaN(+contacts[i].phoneNumbers[0].value)){
+              this.upcontacts.push({"login":contacts[i].phoneNumbers[0].value});
+            }
+            
           }
 
 

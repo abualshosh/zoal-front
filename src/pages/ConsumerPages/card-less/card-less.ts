@@ -69,10 +69,10 @@ if(this.todo.valid){
    var dat=this.todo.value;
 
     dat.UUID=uuid.v4();
-   //dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
+   dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
-   dat.mbr='1';
+   dat.mbr='0';
    dat.tranAmount=dat.Amount;
    dat.toCard=dat.ToCard;
    dat.authenticationType='00';
@@ -105,7 +105,11 @@ var datas;
         ,"tranCurrency":data.tranCurrency
   };
    }
-
+   var main =[];
+   var mainData={
+     "CARDLESS":data.tranAmount
+   }
+   main.push(mainData);
    var voucher={
        "voucherNumber":data.voucherNumber
        ,"voucherCode":data.voucherCode
@@ -115,7 +119,7 @@ var datas;
 
     dat.push(voucher);
     dat.push(datas);
-      let modal = this.modalCtrl.create('BranchesPage', {"data":dat},{ cssClass: 'inset-modal' });
+      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
 
    modal.present();
    this.todo.reset();

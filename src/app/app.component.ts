@@ -45,8 +45,9 @@ subscription:any;
       // Here you can do any higher level native things you might need.
       imageLoaderConfig.enableDebugMode();
       imageLoaderConfig.setImageReturnType('base64');
-      this.statusBar.backgroundColorByHexString('#01579B');
-      this.statusBar.styleLightContent();
+      this.statusBar.backgroundColorByHexString('#e0e0e0');
+      this.statusBar.styleDefault();
+     // this.statusBar.styleLightContent();
       this.splashScreen.hide();
       this.initTranslate();
       this.initChat();
@@ -122,8 +123,9 @@ initChat(){
   initTranslate() {
     // Set the default language for translation strings, and the current language.
    // 
+   var lang=localStorage.getItem("lang");
 
-    if (localStorage.getItem("lang") !== undefined) {
+    if ( lang !== undefined && lang !== "" && lang !== null) {
       this.translate.setDefaultLang(localStorage.getItem("lang"));
       this.translate.use(localStorage.getItem("lang"));
     } else {

@@ -3,25 +3,30 @@ page-signup {
   .form{
     padding-top: 10%;
 }
-
 .splash-logo {
-    padding-top: 15%;
-    margin: auto;
-    background: url('../assets/img/appicon.png') repeat transparent;
-    background-size: 100%;
-    width: 128px;
-    height: 128px;
-  }
-  .splash-intro {
-    font-size: 18px;
-    font-weight: bold;
-    max-width: 80%;
-    margin: auto;
-  }
-  .splash-info {
-    position: relative;
-    z-index: 2;
-    margin-top: 10px;
-    text-align: center;
-  }
+  padding-top: 15%;
+
+  margin: auto;
+  margin-top: 10px;
+  background: url('../assets/img/icon.png') repeat transparent;
+  background-size: 100%;
+  width: 128px;
+  height: 128px;
+}
+.splash-intro {
+  font-size: 16px;
+ // font-weight: bold;
+  max-width: 80%;
+  margin: auto;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  margin-top: 3%;
+}
+.splash-info {
+  padding-top: 0px;
+  position: relative;
+  z-index: 1;
+  margin-top: 8%;
+  text-align: center;
+}
 }

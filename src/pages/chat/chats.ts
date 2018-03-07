@@ -11,11 +11,17 @@ import { Events } from 'ionic-angular';
 
 
 export class ChatsPage {
-public messageForm: any;
+  public messageForm: any;
   chats = [];
-messages:any=[];
-  constructor(public modalCtrl: ModalController,public events: Events,public api:Api,public sqlite:SQLite,public navCtrl: NavController) {
-
+  messages:any=[];
+constructor(public modalCtrl: ModalController,public events: Events,public api:Api,public sqlite:SQLite,public navCtrl: NavController) {
+  
+  this.chats.push({
+    imageUrl: this.api.url+'/profileimage/'+"249922190200",
+    title: "249922190200",
+    lastMessage: "s",
+    timestamp:""
+  });
     this.events.subscribe('sending', (msgData) => {
       var found=false;
       for(var i = 0; i < this.chats.length; i++)
@@ -41,7 +47,7 @@ messages:any=[];
          if(this.chats[i].title==greeting.sender){
           this.chats[i].lastMessage=greeting.message;
           this.chats[i].timestamp=greeting.msgData;
-        add=true; 
+          add=true; 
         }
       }
 
@@ -140,6 +146,8 @@ this.viewMessages({"title":data});
     console.log("Errot: " + JSON.stringify(e));
     });
   })
-  .catch(e => console.log(e));
+  .catch(e => 
+    this.navCtrl.push('MessagesPage', { otherUser : chat.title, msg :this.messages })
+  );
   }
 }

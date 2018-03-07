@@ -31,9 +31,7 @@ import {Card} from '../../../models/cards';
    public GetServicesProvider : GetServicesProvider;
     constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.storage.get('username').then((val) => {
-      this.consumerIdentifier=val;
-        });
+      this.consumerIdentifier="249"+localStorage.getItem('username');
 
       //user.printuser();
   this.GetServicesProvider=GetServicesProviderg;
@@ -67,12 +65,12 @@ import {Card} from '../../../models/cards';
      var dat=this.todo.value;
 
       dat.UUID=uuid.v4();
-     dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
+     dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
     console.log(dat.IPIN)
      dat.isConsumer='true';
 
-    this.GetServicesProvider.loadGmpp(this.todo.value,'SelfLock').then(data => {
+    this.GetServicesProvider.load(this.todo.value,'gmpp/lockAccount').then(data => {
      this.bal = data;
       console.log(data)
       if(data != null && data.responseCode==1){

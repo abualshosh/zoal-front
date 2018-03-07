@@ -1,47 +1,23 @@
 <ion-header>
 
-  <ion-navbar color='primary'>
-    <ion-title>{{ 'LOGIN_TITLE' | translate }}</ion-title>
+  <ion-navbar color='bar'>
+    <ion-title>{{ 'login' | translate }}</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content>
     <div class="splash-info">
     <div class="splash-logo"></div>
     <div class="splash-intro">
-    Enter Your Phone number 
+    {{'EYPN' |translate}} 
     </div>    </div>
   <form  class="form">
     <ion-list>
-
-      <!-- <div>PhoneNumber: {{userInfo.country_code}}{{userInfo.phoneNumber}}</div>
-      <button ion-button color="primary" (click)="register()">Register</button> -->
-
-      <ion-item>
+    <ion-item>
         <ion-label fixed>+249</ion-label>
         <ion-input type="number" [(ngModel)]="account.username" name="email"></ion-input>
       </ion-item>
-
-      <!--
-      Want to use a Username instead of an Email? Here you go:
-
-      <ion-item>
-        <ion-label floating>{{ 'USERNAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
-      </ion-item>
-      -->
-
-      <!-- <ion-item>
-        <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
-      </ion-item> -->
-
-
-      <div padding>
-
-        <button ion-button (click)="doLogin()" color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+        <div padding>
+        <button ion-button (click)="doLogin()" color="primary" block>{{ 'login' | translate }}</button>
       </div>
 
     </ion-list>

@@ -13,7 +13,7 @@ $font-path: "../assets/fonts";
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 $text-color:        #000;
-$background-color:  #ffffff;
+$background-color:  #FAFAFA;
 
 
 // Named Color Variables
@@ -25,18 +25,20 @@ $background-color:  #ffffff;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #0277BD,
-  secondary:  #0277BD,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
+  bar:        #F5f5f5,
+  primary:    #E64A19,
+  secondary:  #E64A19,
+  danger:     #b71c1c,
+  light:      #ffffff,
   dark:       #222,
-  fabs:         #01579B
+  fabs:         #FF7043,
+  green:     green
 );
 
 
 // App iOS Variables
 // --------------------------------------------------
-// iOS only Sass variables can go here
+// iOS only Sass variables can go here 
 
 
 

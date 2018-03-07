@@ -4,7 +4,7 @@ import { IonicPage, NavController, Content, NavParams, } from 'ionic-angular';
 import { Api,User } from '../../../providers/providers'
 import { Events } from 'ionic-angular';
 import { SQLite ,SQLiteObject  } from '@ionic-native/sqlite';
-
+import { StompService } from 'ng2-stomp-service';
 @IonicPage()
 @Component({
   selector: 'page-messages',
@@ -45,7 +45,9 @@ CahtUser:string;
   this.scrollToBottom();
   }
   }
-  constructor(public sqlite:SQLite,public events: Events,public users:User,public navCtrl: NavController, public formBuilder: FormBuilder,public api:Api,navParams: NavParams,) {
+  constructor(
+    public stomp: StompService,
+    public sqlite:SQLite,public events: Events,public users:User,public navCtrl: NavController, public formBuilder: FormBuilder,public api:Api,navParams: NavParams,) {
 this.CahtUser=navParams.get('otherUser');
     this.user = {
       _id: localStorage.getItem('username'),
@@ -66,10 +68,13 @@ this.messages=navParams.get('msg');
     });
     this.chatBox = '';
 
-
+    this.stomp.subscribe('/user/queue/status', this.response);
     this.events.subscribe('message', this.mySubscribedHandler);
   }
-
+  public response = (data) => {
+    console.log(data)
+        
+      }
 
 
 ionViewWillLeave(){

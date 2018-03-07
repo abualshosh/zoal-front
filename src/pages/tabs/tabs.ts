@@ -25,23 +25,25 @@ export class TabsPage {
   tab3Root: any = 'ContentPage';
   tab4Root: any = 'ChatsPage';
     tab5Root: any = 'SlideFreeModePage';
-  tab1Title = "Feeds";
-  tab2Title = "Contacts";
-  tab3Title = "profile";
-  tab4Title = "Chat";
-  tab5Title = "Pay";
+  tab1Title :any;
+  tab2Title  :any;
+  tab3Title  :any;
+  tab4Title  :any;
+  tab5Title :any;
   tab4BadgeCount =0;
   upcontacts:any=[];
   currentItems: any = [];
 subscription:any;
+
   constructor(private contacts: Contacts,public zone:NgZone,public platform: Platform,private fcm: FCM,public sqlite:SQLite,public api: Api,public events: Events,public stomp: StompService,public navCtrl: NavController, public translateService: TranslateService) {
-    // translateService.get(['TAB1_TITLE', 'TAB2_TITLE', 'TAB3_TITLE','Chat', 'TAB5_TITLE']).subscribe(values => {
-    //   this.tab1Title = values['TAB1_TITLE'];
-    //   this.tab2Title = values['TAB2_TITLE'];
-    //   this.tab3Title = values['TAB3_TITLE'];
-    //   this.tab4Title = values['Chat'];
-    //   this.tab5Title = values['TAB5_TITLE'];
-    // });
+    translateService.get(['feeds', 'Contacts', 'profile','chat', 'Pay']).subscribe(values => {
+     // alert("ds");
+      this.tab1Title = values['feeds'];
+      this.tab2Title = values['Contacts'];
+      this.tab3Title = values['profile'];
+      this.tab4Title = values['chat'];
+      this.tab5Title = values['Pay'];
+    });
   
     platform.ready().then(() => {  
     if (this.platform.is('cordova')) {
@@ -63,9 +65,7 @@ this.uploadContacts();
     if(data.wasTapped){
       alert(JSON.stringify(data));
     } else {
-      this.zone.run(() => {
-      this.tab4BadgeCount++;
-      });
+    
      // alert("Received in foreground");
     };
   })
@@ -125,7 +125,6 @@ this.uploadContacts();
 
 
   connectWs(token:any,FcmToken:any) {
-
     //configuration
     this.stomp.configure({
       host:'http://'+this.api.urlip+'/websocket/tracker?access_token='+token+'&FcmToken='+localStorage.getItem('FCMToken'),
@@ -148,6 +147,9 @@ this.uploadContacts();
       //send data
       this.events.subscribe('message', (greeting) => {
 console.log(greeting)
+this.zone.run(() => {
+  this.tab4BadgeCount++;
+  });
         this.sqlite.create({
           name: localStorage.getItem('username'),
           location: 'default'
@@ -173,7 +175,7 @@ console.log(greeting)
           }
             }, (e) => {
         
-        
+             
             console.log("Errot: " + JSON.stringify(e));
             });
 
@@ -210,7 +212,7 @@ console.log(greeting)
              fields:  [ 'displayName', 'name' ]
            };
   
-           this.contacts.find([ 'displayName', 'name' ],opts).then((contacts) => {
+           this.contacts.find([ '*' ],opts).then((contacts) => {
              for(var i=0;i<contacts.length;i++){
                let cont=contacts[i].phoneNumbers[0].value;
               contacts[i].phoneNumbers[0].value= cont.replace(/ /g,'').trim().slice(-9);

@@ -54,7 +54,9 @@ export function provideSettings(storage: Storage) {
 @NgModule({
   declarations: [
     MyApp,
-      ObjNgForPipe
+    
+      ObjNgForPipe,
+        
   ],
   imports: [
     BrowserModule,

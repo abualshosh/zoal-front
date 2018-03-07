@@ -1,5 +1,6 @@
 page-feeds{
-    ion-content{ background-color: gray;
+    ion-content{
+         background-color: gray;
     }
     ion-spinner * {
         stroke:  map-get($colors, primary);

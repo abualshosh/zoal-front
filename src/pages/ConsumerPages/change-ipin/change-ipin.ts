@@ -75,17 +75,17 @@ if(this.todo.valid){
     console.log(dat.newIPIN)
    if(dat.ConnewIPIN==dat.newIPIN){
     dat.UUID=uuid.v4();
-   //dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-    //dat.newIPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.newIPIN);
+   dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
+    dat.newIPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.newIPIN);
   console.log(dat.IPIN)
 
-   //dat.mbr='1';
+   dat.mbr='1';
 
    dat.authenticationType='00';
-
    dat.pan=dat.Card.pan;
    dat.expDate=dat.Card.expDate;
  console.log(dat)
+ dat.ConnewIPIN="";
   this.GetServicesProvider.load(this.todo.value,'consumer/ChangeIPIN').then(data => {
    this.bal = data;
     console.log(data)

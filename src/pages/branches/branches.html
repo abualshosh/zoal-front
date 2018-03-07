@@ -2,14 +2,14 @@
     
 
 
-  <ion-toolbar color="secondary" >
+  <ion-toolbar color="bar" >
       <ion-title>
           Transaction Detials
         </ion-title>
       <ion-buttons start>
           <button ion-button (click)="dismiss()">
-            <span ion-text color="light" showWhen="ios">Cancel</span>
-            <ion-icon color="light" name="md-close" ></ion-icon>
+            <span ion-text color="dark" showWhen="ios">Cancel</span>
+            <ion-icon color="dark" name="md-close" ></ion-icon>
           </button>
         </ion-buttons>
     
@@ -24,8 +24,22 @@
 <div>
    
     <ion-item color="primary" no-lines style="text-align: center;" >
-      <p>Successful</p>
-      <ion-icon color="light" name="checkmark-circle" style="zoom:2.0;"></ion-icon>
+     
+      <ion-grid  *ngFor="let item of main | keys" >
+        <ion-row  *ngFor="let itm of item.value | keys">
+           
+            <ion-item class="no-padding" color="primary" style="text-align: center;">
+                {{itm.key | translate }} 
+              <ion-col text-wrap style="font-size: 30px; ">
+                        <br>
+                     {{itm.value}} SDG              
+                        </ion-col>
+                        <br>
+                        <ion-icon color="light" name="checkmark-circle" style="zoom:3.0;"></ion-icon>
+                      </ion-item>
+          </ion-row>
+        </ion-grid>
+    
     </ion-item>
 </div>
 

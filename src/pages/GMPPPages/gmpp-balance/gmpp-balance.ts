@@ -31,7 +31,7 @@ submitAttempt: boolean = false;
    public GetServicesProvider : GetServicesProvider;
     constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.consumerIdentifier=localStorage.getItem('username');
+      this.consumerIdentifier="249"+localStorage.getItem('username');
 
       //user.printuser();
   this.GetServicesProvider=GetServicesProviderg;
@@ -66,7 +66,7 @@ submitAttempt: boolean = false;
      var dat=this.todo.value;
 
       dat.UUID=uuid.v4();
-   //  dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
+   dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
     console.log(dat.IPIN)
      dat.isConsumer='true';
@@ -78,13 +78,22 @@ dat.consumerIdentifier=this.consumerIdentifier;
        loader.dismiss();
       // this.showAlert(data);
 
-    var datas =[
-      {"tital":"Status","desc":data.responseMessage},
-       {"tital":"available Balance","desc":data.availableBalance},
-        {"tital":"reserved Balance","desc":data.reservedBalance}
-     ];
-       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
-     modal.present();
+    var main =[];
+    var mainData={
+      "available Balance":data.availableBalance
+    }
+    main.push(mainData);
+    var datas;
+    var dat =[];
+    datas ={
+     "WalletNumber":data.consumerIdentifier
+    ,"available Balance":data.availableBalance
+    ,"reserved Balance":data.reservedBalance
+ };
+ dat.push(datas);
+     let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
+ 
+       modal.present();
      this.todo.reset();
     this.submitAttempt=false;
     }else{

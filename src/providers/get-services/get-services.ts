@@ -56,7 +56,9 @@ public URL:string="http://localhost:8080/api";
 
  //var key = new NodeRSA("-----BEGIN RSA PRIVATE KEY----- MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANx4gKYSMv3CrWWsxdPfxDxFvl+Is/0kc1dvMI1yNWDXI3AgdI4127KMUOv7gmwZ6SnRsHX/KAM0IPRe0+Sa0vMCAwEAAQ== -----END RSA PRIVATE KEY-----","pkcs1");
  var encrypt = new JSEncrypt.JSEncrypt();
+ 
  encrypt.setPublicKey("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ4HwthfqXiK09AgShnnLqAqMyT5VUV0hvSdG+ySMx+a54Ui5EStkmO8iOdVG9DlWv55eLBoodjSfd0XRxN7an0CAwEAAQ==");
+ 
  var encrypted = encrypt.encrypt(msg);	
  // key.importKey({
  //     n: new Buffer(this.module, 'hex'),
@@ -72,6 +74,15 @@ public URL:string="http://localhost:8080/api";
  //console.log(publicComponents);
  return encrypted;
  }
+ encryptGmpp(msg : any){
+  var encrypt = new JSEncrypt.JSEncrypt();
+  
+  encrypt.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjqmUrQ1w1rOH+kmj4dk3C3duIl1trVRr91EJKhphlWjOs2qqba9I2WmRH3CVUuBmkIEojYrnKtXiQBqMOTANzZuly6vZY3AOT/JVDtKy3/z60mUWUi+ILidh5dZz7ZYKsPupXRz5XQXELLpI4XN58N1oiNY95GutJ/hjqE0qqufQ1ie/hU5Dbof9F+Ug3wSJOzba+IVve09Yx76KsFBtc+0qn2/JI7YPca9s8h4ZKaVo7qvFZNScTieoR5f3vaKUsYNTdRK7HMXEU/BMrg8hzh04+ShtDtKtQ02pvObQ+Kha/oV54bdP5e6m9NpXupoL0ydQIDNZ6B76yVEe5WJM2wIDAQAB");
+  
+  var encrypted = encrypt.encrypt(msg);	
+
+  return encrypted;
+  }
 
   load( postparams : any,path:string) : Promise<any> {
 //    if (this.dataListCon&&path=='getPayee') {

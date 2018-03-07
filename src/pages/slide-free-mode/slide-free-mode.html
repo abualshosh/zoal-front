@@ -1,321 +1,83 @@
-<ion-header color='primary'>
-    <ion-navbar color='primary'>
-        <ion-title>PAY</ion-title>
+<ion-header color='bar'>
+    <ion-navbar color='bar'>
+        <ion-title> ZoalPay</ion-title>
         <ion-buttons end>
             <button ion-button item-end (click)="open('HistoryPage')">
                 <ion-icon name="clock"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
-   
-        <ion-grid no-padding>
-                    <ion-row no-padding>
-        <ion-col>
-            <button (click)="open('ZaintopupPage')" class="butns" ion-button block color="primary">
-                <div>
-                    <ion-icon name="flash"></ion-icon>
-                    <br>
-                    <label>TopUp</label>
-                </div>
-            </button>
-        </ion-col>
- 
- 
-
-        <ion-col>
-            <button (click)="open('ZaintopupPage')" class="butns" ion-button block color="primary">
-                <div>
-                    <ion-icon name="flash"></ion-icon>
-                    <br>
-                    <label>Bill Payment</label>
-                </div>
-            </button>
-        </ion-col>
-        <ion-col>
-            <button (click)="open('ServicesPage')" class="butns" ion-button block color="primary">
-                <div>
-                    <ion-icon name="flash"></ion-icon>
-                    <br>
-                    <label>Elctricty</label>
-                </div>
-            </button>
-        </ion-col>
-        </ion-row>
-        <ion-row>
-        <ion-col>
-            <button  (click)="open('CustomesPage')" class="butns" ion-button block color="primary">
-                <div>
-                    <ion-icon name="flash"></ion-icon>
-                    <br>
-                    <label>Customes</label>
-                </div>
-            </button>
-        </ion-col>
-
-    
-
-
-   
-        <ion-col>
-            <button (click)="open('E15Page')"  class="butns" ion-button block color="primary">
-                <div>
-                    <ion-icon name="flash"></ion-icon>
-                    <br>
-                    <label>E15</label>
-                </div>
-            </button>
-        </ion-col>
-        <ion-col>
-            <button (click)="open('MohePage')"  class="butns" ion-button block color="primary">
-                <div>
-                    <ion-icon name="flash"></ion-icon>
-                    <br>
-                    <label>Higher
-                        <br>Edication</label>
-                </div>
-            </button>
-        </ion-col>
-    
-    </ion-row>
-</ion-grid>
 </ion-header>
-
-
 <ion-content>
-
-
-   
-    <div [ngSwitch]="pet">
-      
-
-    <ion-segment color='primary' [(ngModel)]="pet" >
-        
-                <ion-segment-button value="puppies" class="s-btn">
-                    ATM AND CASH CARD
-        
-                </ion-segment-button>
-                <ion-segment-button value="kittens" class="s-btn">
-                    MOBILE WALLET
-                </ion-segment-button>
-         </ion-segment>
+    <ion-item color="primary" no-lines style="text-align: center; ">
+        {{'payserv' | translate}}
+    </ion-item>
+    <ion-scroll scrollX style="height:70px ;  " no-lines>
+        <section>
+            <ion-col *ngFor="let page of Paymentpages">
+                <button (click)="openPayment(page.component,page.var)" class="buts" ion-button block color="primary">
+                    <div>
+                        <ion-icon name={{page.icon}}></ion-icon>
+                        <br>
+                        <label>{{page.title | translate}}</label>
+                    </div>
+                </button>
+            </ion-col>
+            <ion-col>
+                <button (click)="scan()" class="buts" ion-button block color="primary">
+                    <div>
+                        <ion-icon name="camera"></ion-icon>
+                        <br>
+                        <label>Scan and pay</label>
+                    </div>
+                </button>
+            </ion-col>
+        </section>
+    </ion-scroll>
+    <div [ngSwitch]="pet" style="background-color:  #FAFAFA; padding-top:0.1px;">
         <div *ngSwitchCase="'puppies'">
-
-
-
-            <ion-grid no-padding>
-                <ion-row>
-                    <ion-col>
-
-                        <button (click)="scan()" class="but" ion-button block color="light">
-                            <div>
-                                <ion-icon name="camera"></ion-icon>
-                                <br>
-                                <label>Scan and pay</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                    <ion-col>
-                        <button (click)="open('HomePage')" class="but" ion-button block color="light">
-                            <div>
-                                <ion-icon name="card"></ion-icon>
-                                <br>
-                                <label>My Cards</label>
-                            </div>
-                        </button>
-                    </ion-col>
-               
-                    <ion-col>
-                        <button (click)="open('TransfaerToCardPage')" class="but" ion-button block color="light">
-                            <div>
-                                <ion-icon name="person"></ion-icon>
-                                <br>
-                                <label>Transfer</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                </ion-row>
-                <ion-row>
-                    <ion-col>
-                        <button (click)="open('CardLessPage')" class="but" ion-button block color="light">
-                            <div>
-                                <ion-icon name="print"></ion-icon>
-                                <br>
-                                <label>CardLess</label>
-                            </div>
-                        </button>
-                    </ion-col>
-
-                  
-               
-                    <ion-col>
-                        <button (click)="open('FormsPage')" class="but" ion-button block color="light">
-                            <div>
-                                <ion-icon name="card"></ion-icon>
-                                <br>
-                                <label>Card Balance</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                    <ion-col>
-                        <button (click)="open('ChangeIpinPage')" class="but" ion-button block color="light">
-                            <div>
-                                <ion-icon name="card"></ion-icon>
-                                <br>
-                                <label>Change IPIN</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                </ion-row>
-
-
-
-            </ion-grid>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-        <ion-card-content no-padding *ngSwitchCase="'kittens'">
-            <ion-grid no-padding>
-                <ion-row>
-                    <ion-col>
-
-                        <button (click)="scan()" class="but" ion-button block color="light">
-                            <div>
-                                <ion-icon name="camera"></ion-icon>
-                                <br>
-                                <label>Scan and pay</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                  
-                    <ion-col>
-                        <button class="but" (click)="open('GmppTransPage')"  ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>Transfer</label>
-                            </div>
-                        </button>
-
-                    </ion-col>
-                    <ion-col>
-                        <button class="but" (click)="open('GmppPruchasPage')"  ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>pruches</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                </ion-row>
-                <ion-row>
-                    <ion-col>
-                        <button class="but" (click)="open('GmppCashOutPage')" ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>Cash Out</label>
-                            </div>
-                        </button>
-                    </ion-col>
-             
-                    <ion-col>
-                        <button class="but" (click)="open('GmppBalancePage')" ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>Wallet Balance</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                    <ion-col>
-                        <button class="but" (click)="open('GmppTrnasactionsPage')" ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>History</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                </ion-row>
-                <ion-row no-padding>
-                    <ion-col>
-                        <button class="but" (click)="open('GmppTranToCardPage')" ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>Transfer to card</label>
-                            </div>
-                        </button>
-                    </ion-col>
-               
-                    <ion-col>
-                        <button class="but" (click)="open('GmppTranFromCardPage')"  ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>Transfer from card</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                    <ion-col>
-                        <button class="but" (click)="open('SelflockPage')" ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>Lock</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                </ion-row>
-                
-                
-                                <ion-row>
-                    <ion-col>
-                        <button class="but" (click)="open('SelfunlockPage')" ion-button block color="light">
-                            <div>
-                                <ion-icon name="flash"></ion-icon>
-                                <br>
-                                <label>UnLock</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                    <ion-col>
-                            <button class="but" (click)="open('SelfunlockPage')" ion-button block color="light">
+            <ion-card style="margin-left:0px;     width:100%;
+              padding:0px;">
+                <ion-item color="light" no-lines style="text-align: center; ">
+                    {{'ATM_CASHCARD' | translate}}
+                </ion-item>
+                <ion-scroll scrollX style="height:70px ;  background-color: #ffffff;" no-lines>
+                    <section no-lines>
+                        <ion-col *ngFor="let page of Consumerpages">
+                            <button (click)="openConsumer(page.component,page.var)" class="but" block color="light">
                                 <div>
-                                    <ion-icon name="flash"></ion-icon>
+                                    <ion-icon name={{page.icon}}></ion-icon>
                                     <br>
-                                    <label>Change PIN</label>
+                                    <label>{{page.title | translate}}</label>
                                 </div>
                             </button>
                         </ion-col>
-                        <ion-col>
-                                <button class="but" (click)="open('SelfunlockPage')" ion-button block color="light">
-                                    <div>
-                                        <ion-icon name="flash"></ion-icon>
-                                        <br>
-                                        <label>Link Card</label>
-                                    </div>
-                                </button>
-                            </ion-col>
-                
-                </ion-row>
-                
-                                <ion-row>
-
-                                    </ion-row>
-            </ion-grid>
-        </ion-card-content>
+                    </section>
+                </ion-scroll>
+            </ion-card>
+        </div>
+        <ion-card style="margin-left:0px;     width:100%;
+        padding:0px;">
+            <ion-item color="light" no-lines style="text-align: center; ">
+                {{'MOBILEPAYMENT' | translate}}
+            </ion-item>
+            <ion-card-content no-padding>
+                <ion-scroll scrollX style="height:70px ;  background-color: #ffffff;" no-lines>
+                    <section>
+                        <ion-col *ngFor="let page of Gmpppages">
+                            <button (click)="openGmpp(page.component,page.var)" class="but" block color="light">
+                                <div>
+                                    <ion-icon name={{page.icon}}></ion-icon>
+                                    <br>
+                                    <label>{{page.title | translate}}</label>
+                                </div>
+                            </button>
+                        </ion-col>
+                    </section>
+                </ion-scroll>
+            </ion-card-content>
+        </ion-card>
     </div>
-
-
+    <div style="background-color: #FAFAFA;; height:5px; ">
+    </div>
 </ion-content>

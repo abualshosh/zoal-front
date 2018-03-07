@@ -16,7 +16,7 @@ export class KeysPipe implements PipeTransform {
    transform(value, args:string[]) : any {
     let keys = [];
     for (let key in value) {
-        if (value[key] !==""&&value[key]!==0){
+        if (value[key]&&value[key]!==0){
       keys.push({key: key, value: value[key]});
         }
     }

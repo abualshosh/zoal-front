@@ -7,6 +7,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { File , FileEntry} from '@ionic-native/file';
 import { Api } from '../../providers/providers';
 import { User } from '../../providers/providers';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,9 @@ export class ItemCreatePage {
   @ViewChild('fileInput') fileInput;
 
   isReadyToSave: boolean;
-
+  choseImage;
+  cameraTitle;
+  gallery;
   item: any;
   img:any;
   form: FormGroup;
@@ -28,7 +31,15 @@ username:any;
     private http:HttpClient,private transfer: FileTransfer,
     public navCtrl: NavController, public viewCtrl: ViewController,
      formBuilder: FormBuilder, public camera: Camera
+     ,public translateService:TranslateService
     ) {
+      translateService.get(['ChoseImage', 'camera', 'gallery']).subscribe(values => {
+        // alert("ds");
+         this.choseImage = values['ChoseImage'];
+         this.cameraTitle = values['camera'];
+         this.gallery = values['gallery'];
+         
+       });
     this.form = formBuilder.group({
       profilePic: [''],
       name: ['', Validators.required],
@@ -48,10 +59,10 @@ this.username=this.navParams.get("username");
 
     presentActionSheet() {
        let actionSheet = this.actionSheetCtrl.create({
-         title: 'Chose photo',
+         title: this.choseImage,
          buttons: [
            {
-             text: 'Camar',
+             text: this.cameraTitle,
 
              handler: () => {
               this.type=1;
@@ -59,7 +70,7 @@ this.username=this.navParams.get("username");
              }
            },
            {
-             text: 'Gallary',
+             text: this.gallery,
              handler: () => {
                this.type=0;
                this.getPicture();

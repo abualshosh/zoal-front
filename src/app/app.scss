@@ -22,12 +22,25 @@
   //   padding-left: 5%;;
   // }
   .masters{
-    margin-top:10%; 
+    margin-top:1%; 
   }
   .subbutn{
     width: 80%;
     margin-left: 10%;
 
+  }
+  .con{
+    padding-bottom: 50px;
+  }
+  .con ion-item{
+    padding: 0px;
+    ion-label , ion-input , p{
+      padding-left: 15px;
+    }
+  }
+  .con p{
+    color:map-get($colors ,  danger);
+    padding-left: 15px;
   }
 ion-modal.inset-modal {
   // transparent black background overlay

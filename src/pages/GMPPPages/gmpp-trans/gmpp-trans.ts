@@ -31,7 +31,8 @@ submitAttempt: boolean = false;
    public GetServicesProvider : GetServicesProvider;
     constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.consumerIdentifier=localStorage.getItem('username');
+      this.consumerIdentifier="249"+localStorage.getItem('username');
+
         
 
 
@@ -69,7 +70,7 @@ submitAttempt: boolean = false;
      var dat=this.todo.value;
 
       dat.UUID=uuid.v4();
-    // dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
+     dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
     console.log(dat.IPIN)
      dat.isConsumer='true';
@@ -81,15 +82,21 @@ dat.consumerIdentifier=this.consumerIdentifier;
        loader.dismiss();
       // this.showAlert(data);
       var datas ={
-        "responseMessage":data.responseMessage
-        ,"fee":data.fee
+        "destinationIdentifier":data.destinationIdentifier,
+        "fee":data.fee
         ,"transactionAmount":data.transactionAmount
         ,"totalAmount":data.totalAmount
+        ,"transactionId":data.transactionId
       };
       var dat =[];
-      
+      var main =[];
+      var mainData={
+        "Transfer":data.totalAmount
+      }
+      dat.push({"WalletNumber":data.consumerIdentifier})
+      main.push(mainData);
       dat.push(datas);
-        let modal = this.modalCtrl.create('BranchesPage', {"data":dat},{ cssClass: 'inset-modal' });
+        let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
     // var datas =[
     //   {"tital":"Status","desc":data.responseMessage},
     //    {"tital":"Fee","desc":data.fee},

@@ -40,15 +40,18 @@ public payee:any[]=[];
 
     this.todo = this.formBuilder.group({
       pan: ['',],
-      Card: ['',Validators.required],
+      Card: ['',],
       Payee: [''],
+      entityId:[''],
+      mobilewallet:[''],
         IPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])],
         INVOICENUMBER: ['',Validators.required],
           PHONENUMBER: ['',Validators.required],
           Amount: ['',Validators.required],
 
     });
-
+    this.todo.controls["mobilewallet"].setValue(false);
+this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
   }
 
   showAlert(balance : any ) {
@@ -73,20 +76,28 @@ if(this.todo.valid){
    var dat=this.todo.value;
 
     dat.UUID=uuid.v4();
-   //dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
+   dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
    dat.mbr='1';
    dat.tranAmount=dat.Amount;
-   dat.toCard=dat.ToCard;
-   dat.authenticationType='00';
+
+   if(dat.mobilewallet){
+    dat.entityType="Mobile Wallet";
+
+    dat.authenticationType='10';
+    dat.pan="";
+  }else{
+    dat.pan=dat.Card.pan;
+    dat.expDate=dat.Card.expDate;
+    dat.authenticationType='00';
+  }
    dat.fromAccountType='00';
       dat.toAccountType='00';
 
       dat.paymentInfo="SERVICEID=6/INVOICENUMBER="+dat.INVOICENUMBER+"/PHONENUMBER="+dat.PHONENUMBER;
-      dat.payeeId="e15";
-   dat.pan=dat.Card.pan;
-   dat.expDate=dat.Card.expDate;
+      dat.payeeId="E15";
+
  console.log(dat)
   this.GetServicesProvider.load(dat,'consumer/payment').then(data => {
    this.bal = data;
@@ -114,20 +125,37 @@ if(this.todo.valid){
         ,"tranCurrency":data.tranCurrency
   };
    }
-   var dat =[];
 
+   var main =[];
+   var mainData={
+     'E15':data.tranAmount
+   }
+   main.push(mainData);
+   var dat =[];
+   if(data.PAN){
+    dat.push({"Card":data.PAN})
+  }else{
+    dat.push({"WalletNumber":data.entityId})
+  }
      dat.push({"Status":data.responseMessage});
      if(Object.keys(data.billInfo).length>0){
     dat.push(data.billInfo);}
       dat.push(datas);
-      let modal = this.modalCtrl.create('BranchesPage', {"data":dat},{ cssClass: 'inset-modal' });
+      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
    modal.present();
    this.todo.reset();
     this.submitAttempt=false;
+    this.todo.controls["mobilewallet"].setValue(false);
+    this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
+
   }else{
    loader.dismiss();
   this.showAlert(data);
 this.todo.reset();
+this.todo.controls["mobilewallet"].setValue(false);
+this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
+
+
     this.submitAttempt=false;
   }
  });

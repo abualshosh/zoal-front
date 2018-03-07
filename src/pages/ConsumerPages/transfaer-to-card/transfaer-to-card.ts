@@ -11,10 +11,11 @@ import { UserProvider } from '../../../providers/user/user';
 import {Storage} from '@ionic/storage';
 import {Card} from '../../../models/cards';
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
+import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 /**
  * Generated class for the TransfaerToCardPage page.
- *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
@@ -24,16 +25,21 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
   templateUrl: 'transfaer-to-card.html',
 })
 export class TransfaerToCardPage {
+  options: BarcodeScannerOptions;
+  trustedVideoUrl:any;
   private bal : any;
   private todo : FormGroup;
   public cards:Card[]=[];
 submitAttempt: boolean = false;
+
  public GetServicesProvider : GetServicesProvider;
-  constructor(private nativePageTransitions: NativePageTransitions, private navParams:NavParams,private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
+  constructor(private barcodeScanner: BarcodeScanner,private nativePageTransitions: NativePageTransitions, 
+    private domSanitizer: DomSanitizer,private navParams:NavParams,private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
   ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
     this.storage.get('cards').then((val) => {
     this.cards=val;
       });
+      this.trustedVideoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/yzRW5ZPqoyo");
 this.GetServicesProvider=GetServicesProviderg;
     this.todo = this.formBuilder.group({
 
@@ -60,38 +66,21 @@ if (this.navParams.get("pan")){
    });
    alert.present();
  }
- ionViewDidLoad() {
-  // let options: NativeTransitionOptions = {
-  //     "direction"        : "up", // 'left|right|up|down', default 'left' (which is like 'next')
-  //     "duration"         :  400, // in milliseconds (ms), default 400
-  //     "slowdownfactor"   :    -1, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
-  //     "slidePixels"      :   -1, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
-  //     "iosdelay"         :  100, // ms to wait for the iOS webview to update before animation kicks in, default 60
-  //     "androiddelay"     :  150, // same as above but for Android, default 70
-  //     "winphonedelay"    :  250, // same as above but for Windows Phone, default 200,
-  //     "fixedPixelsTop"   :    0, // the number of pixels of your fixed header, default 0 (iOS and Android)
-  //     "fixedPixelsBottom":   0  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
-  //   };
+ scan() {
+  this.options = {
+    prompt: "Scan your barcode "
+  }
+  this.barcodeScanner.scan(this.options).then((barcodeData) => {
 
-  // this.nativePageTransitions.slide(options)
-  //     .then( (msg) => console.log(msg) )
-  //     .catch( (err) => console.log(err));
-}
-ionViewWillLeave() {
-  // let options: NativeTransitionOptions = {
-  //     "direction"        : "down", // 'left|right|up|down', default 'left' (which is like 'next')
-  //     "duration"         :  400, // in milliseconds (ms), default 400
-  //     "slowdownfactor"   :    -1, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
-  //     "slidePixels"      :   -1, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
-  //     "iosdelay"         :  100, // ms to wait for the iOS webview to update before animation kicks in, default 60
-  //     "androiddelay"     :  25, // same as above but for Android, default 70
-  //     "winphonedelay"    :  250, // same as above but for Windows Phone, default 200,
-  //     "fixedPixelsTop"   :    0, // the number of pixels of your fixed header, default 0 (iOS and Android)
-  //     "fixedPixelsBottom":   0  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
-  //   };   
-  //   this.nativePageTransitions.slide(options)
-  //     .then( (msg) => console.log(msg) )
-  //     .catch( (err) => console.log(err));
+    
+    if (barcodeData.text) {
+     // alert(barcodeData.text);
+      this.todo.controls['ToCard'].setValue(barcodeData.text);
+    }
+  
+  }, (err) => {
+    console.log("Error occured : " + err);
+  });
 }
 
   logForm(){
@@ -102,29 +91,25 @@ ionViewWillLeave() {
    });
    loader.present();
    var dat=this.todo.value;
-
     dat.UUID=uuid.v4();
-  // dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-  console.log(dat.IPIN)
-   dat.tranCurrency='SDG';
-   dat.mbr='1';
-
+    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
+    console.log(dat.IPIN)
+    dat.tranCurrency='SDG';
+    dat.mbr='0';
    dat.tranAmount=dat.Amount;
    dat.toCard=dat.ToCard;
    dat.authenticationType='00';
    dat.fromAccountType='00';
-      dat.toAccountType='00';
+   dat.toAccountType='00';
    dat.pan=dat.Card.pan;
    dat.expDate=dat.Card.expDate;
- console.log(dat)
-  this.GetServicesProvider.load(this.todo.value,'consumer/doCardTransfer').then(data => {
+    console.log(dat)
+   this.GetServicesProvider.load(this.todo.value,'consumer/doCardTransfer').then(data => {
    this.bal = data;
     console.log(data)
-    if(data != null && data.responseCode==0){
+   if(data != null && data.responseCode==0){
      loader.dismiss();
-    // this.showAlert(data);
-
- var datas;
+  var datas;
    if(data.balance){
          datas ={
     "toCard":data.toCard
@@ -134,9 +119,8 @@ ionViewWillLeave() {
      ,"tranCurrency":data.tranCurrency
      ,"balance":data.balance.available
   };
-
-   }else{
-        datas ={
+}else{
+   datas ={
           "toCard":data.toCard
           ,"tranAmount":data.tranAmount
      ,"acqTranFee":data.acqTranFee
@@ -145,10 +129,16 @@ ionViewWillLeave() {
         ,"tranCurrency":data.tranCurrency
   };
    }
-      var dat =[];
-    
+
+   var main =[];
+   var mainData={
+     "TranToCard":data.tranAmount
+   }
+   main.push(mainData);
+
+      var dat =[]; 
     dat.push(datas);
-      let modal = this.modalCtrl.create('BranchesPage', {"data":dat},{ cssClass: 'inset-modal' });
+      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
    modal.present();
    this.todo.reset();
     this.submitAttempt=false;

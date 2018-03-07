@@ -23,7 +23,11 @@ export class AddPostPage {
   form: FormGroup;
    type:any;
 username:any;
-  constructor(public user: User,public navParams:NavParams,public api:Api,public actionSheetCtrl: ActionSheetController,private file:File,private http:HttpClient,private transfer: FileTransfer,public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera) {
+  constructor(public user: User,public navParams:NavParams,public api:Api,
+    public actionSheetCtrl: ActionSheetController,private file:File
+    ,private http:HttpClient,private transfer: FileTransfer,
+    public navCtrl: NavController, public viewCtrl: ViewController,
+     formBuilder: FormBuilder, public camera: Camera) {
     this.form = formBuilder.group({
       profilePic: [''],
       name: ['', Validators.required],
@@ -31,11 +35,11 @@ username:any;
       file:['']
     });
 this.username=this.navParams.get("username");
-    // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       this.isReadyToSave = this.form.valid;
     });
   }
+
   @ViewChild('myInput') myInput: ElementRef;
   
   resize() {

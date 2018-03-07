@@ -31,7 +31,7 @@ submitAttempt: boolean = false;
    public GetServicesProvider : GetServicesProvider;
     constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.consumerIdentifier=localStorage.getItem('username');
+      this.consumerIdentifier="249"+localStorage.getItem('username');
 
       //user.printuser();
   this.GetServicesProvider=GetServicesProviderg;
@@ -67,7 +67,7 @@ submitAttempt: boolean = false;
      var dat=this.todo.value;
 
       dat.UUID=uuid.v4();
-    // dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
+     dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
 dat.transactionName=this.consumerIdentifier;
     console.log(dat.IPIN)
@@ -78,16 +78,22 @@ dat.transactionName=this.consumerIdentifier;
       console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
-      // this.showAlert(data);
-
-    var datas =[
-      {"tital":"Status","desc":data.responseMessage},
-       {"tital":"Fee","desc":data.fee},
-        {"tital":"transaction Amount","desc":data.transactionAmount},
-        {"tital":"Total Amount","desc":data.totalAmount}
-
-     ];
-       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
+       var datas ={
+        "destinationIdentifier":data.destinationIdentifier,
+        "fee":data.fee,
+        "Extarnal Fee":data.externalFee
+        ,"transactionAmount":data.transactionAmount
+        ,"transactionId":data.transactionId
+      };
+      var dat =[];
+      var main =[];
+      var mainData={
+        "Pruchas":data.transactionAmount
+      }
+      dat.push({"WalletNumber":data.consumerIdentifier})
+      main.push(mainData);
+      dat.push(datas);
+        let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
      modal.present();
      this.todo.reset();
     this.submitAttempt=false;

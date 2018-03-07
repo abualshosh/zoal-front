@@ -14,13 +14,13 @@ page-home {
             position: relative;
         background-position: center center;
         background-size: cover;
-        background-color: map-get($colors , primary);
+        background-color: #Ffffff;
       
       //  height: 250px;
       }
   /* === Credit Card === */
   ion-scroll[scrollX]{
-    background-color: map-get($colors , primary);
+    background-color: #Ffffff;
     white-space: nowrap;
 padding: 10px;
 ion-item{

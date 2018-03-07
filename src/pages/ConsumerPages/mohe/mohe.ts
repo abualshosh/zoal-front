@@ -61,8 +61,9 @@ this.title=this.navParams.get("name");
 
          this.todo = this.formBuilder.group({
         pan: ['',],
-        Card: ['',Validators.required],
+        Card: ['',],
         Payee: [''],
+        entityId:[''],
         CourseID: ['',Validators.required],
         FormKind: ['',Validators.required],
           IPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])],
@@ -70,16 +71,14 @@ this.title=this.navParams.get("name");
           STUCNAME: [''],
           STUCPHONE: [''],
             Amount: ['',Validators.required],
-
+            mobilewallet :[''],
       });
-
+      this.todo.controls["mobilewallet"].setValue(false);
+      this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
     }
 ionViewWillEnter(){
-  console.log("IN")
-  if(this.navParams.get("name").includes("Arab")||this.navParams.get("name").includes("Foreign")){
-    this.isArab=true;
-  }
-    console.log(this.navParams.get("name"))
+
+ 
 }
     showAlert(balance : any ) {
      let alert = this.alertCtrl.create({
@@ -108,26 +107,32 @@ ionViewWillEnter(){
      dat.tranCurrency='SDG';
      dat.mbr='1';
      dat.tranAmount=dat.Amount;
-     dat.toCard=dat.ToCard;
-     dat.authenticationType='00';
+     if(dat.mobilewallet){
+      dat.entityType="Mobile Wallet";
+
+      dat.authenticationType='10';
+      dat.pan="";
+    }else{
+      dat.pan=dat.Card.pan;
+      dat.expDate=dat.Card.expDate;
+      dat.authenticationType='00';
+    }
      dat.fromAccountType='00';
      dat.toAccountType='00';
-     if(this.navParams.get("name").includes("Arab")||this.navParams.get("name").includes("Foreign")){
+     if(this.type==="moheArab"){
+      dat.payeeId="Higher Education Arab";
           dat.paymentInfo="STUCNAME="+dat.STUCNAME+"/STUCPHONE="+dat.STUCPHONE+"/STUDCOURSEID="+dat.CourseID.id+"/STUDFORMKIND="+dat.FormKind.id;
         }else{
+          dat.payeeId="Higher Education";
           dat.paymentInfo="SETNUMBER="+dat.SETNUMBER+"/STUDCOURSEID="+dat.CourseID.id+"/STUDFORMKIND="+dat.FormKind.id;
       }
-     dat.payeeId=this.navParams.get("title");
-     dat.pan=dat.Card.pan;
-     dat.expDate=dat.Card.expDate;
+    this.title=dat.payeeId;
    console.log(dat)
-    this.GetServicesProvider.load(dat,'Payment').then(data => {
+    this.GetServicesProvider.load(dat,'consumer/payment').then(data => {
      this.bal = data;
       console.log(data)
       if(data != null && data.responseCode==0){
        loader.dismiss();
-      // this.showAlert(data);
-
  var datas;
    if(data.balance){
          datas ={
@@ -146,23 +151,35 @@ ionViewWillEnter(){
         ,"tranCurrency":data.tranCurrency
   }; 
    }
+   var main =[];
+   var mainData={
+     [this.title]:data.tranAmount
+   }
+   main.push(mainData);
    var dat =[];
-  
+   if(data.PAN){
+    dat.push({"Card":data.PAN})
+  }else{
+    dat.push({"WalletNumber":data.entityId})
+  }
      
      if(Object.keys(data.billInfo).length>0){
     dat.push(data.billInfo);}
       dat.push(datas);
-      let modal = this.modalCtrl.create('BranchesPage', {"data":dat},{ cssClass: 'inset-modal' });
+      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
      modal.present();
      this.todo.reset();
   this.submitAttempt=false;
+  this.todo.controls["mobilewallet"].setValue(false);
+  this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
     }else{
      loader.dismiss();
      
     this.showAlert(data);
 this.todo.reset();
   this.submitAttempt=false;
-    }
+  this.todo.controls["mobilewallet"].setValue(false);
+  this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));    }
    });
 
     }}

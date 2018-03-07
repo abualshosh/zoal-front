@@ -5,18 +5,18 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar color="secondary">
+  <ion-navbar color="bar">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
        <ion-title>{{this.title | translate}}</ion-title>
   </ion-navbar>
-  <ion-segment color='light' [(ngModel)]="type"   class="s-btn">
+  <ion-segment color='dark' [(ngModel)]="type"   class="">
     
-       <ion-segment-button value="mohe" class="s-btn">
+       <ion-segment-button value="mohe" class="">
       Sudanes
        </ion-segment-button>
-       <ion-segment-button value="moheArab" class="s-btn">
+       <ion-segment-button value="moheArab" class="">
         Arab
        </ion-segment-button>
     
@@ -29,16 +29,25 @@
 
   <form [formGroup]="todo" (ngSubmit)="logForm()">
   <ion-list>
-   <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+    <ion-item>
+      <ion-toggle formControlName="mobilewallet" ></ion-toggle>
+      <ion-label class="label">
+      <ion-icon name='phone-portrait' item-start></ion-icon>{{'USEWallet' | translate}}</ion-label>
+    </ion-item>
+        <ion-item *ngIf="todo.controls.mobilewallet.value">
+          <ion-label stacked>{{'WalletNumber' | translate}}</ion-label>
+          <ion-input type="number" formControlName="entityId" required></ion-input>
+        </ion-item>
+    <div *ngIf="!todo.controls.Card.valid && submitAttempt">
             <p>{{'validcardError'| translate}}</p>
               </div>
-  <ion-item>
-        <ion-label stacked>{{'Card' | translate}}</ion-label >
-        <ion-select style="padding-left:5%;"  interface="popover" formControlName="Card" >
-          <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
+              <ion-item *ngIf="!todo.controls.mobilewallet.value">
+                    <ion-label stacked>{{'Card' | translate}}</ion-label>
+                    <ion-select style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
+                      <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
 
-        </ion-select>
-      </ion-item>
+                    </ion-select>
+                  </ion-item>
 
 
        <div *ngIf="!todo.controls.CourseID.valid && submitAttempt">

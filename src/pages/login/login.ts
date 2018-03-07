@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController,LoadingController } from 'ionic-angular';
 import { AccountKit, AuthResponse } from 'ng2-account-kit';
 import { User } from '../../providers/providers';
 import { MainPage } from '../pages';
@@ -33,7 +33,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController,
     public user: User,
-
+    public loadingCtrl: LoadingController ,
     public toastCtrl: ToastController,
     public translateService: TranslateService) {
 
@@ -63,17 +63,22 @@ export class LoginPage {
         (error: any) => console.error(error)
       );
     }
-  // Attempt to login in through our User service
   doLogin() {
    this.account.password=this.account.username;
+   let loader = this.loadingCtrl.create({
+    content: "Please wait..."
+  });
+  loader.present();
     this.user.login(this.account).subscribe((resp) => {
-
+     
+     
       this.user.sendOtp({"login":this.account.username}).subscribe((res: any) => {
         console.log(res);
         if(res.success){
-
+   loader.dismiss();
         this.navCtrl.setRoot('VlidateOtpPage',{"username":this.account.username,"OtpType":"login"});
         }else{
+          loader.dismiss();
           let toast = this.toastCtrl.create({
             message: this.loginErrorString,
             duration: 3000,
@@ -82,12 +87,14 @@ export class LoginPage {
           toast.present();
         }
        }, err => {
+        loader.dismiss();
          console.error('ERROR', err);
        });
      
     }, (err) => {
       //this.navCtrl.push(MainPage);
       // Unable to log in
+      loader.dismiss();
       let toast = this.toastCtrl.create({
         message: this.loginErrorString,
         duration: 3000,

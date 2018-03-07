@@ -1,7 +1,7 @@
 <ion-header>
 
-  <ion-navbar color='primary'>
-    <ion-title>{{ 'SIGNUP_TITLE' | translate }}</ion-title>
+  <ion-navbar color='bar'>
+    <ion-title>{{ 'signup' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -11,7 +11,7 @@
     <div class="splash-info">
         <div class="splash-logo"></div>
         <div class="splash-intro">
-        Enter Your Phone number To rigster 
+      {{'EYPN'|translate}} 
         </div>    </div>
   <ion-card class="form">
   <form (submit)="doSignup()" >
@@ -38,7 +38,7 @@
 
 
       <div padding>
-        <button ion-button color="primary" block>{{ 'SIGNUP_BUTTON' | translate }}</button>
+        <button ion-button color="primary" block>{{ 'signup' | translate }}</button>
       </div>
 
     </ion-list>

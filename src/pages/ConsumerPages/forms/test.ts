@@ -127,7 +127,7 @@ encrypt(msg : any){
    var dat=this.todo.value;
 
     dat.UUID=uuid.v4();
-  // dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
+   dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
    dat.mbr='1';
@@ -142,12 +142,19 @@ encrypt(msg : any){
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);
-
-  var datas =[
-      {"tital":"Status","desc":data.responseMessage},
-     {"tital":"Balance","desc":data.balance.available}
-   ];
-     let modal = this.modalCtrl.create('BranchesPage', {"data":datas},{ cssClass: 'inset-modal' });
+    var main =[];
+    var mainData={
+      "Balance":data.balance.available
+    }
+    main.push(mainData);
+    var datas;
+    var dat =[];
+    datas ={
+     "Card":data.PAN
+    ,"balance":data.balance.available
+ };
+ dat.push(datas);
+     let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
    modal.present();
     this.todo.reset();
     this.submitAttempt=false;

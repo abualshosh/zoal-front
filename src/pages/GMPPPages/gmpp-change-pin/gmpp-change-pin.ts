@@ -31,9 +31,8 @@ import {Card} from '../../../models/cards';
    public GetServicesProvider : GetServicesProvider;
     constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController,public navCtrl:NavController) {
-      this.storage.get('username').then((val) => {
-      this.consumerIdentifier=val;
-        });
+ 
+        this.consumerIdentifier="249"+localStorage.getItem('username');
 
       //user.printuser();
   this.GetServicesProvider=GetServicesProviderg;
@@ -68,20 +67,20 @@ import {Card} from '../../../models/cards';
      var dat=this.todo.value;
 if (dat.connewPIN== dat.newPIN){
       dat.UUID=uuid.v4();
-     dat.oldPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.oldPIN);
-     dat.newPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.newPIN);
+     dat.oldPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.oldPIN);
+     dat.newPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.newPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
     console.log(dat.IPIN)
      dat.isConsumer='true';
 
-    this.GetServicesProvider.loadGmpp(this.todo.value,'ChangePIN').then(data => {
+    this.GetServicesProvider.load(this.todo.value,'gmpp/changePIN').then(data => {
      this.bal = data;
       console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
-      // this.showAlert(data);
-      this.storage.clear();
-        this.navCtrl.setRoot('LoginPage');
+       this.showAlert(data);
+      //this.storage.clear();
+       // this.navCtrl.setRoot('LoginPage');
 
     }else{
      loader.dismiss();

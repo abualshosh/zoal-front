@@ -31,7 +31,7 @@ submitAttempt: boolean = false;
    public GetServicesProvider : GetServicesProvider;
     constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.consumerIdentifier=localStorage.getItem('username');
+      this.consumerIdentifier="249"+localStorage.getItem('username');
  
   this.GetServicesProvider=GetServicesProviderg;
       this.todo = this.formBuilder.group({
@@ -67,28 +67,42 @@ submitAttempt: boolean = false;
      var dat=this.todo.value;
 
       dat.UUID=uuid.v4();
-     dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
-      dat.ipin=this.GetServicesProvider.encrypt(dat.UUID+dat.ipin);
+     dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
+      dat.ipin=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.ipin);
 dat.consumerIdentifier=this.consumerIdentifier;
     console.log(dat.IPIN)
      dat.isConsumer='true';
  var date = new Date(dat.expDate);
- dat.expDate=date.getFullYear().toString().substring(2,4)+"0"+(date.getMonth()+1);
-    this.GetServicesProvider.loadGmpp(this.todo.value,'transferAccountToWallet').then(data => {
+ var mon=""+(date.getMonth()+1);
+if(mon.length==1){
+    mon="0"+mon;
+}
+ dat.expDate=date.getFullYear().toString().substring(2,4)+mon;
+    this.GetServicesProvider.load(this.todo.value,'gmpp/transferAccountToWallet').then(data => {
      this.bal = data;
       console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);
 
-    var datas =[
-      {"tital":"Status","desc":data.responseMessage},
-      {"tital":"Fee","desc":data.fee},
-      {"tital":"Extarnal Fee","desc":data.externalFee},
-      {"tital":"Transaction Amount","desc":data.transactionAmount}
-     ];
-       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
-     modal.present();
+     var datas ={
+      "destinationIdentifier":data.destinationIdentifier,
+      "fee":data.fee,
+      "Extarnal Fee":data.externalFee
+      ,"transactionAmount":data.transactionAmount
+      ,"totalAmount":data.totalAmount
+      ,"transactionId":data.transactionId
+    };
+    var dat =[];
+    var main =[];
+    var mainData={
+      "TransfareFromCardToWallet":data.totalAmount
+    }
+    dat.push({"WalletNumber":data.consumerIdentifier})
+    main.push(mainData);
+    dat.push(datas);
+      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
+   modal.present();
      this.todo.reset();
     this.submitAttempt=false;
     }else{

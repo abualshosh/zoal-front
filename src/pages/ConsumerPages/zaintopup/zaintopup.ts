@@ -22,24 +22,26 @@ import {Card} from '../../../models/cards';
   templateUrl: 'zaintopup.html',
 })
 export class ZaintopupPage {
-
+  profile:any;
 
   private bal : any;
   private todo : FormGroup;
   public cards:Card[]=[];
   public title:any;
+  showWallet:boolean=true;
+  
 public payee:any[]=[
   {
     PayeeName:"Zain",
-    PayeeId:"0010010001"
+    PayeeId:"Zain Top Up"
   },
   {
     PayeeName:"MTN",
-    PayeeId:"2"
+    PayeeId:"MTN Top Up"
   },
   {
     PayeeName:"Sudani",
-    PayeeId:"3"
+    PayeeId:"Sudani Top Up"
   }
 ];
 submitAttempt: boolean = false;
@@ -47,23 +49,64 @@ submitAttempt: boolean = false;
   ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController, public navParams: NavParams) {
     this.storage.get('cards').then((val) => {
     this.cards=val;
+    if(this.cards.length <= 0){
+      this.todo.controls["mobilewallet"].setValue(true);
+    }
       });
+     
 this.title=this.navParams.get("name");
-
+if(this.title==="billpayment"){
+  this.payee=[
+    {
+      PayeeName:"Zain",
+      PayeeId:"Zain Bill Payment"
+    },
+    {
+      PayeeName:"MTN",
+      PayeeId:"MTN Bill Payment"
+    },
+    {
+      PayeeName:"Sudani",
+      PayeeId:"SUDANI Bill Payment"
+    }
+  ];
+}
     //user.printuser();
 
     this.todo = this.formBuilder.group({
       pan: ['',],
-      Card: ['',Validators.required],
-      payeeId: [''],
+      mobilewallet:['',],
+      Card: ['',],
+      entityId:[''],
+      payeeId: ['',Validators.required],
         IPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])],
         MPHONE: ['',Validators.required],
           Amount: ['',Validators.required],
 
     });
+this.todo.controls["mobilewallet"].setValue(false);
+this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
+
 
   }
+  WalletAvalible(){
 
+    this.profile = JSON.parse(localStorage.getItem("profile"));
+    if(!this.profile.phoneNumber){
+
+   
+      let modal=this.modalCtrl.create('SignupModalPage', {},{ cssClass: 'inset-modals' });
+      modal.present();
+      this.todo.reset();
+ 
+        this.showWallet=false;
+     
+    
+      
+    }
+   
+
+  }
   showAlert(balance : any ) {
    let alert = this.alertCtrl.create({
      title: 'ERROR',
@@ -84,21 +127,31 @@ if(this.todo.valid){
    });
    loader.present();
    var dat=this.todo.value;
-
-    dat.UUID="a7b9cce1-4a07-46f1-8396-90e571c1074f";//uuid.v4();
+    
+    dat.UUID=uuid.v4();
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
-   dat.mbr='1';
+   dat.mbr='0';
    dat.tranAmount=dat.Amount;
-   dat.toCard=dat.ToCard;
-   dat.authenticationType='00';
+
+if(dat.mobilewallet){
+  dat.entityType="Mobile Wallet";
+
+  dat.authenticationType='10';
+  dat.pan="";
+}else{
+  dat.pan=dat.Card.pan;
+  dat.expDate=dat.Card.expDate;
+  dat.authenticationType='00';
+}
+
    dat.fromAccountType='00';
       dat.toAccountType='00';
       dat.paymentInfo="MPHONE="+dat.MPHONE;
+     
+  
 
-   dat.pan=dat.Card.pan;
-   dat.expDate=dat.Card.expDate;
  console.log(dat)
   this.GetServicesProvider.load(dat,'consumer/payment').then(data => {
    this.bal = data;
@@ -106,11 +159,19 @@ if(this.todo.valid){
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);
-
+    var dats=this.todo.value;
  var datas;
+ var dat =[];
+ if(data.PAN){
+  dat.push({"Card":data.PAN})
+}else{
+  dat.push({"WalletNumber":data.entityId})
+}
    if(data.balance){
          datas ={
-    "acqTranFee":data.acqTranFee
+        
+       "PhoneNumber":dats.MPHONE,    
+    "acqTranFee":data.acqTranFee 
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
      ,"tranCurrency":data.tranCurrency
@@ -119,27 +180,42 @@ if(this.todo.valid){
 
    }else{
         datas ={
+          
+          "PhoneNumber":dats.MPHONE,    
     "acqTranFee":data.acqTranFee
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
         ,"tranCurrency":data.tranCurrency
   };
    }
-   var dat =[];
 
-
+   var main =[];
+    var mainData={
+      [this.title]:data.tranAmount
+    }
+    main.push(mainData);
      if(Object.keys(data.billInfo).length>0){
-    dat.push(data.billInfo);}
+    dat.push(data.billInfo);
+  }
+
+ 
       dat.push(datas);
-      let modal = this.modalCtrl.create('BranchesPage', {"data":dat},{ cssClass: 'inset-modal' });
+    
+      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
    modal.present();
    this.todo.reset();
     this.submitAttempt=false;
+    this.todo.controls["mobilewallet"].setValue(false);
+    this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
+
   }else{
    loader.dismiss();
   this.showAlert(data);
 this.todo.reset();
     this.submitAttempt=false;
+    this.todo.controls["mobilewallet"].setValue(false);
+    this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
+
   }
  });
 

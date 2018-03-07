@@ -31,7 +31,7 @@ export class GmppTranToCardPage {
   public GetServicesProvider: GetServicesProvider;
   constructor(private formBuilder: FormBuilder, public loadingCtrl: LoadingController, public GetServicesProviderg: GetServicesProvider, public alertCtrl: AlertController
     , public user: UserProvider, public storage: Storage, public modalCtrl: ModalController) {
-    this.consumerIdentifier = localStorage.getItem('username');
+      this.consumerIdentifier="249"+localStorage.getItem('username');
 
 
     //user.printuser();
@@ -67,6 +67,8 @@ export class GmppTranToCardPage {
 
       dat.UUID = uuid.v4();
       dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
+
       console.log(dat.IPIN)
       dat.isConsumer = 'true';
 
@@ -77,12 +79,24 @@ export class GmppTranToCardPage {
           loader.dismiss();
           // this.showAlert(data);
 
-          var datas = [
-            { "tital": "Status", "desc": data.responseMessage },
-            { "tital": "Fee", "desc": data.fee },
-            { "tital": "transaction Amount", "desc": data.totalAmount }
-          ];
-          let modal = this.modalCtrl.create('ReModelPage', { "data": datas }, { cssClass: 'inset-modal' });
+          var datas ={
+            "destinationIdentifier":data.destinationIdentifier,
+            "fee":data.fee,
+            "Extarnal Fee":data.externalFee
+            ,"transactionAmount":data.transactionAmount
+            ,"totalAmount":data.totalAmount
+            ,"transactionId":data.transactionId
+          };
+          var dat =[];
+          var main =[];
+          var mainData={
+            "TransfarefromWalletToCard":data.totalAmount
+          }
+          dat.push({"WalletNumber":data.consumerIdentifier})
+          main.push(mainData);
+          dat.push(datas);
+            let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
+      
           modal.present();
           this.todo.reset();
           this.submitAttempt = false;

@@ -15,8 +15,10 @@ import { ViewController,IonicPage, NavController, NavParams } from 'ionic-angula
 export class BranchesPage {
   
 public items:any[]=[];
+public main:any[]=[];
   constructor(public viewCtrl: ViewController ,public navCtrl: NavController, public navParams: NavParams) {
    this.items=this.navParams.get('data');
+   this.main=this.navParams.get('main');
 console.log(  this.items); }
 
   ionViewDidLoad() {

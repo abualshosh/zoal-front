@@ -32,9 +32,7 @@ import {Card} from '../../../models/cards';
    public GetServicesProvider : GetServicesProvider;
     constructor(public navCtrl: NavController, private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.storage.get('username').then((val) => {
-      this.consumerIdentifier=val;
-        });
+      this.consumerIdentifier="249"+localStorage.getItem('username');
   this.storage.get('LINKACCOUNT').then((val) => {
   // this.storage.set('LINKACCOUNT','TRUE');
     //      this.storage.set("LINKUUID","539e08e8-3aa2-4ad9-8529-e5d5211203b8");
@@ -93,13 +91,13 @@ this.storage.set("primaryAccountNumber",null);
      var dat=this.todo.value;
 
       dat.UUID=uuid.v4();
-     dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
+     dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
 
     console.log(dat.IPIN)
      dat.isConsumer='true';
 
-    this.GetServicesProvider.loadGmpp(this.todo.value,'LinkAccount').then(data => {
+    this.GetServicesProvider.load(this.todo.value,'gmpp/linkAccount').then(data => {
      this.bal = data;
       console.log(data)
       if(data != null && data.responseCode==930){
@@ -117,8 +115,8 @@ dat.consumerIdentifier=this.consumerIdentifier;
        let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
   //   modal.present();
 
-this.showAlert(data);
-this.navCtrl.setRoot(this.navCtrl.getActive().component);
+//this.showAlert(data);
+this.navCtrl.push(this.navCtrl.getActive().component);
     }else{
      loader.dismiss();
     if(data.responseCode!=null){
@@ -150,14 +148,14 @@ this.navCtrl.setRoot(this.navCtrl.getActive().component);
              dat.primaryAccountNumber=val;
               
           dat.UUID=uuid.v4();
-           dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
-           dat.consumerOTP=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerOTP);
+           dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
+           dat.consumerOTP=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerOTP);
       dat.consumerIdentifier=this.consumerIdentifier;
-console.log(dat.originalTranUUID)
+console.log(this.complate.value)
           console.log(dat.IPIN)
         
 
-          this.GetServicesProvider.loadGmpp(this.complate.value,'ComplatelinkAccount').then(data => {
+          this.GetServicesProvider.load(this.complate.value,'gmpp/completeLinkAccount').then(data => {
            this.bal = data;
             console.log(data)
             if(data != null && data.responseCode==1){

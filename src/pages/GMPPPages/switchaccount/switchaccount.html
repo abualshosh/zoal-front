@@ -5,11 +5,11 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar color="secondary">
+  <ion-navbar color="bar">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>{{'transnumber' |translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -25,7 +25,7 @@
     
 
 <ion-item>
-  <ion-label stacked>PIN</ion-label>
+  <ion-label stacked>{{'PIN'|translate}}</ion-label>
   <ion-input  class="mask-text"  type="number" formControlName="consumerPIN" required></ion-input>
 </ion-item>
 
@@ -41,7 +41,7 @@
 
 
       <ion-item>
-        <ion-label stacked>OTP (SENT IN SMS)</ion-label>
+        <ion-label stacked>{{'OTP'|translate}}</ion-label>
         <ion-input  class="mask-text"  type="number" formControlName="consumerOTP" required>
         </ion-input>
       </ion-item>
@@ -52,7 +52,7 @@
 </ion-list>
 
 <button class="subbutn" ion-button type="submit" color="secondary">{{'Submit'|translate}}</button>
-<button class="subbutn" ion-button type="submit" (click)="Cancle()" color="danger">{{'Cancle Link Account'|translate}}</button>
+<button class="subbutn" ion-button type="submit" (click)="Cancle()" color="danger">{{'CancleLinkAccount'|translate}}</button>
 
   </form>
 </div>

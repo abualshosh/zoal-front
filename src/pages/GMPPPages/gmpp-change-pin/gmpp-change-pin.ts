@@ -78,10 +78,12 @@ dat.consumerIdentifier=this.consumerIdentifier;
       console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
-       this.showAlert(data);
-      //this.storage.clear();
-       // this.navCtrl.setRoot('LoginPage');
-
+       var datas =[
+        {"tital":"Status","desc":data.responseMessage}
+       ];
+         let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
+       modal.present();
+     
     }else{
      loader.dismiss();
     if(data.responseCode!=null){

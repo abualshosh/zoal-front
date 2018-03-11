@@ -127,7 +127,7 @@ this.uploadContacts();
   connectWs(token:any,FcmToken:any) {
     //configuration
     this.stomp.configure({
-      host:'http://'+this.api.urlip+'/websocket/tracker?access_token='+token+'&FcmToken='+localStorage.getItem('FCMToken'),
+      host:'https://'+this.api.urlip+'/websocket/tracker?access_token='+token+'&FcmToken='+localStorage.getItem('FCMToken'),
       headers:{
         Authorization: `Bearer ${token}`,
         FcmToken: localStorage.getItem('FCMToken')

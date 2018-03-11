@@ -68,7 +68,7 @@ export class SignupModalPage {
 
   dismiss() {
     this.profile = JSON.parse(localStorage.getItem("profile"));
-   // this.profile.phoneNumber=null;//"249"+localStorage.getItem('username');
+  //  this.profile.phoneNumber=null;//"249"+localStorage.getItem('username');
     localStorage.setItem("profile",JSON.stringify(this.profile));
     this.viewCtrl.dismiss();
   }

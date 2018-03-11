@@ -80,6 +80,7 @@ export class SlideFreeModePage {
     let modal=this.modalCtrl.create('SignupModalPage', {},{ cssClass: 'inset-modals' });
     modal.present();
   }else{
+    
     this.open(page,name);
   }
   }

@@ -32,15 +32,7 @@ import {Card} from '../../../models/cards';
    public GetServicesProvider : GetServicesProvider;
     constructor(public navCtrl: NavController, private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.consumerIdentifier="249"+localStorage.getItem('username');
-  this.storage.get('LINKACCOUNT').then((val) => {
-  // this.storage.set('LINKACCOUNT','TRUE');
-    //      this.storage.set("LINKUUID","539e08e8-3aa2-4ad9-8529-e5d5211203b8");
-      // this.storage.set("primaryAccountNumber","9222060108520070");
-       if (val != null){
-       this.compleate=val;
-       }
-    });
+    
       //user.printuser();
     //  this.compleate='TRUE';
       console.log(this.compleate);
@@ -54,14 +46,24 @@ import {Card} from '../../../models/cards';
 
       this.complate = this.formBuilder.group({
 
-           primaryAccountNumber: ['',Validators.required],
-  consumerOTP: ['',Validators.required],
-          consumerPIN: ['',Validators.required]
+        
+  consumerOTP: ['',Validators.required]
+
 
       });
 
     }
+    ionViewDidLoad(){
+      this.consumerIdentifier="249"+localStorage.getItem('username');
 
+    this.storage.get('LINKACCOUNT').then((val) => {
+      // this.storage.set('LINKACCOUNT','TRUE');
+        //      this.storage.set("LINKUUID","539e08e8-3aa2-4ad9-8529-e5d5211203b8");
+          // this.storage.set("primaryAccountNumber","9222060108520070");
+           if (val != null){
+           this.compleate=val;
+           }
+        });}
     showAlert(balance : any ) {
      let alert = this.alertCtrl.create({
        title: 'Error!',
@@ -108,15 +110,17 @@ dat.consumerIdentifier=this.consumerIdentifier;
        loader.dismiss();
       // this.showAlert(data);
 
-    var datas =[
-      {"tital":"Status","desc":data.responseMessage},
-       {"tital":"SMS","desc":"An SMS will be sent shortly"},
-           ];
-       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
-  //   modal.present();
+     // this.ionViewDidLoad();
+      this.compleate="TRUE";
+//     var datas =[
+//       {"tital":"Status","desc":data.responseMessage},
+//        {"tital":"SMS","desc":"An SMS will be sent shortly"},
+//            ];
+//        let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
+//   //   modal.present();
 
-//this.showAlert(data);
-this.navCtrl.push(this.navCtrl.getActive().component);
+// //this.showAlert(data);
+// this.navCtrl.push(this.navCtrl.getActive().component);
     }else{
      loader.dismiss();
     if(data.responseCode!=null){
@@ -158,7 +162,7 @@ console.log(this.complate.value)
           this.GetServicesProvider.load(this.complate.value,'gmpp/completeLinkAccount').then(data => {
            this.bal = data;
             console.log(data)
-            if(data != null && data.responseCode==1){
+            if(data != null && data.responseCode==935){
 
              loader.dismiss();
             // this.showAlert(data);
@@ -166,9 +170,10 @@ console.log(this.complate.value)
           var datas =[
             {"tital":"Status","desc":data.responseMessage}
                          ];
-             let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
+             let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
            modal.present();
            this.Cancle();
+           this.navCtrl.pop();
           }else{
            loader.dismiss();
           if(data.responseCode!=null){

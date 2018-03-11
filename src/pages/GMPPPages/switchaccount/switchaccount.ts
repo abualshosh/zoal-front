@@ -34,34 +34,36 @@ import { Api } from '../../../providers/providers';
     constructor(public api:Api,public navCtrl: NavController, private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
  
-      this.consumerIdentifier="249"+localStorage.getItem('username');
-      this.storage.set('Switchaccount','TRUE');
-      this.storage.set("SwitchaccountUUID","ea906944-e074-4d90-b104-fd8985f8cddb");
-  this.storage.get('Switchaccount').then((val) => {
-if(val != null){
-  
-  this.compleate="TRUE";
-}
-    });
-      //user.printuser();
-    //  this.compleate='TRUE';
-      console.log(this.compleate);
-  this.GetServicesProvider=GetServicesProviderg;
+      this.GetServicesProvider=GetServicesProviderg;
       this.todo = this.formBuilder.group({
 
-          
-          consumerPIN: ['',Validators.required]
-
-      });
-
-      this.complate = this.formBuilder.group({
-
+      
+        consumerPIN: ['',Validators.required]
+  
+    });
+  
+    this.complate = this.formBuilder.group({
+  
   consumerOTP: ['',Validators.required]
-
-      });
-
+  
+    });
     }
+    ionViewDidLoad(){
+  this.consumerIdentifier="249"+localStorage.getItem('username');
+  this.storage.set('Switchaccount','TRUE');
+  this.storage.set("SwitchaccountUUID","ea906944-e074-4d90-b104-fd8985f8cddb");
+this.storage.get('Switchaccount').then((val) => {
+if(val != null){
 
+this.compleate="TRUE";
+}
+});
+  //user.printuser();
+//  this.compleate='TRUE';
+  console.log(this.compleate);
+
+  
+}
     showAlert(balance : any ) {
      let alert = this.alertCtrl.create({
        title: 'Error!',
@@ -99,7 +101,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
     this.GetServicesProvider.load(this.todo.value,'gmpp/switchCustomer').then(data => {
      this.bal = data;
       console.log(data)
-      if(data != null && data.responseCode==930){
+      if(data != null && data.responseCode==911){
 
           this.storage.set('Switchaccount','TRUE');
           this.storage.set("SwitchaccountUUID",dat.UUID);
@@ -107,15 +109,15 @@ dat.consumerIdentifier=this.consumerIdentifier;
        loader.dismiss();
       // this.showAlert(data);
 
-    var datas =[
-      {"tital":"Status","desc":data.responseMessage},
-       {"tital":"SMS","desc":"An SMS will be sent shortly"},
-           ];
-       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
-  //   modal.present();
+//     var datas =[
+//       {"tital":"Status","desc":data.responseMessage},
+//        {"tital":"SMS","desc":"An SMS will be sent shortly"},
+//            ];
+//        let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
+//   //   modal.present();
 
-this.showAlert(data);
-this.navCtrl.push(this.navCtrl.getActive().component);
+// this.showAlert(data);
+this.ionViewDidLoad();
     }else{
      loader.dismiss();
     if(data.responseCode!=null){
@@ -151,7 +153,7 @@ this.navCtrl.push(this.navCtrl.getActive().component);
         this.GetServicesProvider.load(this.complate.value,'gmpp/completeSwitchCustomer').then(data => {
          this.bal = data;
           console.log(data)
-          if(data != null && data.responseCode==936){
+          if(data != null && data.responseCode==906){
              let profile = JSON.parse(localStorage.getItem("profile"));
              profile.phoneNumber=this.consumerIdentifier;
             this.api.put("/profiles", profile).subscribe((res: any) => {
@@ -161,13 +163,13 @@ this.navCtrl.push(this.navCtrl.getActive().component);
            loader.dismiss();
           // this.showAlert(data);
 
-        // var datas =[
-        //   {"tital":"Status","desc":data.responseMessage}
-        //                ];
-        //    let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
-        //  modal.present();
+        var datas =[
+          {"tital":"Status","desc":data.responseMessage}
+                       ];
+           let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
+         modal.present();
          this.Cancle();
-
+         this.navCtrl.pop();
         }, err => {
           console.log(err);
         });

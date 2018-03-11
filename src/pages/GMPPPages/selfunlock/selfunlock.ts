@@ -81,7 +81,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
     var datas =[
       {"tital":"Status","desc":data.responseMessage}
      ];
-       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modal' });
+       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
      modal.present();
      this.todo.reset();
    // this.submitAttempt=false;

@@ -238,4 +238,10 @@
     ,"ChoseImage":"اختيار صورة"
     ,"camera":"الكاميرا"
     ,"gallery":"معرض الصور"
+    ,"Approved":"نجاح"
+    ,"Close":"اغلاق"
+    ,"Linkacconut":"ربط البطاقة المصرفية"
+    ,"OTP":"رمز التاكيد (SMS)"
+    ,"CancleLinkAccount":"الغاء ربط البطاقة"
+    ,"transnumber":"تحويل مشغل الخدمة"
 }

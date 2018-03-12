@@ -91,7 +91,13 @@ if(mon.length==1){
     var i:any;
     for(i = 0; i < val.length; i++) {
  if(val[i].pan === dat.PAN){
-     val[i].expDate=date.getFullYear().toString().substring(2,4)+mon;
+  var card=this.navParams.get('card');
+  if(card){
+    val[i].expDate=card.expDate;
+  }else{
+    val[i].expDate=date.getFullYear().toString().substring(2,4)+mon;
+  }
+    
  this.edit=true;
      this.cards=val;
  }

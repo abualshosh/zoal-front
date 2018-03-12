@@ -14,7 +14,7 @@ export class SlideFreeModePage {
   createdCode = null;
   Paymentpages: any[] = [
     { title: 'TOPUP', component: 'ZaintopupPage' , icon:'phone-portrait' , var:"TOPUP"},
-    { title: 'billpayment', component: 'ZaintopupPage' , icon:'phone-landscape' , var:"bill"},
+    { title: 'billpayment', component: 'ZaintopupPage' , icon:'phone-landscape' , var:"billpayment"},
     { title: 'NEC', component: 'ServicesPage' , icon:'flash' , var:""},
     { title: 'Custom Service', component: 'CustomesPage' , icon:'briefcase' , var:""},
     { title: 'E15', component: 'E15Page' , icon:'document' , var:""},

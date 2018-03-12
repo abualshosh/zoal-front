@@ -13,7 +13,7 @@ import {Card} from '../../../models/cards';
          selector: 'page-forms',
   template: `
   <ion-header>
-    <ion-navbar color="secondary">
+    <ion-navbar color="bar">
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>

@@ -49,7 +49,10 @@ submitAttempt: boolean = false;
   ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController, public navParams: NavParams) {
     this.storage.get('cards').then((val) => {
     this.cards=val;
+    if(this.cards){
     if(this.cards.length <= 0){
+      this.todo.controls["mobilewallet"].setValue(true);
+    }}else{
       this.todo.controls["mobilewallet"].setValue(true);
     }
       });
@@ -103,6 +106,16 @@ this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
      
     
       
+    }else  if(this.cards){
+      if(this.cards.length <= 0){
+        this.showWallet=true;
+        let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });
+        modal.present();
+      }}else{
+        this.showWallet=true;
+      
+        let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });
+        modal.present();
     }
    
 

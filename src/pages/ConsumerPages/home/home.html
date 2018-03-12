@@ -16,7 +16,7 @@
   <div color="bar" class="item-profile" text-center #profilePic >
       <ngx-qrcode *ngIf="selectedCard.pan" [qrc-value]="selectedCard.pan"></ngx-qrcode>
  <ion-fab bottom right edge >
-  <button ion-fab color="fabs" (click)=Scan()><ion-icon name="build"></ion-icon></button>
+  <button ion-fab color="fabs" (click)=editCard()><ion-icon name="build"></ion-icon></button>
 </ion-fab>
 
   </div>
@@ -24,13 +24,13 @@
 
 <ion-list class="conset">
   <ion-item>
-  <p>PAN</p>
+  <p>{{'CardPAN'|translate}}</p>
   <ion-note item-end>
   {{selectedCard.pan}}
   </ion-note>
   </ion-item>
   <ion-item>
-  <p>EXP Date</p>
+  <p>{{'ExpDate' | translate}}</p>
   <ion-note item-end>
   {{selectedCard.expDate}}
   </ion-note>

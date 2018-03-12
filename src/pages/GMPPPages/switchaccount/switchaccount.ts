@@ -101,7 +101,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
     this.GetServicesProvider.load(this.todo.value,'gmpp/switchCustomer').then(data => {
      this.bal = data;
       console.log(data)
-      if(data != null && data.responseCode==911){
+      if(data != null && data.responseCode==930){
 
           this.storage.set('Switchaccount','TRUE');
           this.storage.set("SwitchaccountUUID",dat.UUID);
@@ -153,7 +153,7 @@ this.ionViewDidLoad();
         this.GetServicesProvider.load(this.complate.value,'gmpp/completeSwitchCustomer').then(data => {
          this.bal = data;
           console.log(data)
-          if(data != null && data.responseCode==906){
+          if(data != null && data.responseCode==1){
              let profile = JSON.parse(localStorage.getItem("profile"));
              profile.phoneNumber=this.consumerIdentifier;
             this.api.put("/profiles", profile).subscribe((res: any) => {

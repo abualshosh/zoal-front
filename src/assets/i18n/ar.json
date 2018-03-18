@@ -247,7 +247,6 @@
     ,"tranCurrency":"العملة"
     ,"date":"التاريخ"
     ,"tan":"رقم المصادقة"
-<<<<<<< HEAD
     ,"SEARCH_PLACEHOLDER":"بحث"
     ,"UserSettings":"اعدادات المستخدم"
     ,"General":"عام"
@@ -296,7 +295,5 @@
     ,"":""
     ,"":""
     
-=======
->>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
     ,"BACK_BUTTON_TEXT":"رجوع"
 }

@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-searchbar (ionInput)="getItems($event)" placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"></ion-searchbar>
-<button ion-button block (click)='uploadContacts()'>Import Contacts</button>
+<button ion-button block (click)='uploadContacts()'>{{'ImportContacts' | translate }}</button>
   <ion-list>
      <ion-item  *ngFor="let item of currentItems">
          <ion-avatar item-start>
@@ -29,7 +29,7 @@
 <h2>{{item.profileTow.userName}}</h2>
 <p>{{item.profileTow.fullName}}</p>
 </div> -->
-<button ion-button  (click)="openItem(item)" clear item-end>Send</button>
+<button ion-button  (click)="openItem(item)" clear item-end>{{'Send' | translate}}</button>
 
       <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
     </ion-item>

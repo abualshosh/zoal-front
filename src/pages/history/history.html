@@ -7,7 +7,7 @@
 <ion-header >
   
     <ion-navbar  color='bar'>
-    <ion-title>history</ion-title>
+    <ion-title>{{'History' | translate}}</ion-title>
   
     
   <ion-buttons end>
@@ -51,9 +51,9 @@
   <ion-list   >
 
       <button  ion-item *ngFor="let hist of history" (click)="itemSelected(hist)">
-         {{hist.transactionType}}
+         {{hist.transactionType | translate}}
           <ion-note >
-              <h6> {{hist.transactionDate}}</h6>
+              <h6> {{hist.transactionDate | translate }}</h6>
             </ion-note>
               <ion-icon item-end name="checkmark-circle" color="green"  *ngIf="hist.status === 'Approved'"></ion-icon>
               <ion-icon item-end name="remove-circle" color="danger" *ngIf="hist.status !== 'Approved'"></ion-icon> 

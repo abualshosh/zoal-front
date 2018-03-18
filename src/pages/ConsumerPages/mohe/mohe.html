@@ -9,15 +9,38 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-       <ion-title>{{this.title | translate}}</ion-title>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+       <ion-title>{{'HighEdu' | translate}}</ion-title>
   </ion-navbar>
   <ion-segment color='dark' [(ngModel)]="type"   class="">
     
        <ion-segment-button value="mohe" class="">
+      {{'Sudanes' | translate }}
+=======
+       <ion-title>{{'Higher Education' | translate}}</ion-title>
+  </ion-navbar>
+  <ion-segment color='dark' [(ngModel)]="type"   class="">
+    
+=======
+       <ion-title>{{'Higher Education' | translate}}</ion-title>
+  </ion-navbar>
+  <ion-segment color='dark' [(ngModel)]="type"   class="">
+    
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
+=======
+       <ion-title>{{'Higher Education' | translate}}</ion-title>
+  </ion-navbar>
+  <ion-segment color='dark' [(ngModel)]="type"   class="">
+    
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
+       <ion-segment-button value="mohe" color="bar"class="">
       Sudanes
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
        </ion-segment-button>
        <ion-segment-button value="moheArab" class="">
-        Arab
+       {{'Arab' | translate}} 
        </ion-segment-button>
     
      </ion-segment>
@@ -84,7 +107,7 @@
         </div>
         <div *ngSwitchCase="'moheArab'">
   <div *ngIf="!todo.controls.STUCNAME.valid && submitAttempt ">
-                            <p>{{'validCARDNAMEError'| translate}}</p>
+                            <p>{{'validSTUCNAMEError'| translate}}</p>
                         </div>
           <ion-item >
                 <ion-label stacked >{{'STUCNAME'|translate}}</ion-label >
@@ -97,7 +120,8 @@
                     <ion-label stacked >{{'STUCPHONE'|translate}}</ion-label >
                     <ion-input type="number" formControlName="STUCPHONE" ></ion-input>
                   </ion-item>
-                </div> </div>
+                </div>
+               </div>
           <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
                                 <p>{{'validamountError'| translate}}</p>
                             </div>
@@ -116,7 +140,19 @@
 
 </ion-list>
 
-<button ion-button class="subbutn"  type="submit" color="secondary">Submit</button>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<button ion-button class="subbutn"  type="submit" color="secondary">{{'Submit' | translate}}</button>
+=======
+<button ion-button class="subbutn"  type="submit" color="secondary">{{'Submit'| translate}}</button>
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
+=======
+<button ion-button class="subbutn"  type="submit" color="secondary">{{'Submit'| translate}}</button>
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
+=======
+<button ion-button class="subbutn"  type="submit" color="secondary">{{'Submit'| translate}}</button>
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
   </form>
 </div>
   </ion-content>

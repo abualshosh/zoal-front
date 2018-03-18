@@ -89,6 +89,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
      "WalletNumber":data.consumerIdentifier
     ,"available Balance":data.availableBalance
     ,"reserved Balance":data.reservedBalance
+    ,"transactionId":data.transactionId
  };
  dat.push(datas);
      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });

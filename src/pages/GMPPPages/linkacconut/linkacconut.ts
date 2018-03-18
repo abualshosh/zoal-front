@@ -152,7 +152,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
              dat.primaryAccountNumber=val;
               
           dat.UUID=uuid.v4();
-           dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
+          // dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
            dat.consumerOTP=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerOTP);
       dat.consumerIdentifier=this.consumerIdentifier;
 console.log(this.complate.value)
@@ -162,16 +162,17 @@ console.log(this.complate.value)
           this.GetServicesProvider.load(this.complate.value,'gmpp/completeLinkAccount').then(data => {
            this.bal = data;
             console.log(data)
-            if(data != null && data.responseCode==935){
+            if(data != null && data.responseCode==1){
 
              loader.dismiss();
             // this.showAlert(data);
 
-          var datas =[
-            {"tital":"Status","desc":data.responseMessage}
-                         ];
-             let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
-           modal.present();
+            var datas =[
+              {"tital":"Status","desc":data.responseMessage}
+             ];
+               let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
+             modal.present();
+           
            this.Cancle();
            this.navCtrl.pop();
           }else{

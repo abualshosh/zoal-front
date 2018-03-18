@@ -21,13 +21,18 @@
   <form [formGroup]="todo" (ngSubmit)="logForm()" *ngSwitchCase="'FALSE'" >
   <ion-list>
 
-
+      <div *ngIf="!todo.controls.primaryAccountNumber.valid && submitAttempt">
+          <p>{{'validconsumerPINError'| translate}}</p>
+    </div>
     <ion-item>
       <ion-label stacked>{{'Card' | translate}}</ion-label>
       <ion-input type="text" formControlName="primaryAccountNumber" required>
       </ion-input>
     </ion-item>
 
+    <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
+        <p>{{'validconsumerPINError'| translate}}</p>
+  </div>
 <ion-item>
   <ion-label stacked>{{'PIN' | translate}}</ion-label>
   <ion-input  class="mask-text"  type="number" formControlName="consumerPIN" required></ion-input>

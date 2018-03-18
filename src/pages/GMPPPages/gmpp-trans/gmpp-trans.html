@@ -22,12 +22,14 @@
 <div class="con">
   <form [formGroup]="todo" (ngSubmit)="logForm()" >
   <ion-list>
+      <div *ngIf="!todo.controls.destinationIdentifier.valid && submitAttempt" item-end>
+          <p>{{'validvoucherNumberError'| translate}}</p>
+          </div>
     <ion-item>
-      <ion-label stacked> {{'destinationIdentifier' | translate}} 
-        <p  *ngIf="!todo.controls.destinationIdentifier.valid && submitAttempt" item-end>{{'validvoucherNumberError'| translate}}</p>
-          </ion-label>
-      <ion-input type="number" formControlName="destinationIdentifier" required></ion-input>
+      <ion-label stacked> {{'destinationIdentifier' | translate}} </ion-label>
+      <ion-input type="number" formControlName="destinationIdentifier" required></ion-input>   
     </ion-item>
+    
     <div *ngIf="!todo.controls.transactionAmount.valid && submitAttempt">
                   <p>{{'validamountError'| translate}}</p>
               </div>

@@ -56,7 +56,7 @@ export class MohePage {
       this.cards=val;
         });
 
-this.title=this.navParams.get("name");
+//this.title=this.navParams.get("name");
       //user.printuser();
 
          this.todo = this.formBuilder.group({
@@ -67,9 +67,9 @@ this.title=this.navParams.get("name");
         CourseID: ['',Validators.required],
         FormKind: ['',Validators.required],
           IPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])],
-          SETNUMBER: [''],
-          STUCNAME: [''],
-          STUCPHONE: [''],
+          SETNUMBER: ['',Validators.required],
+          STUCNAME: ['',Validators.required],
+          STUCPHONE: ['',Validators.required],
             Amount: ['',Validators.required],
             mobilewallet :[''],
       });

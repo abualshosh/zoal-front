@@ -20,7 +20,9 @@
   <ion-list>
 
 
-
+      <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
+          <p>{{'validconsumerPINError'| translate}}</p>
+      </div>
 
 <ion-item>
   <ion-label stacked> {{'PIN'|translate}}</ion-label>

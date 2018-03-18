@@ -32,10 +32,17 @@
   <ion-input  class="mask-text"  type="number" formControlName="oldPIN" required></ion-input>
 </ion-item>
 
+<div *ngIf="!todo.controls.newPIN.valid && submitAttempt">
+    <p>{{'validnewPINError'| translate}}</p>
+</div>
 <ion-item>
   <ion-label stacked>{{'NEWPIN' | translate}}</ion-label>
   <ion-input  class="mask-text"  type="number" formControlName="newPIN" required></ion-input>
 </ion-item>
+
+<div *ngIf="!todo.controls.connewPIN.valid && submitAttempt">
+    <p>{{'validconnewPINError'| translate}}</p>
+</div>
 <ion-item>
   <ion-label stacked>{{'CONNEWPIN' | translate}}</ion-label>
   <ion-input  class="mask-text"  type="number" formControlName="connewPIN" required></ion-input>

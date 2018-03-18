@@ -35,7 +35,19 @@ submitAttempt: boolean = false;
     this.storage.get('cards').then((val) => {
     this.cards=val;
       });
-this.title=this.navParams.get("name");
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+//this.title=this.navParams.get("name");
+=======
+this.title='Custom Service';
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
+=======
+this.title='Custom Service';
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
+=======
+this.title='Custom Service';
+>>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
 
     //user.printuser();
 

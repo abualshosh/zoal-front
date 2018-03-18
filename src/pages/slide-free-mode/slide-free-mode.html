@@ -14,8 +14,8 @@
     </ion-item>
     <ion-scroll scrollX style="height:70px ;  " no-lines>
         <section>
-            <ion-col *ngFor="let page of Paymentpages">
-                <button (click)="openPayment(page.component,page.var)" class="buts" ion-button block color="primary">
+            <ion-col  *ngFor="let page of Paymentpages">
+                <button  (click)="openPayment(page.component,page.var)" class="buts" ion-button block color="primary">
                     <div>
                         <ion-icon name={{page.icon}}></ion-icon>
                         <br>

@@ -28,7 +28,7 @@ export class ZaintopupPage {
   private todo : FormGroup;
   public cards:Card[]=[];
   public title:any;
-  showWallet:boolean=true;
+  showWallet:boolean=false;
   
 public payee:any[]=[
   {
@@ -51,8 +51,10 @@ submitAttempt: boolean = false;
     this.cards=val;
     if(this.cards){
     if(this.cards.length <= 0){
+      this.showWallet=true;
       this.todo.controls["mobilewallet"].setValue(true);
     }}else{
+      this.showWallet=true;
       this.todo.controls["mobilewallet"].setValue(true);
     }
       });
@@ -92,7 +94,7 @@ this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
 
 
   }
-  WalletAvalible(){
+  WalletAvalible(event){
 
     this.profile = JSON.parse(localStorage.getItem("profile"));
     if(!this.profile.phoneNumber){
@@ -102,16 +104,18 @@ this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
       modal.present();
       this.todo.reset();
  
-        this.showWallet=false;
+        this.showWallet=true;
      
     
       
     }else  if(this.cards){
       if(this.cards.length <= 0){
+  
         this.showWallet=true;
         let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });
         modal.present();
       }}else{
+     
         this.showWallet=true;
       
         let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });

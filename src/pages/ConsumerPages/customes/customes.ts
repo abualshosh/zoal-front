@@ -35,7 +35,7 @@ submitAttempt: boolean = false;
     this.storage.get('cards').then((val) => {
     this.cards=val;
       });
-this.title=this.navParams.get("name");
+this.title='Custom Service';
 
     //user.printuser();
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, IonicPage,AlertController ,NavController} from 'ionic-angular';
+import { ViewController, IonicPage,AlertController ,NavController,LoadingController} from 'ionic-angular';
 import { GetServicesProvider } from '../../../providers/get-services/get-services';
 import * as uuid from 'uuid';
 import { Api } from '../../../providers/providers';
@@ -25,7 +25,10 @@ export class SignupModalPage {
     },
   ];
 
-  constructor(public api:Api,public navCtrl: NavController, public alertCtrl: AlertController,public viewCtrl: ViewController,public GetServicesProvider:GetServicesProvider) {
+  constructor
+  (
+    public loadingCtrl: LoadingController ,
+    public api:Api,public navCtrl: NavController, public alertCtrl: AlertController,public viewCtrl: ViewController,public GetServicesProvider:GetServicesProvider) {
   }
 
   showAlert(balance : any ) {
@@ -43,17 +46,20 @@ export class SignupModalPage {
       UUID:uuid.v4(),
       consumerIdentifier: "249"+localStorage.getItem('username')
     };
-   
+    let loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    loader.present();
     
     this.GetServicesProvider.load(dat,'gmpp/registerConsumer').then(data => {
-      
+      loader.dismiss();
       this.showAlert(data);
       if (data.responseCode==1){
       this.profile = JSON.parse(localStorage.getItem("profile"));
       this.profile.phoneNumber="249"+localStorage.getItem('username');
       this.api.put("/profiles", this.profile).subscribe((res: any) => {
-        console.log(res);
-        
+        localStorage.setItem("profile",JSON.stringify(this.profile));
+        console.log(localStorage.getItem("profile"))
       }, err => {
         console.log(err);
       });

@@ -9,11 +9,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-       <ion-title>{{this.title | translate}}</ion-title>
+       <ion-title>{{'Higher Education' | translate}}</ion-title>
   </ion-navbar>
   <ion-segment color='dark' [(ngModel)]="type"   class="">
     
-       <ion-segment-button value="mohe" class="">
+       <ion-segment-button value="mohe" color="bar"class="">
       Sudanes
        </ion-segment-button>
        <ion-segment-button value="moheArab" class="">
@@ -116,7 +116,7 @@
 
 </ion-list>
 
-<button ion-button class="subbutn"  type="submit" color="secondary">Submit</button>
+<button ion-button class="subbutn"  type="submit" color="secondary">{{'Submit'| translate}}</button>
   </form>
 </div>
   </ion-content>

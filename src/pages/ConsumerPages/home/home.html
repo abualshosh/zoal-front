@@ -16,7 +16,7 @@
   <div color="bar" class="item-profile" text-center #profilePic >
       <ngx-qrcode *ngIf="selectedCard.pan" [qrc-value]="selectedCard.pan"></ngx-qrcode>
  <ion-fab bottom right edge >
-  <button ion-fab color="fabs" (click)=editCard()><ion-icon name="build"></ion-icon></button>
+  <button ion-fab color="bar" (click)=editCard()><ion-icon name="build"></ion-icon></button>
 </ion-fab>
 
   </div>

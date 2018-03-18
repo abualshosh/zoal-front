@@ -77,7 +77,7 @@ public URL:string="http://localhost:8080/api";
  encryptGmpp(msg : any){
   var encrypt = new JSEncrypt.JSEncrypt();
   
-  encrypt.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjqmUrQ1w1rOH+kmj4dk3C3duIl1trVRr91EJKhphlWjOs2qqba9I2WmRH3CVUuBmkIEojYrnKtXiQBqMOTANzZuly6vZY3AOT/JVDtKy3/z60mUWUi+ILidh5dZz7ZYKsPupXRz5XQXELLpI4XN58N1oiNY95GutJ/hjqE0qqufQ1ie/hU5Dbof9F+Ug3wSJOzba+IVve09Yx76KsFBtc+0qn2/JI7YPca9s8h4ZKaVo7qvFZNScTieoR5f3vaKUsYNTdRK7HMXEU/BMrg8hzh04+ShtDtKtQ02pvObQ+Kha/oV54bdP5e6m9NpXupoL0ydQIDNZ6B76yVEe5WJM2wIDAQAB");
+  encrypt.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyS1iEM5bAzjTPHDMaAxhZd5IKMXfHT6kYfzVghWYwe2ZI2ERa0u26AG7xTteZUof4d985R4lkfinBaPmlXoTIWACTENwz940U/4vYRovBBAlXroNGKg8AmezZurn4Mui3uzkVmd+r1FRqUQN0qaPpoB89BSrINEo+i2guXsy1foPTmiNXwrzUX7019yrGBsOfZM8k1OwvP+lLtrXGNPu9YXrptSvdReZ5JdKDDHE9MapAkaMQrUe4i5kfHV8GOrG4WgfO7Ef2kiuNJqEWF1L/zUNdD3XaqDIDWukJ7KPvbS5HCMASbIMpodb2HkDGqZVpknBDka7Nr6+AG1GrM1g+wIDAQAB");
   
   var encrypted = encrypt.encrypt(msg);	
 

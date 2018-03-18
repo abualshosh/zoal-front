@@ -96,10 +96,10 @@ export class HistoryPage {
         datas ={
           "destinationIdentifier":data.destinationIdentifier,
           "toCard":data.toCard,
-          "tan":data.tan,
-          "fee":data.fee
-          ,"transactionAmount":data.transactionAmount
-          ,"totalAmount":data.totalAmount
+      "tan":data.tan,
+      "fee":data.fee
+    ,"transactionAmount":data.transactionAmount
+    ,"totalAmount":data.totalAmount
     ,"acqTranFee":data.acqTranFee
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
@@ -129,7 +129,9 @@ var main =[];
 var mainData={};
 
 mainData[input.transactionType] = (data.totalAmount ? data.totalAmount : data.tranAmount); 
-
+if(!mainData[input.transactionType]){
+  mainData[input.transactionType] = data.transactionAmount;
+}
 main.push(mainData);
  dat.push(voucher);
       dat.push(datas);

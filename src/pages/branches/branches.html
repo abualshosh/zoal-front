@@ -23,19 +23,19 @@
 <ion-content no-padding >
 <div>
    
-    <ion-item color="primary" no-lines style="text-align: center;" >
+    <ion-item color="bar" no-lines style="text-align: center;" >
      
       <ion-grid  *ngFor="let item of main | keys" >
         <ion-row  *ngFor="let itm of item.value | keys">
            
-            <ion-item class="no-padding" color="primary" style="text-align: center;">
+            <ion-item class="no-padding" color="bar" style="text-align: center;">
                 {{itm.key | translate }} 
               <ion-col text-wrap style="font-size: 30px; ">
                         <br>
                      {{itm.value}} SDG              
                         </ion-col>
                         <br>
-                        <ion-icon color="light" name="checkmark-circle" style="zoom:3.0;"></ion-icon>
+                        <ion-icon color="green" name="checkmark-circle" style="zoom:3.0;"></ion-icon>
                       </ion-item>
           </ion-row>
         </ion-grid>

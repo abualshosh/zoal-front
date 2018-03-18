@@ -159,3 +159,7 @@ src/pages/ConsumerPages/mohe/mohe.html
 src/pages/ConsumerPages/mohe/mohe.html
 src/pages/ConsumerPages/customes/customes.ts
 src/assets/i18n/ar.json
+*.map
+src/assets/i18n/ar.json
+src/pages/ConsumerPages/customes/customes.ts
+src/pages/ConsumerPages/mohe/mohe.html

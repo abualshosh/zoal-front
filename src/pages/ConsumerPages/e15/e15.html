@@ -19,7 +19,7 @@
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
         <ion-item>
-          <ion-toggle formControlName="mobilewallet" ></ion-toggle>
+          <ion-toggle  [disabled]="showWallet" formControlName="mobilewallet" (ionChange)="WalletAvalible($event)"></ion-toggle>
           <ion-label class="label">
           <ion-icon name='phone-portrait' item-start></ion-icon>{{'USEWallet' | translate}}</ion-label>
         </ion-item>
@@ -28,17 +28,16 @@
           <ion-input type="number" formControlName="entityId" required></ion-input>
         </ion-item>
 
-               <div *ngIf="!todo.controls.Card.valid && submitAttempt">
-                <p>{{'validcardError'| translate}}</p>
-               </div>
-              <ion-item *ngIf="!todo.controls.mobilewallet.value">
-                    <ion-label stacked>{{'Card' | translate}}</ion-label>
-                    <ion-select style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
-                      <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
+        <div *ngIf="!validCard && submitAttempt&& !todo.controls.mobilewallet.value">
+          <p>{{'validcardError'| translate}}</p>
+            </div>
+            <ion-item *ngIf="!todo.controls.mobilewallet.value">
+                  <ion-label stacked>{{'Card' | translate}}</ion-label>
+                  <ion-select  (ionChange)="onSelectChange($event)" style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
+                    <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
 
-                    </ion-select>
-                  </ion-item>
-
+                  </ion-select>
+                </ion-item>
         <div *ngIf="!todo.controls.INVOICENUMBER.valid && submitAttempt">
           <p>{{'validINVOICENUMBERError'| translate}}</p>
         </div>

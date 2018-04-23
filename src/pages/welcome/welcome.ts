@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { SQLite ,SQLiteObject  } from '@ionic-native/sqlite';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -14,9 +15,16 @@ import { SQLite ,SQLiteObject  } from '@ionic-native/sqlite';
   templateUrl: 'welcome.html'
 })
 export class WelcomePage {
-
-  constructor(public sqlite:SQLite,public navCtrl: NavController) {
-
+  language:any;
+  languages:any[]=[
+    {"language":"English","Code":"en"}
+    ,    {"language":"عربي","Code":"ar"}
+  ];
+  constructor(private translate: TranslateService,public sqlite:SQLite,public navCtrl: NavController) {
+    this.language=this.translate.getDefaultLang();
+    if(!this.language){
+      this.language="ar";
+    }
   //   this.sqlite.create({
   //     name: localStorage.getItem('username'),
   //     location: 'default'
@@ -41,7 +49,12 @@ export class WelcomePage {
   //     })
   //     .catch(e => console.log(e));
   }
+  ChangeLang(){
 
+    localStorage.setItem("lang",this.language);
+     this.translate.setDefaultLang(this.language);
+     this.translate.use(this.language); // Set your language here
+   }
   login() {
     this.navCtrl.push('LoginPage');
   }

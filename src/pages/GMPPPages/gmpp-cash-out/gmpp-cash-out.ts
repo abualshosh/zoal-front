@@ -11,6 +11,8 @@ import * as uuid from 'uuid';
 import { UserProvider } from '../../../providers/user/user';
 import {Storage} from '@ionic/storage';
 import {Card} from '../../../models/cards';
+import * as moment from 'moment';
+
 /**
  * Generated class for the GmppTransPage page.
  *
@@ -38,7 +40,7 @@ submitAttempt: boolean = false;
 
 
     transactionAmount: ['',Validators.required],
-          consumerPIN: ['',Validators.required]
+           consumerPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])]
 
       });
 
@@ -77,6 +79,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);
+      var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
       var datas ={
         "destinationIdentifier":data.destinationIdentifier,
@@ -86,6 +89,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
         ,"transactionAmount":data.transactionAmount
         ,"totalAmount":data.totalAmount
         ,"transactionId":data.transactionId
+        ,date:datetime
       };
       var dat =[];
       var main =[];

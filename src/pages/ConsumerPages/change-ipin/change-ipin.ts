@@ -79,7 +79,7 @@ if(this.todo.valid){
     dat.newIPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.newIPIN);
   console.log(dat.IPIN)
 
-   dat.mbr='1';
+    
 
    dat.authenticationType='00';
    dat.pan=dat.Card.pan;

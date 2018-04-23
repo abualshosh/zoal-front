@@ -38,8 +38,8 @@
       <ion-item>
             <ion-label stacked color=white;>{{'ToCard' | translate}} </ion-label>
             <ion-input type="number" formControlName="ToCard"></ion-input>
-            <button style="background-color: white;"  ion-button item-end (click)="scan()">
-              <ion-icon color="primary" name="camera"></ion-icon>
+            <button style="background-color: white;"   ion-button item-end (click)="scan()">
+              <ion-icon color="dark" name="barcode"></ion-icon>
           </button>
           </ion-item>
           <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
@@ -63,10 +63,10 @@
 
 <button  (click)="logForm()" class="subbutn" ion-button   type="submit" color="secondary">{{'Submit'|translate}}</button>
   </form>
-  <ion-item color="">HELP</ion-item>
+  <!-- <ion-item color="">HELP</ion-item>
     <iframe width="100%" height="200px" [src]="trustedVideoUrl" frameborder="0" allowfullscreen>
         <ion-spinner class="spineer" name="crescent" ></ion-spinner>
-    </iframe>
+    </iframe> -->
     
 </div>
 

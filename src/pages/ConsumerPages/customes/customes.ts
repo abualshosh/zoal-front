@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
+import * as moment from 'moment';
 
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { LoadingController } from 'ionic-angular';
@@ -35,29 +36,14 @@ submitAttempt: boolean = false;
     this.storage.get('cards').then((val) => {
     this.cards=val;
       });
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-//this.title=this.navParams.get("name");
-=======
+
 this.title='Custom Service';
->>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
-=======
-this.title='Custom Service';
->>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
-=======
-this.title='Custom Service';
->>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
-=======
-this.title='Custom Service';
->>>>>>> a3d0e05b4efbedf997c5a60c0df089075ec82e4b
 
     //user.printuser();
 
     this.todo = this.formBuilder.group({
       pan: ['',],
-          Card: ['',],
+          Card: ['',Validators.required],
       Payee: [''],
   
         IPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])],
@@ -93,7 +79,7 @@ if(this.todo.valid){
   dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
-   dat.mbr='1';
+    
    dat.tranAmount=dat.Amount;
 
     dat.pan=dat.Card.pan;
@@ -104,7 +90,7 @@ if(this.todo.valid){
       dat.toAccountType='00';
 
       dat.paymentInfo="BANKCODE="+dat.BANKCODE;
-      dat.payeeId="CUSTOM Payment";
+      dat.payeeId="Custom Service";
    
  console.log(dat)
   this.GetServicesProvider.load(dat,'consumer/payment').then(data => {
@@ -113,25 +99,18 @@ if(this.todo.valid){
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);
+    var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
  var datas;
-   if(data.balance){
-         datas ={
-    "acqTranFee":data.acqTranFee
-    ,"issuerTranFee":data.issuerTranFee
-     ,"tranAmount":data.tranAmount
-     ,"tranCurrency":data.tranCurrency
-     ,"balance":data.balance.available
-  };
-      
-   }else{
+
         datas ={
     "acqTranFee":data.acqTranFee
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
         ,"tranCurrency":data.tranCurrency
+        ,date:datetime
   }; 
-   }
+   
    var main =[];
    var mainData={
     "Custom Service":data.tranAmount

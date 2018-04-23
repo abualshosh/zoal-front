@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, App } from 'ionic-angular';
 import { Api } from '../../providers/providers'
 import { TranslateService } from '@ngx-translate/core';
+import {Storage} from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,7 @@ export class ContentPage {
     {"language":"English","Code":"en"}
     ,    {"language":"Arabic","Code":"ar"}
   ];
-  constructor(private translate: TranslateService,public api: Api, public app: App, public navCtrl: NavController) {
+  constructor(private translate: TranslateService,public storage:Storage,public api: Api, public app: App, public navCtrl: NavController) {
     this.language=this.translate.getDefaultLang();
     this.username = localStorage.getItem('username');
     this.profile = JSON.parse(localStorage.getItem("profile"));
@@ -47,6 +48,7 @@ export class ContentPage {
   }
   logOut() {
     localStorage.clear();
+    this.storage.clear();
     //this.navCtrl.setRoot('WelcomePage');
     this.app.getRootNav().setRoot('WelcomePage');
   }

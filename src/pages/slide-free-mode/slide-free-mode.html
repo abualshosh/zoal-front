@@ -23,7 +23,7 @@
                     </div>
                 </button>
             </ion-col>
-            <ion-col>
+            <!-- <ion-col>
                 <button (click)="scan()" class="buts" ion-button block color="primary">
                     <div>
                         <ion-icon name="camera"></ion-icon>
@@ -31,7 +31,7 @@
                         <label>Scan and pay</label>
                     </div>
                 </button>
-            </ion-col>
+            </ion-col> -->
         </section>
     </ion-scroll>
     <div [ngSwitch]="pet" style="background-color:  #FAFAFA; padding-top:0.1px;">
@@ -43,6 +43,15 @@
                 </ion-item>
                 <ion-scroll scrollX style="height:70px ;  background-color: #ffffff;" no-lines>
                     <section no-lines>
+                            <ion-col >
+                                    <button (click)="open('HomePage','')" class="but" block color="light">
+                                        <div>
+                                            <ion-icon name="card"></ion-icon>
+                                            <br>
+                                            <label>{{'Cards'| translate}}</label>
+                                        </div>
+                                    </button>
+                                </ion-col>
                         <ion-col *ngFor="let page of Consumerpages">
                             <button (click)="openConsumer(page.component,page.var)" class="but" block color="light">
                                 <div>
@@ -52,6 +61,7 @@
                                 </div>
                             </button>
                         </ion-col>
+                     
                     </section>
                 </ion-scroll>
             </ion-card>

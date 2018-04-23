@@ -28,7 +28,11 @@
     width: 80%;
     margin-left: 10%;
 
-  }
+  }.mask-text {
+    -webkit-text-security: disc;
+    -moz-webkit-text-security: disc;
+    -moz-text-security: disc;
+}
   .con{
     padding-bottom: 50px;
   }

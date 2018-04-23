@@ -13,6 +13,7 @@ import {Card} from '../../../models/cards';
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import * as moment from 'moment';
 
 /**
  * Generated class for the TransfaerToCardPage page.
@@ -95,7 +96,7 @@ if (this.navParams.get("pan")){
     dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
     console.log(dat.IPIN)
     dat.tranCurrency='SDG';
-    dat.mbr='0';
+     
    dat.tranAmount=dat.Amount;
    dat.toCard=dat.ToCard;
    dat.authenticationType='00';
@@ -110,25 +111,16 @@ if (this.navParams.get("pan")){
    if(data != null && data.responseCode==0){
      loader.dismiss();
   var datas;
-   if(data.balance){
-         datas ={
-    "toCard":data.toCard
-    ,"tranAmount":data.tranAmount
-    ,"acqTranFee":data.acqTranFee
-    ,"issuerTranFee":data.issuerTranFee
-     ,"tranCurrency":data.tranCurrency
-     ,"balance":data.balance.available
-  };
-}else{
+  var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
    datas ={
-          "toCard":data.toCard
-          ,"tranAmount":data.tranAmount
+    "Card":data.PAN,
+          "toCard":data.toCard 
      ,"acqTranFee":data.acqTranFee
     ,"issuerTranFee":data.issuerTranFee
-    
-        ,"tranCurrency":data.tranCurrency
+    ,"tranAmount":data.tranAmount
+       ,date:datetime
   };
-   }
+   
 
    var main =[];
    var mainData={

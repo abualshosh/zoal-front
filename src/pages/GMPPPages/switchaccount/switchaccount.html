@@ -23,7 +23,9 @@
 
 
     
-
+    <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
+      <p>{{'validpinError'| translate}}</p>
+</div>
 <ion-item>
   <ion-label stacked>{{'PIN'|translate}}</ion-label>
   <ion-input  class="mask-text"  type="number" formControlName="consumerPIN" required></ion-input>
@@ -52,7 +54,7 @@
 </ion-list>
 
 <button class="subbutn" ion-button type="submit" color="secondary">{{'Submit'|translate}}</button>
-<button class="subbutn" ion-button type="submit" (click)="Cancle()" color="danger">{{'CancleLinkAccount'|translate}}</button>
+<button class="subbutn" ion-button type="submit" (click)="Cancle()" color="danger">{{'CancleSwitch'|translate}}</button>
 
   </form>
 </div>

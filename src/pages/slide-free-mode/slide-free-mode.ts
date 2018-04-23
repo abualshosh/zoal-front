@@ -21,7 +21,7 @@ export class SlideFreeModePage {
     { title: 'Higher Education', component: 'MohePage' , icon:'school' , var:""},
   ]
   Consumerpages: any[] = [
-    { title: 'Cards', component: 'HomePage' , icon:'card' , var:""},
+   // { title: 'Cards', component: 'HomePage' , icon:'card' , var:""},
     { title: 'TranToCard', component: 'TransfaerToCardPage' , icon:'person' , var:""},
     { title: 'CARDLESS', component: 'CardLessPage' , icon:'print' , var:""},
     { title: 'BalInq', component: 'FormsPage' , icon:'information-circle' , var:""},

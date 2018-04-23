@@ -43,7 +43,7 @@ export class HistoryPage {
   ];
   @ViewChild('content') content: Content;
   constructor(public navCtrl: NavController,public modalCtrl:ModalController, public navParams: NavParams, public api: Api) {
-    this.api.get('histories', "?page=0&size=15", null).subscribe((res: any) => {
+    this.api.get('historiesmobile', "?page=0&size=15", null).subscribe((res: any) => {
           this.last = res.last;
               console.log(this.size)
               this.history = res.content;
@@ -87,7 +87,7 @@ export class HistoryPage {
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
      ,"tranCurrency":data.tranCurrency
-     ,"balance":data.balance.available
+   //  ,"balance":data.balance.available
      ,"transactionId":data.transactionId
      ,"date":input.transactionDate
   };
@@ -108,9 +108,14 @@ export class HistoryPage {
         ,"date":input.transactionDate
   }; 
    }
+
+ 
+
    var dat =[];
    if(data.PAN){
-    dat.push({"Card":data.PAN})
+    dat.push({"Card":data.PAN
+   
+  })
   }else{
    data.entityId ? dat.push({"WalletNumber":data.entityId}) : dat.push({"WalletNumber":data.consumerIdentifier})
   }
@@ -118,6 +123,13 @@ export class HistoryPage {
 
    if(data.billInfo){
    if(Object.keys(data.billInfo).length>0){
+     if(data.billInfo.accountNo){
+       data.billInfo.accountNo=null;
+     }
+     if(data.billInfo.opertorMessage){
+      data.billInfo.opertorMessage=null;
+    }
+   
     dat.push(data.billInfo);
    }}
 
@@ -142,7 +154,7 @@ main.push(mainData);
 
   doInfinite(infiniteScroll) {
     this.page = this.page + 1;
-    this.api.get('histories', "?page=" + this.page + "&size=15", null).subscribe((res: any) => {
+    this.api.get('historiesmobile', "?page=" + this.page + "&size=15", null).subscribe((res: any) => {
      this.last = res.last;
         console.log(this.size);
         for (let i = 0; i < res.content.length; i++) {

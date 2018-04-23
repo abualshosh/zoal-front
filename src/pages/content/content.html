@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color='primary'>
+  <ion-navbar color='bar'>
     <ion-title>{{'UserSettings' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -7,7 +7,7 @@
   <ion-list>
     <ion-list-header>
       <ion-avatar item-start (click)="updateProfileImage()">
-        <img-loader fallbackAsPlaceholde="true" fallback="../assets/img/userPlaceholder.png" [src]="this.api.url+'/profileimage/'+profile.userName"
+        <img-loader fallbackAsPlaceholde="true" fallback="assets/img/userPlaceholder.png" [src]="this.api.url+'/profileimage/'+profile.userName"
           useImg>
         </img-loader>
       </ion-avatar>
@@ -52,7 +52,7 @@
         {{'Other' | translate }}
     </ion-list-header>
     <ion-item>
-      <ion-icon name='power' item-start></ion-icon>
+     
       <button ion-button (click)="logOut()" item-end>
           {{'LogOut' | translate }}
       </button>

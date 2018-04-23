@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
+import * as moment from 'moment';
 
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { LoadingController } from 'ionic-angular';
@@ -22,13 +23,15 @@ import {Card} from '../../../models/cards';
   templateUrl: 'mohe.html',
 })
 export class MohePage {
-
-
+  profile:any;
+  showWallet:boolean=false;
     private bal : any;
     private todo : FormGroup;
     public cards:Card[]=[];
   public payee:any[]=[];
   public isArab=false;
+  validCard:boolean=false;
+
     public title:any;
     submitAttempt: boolean = false;
   CourseIDs: Array<{title: string, id: any}> = [
@@ -54,6 +57,14 @@ export class MohePage {
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController, public navParams: NavParams) {
       this.storage.get('cards').then((val) => {
       this.cards=val;
+      if(this.cards){
+        if(this.cards.length <= 0){
+          this.showWallet=true;
+          this.todo.controls["mobilewallet"].setValue(true);
+        }}else{
+          this.showWallet=true;
+          this.todo.controls["mobilewallet"].setValue(true);
+        }
         });
 
 //this.title=this.navParams.get("name");
@@ -67,15 +78,37 @@ export class MohePage {
         CourseID: ['',Validators.required],
         FormKind: ['',Validators.required],
           IPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])],
-          SETNUMBER: ['',Validators.required],
-          STUCNAME: ['',Validators.required],
-          STUCPHONE: ['',Validators.required],
+          SETNUMBER: ['',],
+          STUCNAME: ['',],
+          STUCPHONE: ['',],
             Amount: ['',Validators.required],
             mobilewallet :[''],
       });
       this.todo.controls["mobilewallet"].setValue(false);
       this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
     }
+
+  clearInput(){
+    this.todo.controls['pan'].reset();
+    this.todo.controls['Card'].reset();
+    this.todo.controls['entityId'].reset();
+    this.todo.controls['Payee'].reset();
+    this.todo.controls['IPIN'].reset();
+    this.todo.controls['CourseID'].reset();
+    this.todo.controls['FormKind'].reset();
+    this.todo.controls['SETNUMBER'].reset();
+    this.todo.controls['STUCNAME'].reset();
+    this.todo.controls['STUCPHONE'].reset();
+    this.todo.controls['Amount'].reset();
+    if(this.cards){
+      if(this.cards.length <= 0){
+        this.showWallet=true;
+        this.todo.controls["mobilewallet"].setValue(true);
+      }}else{
+        this.showWallet=true;
+        this.todo.controls["mobilewallet"].setValue(true);
+      }
+  }
 ionViewWillEnter(){
 
  
@@ -92,9 +125,52 @@ ionViewWillEnter(){
    }
 
 
+   WalletAvalible(event){
+
+    this.profile = JSON.parse(localStorage.getItem("profile"));
+    if(!this.profile.phoneNumber){
+  
+   
+      let modal=this.modalCtrl.create('SignupModalPage', {},{ cssClass: 'inset-modals' });
+      modal.present();
+      this.todo.reset();
+  
+        this.showWallet=true;
+     
+    
+      
+    }else  if(this.cards){
+      if(this.cards.length <= 0){
+  
+        this.showWallet=true;
+        let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });
+        modal.present();
+      }}else{
+     
+        this.showWallet=true;
+      
+        let modal=this.modalCtrl.create('HintModalPage', {},{ cssClass: 'inset-modals' });
+        modal.present();
+    }
+   
+  
+  }
+  onSelectChange(selectedValue: any){
+    var dat=this.todo.value;
+    if(dat.Card && !dat.mobilewallet){
+      this.validCard=true;
+     }
+   }
     logForm(){
+      var dat=this.todo.value;
+      if(dat.Card && !dat.mobilewallet){
+       this.validCard=true;
+      }
                this.submitAttempt=true;
   if(this.todo.valid){
+    if(!dat.mobilewallet&&!this.validCard){
+      return ;
+    }
       let loader = this.loadingCtrl.create({
        content: "Please wait..."
      });
@@ -105,7 +181,7 @@ ionViewWillEnter(){
      dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
     console.log(dat.IPIN)
      dat.tranCurrency='SDG';
-     dat.mbr='1';
+      
      dat.tranAmount=dat.Amount;
      if(dat.mobilewallet){
       dat.entityType="Mobile Wallet";
@@ -116,6 +192,7 @@ ionViewWillEnter(){
       dat.pan=dat.Card.pan;
       dat.expDate=dat.Card.expDate;
       dat.authenticationType='00';
+      dat.entityId="";
     }
      dat.fromAccountType='00';
      dat.toAccountType='00';
@@ -134,23 +211,16 @@ ionViewWillEnter(){
       if(data != null && data.responseCode==0){
        loader.dismiss();
  var datas;
-   if(data.balance){
-         datas ={
-    "acqTranFee":data.acqTranFee
-    ,"issuerTranFee":data.issuerTranFee
-     ,"tranAmount":data.tranAmount
-     ,"tranCurrency":data.tranCurrency
-     ,"balance":data.balance.available
-  };
-      
-   }else{
+ var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+
         datas ={
     "acqTranFee":data.acqTranFee
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
         ,"tranCurrency":data.tranCurrency
+        ,date:datetime
   }; 
-   }
+   
    var main =[];
    var mainData={
      [this.title]:data.tranAmount
@@ -168,17 +238,15 @@ ionViewWillEnter(){
       dat.push(datas);
       let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
      modal.present();
-     this.todo.reset();
+     this.clearInput();
   this.submitAttempt=false;
-  this.todo.controls["mobilewallet"].setValue(false);
   this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
     }else{
      loader.dismiss();
      
     this.showAlert(data);
-this.todo.reset();
+    this.clearInput();
   this.submitAttempt=false;
-  this.todo.controls["mobilewallet"].setValue(false);
   this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));    }
    });
 

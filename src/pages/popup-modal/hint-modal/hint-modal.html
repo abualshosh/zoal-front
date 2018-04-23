@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>البطاقات المصرفية</ion-title>
+    <ion-title>{{'ATM_CASHCARD'|  translate}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only>
         <ion-icon name='bulb'></ion-icon>
@@ -10,13 +10,13 @@
 </ion-header>
 <ion-content padding>
 
-  <p>للتمتع بخدمات البطاقات المصرفية الرجاء اضافة بطاقة </p>
+  <p>{{'Cash_card_option'|translate}}</p>
   <br>
   <br>
   <br>
-  <button ion-button full color="danger" (click)="addCard()">اضافة بطاقة
+  <button ion-button full color="danger" (click)="addCard()">{{'ADDCARD'|translate}}
     </button>
-    <button ion-button full color="bar" (click)="dismiss()">اغلاق
+    <button ion-button full color="bar" (click)="dismiss()">{{'Close'|translate}}
     </button>
 </ion-content>
 

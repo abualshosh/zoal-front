@@ -39,7 +39,7 @@ import {Card} from '../../../models/cards';
       this.todo = this.formBuilder.group({
 
 
-          consumerPIN: ['',Validators.required]
+           consumerPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])]
 
       });
 

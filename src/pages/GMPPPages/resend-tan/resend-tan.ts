@@ -40,7 +40,7 @@ submitAttempt: boolean = false;
       this.todo = this.formBuilder.group({
 
   transactionId: ['',Validators.required],
-          consumerPIN: ['',Validators.required]
+           consumerPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])]
 
       });
 

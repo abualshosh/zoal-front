@@ -27,12 +27,12 @@
           <ion-label stacked>{{'WalletNumber' | translate}}</ion-label>
           <ion-input type="number" formControlName="entityId" required></ion-input>
         </ion-item>
-    <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+    <div *ngIf="!validCard && submitAttempt && !todo.controls.mobilewallet.value">
             <p>{{'validcardError'| translate}}</p>
               </div>
               <ion-item *ngIf="!todo.controls.mobilewallet.value">
                     <ion-label stacked>{{'Card' | translate}}</ion-label>
-                    <ion-select style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
+                    <ion-select  (ionChange)="onSelectChange($event)" style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
                       <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
 
                     </ion-select>

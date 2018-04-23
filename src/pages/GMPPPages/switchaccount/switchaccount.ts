@@ -23,7 +23,7 @@ import { Api } from '../../../providers/providers';
    templateUrl: 'switchaccount.html',
  })
  export class SwitchaccountPage {
-
+  public submitAttempt:boolean =false;
   consumerIdentifier:any;
     private bal : any;
     private todo : FormGroup;
@@ -38,7 +38,7 @@ import { Api } from '../../../providers/providers';
       this.todo = this.formBuilder.group({
 
       
-        consumerPIN: ['',Validators.required]
+         consumerPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])]
   
     });
   
@@ -50,12 +50,12 @@ import { Api } from '../../../providers/providers';
     }
     ionViewDidLoad(){
   this.consumerIdentifier="249"+localStorage.getItem('username');
-  this.storage.set('Switchaccount','TRUE');
-  this.storage.set("SwitchaccountUUID","ea906944-e074-4d90-b104-fd8985f8cddb");
+  // this.storage.set('Switchaccount','TRUE');
+  // this.storage.set("SwitchaccountUUID","ea906944-e074-4d90-b104-fd8985f8cddb");
 this.storage.get('Switchaccount').then((val) => {
 if(val != null){
 
-this.compleate="TRUE";
+this.compleate=val;
 }
 });
   //user.printuser();
@@ -84,6 +84,7 @@ Cancle(){
 
 
     logForm(){
+      this.submitAttempt=true;
   if(this.todo.valid){
       let loader = this.loadingCtrl.create({
        content: "Please wait..."
@@ -105,7 +106,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
 
           this.storage.set('Switchaccount','TRUE');
           this.storage.set("SwitchaccountUUID",dat.UUID);
-      
+          this.submitAttempt=false;
        loader.dismiss();
       // this.showAlert(data);
 
@@ -117,16 +118,21 @@ dat.consumerIdentifier=this.consumerIdentifier;
 //   //   modal.present();
 
 // this.showAlert(data);
-this.ionViewDidLoad();
+this.todo.reset();
+this.compleate="TRUE";
+
+//this.ionViewDidLoad();
     }else{
+      this.submitAttempt=false;
      loader.dismiss();
     if(data.responseCode!=null){
     this.showAlert(data);}else{
   data.responseMessage="Connection Error";
   this.showAlert(data);
     }
-
+    this.todo.reset();
     }
+    this.submitAttempt=false;
    });
 
     }}
@@ -180,7 +186,7 @@ this.ionViewDidLoad();
       data.responseMessage="Connection Error";
       this.showAlert(data);
         }
-
+        this.complate.reset();
         }});
        });
 

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { ActionSheetController,IonicPage, NavController, ViewController,NavParams } from 'ionic-angular';
+import { ActionSheetController,IonicPage, NavController, ViewController,NavParams ,LoadingController} from 'ionic-angular';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { File , FileEntry} from '@ionic-native/file';
@@ -31,6 +31,7 @@ username:any;
     private http:HttpClient,private transfer: FileTransfer,
     public navCtrl: NavController, public viewCtrl: ViewController,
      formBuilder: FormBuilder, public camera: Camera
+     ,public loadingCtrl: LoadingController 
      ,public translateService:TranslateService
     ) {
       translateService.get(['ChoseImage', 'camera', 'gallery']).subscribe(values => {
@@ -133,7 +134,7 @@ this.img=imgBlob;
 
       this.form.patchValue({ 'profilePic': imageData });
     };
-alert(event.target.file);
+
     reader.readAsDataURL(event.target.file);
   }
 
@@ -155,7 +156,7 @@ alert(event.target.file);
    * back to the presenter.
    */
   done() {
-    alert(this.img)
+
     this.postData(this.img);
     if (!this.form.valid) {
 
@@ -165,7 +166,10 @@ alert(event.target.file);
   postData(Data:any) {
     const formData = new FormData();
   
-
+ let loader = this.loadingCtrl.create({
+       content: "Please wait..."
+     });
+     loader.present();
     formData.append('user', new Blob([JSON.stringify({
                 "login":this.username
                 ,"firstName": this.form.controls['name'].value
@@ -178,7 +182,6 @@ alert(event.target.file);
             }else{
               formData.append('image',new Blob([[]], {type: "NO"}));
           }
-            alert(this.api.url+"/posts");
       this.http.post<boolean>(this.api.url+"/users", formData)
 
         .subscribe((resp) => {
@@ -189,13 +192,13 @@ alert(event.target.file);
         //  this.account.password=this.account.username;
            this.user.login(account).subscribe((resp) => {
             localStorage.setItem('logdin',"true");
-
+            loader.dismiss();
              this.navCtrl.setRoot('TabsPage');
            }, (err) => {
-
+            loader.dismiss();
            });
         }, (err) => {
-          alert(err.http_status);
+          loader.dismiss();
         });
     }
     uploadFile(img:any) {

@@ -6,7 +6,7 @@ page-welcome {
     height: 45%;
     z-index: 1;
     background-repeat: repeat-x;
-    animation: animatedBackground 20s  infinite;
+    animation: animatedBackground 40s  infinite;
   }
 
   @keyframes animatedBackground {
@@ -20,6 +20,7 @@ page-welcome {
     margin-top: -64px;
     text-align: center;
   }
+ 
   .splash-logo {
     margin: auto;
     background: url('../assets/img/icon.png') repeat transparent;

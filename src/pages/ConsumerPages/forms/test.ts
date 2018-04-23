@@ -8,6 +8,8 @@ import * as uuid from 'uuid';
 import { UserProvider } from '../../../providers/user/user';
 import {Storage} from '@ionic/storage';
 import {Card} from '../../../models/cards';
+import * as moment from 'moment';
+
 @IonicPage()
 @Component({
          selector: 'page-forms',
@@ -130,7 +132,7 @@ encrypt(msg : any){
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
-   dat.mbr='1';
+    
    dat.authenticationType='00';
    dat.fromAccountType='00';
    dat.pan=dat.Card.pan;
@@ -149,9 +151,11 @@ encrypt(msg : any){
     main.push(mainData);
     var datas;
     var dat =[];
+    var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
     datas ={
      "Card":data.PAN
     ,"balance":data.balance.available
+    ,date:datetime
  };
  dat.push(datas);
      let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });

@@ -29,6 +29,8 @@ import {Card} from '../../../models/cards';
     private complate : FormGroup;
     public cards:Card[]=[];
    public compleate:any="FALSE";
+   public submitAttempt:boolean =false;
+
    public GetServicesProvider : GetServicesProvider;
     constructor(public navCtrl: NavController, private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
     ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
@@ -39,8 +41,8 @@ import {Card} from '../../../models/cards';
   this.GetServicesProvider=GetServicesProviderg;
       this.todo = this.formBuilder.group({
 
-           primaryAccountNumber: ['',Validators.required],
-          consumerPIN: ['',Validators.required]
+           primaryAccountNumber: ['',Validators.compose([Validators.required,Validators.minLength(16), Validators.pattern('[0-9]*')])],
+           consumerPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])]
 
       });
 
@@ -85,6 +87,7 @@ this.storage.set("primaryAccountNumber",null);
 
 
     logForm(){
+      this.submitAttempt=true;
   if(this.todo.valid){
       let loader = this.loadingCtrl.create({
        content: "Please wait..."
@@ -109,6 +112,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
        this.storage.set("primaryAccountNumber",dat.primaryAccountNumber);
        loader.dismiss();
       // this.showAlert(data);
+      this.submitAttempt=false;
 
      // this.ionViewDidLoad();
       this.compleate="TRUE";
@@ -128,7 +132,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
   data.responseMessage="Connection Error";
   this.showAlert(data);
     }
-
+    this.submitAttempt=false;
     }
    });
 

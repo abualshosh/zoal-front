@@ -21,6 +21,16 @@
 <div class="con">
   <form [formGroup]="todo" (ngSubmit)="logForm()" >
   <ion-list>
+    <!-- <div *ngIf="!todo.controls.payeeId.valid && submitAttempt">
+      <p>{{'validOPError'| translate}}</p>
+        </div> -->
+<ion-item>
+<ion-label stacked>{{'opreatore'| translate}}</ion-label>
+<ion-select style="padding-left:5%;"  interface="action-sheet" formControlName="payeeId" >
+<ion-option  *ngFor="let pay of payee"  [value]="pay.PayeeId">{{pay.PayeeName}}</ion-option>
+
+</ion-select>
+</ion-item>
 
     <div *ngIf="!todo.controls.customerPayeeId.valid && submitAttempt">
             <p>{{'validvoucherNumberError'| translate}}</p>

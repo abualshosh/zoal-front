@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, IonicPage,AlertController ,NavController,LoadingController} from 'ionic-angular';
+import { ViewController, IonicPage,AlertController ,ModalController,NavController,LoadingController} from 'ionic-angular';
 import { GetServicesProvider } from '../../../providers/get-services/get-services';
 import * as uuid from 'uuid';
 import { Api } from '../../../providers/providers';
@@ -28,7 +28,8 @@ export class SignupModalPage {
   constructor
   (
     public loadingCtrl: LoadingController ,
-    public api:Api,public navCtrl: NavController, public alertCtrl: AlertController,public viewCtrl: ViewController,public GetServicesProvider:GetServicesProvider) {
+    public api:Api,public navCtrl: NavController, public alertCtrl: AlertController,public viewCtrl: ViewController,public GetServicesProvider:GetServicesProvider
+    ,public modalCtrl:ModalController) {
   }
 
   showAlert(balance : any ) {
@@ -53,16 +54,23 @@ export class SignupModalPage {
     
     this.GetServicesProvider.load(dat,'gmpp/registerConsumer').then(data => {
       loader.dismiss();
-      this.showAlert(data);
+      
       if (data.responseCode==1){
       this.profile = JSON.parse(localStorage.getItem("profile"));
       this.profile.phoneNumber="249"+localStorage.getItem('username');
       this.api.put("/profiles", this.profile).subscribe((res: any) => {
         localStorage.setItem("profile",JSON.stringify(this.profile));
-        console.log(localStorage.getItem("profile"))
+        var datas =[
+          {"tital":"Status","desc":data.responseMessage}
+         ];
+           let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
+         modal.present();
+         this.viewCtrl.dismiss();
       }, err => {
         console.log(err);
       });
+      }else{
+        this.showAlert(data);
       }
     });
   }

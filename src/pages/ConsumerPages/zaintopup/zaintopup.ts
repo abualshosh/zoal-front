@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
-
+import * as moment from 'moment';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { LoadingController } from 'ionic-angular';
 import { GetServicesProvider } from '../../../providers/get-services/get-services';
@@ -29,7 +29,7 @@ export class ZaintopupPage {
   public cards:Card[]=[];
   public title:any;
   showWallet:boolean=false;
-  
+  validCard:boolean=false;
 public payee:any[]=[
   {
     PayeeName:"Zain",
@@ -94,6 +94,24 @@ this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
 
 
   }
+
+  clearInput(){
+    this.todo.controls['pan'].reset();
+    this.todo.controls['Card'].reset();
+    this.todo.controls['entityId'].reset();
+    this.todo.controls['payeeId'].reset();
+    this.todo.controls['IPIN'].reset();
+    this.todo.controls['MPHONE'].reset();
+    this.todo.controls['Amount'].reset();
+    if(this.cards){
+      if(this.cards.length <= 0){
+        this.showWallet=true;
+        this.todo.controls["mobilewallet"].setValue(true);
+      }}else{
+        this.showWallet=true;
+        this.todo.controls["mobilewallet"].setValue(true);
+      }
+  }
   WalletAvalible(event){
 
     this.profile = JSON.parse(localStorage.getItem("profile"));
@@ -134,22 +152,34 @@ this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
    });
    alert.present();
  }
-
+ onSelectChange(selectedValue: any){
+  var dat=this.todo.value;
+  if(dat.Card && !dat.mobilewallet){
+    this.validCard=true;
+   }
+ }
 
   logForm(){
+    var dat=this.todo.value;
+   if(dat.Card && !dat.mobilewallet){
+    this.validCard=true;
+   }
             this.submitAttempt=true;
 if(this.todo.valid){
+  if(!dat.mobilewallet&&!this.validCard){
+    return ;
+  }
     let loader = this.loadingCtrl.create({
      content: "Please wait..."
    });
    loader.present();
-   var dat=this.todo.value;
+  
     
     dat.UUID=uuid.v4();
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
-   dat.mbr='0';
+    
    dat.tranAmount=dat.Amount;
 
 if(dat.mobilewallet){
@@ -161,6 +191,7 @@ if(dat.mobilewallet){
   dat.pan=dat.Card.pan;
   dat.expDate=dat.Card.expDate;
   dat.authenticationType='00';
+  dat.entityId="";
 }
 
    dat.fromAccountType='00';
@@ -184,18 +215,8 @@ if(dat.mobilewallet){
 }else{
   dat.push({"WalletNumber":data.entityId})
 }
-   if(data.balance){
-         datas ={
-        
-       "PhoneNumber":dats.MPHONE,    
-    "acqTranFee":data.acqTranFee 
-    ,"issuerTranFee":data.issuerTranFee
-     ,"tranAmount":data.tranAmount
-     ,"tranCurrency":data.tranCurrency
-     ,"balance":data.balance.available
-  };
+var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
-   }else{
         datas ={
           
           "PhoneNumber":dats.MPHONE,    
@@ -203,8 +224,9 @@ if(dat.mobilewallet){
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
         ,"tranCurrency":data.tranCurrency
+        ,date:datetime
   };
-   }
+   
 
    var main =[];
     var mainData={
@@ -220,17 +242,17 @@ if(dat.mobilewallet){
     
       let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
    modal.present();
-   this.todo.reset();
+   this.clearInput();
     this.submitAttempt=false;
-    this.todo.controls["mobilewallet"].setValue(false);
+
     this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
 
   }else{
    loader.dismiss();
   this.showAlert(data);
-this.todo.reset();
+  
     this.submitAttempt=false;
-    this.todo.controls["mobilewallet"].setValue(false);
+    this.clearInput();
     this.todo.controls["entityId"].setValue("249"+localStorage.getItem('username'));
 
   }

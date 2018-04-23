@@ -22,16 +22,16 @@
   <ion-list>
 
       <div *ngIf="!todo.controls.primaryAccountNumber.valid && submitAttempt">
-          <p>{{'validconsumerPINError'| translate}}</p>
+          <p>{{'validCardPANError'| translate}}</p>
     </div>
     <ion-item>
       <ion-label stacked>{{'Card' | translate}}</ion-label>
-      <ion-input type="text" formControlName="primaryAccountNumber" required>
+      <ion-input type="number" formControlName="primaryAccountNumber" required>
       </ion-input>
     </ion-item>
 
     <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
-        <p>{{'validconsumerPINError'| translate}}</p>
+        <p>{{'validpinError'| translate}}</p>
   </div>
 <ion-item>
   <ion-label stacked>{{'PIN' | translate}}</ion-label>

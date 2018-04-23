@@ -15,10 +15,15 @@
 </ion-navbar>
 </ion-header>
 <ion-content no-padding style="background-color: #f0f0f0;">
+
+ 
+    <img *ngIf="posts.length == 0" src="assets/img/nopost.png">
   <ion-refresher (ionRefresh)="doRefresh($event)" color='primary'>
     <ion-refresher-content color='primary'></ion-refresher-content>
   </ion-refresher>
-  <ion-spinner class="spineer" name="crescent" *ngIf="!posts.length"></ion-spinner>
+  <ion-spinner class="spineer" name="crescent" *ngIf="!posts.length || posts.length == 0">
+  
+  </ion-spinner>
   <div id="posts" *ngIf="posts.length >= 0">
         <ion-card *ngFor="let post of posts" no-padding>
 

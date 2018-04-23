@@ -1,6 +1,7 @@
 import { SignupModalPage } from './signup-modal';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { IonicPageModule } from 'ionic-angular';
   ],
   imports: [
     IonicPageModule.forChild(SignupModalPage),
+    TranslateModule.forChild()
   ],
   exports: [
     SignupModalPage

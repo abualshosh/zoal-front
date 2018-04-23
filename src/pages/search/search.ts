@@ -19,12 +19,12 @@ username:any;
 upcontacts:any=[];
   constructor(public api:Api,private contacts: Contacts,public navCtrl: NavController, public navParams: NavParams, public items: Items) {
 this.username=localStorage.getItem('username');
-  // this.currentItems=JSON.parse(localStorage.getItem("connections"));
-   var dummy={"fullName":"Test","userName":"922190200"};
-   this.currentItems.push(dummy);    
-   this.currentItems.push(dummy);   
-   this.currentItems.push(dummy);   
-   this.currentItems.push(dummy);   
+  this.currentItems=JSON.parse(localStorage.getItem("connections"));
+  //  var dummy={"fullName":"Test","userName":"922190200"};
+  //  this.currentItems.push(dummy);    
+  //  this.currentItems.push(dummy);   
+  //  this.currentItems.push(dummy);   
+  //  this.currentItems.push(dummy);   
 //
 //this.currentItems= this.items.query();
    }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
+import * as moment from 'moment';
 
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { LoadingController } from 'ionic-angular';
@@ -72,7 +73,7 @@ if(this.todo.valid){
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
-   dat.mbr='0';
+    
    dat.tranAmount=dat.Amount;
    dat.toCard=dat.ToCard;
    dat.authenticationType='00';
@@ -88,23 +89,15 @@ if(this.todo.valid){
      loader.dismiss();
     // this.showAlert(data);
 var datas;
-   if(data.balance){
-         datas ={
-    "acqTranFee":data.acqTranFee
-    ,"issuerTranFee":data.issuerTranFee
-     ,"tranAmount":data.tranAmount
-     ,"tranCurrency":data.tranCurrency
-     ,"balance":data.balance.available
-  };
-
-   }else{
+var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
         datas ={
+          "Card":data.PAN,
     "acqTranFee":data.acqTranFee
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
-        ,"tranCurrency":data.tranCurrency
+     ,date:datetime
   };
-   }
+   
    var main =[];
    var mainData={
      "CARDLESS":data.tranAmount

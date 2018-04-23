@@ -19,27 +19,6 @@
 <ion-toolbar *ngIf="showSearchbar">
  
  
- 
-<accordion-list   (click)="check()"
-                  title="BOX"
-                  textColor="#FFF"
-                  hasMargin="false"
-                  headerColor="#F53D3D"
-                  [expanded]="index === 10">
-   
-                <ion-list style="height:50px;">
-                  <ion-item *ngFor="let checkBoxe of checkBoxes">
-                      <ion-label>{{checkBoxe.name}}</ion-label>
-                      <ion-checkbox
-                         color="danger"
-                         [(ngModel)]="checkBoxe.value"
-                        >
-                      </ion-checkbox>
-                        
-                   </ion-item>
-                  </ion-list>
-                
-                  </accordion-list>
 
  <button ion-button (click)="search()">search</button>
 </ion-toolbar>

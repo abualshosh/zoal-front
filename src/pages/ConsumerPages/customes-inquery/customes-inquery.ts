@@ -77,7 +77,7 @@ if(this.todo.valid){
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
   console.log(dat.IPIN)
    dat.tranCurrency='SDG';
-   dat.mbr='1';
+    
    dat.tranAmount=dat.Amount;
    dat.toCard=dat.ToCard;
    dat.authenticationType='00';

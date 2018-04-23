@@ -1,7 +1,7 @@
 
 <ion-header>
   <ion-navbar>
-    <ion-title>الدفع عبر الموبايل</ion-title>
+    <ion-title>{{'MOBILEPAYMENT'|translate}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only>
         <ion-icon name='bulb'></ion-icon>
@@ -15,27 +15,27 @@
     </ion-slide>
   </ion-slides> -->
   <ion-row class="align-center" style="margin-left:10px">
-    <p>للتمتع بخدمات الدفع عبر الموبايل الرجاء الضغط علي زر تسجيل للتسجيل في الخدمة 
+    <p>{{'registerMobile'|translate}}
       <br>
-      اذا كنت مسجل بلفعل مع مقدم خدمة اخر الرجاء اضغط علي زر تحويل للتحويل الي زول باي 
+      {{'switchmobile'|translate}}
     </p>
   </ion-row>
   <ion-row class="align-center">
     <ion-col>
       <button ion-button full (click)="signup()">
-           تسجيل
+        {{'signup'|translate}}
       </button>
     </ion-col>
   </ion-row>
   <ion-row class="align-center">
     <ion-col col-6>
       <button ion-button full color="secondary" (click)="login()">
-           تحويل
+        {{'switch'|translate}}
       </button>
     </ion-col>
     <ion-col col-6>
       <button ion-button full color="secondary" (click)="dismiss()">
-            اغلاق
+        {{'Close'|translate}}
       </button>
     </ion-col>
   </ion-row>

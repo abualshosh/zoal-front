@@ -211,7 +211,7 @@ ionViewWillEnter(){
       if(data != null && data.responseCode==0){
        loader.dismiss();
  var datas;
- var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+ var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
         datas ={
     "acqTranFee":data.acqTranFee
@@ -234,6 +234,9 @@ ionViewWillEnter(){
   }
      
      if(Object.keys(data.billInfo).length>0){
+      if(this.type!=="moheArab"){
+       data.billInfo.SETNUMBER=this.todo.controls['SETNUMBER'].value;
+      }
     dat.push(data.billInfo);}
       dat.push(datas);
       let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });

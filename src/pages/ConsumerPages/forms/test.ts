@@ -151,7 +151,7 @@ encrypt(msg : any){
     main.push(mainData);
     var datas;
     var dat =[];
-    var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+    var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
     datas ={
      "Card":data.PAN
     ,"balance":data.balance.available

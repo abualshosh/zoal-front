@@ -38,12 +38,12 @@ submitAttempt: boolean = false;
   this.GetServicesProvider=GetServicesProviderg;
       this.todo = this.formBuilder.group({
 
-
-    transactionAmount: ['',Validators.required],
+        cashOutAll:[,'']
+    ,transactionAmount: ['',Validators.required],
            consumerPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])]
 
       });
-
+      this.todo.controls['cashOutAll'].setValue(false);
     }
 
     showAlert(balance : any ) {
@@ -56,9 +56,16 @@ submitAttempt: boolean = false;
      });
      alert.present();
    }
-
+   CASHOUT(e){
+     this.todo.controls['cashOutAll'].setValue(!this.todo.controls['cashOutAll'].value)
+   }
 
     logForm(){
+console.log(this.todo.controls['cashOutAll'].value)
+console.log(this.todo.controls['transactionAmount'].value)
+      if(this.todo.controls['cashOutAll'].value){
+        this.todo.controls['transactionAmount'].setValue(0);
+      }
           this.submitAttempt=true;
   if(this.todo.valid){
       let loader = this.loadingCtrl.create({
@@ -66,7 +73,7 @@ submitAttempt: boolean = false;
      });
      loader.present();
      var dat=this.todo.value;
-
+   
       dat.UUID=uuid.v4();
      dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
@@ -79,7 +86,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);
-      var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+      var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
       var datas ={
         "destinationIdentifier":data.destinationIdentifier,

@@ -80,7 +80,7 @@ dat.transactionName=this.consumerIdentifier;
       console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
-       var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+       var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
        var datas ={
         "destinationIdentifier":data.destinationIdentifier,

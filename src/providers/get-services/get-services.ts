@@ -57,7 +57,8 @@ public URL:string="http://localhost:8080/api";
  //var key = new NodeRSA("-----BEGIN RSA PRIVATE KEY----- MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANx4gKYSMv3CrWWsxdPfxDxFvl+Is/0kc1dvMI1yNWDXI3AgdI4127KMUOv7gmwZ6SnRsHX/KAM0IPRe0+Sa0vMCAwEAAQ== -----END RSA PRIVATE KEY-----","pkcs1");
  var encrypt = new JSEncrypt.JSEncrypt();
  
- encrypt.setPublicKey("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ4HwthfqXiK09AgShnnLqAqMyT5VUV0hvSdG+ySMx+a54Ui5EStkmO8iOdVG9DlWv55eLBoodjSfd0XRxN7an0CAwEAAQ==");
+
+ encrypt.setPublicKey(localStorage.getItem('Ckey'));
  
  var encrypted = encrypt.encrypt(msg);	
  // key.importKey({
@@ -77,7 +78,7 @@ public URL:string="http://localhost:8080/api";
  encryptGmpp(msg : any){
   var encrypt = new JSEncrypt.JSEncrypt();
   
-  encrypt.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyS1iEM5bAzjTPHDMaAxhZd5IKMXfHT6kYfzVghWYwe2ZI2ERa0u26AG7xTteZUof4d985R4lkfinBaPmlXoTIWACTENwz940U/4vYRovBBAlXroNGKg8AmezZurn4Mui3uzkVmd+r1FRqUQN0qaPpoB89BSrINEo+i2guXsy1foPTmiNXwrzUX7019yrGBsOfZM8k1OwvP+lLtrXGNPu9YXrptSvdReZ5JdKDDHE9MapAkaMQrUe4i5kfHV8GOrG4WgfO7Ef2kiuNJqEWF1L/zUNdD3XaqDIDWukJ7KPvbS5HCMASbIMpodb2HkDGqZVpknBDka7Nr6+AG1GrM1g+wIDAQAB");
+  encrypt.setPublicKey(localStorage.getItem('Gkey'));
   
   var encrypted = encrypt.encrypt(msg);	
 

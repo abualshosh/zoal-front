@@ -24,13 +24,17 @@
   <ion-list>
 
 
-
+    <ion-item >
+      <ion-toggle   formControlName="cashOutAll"></ion-toggle>
+      <ion-label class="label">
+      <ion-icon name='phone-portrait' item-start></ion-icon>{{'cashOutAll' | translate}}</ion-label>
+    </ion-item>
     <div *ngIf="!todo.controls.transactionAmount.valid && submitAttempt">
                   <p>{{'validamountError'| translate}}</p>
               </div>
-    <ion-item>
+    <ion-item *ngIf="!todo.controls.cashOutAll.value">
       <ion-label stacked>  {{'Amount' | translate}}</ion-label>
-      <ion-input type="number" formControlName="transactionAmount" required></ion-input>
+      <ion-input type="number" formControlName="transactionAmount" ></ion-input>
     </ion-item>
     <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
                     <p>{{'validpinError'| translate}}</p>

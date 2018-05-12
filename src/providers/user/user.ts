@@ -49,10 +49,13 @@ private subscription : any;
       // If the API returned a successful response, mark the user as logged in
       if (res.id_token) {
       //  this._loggedIn(res);
+      console.log(res)
       localStorage.setItem('id_token', res.id_token);
-      localStorage.setItem('username',accountInfo.username);
-     
+      localStorage.setItem('username',accountInfo.username); 
       localStorage.setItem('profile',JSON.stringify(res.profile));
+      localStorage.setItem('Gkey',res.gmppKey);
+      localStorage.setItem('Ckey',res.consumerKey);
+      
        // this.stompClient = stompjs.client('ws://'+this.api.urlip+'/tracker?access_token='+res.id_token);
        //      this.stompClient.debug = null;
        //      this.stompClient.connect("","", ((frame) =>{

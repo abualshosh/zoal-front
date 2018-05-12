@@ -215,7 +215,7 @@ if(dat.mobilewallet){
 }else{
   dat.push({"WalletNumber":data.entityId})
 }
-var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
         datas ={
           

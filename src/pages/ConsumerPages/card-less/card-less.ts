@@ -89,7 +89,7 @@ if(this.todo.valid){
      loader.dismiss();
     // this.showAlert(data);
 var datas;
-var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
         datas ={
           "Card":data.PAN,
     "acqTranFee":data.acqTranFee

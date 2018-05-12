@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Api {
  
-  public urlip: string ='196.223.158.38:8080';
+  public urlip: string ='mobappszone.xyz:8080';
 public  url: string = 'https://'+this.urlip+'/api';
 
 

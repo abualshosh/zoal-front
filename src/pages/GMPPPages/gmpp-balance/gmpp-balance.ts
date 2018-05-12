@@ -79,7 +79,8 @@ dat.consumerIdentifier=this.consumerIdentifier;
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);
-      var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+    //  data.availableBalance=0;
+      var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
     var main =[];
     var mainData={
@@ -88,6 +89,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
     main.push(mainData);
     var datas;
     var dat =[];
+
     datas ={
      "WalletNumber":data.consumerIdentifier
     ,"available Balance":data.availableBalance

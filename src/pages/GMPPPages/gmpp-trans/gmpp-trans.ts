@@ -82,7 +82,7 @@ dat.consumerIdentifier=this.consumerIdentifier;
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);
-      var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+      var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
       var datas ={
         "destinationIdentifier":data.destinationIdentifier,

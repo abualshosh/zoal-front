@@ -16,10 +16,11 @@ export class KeysPipe implements PipeTransform {
    transform(value, args:string[]) : any {
     let keys = [];
     for (let key in value) {
-        if (value[key]){
-          if(value[key]!==0||key==='balance'||key==='availableBalance'){
+
+      if (value[key]||value[key]===0||value[key]===""){
+       //   if(value[key]!==0||key==="reserved Balance"||key.includes('Balance')||key.includes('fee')){
       keys.push({key: key, value: value[key]});
-          }
+     //     }
         }
     }
     return keys;

@@ -177,7 +177,7 @@ if(this.todo.valid){
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);
-    var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+    var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
  var datas;
 
    let token=null;

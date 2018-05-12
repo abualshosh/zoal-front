@@ -111,7 +111,7 @@ if (this.navParams.get("pan")){
    if(data != null && data.responseCode==0){
      loader.dismiss();
   var datas;
-  var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+  var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
    datas ={
     "Card":data.PAN,
           "toCard":data.toCard 

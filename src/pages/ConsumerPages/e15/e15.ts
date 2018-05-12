@@ -178,7 +178,7 @@ if(this.todo.valid){
      loader.dismiss();
     // this.showAlert(data);
 
-    var datetime= moment(data.tranDateTime, 'DDMMyyhhmmss').format("DD/MM/YYYY  hh:mm:ss");
+    var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
 
  var datas;
  

@@ -18,7 +18,7 @@ export class TransferListPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TransferListPage');
+    //console.log('ionViewDidLoad TransferListPage');
   }
  openPage(page) {
      

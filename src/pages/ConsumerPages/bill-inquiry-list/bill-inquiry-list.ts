@@ -86,6 +86,6 @@ var page='BillInquiryPage';
       title: item.PAYEEID,
       name:item.PAYEENAME
     });
-      console.log(item.PAYEEID);
+      //console.log(item.PAYEEID);
   }
 }

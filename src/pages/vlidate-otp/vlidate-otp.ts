@@ -27,7 +27,7 @@ export class VlidateOtpPage {
   }
   vlidate(){
     this.user.validateOtp(this.account).subscribe((res: any) => {
-      console.log(res);
+      //console.log(res);
       if(res){
       if(this.otpType==="login"){
         localStorage.setItem('logdin',"true");
@@ -41,7 +41,7 @@ export class VlidateOtpPage {
      });
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad VlidateOtpPage');
+    //console.log('ionViewDidLoad VlidateOtpPage');
   }
 
 }

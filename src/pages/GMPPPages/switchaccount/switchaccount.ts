@@ -60,7 +60,7 @@ this.compleate=val;
 });
   //user.printuser();
 //  this.compleate='TRUE';
-  console.log(this.compleate);
+  //console.log(this.compleate);
 
   
 }
@@ -96,12 +96,12 @@ Cancle(){
      dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
 
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.isConsumer='true';
 
     this.GetServicesProvider.load(this.todo.value,'gmpp/switchCustomer').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==930){
 
           this.storage.set('Switchaccount','TRUE');
@@ -158,14 +158,14 @@ this.compleate="TRUE";
 
         this.GetServicesProvider.load(this.complate.value,'gmpp/completeSwitchCustomer').then(data => {
          this.bal = data;
-          console.log(data)
+          //console.log(data)
           if(data != null && data.responseCode==1){
              let profile = JSON.parse(localStorage.getItem("profile"));
              profile.phoneNumber=this.consumerIdentifier;
             this.api.put("/profiles", profile).subscribe((res: any) => {
-              console.log(res);
+              //console.log(res);
               localStorage.setItem("profile",JSON.stringify(profile));
-              console.log(JSON.parse(localStorage.getItem("profile")));
+              //console.log(JSON.parse(localStorage.getItem("profile")));
            loader.dismiss();
           // this.showAlert(data);
 
@@ -177,7 +177,7 @@ this.compleate="TRUE";
          this.Cancle();
          this.navCtrl.pop();
         }, err => {
-          console.log(err);
+          //console.log(err);
         });
         }else{
          loader.dismiss();

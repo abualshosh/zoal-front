@@ -78,10 +78,10 @@ if(this.todo.valid){
 
    var dat=this.todo.value;
 
-    console.log(dat.expDate.substring(2,4)+dat.expDate.substring(5));
+    //console.log(dat.expDate.substring(2,4)+dat.expDate.substring(5));
     var date = new Date(dat.expDate);
-    console.log();
-        console.log();
+    //console.log();
+        //console.log();
    this.storage.get('cards').then((val) => {
 var mon=""+(date.getMonth()+1);
 if(mon.length==1){

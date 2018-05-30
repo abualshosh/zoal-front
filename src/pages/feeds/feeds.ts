@@ -27,7 +27,7 @@ page:any=0;
     let seq = this.api.get('Fposts',"?page=0&size=5",null).subscribe((res:any) => {
       if (res) {
        this.last=res.last;
-        console.log(this.size)
+        //console.log(this.size)
         this.posts=res.content;
        } else {
         this.posts=this.postsTest;
@@ -39,7 +39,7 @@ page:any=0;
   }   
 
   doRefresh(refresher) {
-      console.log('Begin async operation', refresher);
+      //console.log('Begin async operation', refresher);
       let seq = this.api.get('Fposts',"?page=0&size=5",null).subscribe((res:any) => {
       if (res) {
           this.last=res.last;
@@ -79,7 +79,7 @@ this.page=this.page+1;
   let seq = this.api.get('Fposts',"?page="+this.page+"&size=5",null).subscribe((res:any) => {
   if (res) {
 this.last=res.last;
-      console.log(this.size);
+      //console.log(this.size);
       for(let i=0; i<res.content.length; i++) {
             this.posts.push(res.content[i]);
           }
@@ -96,7 +96,7 @@ this.last=res.last;
 
 }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FeedsPage');
+    //console.log('ionViewDidLoad FeedsPage');
   }
 
 }

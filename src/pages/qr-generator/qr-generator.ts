@@ -33,7 +33,7 @@ onChange(){
   this.createdCode =this.todo.value.Card.pan;
 }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad QrGeneratorPage');
+    //console.log('ionViewDidLoad QrGeneratorPage');
   }
 
 }

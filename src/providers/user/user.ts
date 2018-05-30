@@ -49,7 +49,7 @@ private subscription : any;
       // If the API returned a successful response, mark the user as logged in
       if (res.id_token) {
       //  this._loggedIn(res);
-      console.log(res)
+      //console.log(res)
       localStorage.setItem('id_token', res.id_token);
       localStorage.setItem('username',accountInfo.username); 
       localStorage.setItem('profile',JSON.stringify(res.profile));
@@ -195,7 +195,7 @@ changeLang(){
   alert.addButton({
     text: 'Okay',
     handler: data => {
-      console.log('Checkbox data:', data);
+      //console.log('Checkbox data:', data);
 
     this.translates.use(data);
      this.storage.set('lang',data);

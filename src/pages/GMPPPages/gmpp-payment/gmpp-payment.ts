@@ -75,12 +75,12 @@ submitAttempt: boolean = false;
       dat.payeeId=this.navParams.get("title");
      dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.isConsumer='true';
 
     this.GetServicesProvider.loadGmpp(this.todo.value,'Payment').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);

@@ -22,7 +22,7 @@ export class ContentPage {
     this.language=this.translate.getDefaultLang();
     this.username = localStorage.getItem('username');
     this.profile = JSON.parse(localStorage.getItem("profile"));
-    console.log(this.profile)
+    //console.log(this.profile)
 
     this.user = {
       name: 'Marty Mcfly',

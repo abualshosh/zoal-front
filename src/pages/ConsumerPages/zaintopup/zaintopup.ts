@@ -32,15 +32,15 @@ export class ZaintopupPage {
   validCard:boolean=false;
 public payee:any[]=[
   {
-    PayeeName:"Zain",
+    PayeeName:"Zain Top Up",
     PayeeId:"Zain Top Up"
   },
   {
-    PayeeName:"MTN",
+    PayeeName:"MTN Top Up",
     PayeeId:"MTN Top Up"
   },
   {
-    PayeeName:"Sudani",
+    PayeeName:"Sudani Top Up",
     PayeeId:"Sudani Top Up"
   }
 ];
@@ -63,15 +63,15 @@ this.title=this.navParams.get("name");
 if(this.title==="billpayment"){
   this.payee=[
     {
-      PayeeName:"Zain",
+      PayeeName:"Zain Bill Payment",
       PayeeId:"Zain Bill Payment"
     },
     {
-      PayeeName:"MTN",
+      PayeeName:"MTN Bill Payment",
       PayeeId:"MTN Bill Payment"
     },
     {
-      PayeeName:"Sudani",
+      PayeeName:"SUDANI Bill Payment",
       PayeeId:"SUDANI Bill Payment"
     }
   ];
@@ -177,7 +177,7 @@ if(this.todo.valid){
     
     dat.UUID=uuid.v4();
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-  console.log(dat.IPIN)
+  //console.log(dat.IPIN)
    dat.tranCurrency='SDG';
     
    dat.tranAmount=dat.Amount;
@@ -200,10 +200,10 @@ if(dat.mobilewallet){
      
   
 
- console.log(dat)
+ //console.log(dat)
   this.GetServicesProvider.load(dat,'consumer/payment').then(data => {
    this.bal = data;
-    console.log(data)
+    //console.log(data)
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);

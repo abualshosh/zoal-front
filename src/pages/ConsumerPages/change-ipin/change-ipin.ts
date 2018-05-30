@@ -71,24 +71,24 @@ if(this.todo.valid){
 
    loader.present();
    var dat=this.todo.value;
-   console.log(dat.IPIN)
-    console.log(dat.newIPIN)
+   //console.log(dat.IPIN)
+    //console.log(dat.newIPIN)
    if(dat.ConnewIPIN==dat.newIPIN){
     dat.UUID=uuid.v4();
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
     dat.newIPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.newIPIN);
-  console.log(dat.IPIN)
+  //console.log(dat.IPIN)
 
     
 
    dat.authenticationType='00';
    dat.pan=dat.Card.pan;
    dat.expDate=dat.Card.expDate;
- console.log(dat)
+ //console.log(dat)
  dat.ConnewIPIN="";
   this.GetServicesProvider.load(this.todo.value,'consumer/ChangeIPIN').then(data => {
    this.bal = data;
-    console.log(data)
+    //console.log(data)
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);

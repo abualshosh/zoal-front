@@ -57,9 +57,9 @@ export class LoginPage {
     
   }
   Login(): void {
-    console.log('ddddddddd')
+    //console.log('ddddddddd')
       AccountKit.login('PHONE', { countryCode: '+249', phoneNumber: this.account.username }).then(
-        (response: AuthResponse) => console.log(response),
+        (response: AuthResponse) => //console.log(response),
         (error: any) => console.error(error)
       );
     }
@@ -73,7 +73,7 @@ export class LoginPage {
      
      
       this.user.sendOtp({"login":this.account.username}).subscribe((res: any) => {
-        console.log(res);
+        //console.log(res);
         if(res.success){
    loader.dismiss();
         this.navCtrl.setRoot('VlidateOtpPage',{"username":this.account.username,"OtpType":"login"});

@@ -140,13 +140,13 @@ this.uploadContacts();
     //start connection
     this.stomp.startConnect().then(() => {
       this.stomp.done('init');
-      console.log('connected');
+      //console.log('connected');
 
       //subscribe
       this.subscription = this.stomp.subscribe('/user/queue/messages', this.response);
       //send data
       this.events.subscribe('message', (greeting) => {
-console.log(greeting)
+//console.log(greeting)
 this.zone.run(() => {
   this.tab4BadgeCount++;
   });
@@ -176,7 +176,7 @@ this.zone.run(() => {
             }, (e) => {
         
              
-            console.log("Errot: " + JSON.stringify(e));
+            //console.log("Errot: " + JSON.stringify(e));
             });
 
            // for(var i = 0; i < this.chats.length; i++)
@@ -196,7 +196,7 @@ this.zone.run(() => {
 
       //disconnect
   //    this.stomp.disconnect().then(() => {
-//        console.log( 'Connection closed' )
+//        //console.log( 'Connection closed' )
 //      })
 
     });
@@ -240,12 +240,12 @@ this.zone.run(() => {
                 console.error('ERROR', err);
              });
              }, (error) => {
-             console.log(error);
+             //console.log(error);
            });
   }
 
   public response = (data) => {
-console.log(data)
+//console.log(data)
      this.events.publish('message', data);
   }
   @ViewChild('myTabs') tabRef: any;

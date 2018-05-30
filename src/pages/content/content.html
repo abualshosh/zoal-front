@@ -22,7 +22,7 @@
     <ion-item>
       <ion-icon name='settings' item-start></ion-icon>
       <ion-label>{{'AppLanguage' | translate }}</ion-label>
-      <ion-select style="padding-left:5%;" [(ngModel)]="language" (ngModelChange)="ChangeLang()">
+      <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;" [(ngModel)]="language" (ngModelChange)="ChangeLang()">
         <ion-option *ngFor="let language of languages" [value]="language.Code" >{{language.language | translate}}</ion-option>
       </ion-select>
     </ion-item>
@@ -41,7 +41,7 @@
     <ion-item *ngIf="profile.accepteTransfer">
       <ion-icon name='card' item-start></ion-icon>
       <ion-label>{{'MainCard' | translate }}</ion-label>
-      <ion-select style="padding-left:5%;" [(ngModel)]="paymentMethod">
+      <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;" [(ngModel)]="paymentMethod">
         <ion-option *ngFor="let method of paymentMethods" [value]="method">{{method}}</ion-option>
       </ion-select>
     </ion-item>

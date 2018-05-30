@@ -340,8 +340,8 @@ this.img=imgBlob;
 //       const formData = new FormData();
 //            const imgBlob = new Blob([reader.result], {type: event.target.files[0].type});
 //            formData.append('file', imgBlob, event.target.files[0].name);
-// console.log(event.target.files[0].type)
-// console.log(imgBlob)
+// //console.log(event.target.files[0].type)
+// //console.log(imgBlob)
 //            //this.postData(formData);
 //       let imageData = (readerEvent.target as any).result;
 //       this.form.patchValue({ 'profilePic': imageData });
@@ -396,7 +396,7 @@ this.img=imgBlob;
 //    * back to the presenter.
 //    */
 //   done() {
-//     console.log(this.form.controls.profilePic.value)
+//     //console.log(this.form.controls.profilePic.value)
 //     if (!this.form.valid) { return; }
 //     this.viewCtrl.dismiss(this.form.value);
 //   }

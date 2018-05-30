@@ -43,11 +43,11 @@ export class WelcomePage {
   //   }, (e) => {
   //
   //
-  //       console.log("Errot: " + JSON.stringify(e));
+  //       //console.log("Errot: " + JSON.stringify(e));
   //   });
   //
   //     })
-  //     .catch(e => console.log(e));
+  //     .catch(e => //console.log(e));
   }
   ChangeLang(){
 

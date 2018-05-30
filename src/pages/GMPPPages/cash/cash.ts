@@ -18,7 +18,7 @@ export class CashPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CashPage');
+    //console.log('ionViewDidLoad CashPage');
   }
   openPage(page) {
    this.navCtrl.push(page);

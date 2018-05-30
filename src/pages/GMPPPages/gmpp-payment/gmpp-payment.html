@@ -26,7 +26,7 @@
         </div> -->
 <ion-item>
 <ion-label stacked>{{'opreatore'| translate}}</ion-label>
-<ion-select style="padding-left:5%;"  interface="action-sheet" formControlName="payeeId" >
+<ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;"  interface="action-sheet" formControlName="payeeId" >
 <ion-option  *ngFor="let pay of payee"  [value]="pay.PayeeId">{{pay.PayeeName}}</ion-option>
 
 </ion-select>

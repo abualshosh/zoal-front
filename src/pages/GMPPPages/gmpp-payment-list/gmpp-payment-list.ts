@@ -55,6 +55,6 @@ itemTapped(event, item) {
     title: item.PAYEEID,
     serviceName:serviceName
   });
-    console.log(item.PAYEENAME);
+    //console.log(item.PAYEENAME);
 }
 }

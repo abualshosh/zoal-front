@@ -18,7 +18,7 @@ export class InquiryListPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad InquiryListPage');
+    //console.log('ionViewDidLoad InquiryListPage');
   }
  openPage(page) {
      if(page=='FormsPage'){

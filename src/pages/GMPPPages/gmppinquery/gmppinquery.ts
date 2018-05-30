@@ -18,7 +18,7 @@ export class GmppinqueryPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GmppinqueryPage');
+    //console.log('ionViewDidLoad GmppinqueryPage');
   }
   openPage(page) {
    this.navCtrl.push(page);

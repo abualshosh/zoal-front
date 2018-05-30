@@ -18,7 +18,7 @@ export class UnLockPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UnLockPage');
+    //console.log('ionViewDidLoad UnLockPage');
   }
 
 }

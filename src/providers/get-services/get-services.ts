@@ -24,7 +24,7 @@ public dataListGMPP : any;
 public URL:string="http://localhost:8080/api";
   constructor(public api: Api,public http: HttpClient,public alertCtrl: AlertController,public storage:Storage) {
 
-    console.log('Hello GetServicesProvider Provider');
+    //console.log('Hello GetServicesProvider Provider');
     this.storage.get('module').then((val) => {
         if (val!=null){
     this.module=val;}
@@ -72,7 +72,7 @@ public URL:string="http://localhost:8080/api";
  //     coeff: null
  // }, 'components-public');
  //var publicComponents = key.exportKey('components-public');
- //console.log(publicComponents);
+ ////console.log(publicComponents);
  return encrypted;
  }
  encryptGmpp(msg : any){
@@ -99,7 +99,7 @@ public URL:string="http://localhost:8080/api";
       let seq = this.api.post(path, postparams).share();
 
       seq.subscribe((res: any) => {
-        console.log(res);
+        //console.log(res);
         // If the API returned a successful response, mark the user as logged in
       resolve(res);
       }, err => {
@@ -120,18 +120,18 @@ public URL:string="http://localhost:8080/api";
 //   //  alert(JSON.stringify(postparams));
 //
 //    this.storage.get('username').then((val) => {
-//       console.log(val);
+//       //console.log(val);
 //   if (val!=null){
 //
 //       postparams.username=val;
 //   }
-//   console.log(postparams);
+//   //console.log(postparams);
 //       this.http.post(this.URL+'/'+path,JSON.stringify(postparams),options)
 //         .map(res => res.json())
 //         .subscribe(data => {
 //           // we've got back the raw data, now generate the core schedule data
 //           // and save the data for later reference
-//               console.log(data);
+//               //console.log(data);
 //           this.data = data;
 //           resolve(this.data);
 //         } , error => {
@@ -172,7 +172,7 @@ public URL:string="http://localhost:8080/api";
 //    headers.append('Content-Type', 'application/json' );
 //    let options = new RequestOptions({ headers: headers });
 //    this.storage.get('username').then((val) => {
-//       console.log(val);
+//       //console.log(val);
 //   if (val!=null){
 //
 //       postparams.username=val;

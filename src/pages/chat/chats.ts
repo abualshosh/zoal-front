@@ -91,7 +91,7 @@ constructor(public modalCtrl: ModalController,public events: Events,public api:A
     }, (e) => {
 
 
-        console.log("Errot: " + JSON.stringify(e));
+        //console.log("Errot: " + JSON.stringify(e));
     });
 
       })
@@ -143,7 +143,7 @@ this.viewMessages({"title":data});
     }, (e) => {
 
 
-    console.log("Errot: " + JSON.stringify(e));
+    //console.log("Errot: " + JSON.stringify(e));
     });
   })
   .catch(e => 

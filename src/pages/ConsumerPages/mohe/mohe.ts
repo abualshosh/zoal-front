@@ -47,10 +47,10 @@ export class MohePage {
       { title: 'General admission-first round' , id: '1' },
     { title: 'Specialadmission' , id: '2' },
       { title: 'Sons of higher education staff' , id: '3' },
-        { title: 'General admission-second round' , id: '4' },
-          { title: 'Special admission-vacant seats' , id: '5' },
-            { title: 'Private institutions direct admission' , id: '6' },
-              { title: 'Diploma in public institutions' , id: '7' }
+        { title: 'General admission-second round' , id: '6' },
+          { title: 'Special admission-vacant seats' , id: '7' },
+            { title: 'Private institutions direct admission' , id: '8' },
+              { title: 'Diploma in public institutions' , id: '9' }
   ];
   public type:any='mohe';
     constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProvider : GetServicesProvider,public alertCtrl: AlertController
@@ -179,7 +179,7 @@ ionViewWillEnter(){
 
       dat.UUID=uuid.v4();
      dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.tranCurrency='SDG';
       
      dat.tranAmount=dat.Amount;
@@ -204,10 +204,10 @@ ionViewWillEnter(){
           dat.paymentInfo="SETNUMBER="+dat.SETNUMBER+"/STUDCOURSEID="+dat.CourseID.id+"/STUDFORMKIND="+dat.FormKind.id;
       }
     this.title=dat.payeeId;
-   console.log(dat)
+   //console.log(dat)
     this.GetServicesProvider.load(dat,'consumer/payment').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==0){
        loader.dismiss();
  var datas;

@@ -18,7 +18,7 @@ export class LockPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LockPage');
+    //console.log('ionViewDidLoad LockPage');
   }
   openPage(page) {
    this.navCtrl.push(page);

@@ -52,7 +52,7 @@ this.GetServicesProvider=GetServicesProviderg;
 
     });
 if (this.navParams.get("pan")){
-  console.log(this.navParams.get("pan"));
+  //console.log(this.navParams.get("pan"));
   this.todo.controls['ToCard'].setValue(this.navParams.get("pan"));
 }
   }
@@ -80,7 +80,7 @@ if (this.navParams.get("pan")){
     }
   
   }, (err) => {
-    console.log("Error occured : " + err);
+    //console.log("Error occured : " + err);
   });
 }
 
@@ -94,7 +94,7 @@ if (this.navParams.get("pan")){
    var dat=this.todo.value;
     dat.UUID=uuid.v4();
     dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
     dat.tranCurrency='SDG';
      
    dat.tranAmount=dat.Amount;
@@ -102,12 +102,12 @@ if (this.navParams.get("pan")){
    dat.authenticationType='00';
    dat.fromAccountType='00';
    dat.toAccountType='00';
-   dat.pan=dat.Card.pan;
+   dat.PAN=dat.Card.pan;
    dat.expDate=dat.Card.expDate;
-    console.log(dat)
+    //console.log(dat)
    this.GetServicesProvider.load(this.todo.value,'consumer/doCardTransfer').then(data => {
    this.bal = data;
-    console.log(data)
+    //console.log(data)
    if(data != null && data.responseCode==0){
      loader.dismiss();
   var datas;

@@ -32,7 +32,7 @@ this.username=localStorage.getItem('username');
 
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SelectUserPage');
+    //console.log('ionViewDidLoad SelectUserPage');
   }
 
 }

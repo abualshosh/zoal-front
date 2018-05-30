@@ -25,9 +25,9 @@ CahtUser:string;
   mySubscribedHandler:any =  (greeting) => {
 
     //    showGreeting(greeting.body);
-    console.log(greeting);
+    //console.log(greeting);
   if (this.navCtrl.getActive().name == 'MessagesPage'&&greeting.sender==this.toUser._id) {
-    console.log(greeting);
+    //console.log(greeting);
 
 
 
@@ -72,7 +72,7 @@ this.messages=navParams.get('msg');
     this.events.subscribe('message', this.mySubscribedHandler);
   }
   public response = (data) => {
-    console.log(data)
+    //console.log(data)
         
       }
 
@@ -130,7 +130,7 @@ this.users.stomp.send("/app/message",{ 'sender': sender,'recipient':recipient,'m
        }, (e) => {
    
    
-       console.log("Errot: " + JSON.stringify(e));
+       //console.log("Errot: " + JSON.stringify(e));
        });
 
       // for(var i = 0; i < this.chats.length; i++)
@@ -196,7 +196,7 @@ this.lastindex++;
   }, (e) => {
 
 
-  console.log("Errot: " + JSON.stringify(e));
+  //console.log("Errot: " + JSON.stringify(e));
   });
 })
 .catch(e =>

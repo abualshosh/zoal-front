@@ -61,8 +61,8 @@ submitAttempt: boolean = false;
    }
 
     logForm(){
-console.log(this.todo.controls['cashOutAll'].value)
-console.log(this.todo.controls['transactionAmount'].value)
+//console.log(this.todo.controls['cashOutAll'].value)
+//console.log(this.todo.controls['transactionAmount'].value)
       if(this.todo.controls['cashOutAll'].value){
         this.todo.controls['transactionAmount'].setValue(0);
       }
@@ -77,12 +77,12 @@ console.log(this.todo.controls['transactionAmount'].value)
       dat.UUID=uuid.v4();
      dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.isConsumer='true';
 
     this.GetServicesProvider.load(this.todo.value,'gmpp/doCashOutWithTan').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);

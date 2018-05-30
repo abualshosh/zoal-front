@@ -16,12 +16,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class OtherProfilePage {
   user:any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    console.log(navParams.get("item"));
+    //console.log(navParams.get("item"));
     this.user=navParams.get("item");
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OtherProfilePage');
+    //console.log('ionViewDidLoad OtherProfilePage');
   }
 
 }

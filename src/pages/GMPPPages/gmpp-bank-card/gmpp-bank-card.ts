@@ -18,7 +18,7 @@ export class GmppBankCardPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GmppBankCardPage');
+    //console.log('ionViewDidLoad GmppBankCardPage');
   }
 openPage(page) {
  this.navCtrl.push(page);

@@ -24,7 +24,7 @@ var req={type:"A"};
   this.GetServicesProvider.loadGmppList(req,'getPayee').then(data => {
 if(data!=null&&data.length>0){
       var i:any;
-      console.log(data);
+      //console.log(data);
       for(i = 0; i < data.length; i++) {
    
     if (data[i].TYPE=='T'){

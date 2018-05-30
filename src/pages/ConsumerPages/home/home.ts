@@ -50,7 +50,7 @@ public selectedCard:Card=new Card("","","","",false);
          this.selectedCard=new Card("              ","                 ","    ","   ",false);
          this.AddCardModel();
     }
-        console.log(this.selectedCard.pan);
+        //console.log(this.selectedCard.pan);
     });
      
   }
@@ -67,9 +67,9 @@ public selectedCard:Card=new Card("","","","",false);
         };
         this.cardIO.scan(options).then((data) => {
         alert(JSON.stringify(data))
-          console.log("CONSOLEEEE   >>>>>> " + data.postalCode)
+          //console.log("CONSOLEEEE   >>>>>> " + data.postalCode)
         }, err => {
-          console.log(err);
+          //console.log(err);
           // An error occurred
         });
       }
@@ -82,7 +82,7 @@ if(this.todo.valid){
 
    var dat=this.todo.value;
 
-    console.log(dat.expDate.substring(2,4)+dat.expDate.substring(5));
+    //console.log(dat.expDate.substring(2,4)+dat.expDate.substring(5));
     var date = new Date(dat.expDate);
 
 var mon=""+(date.getMonth()+1);
@@ -168,7 +168,7 @@ select(card){
       {
         text: 'NO',
         handler: () => {
-        //  console.log('Agree clicked');
+        //  //console.log('Agree clicked');
         }
       }
     ],
@@ -190,7 +190,7 @@ editCard(){
     }else{
          this.selectedCard=new Card("","","","",false);
     }
-        console.log(this.selectedCard.pan);
+        //console.log(this.selectedCard.pan);
     });
     });
  modal.present();
@@ -211,7 +211,7 @@ AddCardModel(){
     } }else{
       this.selectedCard=new Card("              ","             ","             ","               ",false);
  }
-        console.log(this.selectedCard.pan);
+        //console.log(this.selectedCard.pan);
     });
     });
  modal.present();
@@ -241,7 +241,7 @@ AddCardModel(){
       handler: data => {
         if(data.PAN.length > 0 && data.Expdate.length > 0 ){
   this.storage.get('cards').then((val) => {
-    console.log(val);
+    //console.log(val);
  
      this.storage.set('cards',this.cards);
 
@@ -257,7 +257,7 @@ AddCardModel(){
 
 save(card:Card){
   this.storage.get('cards').then((val) => {
-   console.log(val);
+   //console.log(val);
     var i:any;
     for(i = 0; i < val.length; i++) {
 

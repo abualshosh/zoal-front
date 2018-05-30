@@ -71,7 +71,7 @@ if(this.todo.valid){
 
     dat.UUID=uuid.v4();
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-  console.log(dat.IPIN)
+  //console.log(dat.IPIN)
    dat.tranCurrency='SDG';
     
    dat.tranAmount=dat.Amount;
@@ -81,10 +81,10 @@ if(this.todo.valid){
       dat.toAccountType='00';
    dat.pan=dat.Card.pan;
    dat.expDate=dat.Card.expDate;
- console.log(dat)
+ //console.log(dat)
   this.GetServicesProvider.load(this.todo.value,'consumer/generateVoucher').then(data => {
    this.bal = data;
-    console.log(data)
+    //console.log(data)
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);
@@ -95,6 +95,7 @@ var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:m
     "acqTranFee":data.acqTranFee
     ,"issuerTranFee":data.issuerTranFee
      ,"tranAmount":data.tranAmount
+     ,"tranCurrency":data.tranCurrency
      ,date:datetime
   };
    
@@ -104,8 +105,9 @@ var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:m
    }
    main.push(mainData);
    var voucher={
-       "voucherNumber":data.voucherNumber
-       ,"voucherCode":data.voucherCode
+      // "voucherNumber":data.voucherNumber
+      // ,
+       "voucherCode":data.voucherCode
    }
       var dat =[];
 

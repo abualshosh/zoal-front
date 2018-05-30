@@ -64,7 +64,7 @@ export class SlideFreeModePage {
       }
       this.scanData = barcodeData;
     }, (err) => {
-      console.log("Error occured : " + err);
+      //console.log("Error occured : " + err);
     });
   }
 
@@ -74,7 +74,7 @@ export class SlideFreeModePage {
   }
   openGmpp(page,name){
     this.profile = JSON.parse(localStorage.getItem("profile"));
-    console.log(this.profile)
+    //console.log(this.profile)
    
   if(!this.profile.phoneNumber){
     let modal=this.modalCtrl.create('SignupModalPage', {},{ cssClass: 'inset-modals' });

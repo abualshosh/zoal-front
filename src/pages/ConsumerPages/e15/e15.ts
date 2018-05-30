@@ -148,7 +148,7 @@ if(this.todo.valid){
 
     dat.UUID=uuid.v4();
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-  console.log(dat.IPIN)
+  //console.log(dat.IPIN)
    dat.tranCurrency='SDG';
     
    dat.tranAmount=dat.Amount;
@@ -170,10 +170,10 @@ if(this.todo.valid){
       dat.paymentInfo="SERVICEID=6/INVOICENUMBER="+dat.INVOICENUMBER+"/PHONENUMBER="+dat.PHONENUMBER;
       dat.payeeId="E15";
 
- console.log(dat)
+ //console.log(dat)
   this.GetServicesProvider.load(dat,'consumer/payment').then(data => {
    this.bal = data;
-    console.log(data)
+    //console.log(data)
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);

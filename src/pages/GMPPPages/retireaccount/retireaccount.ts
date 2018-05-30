@@ -49,7 +49,7 @@
       });
         //user.printuser();
       //  this.compleate='TRUE';
-        console.log(this.compleate);
+        //console.log(this.compleate);
     this.GetServicesProvider=GetServicesProviderg;
         this.todo = this.formBuilder.group({
 
@@ -99,12 +99,12 @@
        dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
   dat.consumerIdentifier=this.consumerIdentifier;
 
-      console.log(dat.IPIN)
+      //console.log(dat.IPIN)
        dat.isConsumer='true';
 
       this.GetServicesProvider.loadGmpp(this.todo.value,'Retirewallet').then(data => {
        this.bal = data;
-        console.log(data)
+        //console.log(data)
         if(data != null && data.responseCode==1){
 
             this.storage.set('RetireACCOUNT','TRUE');
@@ -150,13 +150,13 @@
            dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
            dat.consumerOTP=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerOTP);
       dat.consumerIdentifier=this.consumerIdentifier;
-console.log(dat.originalTranUUID)
-          console.log(dat.IPIN)
+//console.log(dat.originalTranUUID)
+          //console.log(dat.IPIN)
         
 
           this.GetServicesProvider.loadGmpp(this.complate.value,'ComplateRetirewallet').then(data => {
            this.bal = data;
-            console.log(data)
+            //console.log(data)
             if(data != null && data.responseCode==1){
 
              loader.dismiss();

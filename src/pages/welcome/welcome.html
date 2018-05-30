@@ -22,7 +22,7 @@
 <ion-footer>
   <ion-item>
    
-    <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;" [(ngModel)]="language" (ngModelChange)="ChangeLang()">
+    <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}"  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;" [(ngModel)]="language" (ngModelChange)="ChangeLang()">
       <ion-option *ngFor="let language of languages" [value]="language.Code" >{{language.language }}</ion-option>
     </ion-select>
   </ion-item>

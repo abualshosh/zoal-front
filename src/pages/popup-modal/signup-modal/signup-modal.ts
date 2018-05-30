@@ -67,7 +67,7 @@ export class SignupModalPage {
          modal.present();
          this.viewCtrl.dismiss();
       }, err => {
-        console.log(err);
+        //console.log(err);
       });
       }else{
         this.showAlert(data);

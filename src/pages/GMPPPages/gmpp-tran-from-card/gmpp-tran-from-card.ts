@@ -72,7 +72,7 @@ submitAttempt: boolean = false;
      dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
       dat.ipin=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.ipin);
 dat.consumerIdentifier=this.consumerIdentifier;
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.isConsumer='true';
  var date = new Date(dat.expDate);
  var mon=""+(date.getMonth()+1);
@@ -82,7 +82,7 @@ if(mon.length==1){
  dat.expDate=date.getFullYear().toString().substring(2,4)+mon;
     this.GetServicesProvider.load(this.todo.value,'gmpp/transferAccountToWallet').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);

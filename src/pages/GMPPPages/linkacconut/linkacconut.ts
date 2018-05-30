@@ -37,7 +37,7 @@ import {Card} from '../../../models/cards';
     
       //user.printuser();
     //  this.compleate='TRUE';
-      console.log(this.compleate);
+      //console.log(this.compleate);
   this.GetServicesProvider=GetServicesProviderg;
       this.todo = this.formBuilder.group({
 
@@ -99,12 +99,12 @@ this.storage.set("primaryAccountNumber",null);
      dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
 
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.isConsumer='true';
 
     this.GetServicesProvider.load(this.todo.value,'gmpp/linkAccount').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==930){
 
           this.storage.set('LINKACCOUNT','TRUE');
@@ -159,13 +159,13 @@ dat.consumerIdentifier=this.consumerIdentifier;
           // dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
            dat.consumerOTP=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerOTP);
       dat.consumerIdentifier=this.consumerIdentifier;
-console.log(this.complate.value)
-          console.log(dat.IPIN)
+//console.log(this.complate.value)
+          //console.log(dat.IPIN)
         
 
           this.GetServicesProvider.load(this.complate.value,'gmpp/completeLinkAccount').then(data => {
            this.bal = data;
-            console.log(data)
+            //console.log(data)
             if(data != null && data.responseCode==1){
 
              loader.dismiss();

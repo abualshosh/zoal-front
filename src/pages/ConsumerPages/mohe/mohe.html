@@ -44,7 +44,7 @@
             </div>
             <ion-item *ngIf="!todo.controls.mobilewallet.value">
                   <ion-label stacked>{{'Card' | translate}}</ion-label>
-                  <ion-select  (ionChange)="onSelectChange($event)" style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
+                  <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}"  (ionChange)="onSelectChange($event)" style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
                     <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
 
                   </ion-select>
@@ -56,7 +56,7 @@
                 </div>
       <ion-item>
             <ion-label stacked >{{'CourseID'|translate}}</ion-label >
-            <ion-select style="padding-left:5%;"  interface="alert" formControlName="CourseID" >
+            <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;"  interface="alert" formControlName="CourseID" >
               <ion-option  *ngFor="let CourseID of CourseIDs"  [value]="CourseID">{{CourseID.title | translate}}</ion-option>
 
             </ion-select>
@@ -67,7 +67,7 @@
                           </div>
           <ion-item>
                 <ion-label stacked >{{'FormKind'|translate}}</ion-label >
-                <ion-select style="padding-left:5%;"  interface="alert" formControlName="FormKind" >
+                <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;"  interface="alert" formControlName="FormKind" >
                   <ion-option  *ngFor="let FormKind of FormKinds"  [value]="FormKind">{{FormKind.title | translate}}</ion-option>
 
                 </ion-select>

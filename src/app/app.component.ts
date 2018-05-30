@@ -35,7 +35,7 @@ subscription:any;
   constructor(private imageLoaderConfig: ImageLoaderConfig,private sqlite: SQLite
     ,private translate: TranslateService, platform: Platform, settings: Settings, 
     private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {
-    console.log(localStorage.getItem('logdin'));
+    //console.log(localStorage.getItem('logdin'));
     if (localStorage.getItem('logdin')=="true"){
     this.rootPage='TabsPage';
     }
@@ -61,10 +61,10 @@ initChat(){
 //       stompClient.debug = null;
 //       stompClient.connect("","", ((frame) =>{
 //           //setConnected(true);
-//           console.log('Connected: ' + frame);
+//           //console.log('Connected: ' + frame);
 //           stompClient.subscribe('/user/queue/messages', function(greeting){
 //           //    showGreeting(greeting.body);
-//           console.log(greeting.body);
+//           //console.log(greeting.body);
 //           });
 //       }));
 
@@ -78,11 +78,11 @@ initChat(){
   // //start connection
   // this.stomp.startConnect().then(() => {
   //   this.stomp.done('init');
-  //   console.log('connected');
+  //   //console.log('connected');
   //
   //   //subscribe
   //   this.subscription = this.stomp.subscribe('/destination', ((msg) => {
-  //     console.log(msg);
+  //     //console.log(msg);
   //
   //   }));
   //
@@ -94,7 +94,7 @@ initChat(){
   //
   //   //disconnect
   //   this.stomp.disconnect().then(() => {
-  //     console.log( 'Connection closed' )
+  //     //console.log( 'Connection closed' )
   //   })
   //
   // });
@@ -116,7 +116,7 @@ initChat(){
 //          }, (e) => {
 //
 //
-//              console.log("Errot: " + JSON.stringify(e));
+//              //console.log("Errot: " + JSON.stringify(e));
 //          });
      }
 

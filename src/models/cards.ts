@@ -17,7 +17,7 @@ export class Card {
 
   printuser(){
 
-    console.log(this.pan);
+    //console.log(this.pan);
   }
 
 }

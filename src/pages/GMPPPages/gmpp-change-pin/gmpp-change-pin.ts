@@ -70,12 +70,12 @@ if (dat.connewPIN== dat.newPIN){
      dat.oldPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.oldPIN);
      dat.newPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.newPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
-    console.log(dat)
+    //console.log(dat)
      dat.isConsumer='true';
-
+dat.connewPIN="";
     this.GetServicesProvider.load(this.todo.value,'gmpp/changePIN').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
        var datas =[

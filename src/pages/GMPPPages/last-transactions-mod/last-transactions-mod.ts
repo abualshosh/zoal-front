@@ -17,11 +17,11 @@ export class LastTransactionsModPage {
 public items:any[]=[];
   constructor(public viewCtrl: ViewController ,public navCtrl: NavController, public navParams: NavParams) {
   this.items=this.navParams.get('data');
-console.log(  this.items);
+//console.log(  this.items);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LastTransactionsModPage');
+    //console.log('ionViewDidLoad LastTransactionsModPage');
   }
   dismiss() {
     this.viewCtrl.dismiss();

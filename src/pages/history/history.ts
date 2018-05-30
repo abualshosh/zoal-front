@@ -45,7 +45,7 @@ export class HistoryPage {
   constructor(public navCtrl: NavController,public modalCtrl:ModalController, public navParams: NavParams, public api: Api) {
     this.api.get('historiesmobile', "?page=0&size=15", null).subscribe((res: any) => {
           this.last = res.last;
-              console.log(this.size)
+              //console.log(this.size)
               this.history = res.content;
           
           }, err => {
@@ -54,7 +54,7 @@ export class HistoryPage {
   }
   search(){
     this.checkBoxes.forEach(box => {
-      console.log(box.value)
+      //console.log(box.value)
     });
   }
   toggleSearch(){
@@ -134,8 +134,9 @@ export class HistoryPage {
    }}
 
    var voucher={
-    "voucherNumber":data.voucherNumber
-    ,"voucherCode":data.voucherCode
+ //   "voucherNumber":data.voucherNumber
+  //  ,
+    "voucherCode":data.voucherCode
 }
 var main =[];
 var mainData={};
@@ -156,7 +157,7 @@ main.push(mainData);
     this.page = this.page + 1;
     this.api.get('historiesmobile', "?page=" + this.page + "&size=15", null).subscribe((res: any) => {
      this.last = res.last;
-        console.log(this.size);
+        //console.log(this.size);
         for (let i = 0; i < res.content.length; i++) {
           this.history.push(res.content[i]);
         }

@@ -70,12 +70,12 @@ submitAttempt: boolean = false;
       dat.UUID=uuid.v4();
      dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.originatorType ='Consumer';
      dat.tranType='CASHOUT';
     this.GetServicesProvider.loadGmpp(this.todo.value,'ResendTan').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);

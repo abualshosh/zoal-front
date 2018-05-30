@@ -35,7 +35,7 @@ import * as moment from 'moment';
               </div>
     <ion-item>
           <ion-label stacked>{{'Card' | translate}}</ion-label>
-          <ion-select style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
+          <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
             <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
 
           </ion-select>
@@ -115,7 +115,7 @@ encrypt(msg : any){
 // //     coeff: null
 // // }, 'components-public');
 // //var publicComponents = key.exportKey('components-public');
-// //console.log(publicComponents);
+// ////console.log(publicComponents);
 // return key.encrypt(msg, 'base64');
 }
 
@@ -130,23 +130,23 @@ encrypt(msg : any){
 
     dat.UUID=uuid.v4();
    dat.IPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.IPIN);
-  console.log(dat.IPIN)
+  //console.log(dat.IPIN)
    dat.tranCurrency='SDG';
     
    dat.authenticationType='00';
    dat.fromAccountType='00';
    dat.pan=dat.Card.pan;
    dat.expDate=dat.Card.expDate;
- console.log(dat)
+ //console.log(dat)
   this.GetServicesProvider.load(dat,'consumer/getBalance').then(data => {
    this.bal = data;
-    console.log(data)
+    //console.log(data)
     if(data != null && data.responseCode==0){
      loader.dismiss();
     // this.showAlert(data);
     var main =[];
     var mainData={
-      "Balance":data.balance.available
+      "balance":data.balance.available
     }
     main.push(mainData);
     var datas;

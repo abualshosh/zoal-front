@@ -72,9 +72,9 @@ uploadContacts(){
            seq.subscribe((res: any) => {
              // If the API returned a successful response, mark the user as logged in
              if (res) {
-               console.log(this.username)
+               //console.log(this.username)
 
-               console.log(res)
+               //console.log(res)
 this.currentItems=[];
                for (var i=0;i<res.length;i++){
                  if(res[i].profileOne.userName!=this.username){
@@ -87,7 +87,7 @@ this.currentItems=[];
                    localStorage.setItem("connections", JSON.stringify(this.currentItems));
              //  this._loggedIn(res);
            //  localStorage.setItem('id_token', res.id_token);
-           //  console.log( localStorage.getItem('id_token'));
+           //  //console.log( localStorage.getItem('id_token'));
 
              } else {
 
@@ -102,7 +102,7 @@ this.currentItems=[];
 
           // this.contactlist=contacts;
          }, (error) => {
-           console.log(error);
+           //console.log(error);
          });
 }
   /**

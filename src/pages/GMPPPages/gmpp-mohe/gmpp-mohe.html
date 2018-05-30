@@ -23,7 +23,7 @@
                 </div>
       <ion-item>
             <ion-label stacked>{{'CourseID'|translate}}</ion-label>
-            <ion-select style="padding-left:5%;"  interface="action-sheet" formControlName="CourseID" >
+            <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;"  interface="action-sheet" formControlName="CourseID" >
               <ion-option  *ngFor="let CourseID of CourseIDs"  [value]="CourseID">{{CourseID.title}}</ion-option>
 
             </ion-select>
@@ -34,7 +34,7 @@
                           </div>
           <ion-item>
                 <ion-label stacked>{{'FormKind'|translate}}</ion-label>
-                <ion-select style="padding-left:5%;"  interface="action-sheet" formControlName="FormKind" >
+                <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;"  interface="action-sheet" formControlName="FormKind" >
                   <ion-option  *ngFor="let FormKind of FormKinds"  [value]="FormKind">{{FormKind.title}}</ion-option>
 
                 </ion-select>

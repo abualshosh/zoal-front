@@ -56,7 +56,7 @@ import {Card} from '../../../models/cards';
         if(this.navParams.get("name").includes("Arab")||this.navParams.get("name").includes("Foreign")){
           this.isArab=true;
         }
-          console.log(this.navParams.get("name"))
+          //console.log(this.navParams.get("name"))
       //user.printuser();
            this.GetServicesProvider=GetServicesProviderg;
  if (this.navParams.get("name").includes("Arab")){
@@ -122,15 +122,15 @@ import {Card} from '../../../models/cards';
         dat.customerPayeeId =dat.CourseID.id+""+dat.FormKind.id+this.pad(dat.SETNUMBER,10);
 
       }
-    console.log(dat.customerPayeeId )
+    //console.log(dat.customerPayeeId )
      dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
 dat.consumerIdentifier=this.consumerIdentifier;
-    console.log(dat.IPIN)
+    //console.log(dat.IPIN)
      dat.isConsumer='true';
 
     this.GetServicesProvider.loadGmpp(this.todo.value,'Payment').then(data => {
      this.bal = data;
-      console.log(data)
+      //console.log(data)
       if(data != null && data.responseCode==1){
        loader.dismiss();
       // this.showAlert(data);

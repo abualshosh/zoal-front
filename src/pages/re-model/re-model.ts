@@ -32,7 +32,7 @@ public items:any[]=[];
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReModelPage');
+    //console.log('ionViewDidLoad ReModelPage');
   }
   dismiss() {
     this.viewCtrl.dismiss();

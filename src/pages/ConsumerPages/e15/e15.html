@@ -67,10 +67,12 @@
         </ion-item>
 
         <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
-          <p>{{'validipinError'| translate}}</p>
-        </div>
-        <ion-item>
-          <ion-label floating> {{'IPIN'|translate}}</ion-label>
+          <p *ngIf="todo.controls.mobilewallet.value">{{'validipinError'| translate}}</p>
+          <p *ngIf="!todo.controls.mobilewallet.value"> {{'validpinError'| translate}}</p>
+    </div>
+<ion-item>
+<ion-label *ngIf="todo.controls.mobilewallet.value" stacked> {{'PIN'|translate}}</ion-label>
+<ion-label *ngIf="!todo.controls.mobilewallet.value" stacked> {{'IPIN'|translate}}</ion-label>
           <ion-input class="mask-text" type="number" formControlName="IPIN" required></ion-input>
         </ion-item>
 

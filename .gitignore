@@ -115,6 +115,7 @@ Desktop.ini
 ######################
 /bin/
 /deploy/
+.sourcemaps
 
 ######################
 # Logs

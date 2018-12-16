@@ -1,47 +1,34 @@
 <ion-header>
-
-  <ion-navbar color='bar'>
-    <ion-title>{{ 'signup' | translate }}</ion-title>
+  <ion-navbar color="bar">
+    <ion-title>{{ "signup" | translate }}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
-    <div class="splash-info">
-        <div class="splash-logo"></div>
-        <div class="splash-intro">
-      {{'EYPN'|translate}} 
-        </div>    </div>
+  <div class="splash-info">
+    <div class="splash-logo"></div>
+    <div class="splash-intro">{{ "EYPN" | translate }}</div>
+  </div>
   <ion-card class="form">
-  <form (submit)="doSignup()" >
-    <ion-list>
-
-
-
+    <form [formGroup]="signup" (ngSubmit)="doSignup()">
+      <div *ngIf="!signup.controls.PHONENUMBER.valid && submitAttempt">
+        <p>{{ "validvoucherNumberError" | translate }}</p>
+      </div>
       <ion-item>
         <ion-label fixed>+249</ion-label>
-
-        <ion-input type="number" [(ngModel)]="account.username" name="username"></ion-input>
+        <ion-input
+          type="number"
+          formControlName="PHONENUMBER"
+          required
+        ></ion-input>
       </ion-item>
 
-
-      <!-- <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
-      </ion-item> -->
-
-
-
-
-
-
-
       <div padding>
-        <button ion-button color="primary" block>{{ 'signup' | translate }}</button>
+        <button ion-button color="primary" block>
+          {{ "signup" | translate }}
+        </button>
       </div>
 
-    </ion-list>
-  </form>
-</ion-card>
+    </form>
+  </ion-card>
 </ion-content>

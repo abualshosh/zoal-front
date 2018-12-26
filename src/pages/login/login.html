@@ -1,25 +1,33 @@
 <ion-header>
-
-  <ion-navbar color='bar'>
-    <ion-title>{{ 'login' | translate }}</ion-title>
+  <ion-navbar color="secondary">
+    <ion-title>{{ "login" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
-    <div class="splash-info">
-    <div class="splash-logo"></div>
-    <div class="splash-intro">
-    {{'EYPN' |translate}} 
-    </div>    </div>
-  <form  class="form">
-    <ion-list>
-    <ion-item>
-        <ion-label fixed>+249</ion-label>
-        <ion-input type="number" [(ngModel)]="account.username" name="email"></ion-input>
-      </ion-item>
-        <div padding>
-        <button ion-button (click)="doLogin()" color="primary" block>{{ 'login' | translate }}</button>
-      </div>
 
-    </ion-list>
-  </form>
+<ion-content>
+  <div class="splash-info">
+    <div class="splash-logo"></div>
+    <div class="splash-intro">{{ "EYPN" | translate }}</div>
+  </div>
+  <ion-list class="form">
+    <form [formGroup]="login" (ngSubmit)="doLogin()">
+      <div *ngIf="!login.controls.PHONENUMBER.valid && submitAttempt">
+        <p>{{ "validvoucherNumberError" | translate }}</p>
+      </div>
+      <ion-item>
+        <ion-label fixed>+249</ion-label>
+        <ion-input
+          type="number"
+          formControlName="PHONENUMBER"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <div padding>
+        <button ion-button color="primary" block>
+          {{ "login" | translate }}
+        </button>
+      </div>
+    </form>
+  </ion-list>
 </ion-content>

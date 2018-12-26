@@ -1,19 +1,14 @@
-import { HintModalPage } from './hint-modal';
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { HintModalPage } from "./hint-modal";
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    HintModalPage,
-  ],
+  declarations: [HintModalPage],
   imports: [
     IonicPageModule.forChild(HintModalPage),
     TranslateModule.forChild()
   ],
-  exports: [
-    HintModalPage
-  ]
+  exports: [HintModalPage]
 })
-
-export class HintModalPageModule { }
+export class HintModalPageModule {}

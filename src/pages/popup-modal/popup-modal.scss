@@ -2,7 +2,7 @@ page-popup-modal {
   ion-modal,
   .show-page {
     // transparent black background overlay
-    background-color: rgba(0, 0, 0, .5) !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
     padding: 50px !important;
   }
   .toolbar-background {
@@ -26,7 +26,7 @@ page-popup-modal {
 
 ion-modal.inset-modals {
   // transparent black background overlay
-  background-color: rgba(0, 0, 0, .5) !important;
-  transition: opacity .25s ease-in-out;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  transition: opacity 0.25s ease-in-out;
   padding: 20vh 10vw;
 }

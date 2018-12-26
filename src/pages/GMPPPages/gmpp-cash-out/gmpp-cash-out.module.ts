@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { GmppCashOutPage } from './gmpp-cash-out';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { GmppCashOutPage } from "./gmpp-cash-out";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    GmppCashOutPage,
-  ],
+  declarations: [GmppCashOutPage],
   imports: [
     IonicPageModule.forChild(GmppCashOutPage),
-        TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    GmppCashOutPage
-  ]
+  exports: [GmppCashOutPage]
 })
 export class GmppCashOutPageModule {}

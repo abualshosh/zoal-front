@@ -1,20 +1,15 @@
-import { NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { IonicPageModule } from 'ionic-angular';
-import {RelativeTime} from "../../pipes/relative-time";
-import { ItemDetailPage } from './item-detail';
+import { NgModule } from "@angular/core";
+import { TranslateModule } from "@ngx-translate/core";
+import { IonicPageModule } from "ionic-angular";
+import { RelativeTime } from "../../pipes/relative-time";
+import { ItemDetailPage } from "./item-detail";
 
 @NgModule({
-  declarations: [
-    ItemDetailPage,
-    RelativeTime
-  ],
+  declarations: [ItemDetailPage, RelativeTime],
   imports: [
     IonicPageModule.forChild(ItemDetailPage),
     TranslateModule.forChild()
   ],
-  exports: [
-    ItemDetailPage
-  ]
+  exports: [ItemDetailPage]
 })
-export class ItemDetailPageModule { }
+export class ItemDetailPageModule {}

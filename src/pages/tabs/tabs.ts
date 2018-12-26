@@ -68,7 +68,7 @@ export class TabsPage {
         this.username = localStorage.getItem("username");
         this.uploadContacts();
         if (typeof fcm === "undefined") {
-          alert("FCMPlugin is installed correctly");
+          // alert("FCMPlugin is installed correctly");
         }
         fcm.getToken().then(token => {
           if (token) {
@@ -115,6 +115,7 @@ export class TabsPage {
                ID INTEGER PRIMARY KEY AUTOINCREMENT,
                chatId INTEGER,
                otherUser TEXT,
+               otherUserFullname TEXT,
                msg TEXT,
                msgDate DateTime
                
@@ -125,17 +126,12 @@ export class TabsPage {
       `CREATE TABLE IF NOT EXISTS chats(
                ID INTEGER PRIMARY KEY AUTOINCREMENT,
                otherUser TEXT,
+               otherUserFullname TEXT,
                msg TEXT,
                msgDate DateTime
           )`,
       []
     );
-
-    // db.executeSql(`insert into chats(
-    //              otherUser ,
-    //              msg ,
-    //              msgDate
-    //         ) values (?,?,?)`, ['user','first m','2017-11-11']);
   }
 
   connectWs(token: any, FcmToken: any) {
@@ -168,7 +164,7 @@ export class TabsPage {
         this.response
       );
       //send data
-      this.events.subscribe("message", greeting => {
+      this.events.subscribe("message", res => {
         //console.log(greeting)
         this.zone.run(() => {
           this.tab4BadgeCount++;
@@ -181,32 +177,29 @@ export class TabsPage {
           .then((db: SQLiteObject) => {
             db.executeSql(
               `insert into messages(
-             chatId ,
-             otherUser ,
-             msg ,
-             msgDate
-        ) values (?,?,?,?)`,
-              [
-                greeting.sender,
-                greeting.sender,
-                greeting.message,
-                greeting.msgDate
-              ]
+                  chatId,
+                  otherUser,
+                  otherUserFullname,
+                  msg,
+                  msgDate) 
+                values (?,?,?,?,?)`,
+              [res.sender, res.sender, res.fullname, res.message, res.msgDate]
             );
 
             db.executeSql(
               `update chats set msg=? , msgDate=? where otheruser=?`,
-              [greeting.message, greeting.msgDate, greeting.sender]
+              [res.message, res.msgDate, res.sender]
             ).then(
               data => {
                 if (data.rowsAffected == 0) {
                   db.executeSql(
                     `insert into chats(
-              otherUser ,
-              msg ,
-              msgDate
-         ) values (?,?,?)`,
-                    [greeting.sender, greeting.message, greeting.msgDate]
+                        otherUser,
+                        otherUserFullname,
+                        msg,
+                        msgDate) 
+                    values (?,?,?,?)`,
+                    [res.sender, res.fullname, res.message, res.msgDate]
                   );
                 }
               },
@@ -214,14 +207,6 @@ export class TabsPage {
                 //console.log("Errot: " + JSON.stringify(e));
               }
             );
-
-            // for(var i = 0; i < this.chats.length; i++)
-            // {
-            //   if(this.chats[i].title==greeting.sender){
-            //     this.chats[i].lastMessage=greeting.message;
-            //     this.chats[i].timestamp=new Date();
-            //   }
-            // }
           })
           .catch(e => console.log(e));
       });
@@ -281,7 +266,7 @@ export class TabsPage {
         );
       },
       error => {
-        //console.log(error);
+        // console.log(error);
       }
     );
   }
@@ -290,6 +275,7 @@ export class TabsPage {
     //console.log(data)
     this.events.publish("message", data);
   };
+
   @ViewChild("myTabs") tabRef: any;
 
   selectTab() {

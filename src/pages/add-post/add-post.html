@@ -1,7 +1,6 @@
 <ion-header>
-
-  <ion-navbar color='primary'>
-    <ion-title>{{'addpost' | translate }}</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>{{ "addpost" | translate }}</ion-title>
     <!-- <ion-buttons start>
       <button ion-button (click)="cancel()">
         <span color="primary" showWhen="ios">
@@ -19,29 +18,62 @@
       </button>
     </ion-buttons> -->
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
-  <form *ngIf="form" [formGroup]="form" >
-
+  <form *ngIf="form" [formGroup]="form">
     <ion-list>
-      <ion-item >
-          <textarea #myInput id="myInput" rows="1" maxLength="500" (keyup)="resize()" formControlName="name"></textarea>
-            </ion-item>
-      <input type="file" #fileInput style="visibility: hidden; height: 0px" formControlName="file" name="file" (change)="processWebImage($event)" />
+      <ion-item>
+        <textarea
+          #myInput
+          id="myInput"
+          rows="1"
+          maxLength="500"
+          (keyup)="resize()"
+          formControlName="name"
+        ></textarea>
+      </ion-item>
+      <input
+        type="file"
+        #fileInput
+        style="visibility: hidden; height: 0px"
+        formControlName="file"
+        name="file"
+        (change)="processWebImage($event)"
+      />
       <div class="profile-image-wrapper" (click)="presentActionSheet()">
-        <div padding class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
-          <ion-icon name="attach"></ion-icon>
-          {{ 'addimage' | translate }}
+        <div
+          padding
+          class="profile-image-placeholder"
+          *ngIf="!this.form.controls.profilePic.value"
+        >
+          <button ion-button icon-start color="secondary">
+            <ion-icon name="attach"></ion-icon>
+            {{ "addimage" | translate }}
+          </button>
         </div>
-        <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value">
-          <img-loader [src]="this.form.controls.profilePic.value" width="100%" height="120px"></img-loader>
+        <div
+          class="profile-image"
+          [style.backgroundImage]="getProfileImageStyle()"
+          *ngIf="this.form.controls.profilePic.value"
+        >
+          <img-loader
+            [src]="this.form.controls.profilePic.value"
+            width="100%"
+            height="120px"
+          ></img-loader>
         </div>
       </div>
       <div padding>
-        <button ion-button color="primary" (click)="done()" [disabled]="!isReadyToSave"  block>{{ 'Submit' | translate }}</button>
+        <button
+          ion-button
+          color="primary"
+          (click)="done()"
+          [disabled]="!isReadyToSave"
+          block
+        >
+          {{ "Submit" | translate }}
+        </button>
       </div>
     </ion-list>
   </form>

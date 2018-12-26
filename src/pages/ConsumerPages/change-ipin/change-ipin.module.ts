@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { ChangeIpinPage } from './change-ipin';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { ChangeIpinPage } from "./change-ipin";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    ChangeIpinPage,
-  ],
+  declarations: [ChangeIpinPage],
   imports: [
     IonicPageModule.forChild(ChangeIpinPage),
-      TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    ChangeIpinPage
-  ]
+  exports: [ChangeIpinPage]
 })
 export class ChangeIpinPageModule {}

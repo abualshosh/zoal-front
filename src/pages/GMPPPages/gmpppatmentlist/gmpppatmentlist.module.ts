@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { GmpppatmentlistPage } from './gmpppatmentlist';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { GmpppatmentlistPage } from "./gmpppatmentlist";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    GmpppatmentlistPage,
-  ],
+  declarations: [GmpppatmentlistPage],
   imports: [
     IonicPageModule.forChild(GmpppatmentlistPage),
-      TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    GmpppatmentlistPage
-  ]
+  exports: [GmpppatmentlistPage]
 })
 export class GmpppatmentlistPageModule {}

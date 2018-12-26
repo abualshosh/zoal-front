@@ -23,6 +23,7 @@ export class LockPage {
   ionViewDidLoad() {
     console.log("ionViewDidLoad LockPage");
   }
+
   open(page, name) {
     //this.openGmppSignup();
     if (name) {
@@ -33,6 +34,7 @@ export class LockPage {
       this.navCtrl.push(page);
     }
   }
+
   openPage(page) {
     this.navCtrl.push(page);
   }

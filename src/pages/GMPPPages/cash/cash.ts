@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 /**
  * Generated class for the CashPage page.
@@ -9,19 +9,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  */
 @IonicPage()
 @Component({
-  selector: 'page-cash',
-  templateUrl: 'cash.html',
+  selector: "page-cash",
+  templateUrl: "cash.html"
 })
 export class CashPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad CashPage');
   }
   openPage(page) {
-   this.navCtrl.push(page);
-
+    this.navCtrl.push(page);
   }
 }

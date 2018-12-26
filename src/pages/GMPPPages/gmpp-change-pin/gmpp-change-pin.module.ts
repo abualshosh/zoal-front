@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { GmppChangePinPage } from './gmpp-change-pin';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { GmppChangePinPage } from "./gmpp-change-pin";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    GmppChangePinPage,
-  ],
+  declarations: [GmppChangePinPage],
   imports: [
     IonicPageModule.forChild(GmppChangePinPage),
-        TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    GmppChangePinPage
-  ]
+  exports: [GmppChangePinPage]
 })
 export class GmppChangePinPageModule {}

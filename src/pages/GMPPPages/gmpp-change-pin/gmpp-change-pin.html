@@ -5,52 +5,60 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar color="bar">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>{{'ChangePin' | translate}}</ion-title>
-    <ion-buttons end>
-  
-  </ion-buttons>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "ChangePin" | translate }}</ion-title>
+    <ion-buttons end> </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content no-padding class="masters">
-<div class="con">
-  <form [formGroup]="todo" (ngSubmit)="logForm()" >
-  <ion-list>
-
-      
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-list>
         <div *ngIf="!todo.controls.oldPIN.valid && submitAttempt">
-                      <p>{{'validipinError'| translate}}</p>
-                </div>
-<ion-item>
-  <ion-label stacked> {{'PIN'|translate}}</ion-label>
-  <ion-input  class="mask-text"  type="number" formControlName="oldPIN" required></ion-input>
-</ion-item>
+          <p>{{ "validipinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "PIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="oldPIN"
+            required
+          ></ion-input>
+        </ion-item>
 
-<div *ngIf="!todo.controls.newPIN.valid && submitAttempt">
-    <p>{{'validnewPINError'| translate}}</p>
-</div>
-<ion-item>
-  <ion-label stacked>{{'NEWPIN' | translate}}</ion-label>
-  <ion-input  class="mask-text"  type="number" formControlName="newPIN" required></ion-input>
-</ion-item>
+        <div *ngIf="!todo.controls.newPIN.valid && submitAttempt">
+          <p>{{ "validnewPINError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "NEWPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="newPIN"
+            required
+          ></ion-input>
+        </ion-item>
 
-<div *ngIf="!todo.controls.connewPIN.valid && submitAttempt">
-    <p>{{'validconnewPINError'| translate}}</p>
-</div>
-<ion-item>
-  <ion-label stacked>{{'CONNEWPIN' | translate}}</ion-label>
-  <ion-input  class="mask-text"  type="number" formControlName="connewPIN" required></ion-input>
-</ion-item>
+        <div *ngIf="!todo.controls.connewPIN.valid && submitAttempt">
+          <p>{{ "validconnewPINError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "CONNEWPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="connewPIN"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
 
-</ion-list>
-
-<button class="subbutn" ion-button type="submit" color="secondary">{{'Submit'|translate}}</button>
-  </form>
-</div>
-  </ion-content>
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

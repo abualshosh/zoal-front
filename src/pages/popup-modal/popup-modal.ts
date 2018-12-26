@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
-import { NavController, ModalController, IonicPage, AlertController } from 'ionic-angular';
+import { Component } from "@angular/core";
+import {
+  NavController,
+  ModalController,
+  IonicPage,
+  AlertController
+} from "ionic-angular";
 
 @IonicPage()
 @Component({
-  selector: 'page-popup-modal',
-  templateUrl: 'popup-modal.html'
+  selector: "page-popup-modal",
+  templateUrl: "popup-modal.html"
 })
 export class PopupModalsPage {
   rootPage: any;
@@ -12,23 +17,24 @@ export class PopupModalsPage {
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-  ) { }
+    public alertCtrl: AlertController
+  ) {}
 
   openHintModal() {
-    this.openModal('HintModalPage');
+    this.openModal("HintModalPage");
   }
 
   openWalkthroughModal() {
-    this.openModal('WalkthroughModalPage');
+    this.openModal("WalkthroughModalPage");
   }
 
   openSignupModal() {
-    this.openModal('SignupModalPage');
+    this.openModal("SignupModalPage");
   }
 
   openModal(pageName) {
-    this.modalCtrl.create(pageName, null, { cssClass: 'inset-modals' })
-                  .present();
+    this.modalCtrl
+      .create(pageName, null, { cssClass: "inset-modals" })
+      .present();
   }
 }

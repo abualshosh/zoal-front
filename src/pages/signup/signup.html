@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="bar">
+  <ion-navbar color="secondary">
     <ion-title>{{ "signup" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -9,7 +9,7 @@
     <div class="splash-logo"></div>
     <div class="splash-intro">{{ "EYPN" | translate }}</div>
   </div>
-  <ion-card class="form">
+  <ion-list class="form">
     <form [formGroup]="signup" (ngSubmit)="doSignup()">
       <div *ngIf="!signup.controls.PHONENUMBER.valid && submitAttempt">
         <p>{{ "validvoucherNumberError" | translate }}</p>
@@ -28,7 +28,6 @@
           {{ "signup" | translate }}
         </button>
       </div>
-
     </form>
-  </ion-card>
+  </ion-list>
 </ion-content>

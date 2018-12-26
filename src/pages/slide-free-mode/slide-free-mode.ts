@@ -47,9 +47,17 @@ export class SlideFreeModePage {
       component: "MohePage",
       icon: "school",
       var: ""
+    },
+    {
+      title: "SpecialPayment",
+      component: "SpecialPaymentPage",
+      icon: "card",
+      var: ""
     }
   ];
+
   Consumerpages: any[] = [];
+
   Gmpppages: any[] = [
     { title: "Pruchas", component: "GmppPruchasPage", icon: "cart", var: "" },
     { title: "CashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
@@ -71,8 +79,10 @@ export class SlideFreeModePage {
       component: "SelfunlockPage",
       icon: "unlock",
       var: ""
-    }
+    },
+    { title: "History", component: "HistoryPage", icon: "clock", var: "" }
   ];
+
   TransferPages: any[] = [
     { title: "Transfer", component: "GmppTransPage", icon: "swap", var: "" },
     {
@@ -93,14 +103,9 @@ export class SlideFreeModePage {
       component: "GmppTranFromCardPage",
       icon: "swap",
       var: ""
-    },
-    {
-      title: "Special Payment",
-      component: "SpecialPaymentPage",
-      icon: "card",
-      var: ""
     }
   ];
+
   public pet: any = "puppies";
   scanData: {};
   public cards: Card[] = [];
@@ -117,13 +122,11 @@ export class SlideFreeModePage {
     this.profile = JSON.parse(localStorage.getItem("profile"));
     this.storage.get("cards").then(val => {
       this.cards = val;
-    }); // for (let i = 0; i < 20; i++) {
-    //   this.slides.push(this.slides[i % 4]);
-    // }
+    });
   }
 
   openPopover(myEvent) {
-    let popover = this.popoverCtrl.create("SettingsPage");
+    let popover = this.popoverCtrl.create("ContentPage");
     popover.present({
       ev: myEvent
     });
@@ -249,7 +252,7 @@ export class SlideFreeModePage {
       }
     });
   }
-  
+
   open(page, name) {
     //this.openGmppSignup();
     if (name) {
@@ -260,6 +263,7 @@ export class SlideFreeModePage {
       this.navCtrl.push(page);
     }
   }
+
   ngAfterViewInit() {
     //  this.slider.freeMode = true;
   }

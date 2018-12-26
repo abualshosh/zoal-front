@@ -1,19 +1,14 @@
-import { WalkthroughModalPage } from './walkthrough-modal';
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { WalkthroughModalPage } from "./walkthrough-modal";
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    WalkthroughModalPage,
-  ],
+  declarations: [WalkthroughModalPage],
   imports: [
     IonicPageModule.forChild(WalkthroughModalPage),
     TranslateModule.forChild()
   ],
-  exports: [
-    WalkthroughModalPage
-  ]
+  exports: [WalkthroughModalPage]
 })
-
-export class WalkthroughModalPageModule { }
+export class WalkthroughModalPageModule {}

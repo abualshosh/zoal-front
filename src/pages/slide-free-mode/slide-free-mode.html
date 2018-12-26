@@ -1,15 +1,10 @@
 <ion-header color="bar">
-  <ion-navbar>
-    <ion-title> ZoalPay</ion-title>
+  <ion-navbar color="secondary">
+    <ion-title>ZoalPay</ion-title>
     <ion-buttons end>
       <a ion-button icon-only (click)="openPopover($event)">
         <ion-icon name="more"></ion-icon>
       </a>
-      <!--
-        <button ion-button item-end (click)="open('HomePage')">
-            <ion-icon name="card"></ion-icon>
-        </button>
-      -->
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -96,110 +91,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!--
-    <ion-card (click)="openlist('Paymentpages')">
-            <div class="img-container">
-
-        <img src="assets/img/cp.jpg"/>
-        </div>
-        <div class="card-title">   <ion-icon name="cart"></ion-icon>
-        </div>
-        <div class="card-subtitle"> {{'payserv' | translate}}</div>
-
-    </ion-card>
-
-      <ion-card (click)="openlist('TransferPages')">
-        <div class="img-container">
-        <img src="assets/img/mp.jpg"/>
-        </div>
-        <div class="card-title">   <ion-icon name="swap"></ion-icon>
-        </div>
-        <div class="card-subtitle">{{'transervice' | translate}}</div>
-      </ion-card>
-
-      <ion-card (click)="openlist('Gmpppages')">
-            <div class="img-container">
-        <img src="assets/img/paymentServices.jpg"/>
-    </div>
-    <div class="card-title">   <ion-icon name="build"></ion-icon>
-    </div>
-        <div class="card-subtitle">{{'otherservice' | translate}}</div>
-      </ion-card>
-  -->
 </ion-content>
-
-<!--
-  <ion-item color="primary" no-lines style="text-align: center; ">
-        {{'payserv' | translate}}
-    </ion-item>
-    <ion-scroll scrollX style="height:60px ;  " no-lines>
-        <section no-padding>
-            <ion-col no-padding *ngFor="let page of Paymentpages">
-                <button  (click)="openPayment(page.component,page.var)" class="buts" ion-button  color="primary">
-                    <div style="width:100%; height:100%;">
-                        <ion-icon name={{page.icon}}></ion-icon>
-                        <br>
-                        <label >{{page.title | translate}}</label>
-                    </div>
-                </button>
-            </ion-col>
-            <ion-col>
-                <button (click)="scan()" class="buts" ion-button block color="primary">
-                    <div>
-                        <ion-icon name="camera"></ion-icon>
-                        <br>
-                        <label>Scan and pay</label>
-                    </div>
-                </button>
-            </ion-col>
-        </section>
-    </ion-scroll>
-    <ion-card style="margin-left:0px;     width:100%;
-    padding:0px;">
-        <ion-item text-wrap color="light" no-lines style="text-align: center; ">
-            {{'transervice' | translate}}
-        </ion-item>
-        <ion-card-content no-padding>
-            <ion-scroll scrollX style="height:60px ;  background-color: #ffffff;" no-lines>
-                <section >
-                    <ion-col no-padding *ngFor="let page of TransferPages" no-padding>
-                        <button (click)="open(page.component,page.var)" class="but" block color="light">
-                            <div>
-                                <ion-icon name={{page.icon}}></ion-icon>
-                                <br>
-                                <label text-wrap>{{page.title | translate}}</label>
-                            </div>
-                        </button>
-                    </ion-col>
-                </section>
-            </ion-scroll>
-        </ion-card-content>
-    </ion-card>
-    <div [ngSwitch]="pet" style="background-color:  #FAFAFA; padding-top:0.1px;">
-
-        <ion-card style="margin-left:0px;     width:100%;
-        padding:0px;">
-            <ion-item color="light" no-lines style="text-align: center; ">
-                {{'otherservice' | translate}}
-            </ion-item>
-            <ion-card-content no-padding>
-                <ion-scroll scrollX style="height:60px ;  background-color: #ffffff;" no-lines>
-                    <section>
-                        <ion-col no-padding *ngFor="let page of Gmpppages">
-                            <button (click)="open(page.component,page.var)" class="but" block color="light">
-                                <div>
-                                    <ion-icon name={{page.icon}}></ion-icon>
-                                    <br>
-                                    <label text-wrap>{{page.title | translate}}</label>
-                                </div>
-                            </button>
-                        </ion-col>
-                    </section>
-                </ion-scroll>
-            </ion-card-content>
-        </ion-card>
-    </div>
-    <div style="background-color: #FAFAFA;; height:5px; ">
-    </div>
-  </ion-content>
--->

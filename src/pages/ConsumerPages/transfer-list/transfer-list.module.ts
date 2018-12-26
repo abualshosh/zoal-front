@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TransferListPage } from './transfer-list';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { TransferListPage } from "./transfer-list";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    TransferListPage,
-  ],
+  declarations: [TransferListPage],
   imports: [
     IonicPageModule.forChild(TransferListPage),
-          TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    TransferListPage
-  ]
+  exports: [TransferListPage]
 })
 export class TransferListPageModule {}

@@ -1,302 +1,307 @@
 {
-  "HOME": "الرئيسيه"
-    ,"Card":"البطاقة"
-    ,"Submit":"موافق"
-    ,"lang":"Language"
-    ,"validcardError":"الرجاء اختيار بطاقة"
-    ,"PhoneNumber":"رقم الهاتف"
-    ,"IPIN":"الرقم السري للإنترنت"
-    ,"CARDLESS":"التحويل بدون بطاقة"
-    ,"validnameError":""
-    ,"validvoucherNumberError":" رقم هاتف غير صحيح "
-    ,"validamountError":"  المبلغ غير صالح"
-    ,"validipinError":"الرقم السري للانترنت غير صحيح"
-    ,"TranToCard":"التحويل الي بطاقة"
-    ,"ToCard":"الي بطاقة"
-    ,"validTocardError":"رقم البطاقة غير صحيح"
-    ,"BalInq":"الاستعلام عن رصيد"
-    ,"ChangeIPin":"تغير الرقم السري للإنترنت"
-    ,"validnewipinError":"الرجاء ادخال رقم سري مكون من اربعة ارقام "
-    ,"NEWIPIN":" الرقم السري للإنترنت الجديد"
-    ,"validConnewIPINError":"الرقم السري غير متطابق"
-    ,"CONNEWIPIN":"تاكيد الرقم السري  للإنترنت الجديد"
-    ,"Cards":"البطاقات"
-    ,"ExpDate":"تاريخ الانتهاء"
-    ,"CardPAN":"رقم البطاقة"
-    ,"billInq":"الاستعلام عن فاتوره"
-    ,"E15":"ايصال 15 الالكتروني"
-    ,"Zain Bill Payment":"دفع فاتورة زين"
-    ,"MTN Bill Payment":"دفع فاتورة ام تي ان"
-    ,"SUDANI Bill Payment":"دفع فاتورة سوداني"
-    ,"Zain Top Up":"شراء رصيد زين"
-    ,"MTN Top Up":"شراء رصيد ام تي ان"
-    ,"SUDANI Top Up":"شراء رصيد سوداني"
-     ,"ZAIN BILL PAYMENT":"دفع فاتورة زين"
-    ,"MTN BILL PAYMENT":"دفع فاتورة ام تي ان"
-    ,"SUDANI BILL PAYMENT":"دفع فاتورة سوداني"
-    ,"ZAIN TOP UP":"شراء رصيد زين"
-    ,"MTN TOP UP":"شراء رصيد ام تي ان"
-    ,"SUDANI TOP UP":"شراء رصيد سوداني"
-    ,"payserv":"خدمات الدفع"
-    ,"National Electricity Corp.":"كهرباء دفع مقدم"
-    ,"NEC":"كهرباء دفع مقدم"
-    ,"MOHE Sudan":"التعليم عالي"
-    ,"Higher Education":"التعليم العالي"
-    ,"Higher Education Arab":"التعليم عالي  شهادة عربية"
-    ,"MOHE Arab":"التعليم عالي  شهادة عربية"
-    ,"Higher Education Foreign":"التعليم عالي شهادة اجنبية"
-    ,"INVOICENUMBER":"رقم الايصال"
-    ,"validINVOICENUMBERError":" رقم الايصال غير صالح  "
-    ,"validMETERError":"رقم العداد غير صالح"
-    ,"metNumber":"رقم العداد"
-    ,"Transfer":"تحويل "
-    ,"Pruchas":"شراء سلعه"
-    ,"Inquiry":"استعلام"
-    ,"Payment":"خدمات الدفع"
-    ,"CashOut":"سحب مبلغ كاش"
-    ,"BankCard(ATM)":"بطاقة مصرفية (ATM)" 
-    ,"AccountSittings":"اعدادت الحساب"
-    ,"LogOut":"تسجيل الخروج"
-    ,"destinationIdentifier":"رقم هاتف المستلم"
-    ,"lastTran":"اخر 5 حركات"
-    ,"SillerID":"الرقم التعريفي للبائع"
-    ,"PIN":"الرقم السري"
-    ,"ResendTan":"اعادة ارسال (TAN)"
-    ,"LinkBankCard":"ربط البطاقة المصرفية (ATM,CASH CARD)"
-    ,"TransfarefromWalletToCard":"تحويل من حساب موبايل الي بطاقة"
-    ,"TransfareFromCardToWallet":"تحويل من بطاقة الي حساب موبايل"
-    ,"DeleteAcount":"حذف الحساب"
-    ,"SwitchAcount":"نقل الحساب"
-    ,"LOOKAccount":"قفل الحساب"
-    ,"UNLOOKAccount":"فتح الحساب"
-    ,"addcard":"الرجاء اضافة بطاقات لاستخدام الخدمات"
-    ,"NAME":"الفرع"
-    ,"FAX":"فاكس"
-   ,"phone":"رقم الهاتف"
-   ,"Branches":"فروع البنك"
-   ,"ADDCARD":"اضافة بطاقة"
-   ,"CARDNAME":"اسم البطاقة"
-   ,"CARDNUMBER":"رقم البطاقة"
-   ,"EXPDATE":"تاريخ الصلاحية"
-   ,"MINI BANK":"ميني بانك"
-   ,"AppDesc":"التطبيق الاول الذي يقدم خدمات عبر بطاقه الصراف او فقط رقم الموبايل"
-   ,"Explore Bank Services":"خدمات البنك"
-   ,"ATM":"الصرافات الالية"
-   ,"CourseID":"نوع الشهادة"
-   ,"FormKind":"نوع التقديم"
-   ,"SETNUMBER":"رقم الطالب"
-   ,"STUCNAME":"اسم الطالب"
-   ,"STUCPHONE":"رقم الهاتف"
-   ,"NUMBER":"الرقم"
-   ,"transactionId":"رقم تاكيد الحركة"
-   ,"NEWPIN":"الرقم السري الجديد"
-   ,"CONNEWPIN":"تاكيد الرقم السري"
-   ,"ChangePin":"تغير الرقم السري"
-   ,"ATM_CASHCARD":"بطاقة مصرفية"
-   ,"MOBILEPAYMENT":" الدفع عبر الموبايل"
-   ,"conheader":"استمتع بخدمات الدفع عن طريق بطاقه الصراف او الكاش كارد"
-   ,"username":"اسم المستخدم"
-   ,"password":"كلمة المرور"
-   ,"login":"دخول"
-   ,"createaccount":"انشاء حساب جديد"
-   ,"gmppheader":"استمتع بخدمات الدفع باستخدام رقم الهاتف "
-   ,"la":"EN"
-    ,"name":"الاسم"
-   ,"email":"البريد الالكتروني"
-   ,"FullName":"الاسم بالكامل"
-   ,"conpassword":"تاكيد كلمة المرور"
-   ,"dob":"تاريخ الميلاد"
-   ,"signup":"تسجيل"
-   ,"amount":"المبلغ"
-   ,"billId":"رقم الفاتورة"
-   ,"customerPayeeId":"الرقم"
-   ,"externalFee":"رسوم خارجية"
-   ,"fee":"رسوم"
-   ,"payeeId":"ID"
-   ,"sourceIdentifier":"رقم الحركة"
-   ,"status":"الحالة"
-   ,"transactionName":"اسم الحركة"
-   ,"type":"نوع الحركة"
-  ,"METER":"رقم العداد"
-   ,"BANKCODE":"الرقم البنكي"
-   ,"Custom Service":"الجمارك"
-   ,"History":"تاريخ الحركات"
-   ,"TOPUP":"شراء رصيد موبايل"
-   ,"billpayment":"دفع فاتورة موبايل"
-   ,"GOV":"خدمات حكومية"
-   ,"Status":"الحالة"
-   ,"available Balance":"الرصيد المتاح"
-   ,"reserved Balance":"الرصيد المحجوز"
-   ,"Fee":"رسوم"
-   ,"transactionAmount":"مبلغ الحركة"
-   ,"transaction Amount":"مبلغ الحركة"
-   ,"TotalAmount":"المبلغ الكلي"
-   ,"External Fee":"رسوم خارجيه"
-   ,"Subscriber ID":"رقم المشترك"
-   ,"Contract Number":"رقم العقد"
-   ,"Unbilled Amount":"مبلغ الفاتورة المستحق"
-   ,"Total Amount":"الرصيد الكلي"
-    ,"Amount": "المبلغ"
-    ,"InstanceID": "رقم الوحده"
-    ,"BankCode": "الرقم البنكي"
-    ,"ProcStatus": "حالة الحركة"
-   ,"balance":"الرصيد"
-   ,"voucher Number":"رقم الهاتف"
-   ,"voucher Code":"رمز الحوالة"
-   ,"Bank Code":"الرقم البنكي"
-   ,"DeclarantName":"اسم المخلص"
-   ,"DeclarantNumber":"رقم المخلص"
-   ,"E-15ReceiptNumber":"رقم ايصال 15 الالكتروني"
-   ,"Dec.No":"رقم الحركة"
-  , "tranAmount":"المبلغ" 
-   
-    ,"receiptNo": "رقم الايصال"
-   
-    ,"formNo": "رقم الاستمارة"
-   ,"ProcError":"خطأ في الحركة"
-   ,"Office":"المكتب"
-   ,"Declarant":"المخلص"
-   ,"DECNBER":"رقم المخلص"
-   ,"Transaction":"الحركة"
-   ,"Year":"السنه"
-   ,"DECSER":"الفرع"
-   ,"netAmount": "المبلغ الكلي"
-   ,"SubscriberID": "رقم تعريف المشترك"
-    ,"billAmount": "مبلغ الفاتورة"
-	
-	 ,"total": "المبلغ الكلي"
-    ,"BillAmount": "مبلغ الفاتورة"
-
-    ,"studentNo": "رقم الطالب"
-    
-	
-     ,"subNewBalance": "رصيد رقم الهاتف"
-   
-    ,"InvoiceExpiry": "تاريخ الانتهاء"
-    ,"DueAmount": "المبلغ المطلوب"
-    ,"ReferenceId": "رقم المرجع"
-    ,"InvoiceStatus": "حالة الايصال"
-    ,"PayerName": "اسم المشتري"
-   ,"UnitName":"اسم الوحده"
-   ,"ServiceName":"اسم الخدمة"
-   ,"form Number":"رقم الفورم"
-   ,"Receipt Number":"رقم الايصال"
-   ,"meterFees":"رسوم العداد"
-   ,"customerName":"اسم العميل"
-   ,"account No":"رقم الحساب"
-    ,"meterNumber":"رقم العداد"
-    ,"unitsInKWh":"الوحدات "
-    ,"token":"الرقم"
-    ,"TransferCard":"تحويل"
-    ,"validCARDNAMEError":"اسم غير صالح"
-    ,"validCardPANError":"الرجاء ادخال رقم البطاقة"
-    ,"validExpDateError":"تاريخ صلاحية غير صالح"
-    ,"validCourseIDError":"الرجاء اختيار نوع الشهادة"
-    ,"validFormKindError":"الرجاء اختيار نوع التقديم"
-    ,"validSETNUMBERError":" رقم طالب غير صالح"
-    ,"validBANKCODEError":" الرقم البنكي غير صالح "
-    ,"Academic":"الأكاديمي"
-    ,"Agricultural":"الزراعي"
-    ,"commercial":"التجاري"
-    ,"Industrial":"الصناعي"
-    ,"Womanly":"النسوي"
-    ,"Ahlia":"الأهلية"
-    ,"Readings":"القراءات"
-    ,"General admission-first round":"القبول الدور الأول – قبول عام"
-    ,"Specialadmission":"القبول الخاص"
-    ,"Sons of higher education staff":"قبول أبناء العاملين"
-    ,"General admission-second round":"القبول العام الدور الثاني"
-    ,"Special admission-vacant seats":"شواغر القبول الخاص"
-    ,"Private institutions direct admission":"مباشر التعليم الأهلي"
-    ,"Diploma in public institutions":"دبلوم حكومي"
-	,"totalAmount": "المبلغ الكلي"
-    ,"billedAmount": "المبلغ المفوتر"
-    ,"lastInvoiceDate": "تاريخ اخر فاتورة"
-    ,"contractNumber": "رقم العقد"
-    ,"last4Digits": "اخر اربع ارقام"
-    ,"unbilledAmount": "مبلغ الفاتورة الغير مدفوع"
-	  ,"feeds":"المنشورات"
-    ,"Likes":"الاعجابات"
-    ,"comments":"التعليقات"
-	  ,"addpost":"مشاركة منشور"
-	  ,"addimage":"اضافة صور"
-    ,"chat":"المحادثات"
-    ,"Contacts":"جهات الاتصال"
-    ,"profile":"الاعدادت"
-    ,"Pay":""
-    ,"USEWallet":"استخدام الدفع عبر الموبايل"
-    ,"WalletNumber":" رقم المحفظه "
-    ,"EYPN":"سوف يتم ارسال رسالة نصية للتحقق من رقم هاتفك , الرجاء ادخال رقم هاتفك"
-    ,"LOGIN_ERROR":"رقم الهاتف غير موجود الرجاء التسجيل اولا"
-    ,"enterCode":" الرجاء ادخال الرقم السري المرسل في الرساله القصيرة"
-    ,"accountInfo":"معلومات الحساب"
-    ,"ChoseImage":"اختيار صورة"
-    ,"camera":"الكاميرا"
-    ,"gallery":"معرض الصور"
-    ,"Approved":"نجاح"
-    ,"Close":"اغلاق"
-    ,"Linkacconut":"ربط البطاقة المصرفية"
-    ,"OTP":"رمز التاكيد (SMS)"
-    ,"CancleLinkAccount":"الغاء ربط البطاقة"
-    ,"CancleSwitch":"الغاء تحويل المحفظة"
-    ,"transnumber":"تحويل مشغل الخدمة"
-    ,"opreatore":"المشغل"
-    ,"tranCurrency":"العملة"
-    ,"date":"التاريخ"
-    ,"tan":"رقم المصادقة"
-    ,"SEARCH_PLACEHOLDER":"بحث"
-    ,"UserSettings":"اعدادات المستخدم"
-    ,"General":"عام"
-    ,"AppLanguage":"اللغة"
-    ,"AccepteTransfer":"السماح بالتحويل"
-    ,"MainCard":"البطاقة الرئيسية"
-    ,"Other":"اخرى"
-    ,"Transfera":"التحويلات"
-    ,"history":"السجل"
-    ,"ImportContacts":"استيراد جهات الاتصال "
-    ,"Send":"ارسال"
-    ,"validOPError":"الرجاء اختيار المشغل"
-    ,"Sudanes":"الشهادة السودانية"
-    ,"Arab":"الشهادة العربية "
-    ,"validSTUCNAMEError":"اسم الطالب غير صالح "
-    ,"validSellerIDError":" الرقم التعريفي للبائع غير صالح  "
-    ,"validpinError":"الرقم السري غير صحيح"
-    ,"validexpDateError":"الرجاء ادخال تاريخ الصلاحية"
-    ,"HighEdu":"التعليم العالي"
-    ,"Customes":"الجمارك"
-    ,"Arabic":"عربي"
-    ,"ok":"اختيار"
-    ,"cancel":"الغاء"
-    ,"transferAccountToWallet":"تحويل للمحفظة"
-    ,"Sudani Top Up":"شراء رصيد سوداني"
-    ,"generateVoucher":"التحويل بدون بطاقة"
-    ,"voucherNumber":"رقم الهاتف"
-    ,"voucherCode":"رمز الحوالة"
-    ,"issuerTranFee":"رسوم المصدر"
-    ,"acqTranFee":"رسوم المستقبل"
-,"arabicName":"الاسم باللغة العربية"
-,"englishName":"الاسم باللغة الانجليزية"
-    ,"transferWalletToAccount":"تحويل من المحفظة"
-    ,"doCardTransfer":"التحويل الى بطاقة"
-    ,"toCard":"الى البطاقة "
-    ,"doTransfer":"التحويل"
-    ,"CUSTOM Payment":" الجمارك"
-    ,"Delete Card":"حذف البطاقة"
-    ,"linkAccount":"ربط الحساب"
-    ,"getTransactionStatus":"حالة التحويل"
-    ,"Transaction Detials":"تفاصيل العملية"
-    ,"doCashOutWithTan":"سحب مبلغ نقدي"
-    ,"Cash_card_option":"للتمتع بخدمات البطاقات المصرفية الرجاء اضافة بطاقة "
-    ,"registerMobile":"للتمتع بخدمات الدفع عبر الموبايل الرجاء الضغط علي زر تسجيل للتسجيل في الخدمة "
-    ,"switchmobile":"اذا كنت مسجل بلفعل مع مقدم خدمة اخر الرجاء اضغط علي زر تحويل للتحويل الي زول باي "
-    ,"switch":"تحويل"
-    ,"payment_option":"للدفع للخدمات المختلفه الرجاء التسجيل في خدمة الدفع عبر الموبايل او اضافة بطاقة مصرفية"
-    ,"Scan and Pay":"امسح و ادفع"
-    ,"my QR Code":"استلام"
-    ,"transervice":"خدمات التحويل"
-    ,"otherservice":"خدمات اخري"
-    ,"BACK_BUTTON_TEXT":"رجوع"
-    ,"waterFees":"رسوم المياه"
-    ,"cashOutAll":"سحب كل المبلغ"
-    ,"SDG":"جنيه سوداني"
+  "HOME": "الرئيسيه",
+  "MerchantId": "التاجر",
+  "SpecialPayment": "الدفعية الخاصه",
+  "Card": "البطاقة",
+  "QRmessage": "الرجاء اختيار البطاقة",
+  "QR": "رمز الاستجابه",
+  "SelectUser": "اختيار المستخدم",
+  "Chat": "الدردشه",
+  "message": "...ارسل رساله",
+  "addComment": "...اضافة تعليق",
+  "OTP_ERROR": "الرقم غير صحيح",
+  "SIGNUP_ERROR": "حدث عطل في ارسال الرساله",
+  "Submit": "موافق",
+  "lang": "Language",
+  "validcardError": "الرجاء اختيار بطاقة",
+  "PhoneNumber": "رقم الهاتف",
+  "validWalletError": "رقم المحفظة غير صالح",
+  "IPIN": "الرقم السري للإنترنت",
+  "CARDLESS": "التحويل بدون بطاقة",
+  "validnameError": "",
+  "validvoucherNumberError": " رقم هاتف غير صحيح ",
+  "validamountError": "  المبلغ غير صالح",
+  "validipinError": "الرقم السري للانترنت غير صحيح",
+  "TranToCard": "التحويل الي بطاقة",
+  "ToCard": "الي بطاقة",
+  "validTocardError": "رقم البطاقة غير صحيح",
+  "BalInq": "الاستعلام عن رصيد",
+  "ChangeIPin": "تغير الرقم السري للإنترنت",
+  "validnewipinError": "الرجاء ادخال رقم سري مكون من اربعة ارقام ",
+  "NEWIPIN": " الرقم السري للإنترنت الجديد",
+  "validConnewIPINError": "الرقم السري غير متطابق",
+  "CONNEWIPIN": "تاكيد الرقم السري  للإنترنت الجديد",
+  "Cards": "البطاقات",
+  "ExpDate": "تاريخ الانتهاء",
+  "CardPAN": "رقم البطاقة",
+  "billInq": "الاستعلام عن فاتوره",
+  "E15": "ايصال 15 الالكتروني",
+  "Zain Bill Payment": "دفع فاتورة زين",
+  "MTN Bill Payment": "دفع فاتورة ام تي ان",
+  "SUDANI Bill Payment": "دفع فاتورة سوداني",
+  "Zain Top Up": "شراء رصيد زين",
+  "MTN Top Up": "شراء رصيد ام تي ان",
+  "SUDANI Top Up": "شراء رصيد سوداني",
+  "ZAIN BILL PAYMENT": "دفع فاتورة زين",
+  "MTN BILL PAYMENT": "دفع فاتورة ام تي ان",
+  "SUDANI BILL PAYMENT": "دفع فاتورة سوداني",
+  "ZAIN TOP UP": "شراء رصيد زين",
+  "MTN TOP UP": "شراء رصيد ام تي ان",
+  "SUDANI TOP UP": "شراء رصيد سوداني",
+  "payserv": "خدمات الدفع",
+  "National Electricity Corp.": "كهرباء دفع مقدم",
+  "NEC": "كهرباء دفع مقدم",
+  "MOHE Sudan": "التعليم عالي",
+  "Higher Education": "التعليم العالي",
+  "Higher Education Arab": "التعليم عالي  شهادة عربية",
+  "MOHE Arab": "التعليم عالي  شهادة عربية",
+  "Higher Education Foreign": "التعليم عالي شهادة اجنبية",
+  "INVOICENUMBER": "رقم الايصال",
+  "validINVOICENUMBERError": " رقم الايصال غير صالح  ",
+  "validMETERError": "رقم العداد غير صالح",
+  "metNumber": "رقم العداد",
+  "Transfer": "تحويل ",
+  "Pruchas": "شراء سلعه",
+  "Inquiry": "استعلام",
+  "Payment": "خدمات الدفع",
+  "CashOut": "سحب مبلغ كاش",
+  "BankCard(ATM)": "بطاقة مصرفية (ATM)",
+  "AccountSittings": "اعدادت الحساب",
+  "LogOut": "تسجيل الخروج",
+  "destinationIdentifier": "رقم هاتف المستلم",
+  "lastTran": "اخر 5 حركات",
+  "SillerID": "الرقم التعريفي للبائع",
+  "PIN": "الرقم السري",
+  "ResendTan": "اعادة ارسال (TAN)",
+  "LinkBankCard": "ربط البطاقة المصرفية (ATM,CASH CARD)",
+  "TransfarefromWalletToCard": "تحويل من حساب موبايل الي بطاقة",
+  "TransfareFromCardToWallet": "تحويل من بطاقة الي حساب موبايل",
+  "DeleteAcount": "حذف الحساب",
+  "SwitchAcount": "نقل الحساب",
+  "LOOKAccount": "قفل الحساب",
+  "UNLOOKAccount": "فتح الحساب",
+  "addcard": "الرجاء اضافة بطاقات لاستخدام الخدمات",
+  "NAME": "الفرع",
+  "FAX": "فاكس",
+  "phone": "رقم الهاتف",
+  "Branches": "فروع البنك",
+  "ADDCARD": "اضافة بطاقة",
+  "CARDNAME": "اسم البطاقة",
+  "CARDNUMBER": "رقم البطاقة",
+  "EXPDATE": "تاريخ الصلاحية",
+  "MINI BANK": "ميني بانك",
+  "AppDesc": "التطبيق الاول الذي يقدم خدمات عبر بطاقه الصراف او فقط رقم الموبايل",
+  "Explore Bank Services": "خدمات البنك",
+  "ATM": "الصرافات الالية",
+  "CourseID": "نوع الشهادة",
+  "FormKind": "نوع التقديم",
+  "SETNUMBER": "رقم الطالب",
+  "STUCNAME": "اسم الطالب",
+  "STUCPHONE": "رقم الهاتف",
+  "NUMBER": "الرقم",
+  "transactionId": "رقم تاكيد الحركة",
+  "NEWPIN": "الرقم السري الجديد",
+  "CONNEWPIN": "تاكيد الرقم السري",
+  "ChangePin": "تغير الرقم السري",
+  "ATM_CASHCARD": "بطاقة مصرفية",
+  "MOBILEPAYMENT": " الدفع عبر الموبايل",
+  "conheader": "استمتع بخدمات الدفع عن طريق بطاقه الصراف او الكاش كارد",
+  "username": "اسم المستخدم",
+  "password": "كلمة المرور",
+  "login": "دخول",
+  "createaccount": "انشاء حساب جديد",
+  "gmppheader": "استمتع بخدمات الدفع باستخدام رقم الهاتف ",
+  "la": "EN",
+  "name": "الاسم",
+  "email": "البريد الالكتروني",
+  "FullName": "الاسم بالكامل",
+  "conpassword": "تاكيد كلمة المرور",
+  "dob": "تاريخ الميلاد",
+  "signup": "تسجيل",
+  "amount": "المبلغ",
+  "billId": "رقم الفاتورة",
+  "customerPayeeId": "الرقم",
+  "externalFee": "رسوم خارجية",
+  "fee": "رسوم",
+  "payeeId": "ID",
+  "sourceIdentifier": "رقم الحركة",
+  "status": "الحالة",
+  "transactionName": "اسم الحركة",
+  "type": "نوع الحركة",
+  "METER": "رقم العداد",
+  "BANKCODE": "الرقم البنكي",
+  "Custom Service": "الجمارك",
+  "History": "تاريخ الحركات",
+  "TOPUP": "شراء رصيد موبايل",
+  "billpayment": "دفع فاتورة موبايل",
+  "GOV": "خدمات حكومية",
+  "Status": "الحالة",
+  "available Balance": "الرصيد المتاح",
+  "reserved Balance": "الرصيد المحجوز",
+  "Fee": "رسوم",
+  "transactionAmount": "مبلغ الحركة",
+  "transaction Amount": "مبلغ الحركة",
+  "TotalAmount": "المبلغ الكلي",
+  "External Fee": "رسوم خارجيه",
+  "Subscriber ID": "رقم المشترك",
+  "Contract Number": "رقم العقد",
+  "Unbilled Amount": "مبلغ الفاتورة المستحق",
+  "Total Amount": "الرصيد الكلي",
+  "Amount": "المبلغ",
+  "InstanceID": "رقم الوحده",
+  "BankCode": "الرقم البنكي",
+  "ProcStatus": "حالة الحركة",
+  "balance": "الرصيد",
+  "voucher Number": "رقم الهاتف",
+  "voucher Code": "رمز الحوالة",
+  "Bank Code": "الرقم البنكي",
+  "DeclarantName": "اسم المخلص",
+  "DeclarantNumber": "رقم المخلص",
+  "E-15ReceiptNumber": "رقم ايصال 15 الالكتروني",
+  "Dec.No": "رقم الحركة",
+  "tranAmount": "المبلغ",
+  "receiptNo": "رقم الايصال",
+  "formNo": "رقم الاستمارة",
+  "ProcError": "خطأ في الحركة",
+  "Office": "المكتب",
+  "Declarant": "المخلص",
+  "DECNBER": "رقم المخلص",
+  "Transaction": "الحركة",
+  "Year": "السنه",
+  "DECSER": "الفرع",
+  "netAmount": "المبلغ الكلي",
+  "SubscriberID": "رقم تعريف المشترك",
+  "billAmount": "مبلغ الفاتورة",
+  "total": "المبلغ الكلي",
+  "BillAmount": "مبلغ الفاتورة",
+  "studentNo": "رقم الطالب",
+  "subNewBalance": "رصيد رقم الهاتف",
+  "InvoiceExpiry": "تاريخ الانتهاء",
+  "DueAmount": "المبلغ المطلوب",
+  "ReferenceId": "رقم المرجع",
+  "InvoiceStatus": "حالة الايصال",
+  "PayerName": "اسم المشتري",
+  "UnitName": "اسم الوحده",
+  "ServiceName": "اسم الخدمة",
+  "form Number": "رقم الفورم",
+  "Receipt Number": "رقم الايصال",
+  "meterFees": "رسوم العداد",
+  "customerName": "اسم العميل",
+  "account No": "رقم الحساب",
+  "meterNumber": "رقم العداد",
+  "unitsInKWh": "الوحدات ",
+  "token": "الرقم",
+  "TransferCard": "تحويل",
+  "validCARDNAMEError": "اسم غير صالح",
+  "validCardPANError": "الرجاء ادخال رقم البطاقة",
+  "validExpDateError": "تاريخ صلاحية غير صالح",
+  "validMerchantIdError": "التاجر غير صالح",
+  "validCourseIDError": "الرجاء اختيار نوع الشهادة",
+  "validFormKindError": "الرجاء اختيار نوع التقديم",
+  "validSETNUMBERError": " رقم طالب غير صالح",
+  "validBANKCODEError": " الرقم البنكي غير صالح ",
+  "Academic": "الأكاديمي",
+  "Agricultural": "الزراعي",
+  "commercial": "التجاري",
+  "Industrial": "الصناعي",
+  "Womanly": "النسوي",
+  "Ahlia": "الأهلية",
+  "Readings": "القراءات",
+  "General admission-first round": "القبول الدور الأول – قبول عام",
+  "Specialadmission": "القبول الخاص",
+  "Sons of higher education staff": "قبول أبناء العاملين",
+  "General admission-second round": "القبول العام الدور الثاني",
+  "Special admission-vacant seats": "شواغر القبول الخاص",
+  "Private institutions direct admission": "مباشر التعليم الأهلي",
+  "Diploma in public institutions": "دبلوم حكومي",
+  "totalAmount": "المبلغ الكلي",
+  "billedAmount": "المبلغ المفوتر",
+  "lastInvoiceDate": "تاريخ اخر فاتورة",
+  "contractNumber": "رقم العقد",
+  "last4Digits": "اخر اربع ارقام",
+  "unbilledAmount": "مبلغ الفاتورة الغير مدفوع",
+  "feeds": "المنشورات",
+  "Likes": "الاعجابات",
+  "comments": "التعليقات",
+  "addpost": "مشاركة منشور",
+  "addimage": "اضافة صور",
+  "chat": "المحادثات",
+  "Contacts": "جهات الاتصال",
+  "profile": "الاعدادت",
+  "Pay": "",
+  "USEWallet": "استخدام الدفع عبر الموبايل",
+  "WalletNumber": " رقم المحفظه ",
+  "EYPN": "سوف يتم ارسال رسالة نصية للتحقق من رقم هاتفك , الرجاء ادخال رقم هاتفك",
+  "LOGIN_ERROR": "رقم الهاتف غير موجود الرجاء التسجيل اولا",
+  "enterCode": " الرجاء ادخال الرقم السري المرسل في الرساله القصيرة",
+  "accountInfo": "معلومات الحساب",
+  "ChoseImage": "اختيار صورة",
+  "camera": "الكاميرا",
+  "gallery": "معرض الصور",
+  "Approved": "نجاح",
+  "Close": "اغلاق",
+  "Linkacconut": "ربط البطاقة المصرفية",
+  "OTP": "رمز التاكيد (SMS)",
+  "CancleLinkAccount": "الغاء ربط البطاقة",
+  "CancleSwitch": "الغاء تحويل المحفظة",
+  "transnumber": "تحويل مشغل الخدمة",
+  "opreatore": "المشغل",
+  "tranCurrency": "العملة",
+  "date": "التاريخ",
+  "tan": "رقم المصادقة",
+  "SEARCH_PLACEHOLDER": "بحث",
+  "UserSettings": "اعدادات المستخدم",
+  "General": "عام",
+  "AppLanguage": "اللغة",
+  "AccepteTransfer": "السماح بالتحويل",
+  "MainCard": "البطاقة الرئيسية",
+  "Other": "اخرى",
+  "Transfera": "التحويلات",
+  "history": "السجل",
+  "ImportContacts": "استيراد جهات الاتصال ",
+  "Send": "ارسال",
+  "validOPError": "الرجاء اختيار المشغل",
+  "Sudanes": "الشهادة السودانية",
+  "Arab": "الشهادة العربية ",
+  "validSTUCNAMEError": "اسم الطالب غير صالح ",
+  "validSellerIDError": " الرقم التعريفي للبائع غير صالح  ",
+  "validpinError": "الرقم السري غير صحيح",
+  "validexpDateError": "الرجاء ادخال تاريخ الصلاحية",
+  "HighEdu": "التعليم العالي",
+  "Customes": "الجمارك",
+  "Arabic": "عربي",
+  "ok": "اختيار",
+  "cancel": "الغاء",
+  "transferAccountToWallet": "تحويل للمحفظة",
+  "Sudani Top Up": "شراء رصيد سوداني",
+  "generateVoucher": "التحويل بدون بطاقة",
+  "voucherNumber": "رقم الهاتف",
+  "voucherCode": "رمز الحوالة",
+  "issuerTranFee": "رسوم المصدر",
+  "acqTranFee": "رسوم المستقبل",
+  "arabicName": "الاسم باللغة العربية",
+  "englishName": "الاسم باللغة الانجليزية",
+  "transferWalletToAccount": "تحويل من المحفظة",
+  "doCardTransfer": "التحويل الى بطاقة",
+  "toCard": "الى البطاقة ",
+  "doTransfer": "التحويل",
+  "CUSTOM Payment": " الجمارك",
+  "Delete Card": "حذف البطاقة",
+  "linkAccount": "ربط الحساب",
+  "getTransactionStatus": "حالة التحويل",
+  "Transaction Detials": "تفاصيل العملية",
+  "doCashOutWithTan": "سحب مبلغ نقدي",
+  "Cash_card_option": "للتمتع بخدمات البطاقات المصرفية الرجاء اضافة بطاقة ",
+  "registerMobile": "للتمتع بخدمات الدفع عبر الموبايل الرجاء الضغط علي زر تسجيل للتسجيل في الخدمة ",
+  "switchmobile": "اذا كنت مسجل بلفعل مع مقدم خدمة اخر الرجاء اضغط علي زر تحويل للتحويل الي زول باي ",
+  "switch": "تحويل",
+  "payment_option": "للدفع للخدمات المختلفه الرجاء التسجيل في خدمة الدفع عبر الموبايل او اضافة بطاقة مصرفية",
+  "Scan and Pay": "امسح و ادفع",
+  "my QR Code": "استلام",
+  "transervice": "خدمات التحويل",
+  "otherservice": "خدمات اخري",
+  "BACK_BUTTON_TEXT": "رجوع",
+  "waterFees": "رسوم المياه",
+  "cashOutAll": "سحب كل المبلغ",
+  "SDG": "جنيه سوداني"
 }

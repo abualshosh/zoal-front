@@ -1,18 +1,14 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { SelfunlockPage } from './selfunlock';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { SelfunlockPage } from "./selfunlock";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    SelfunlockPage,
-  ],
+  declarations: [SelfunlockPage],
   imports: [
     IonicPageModule.forChild(SelfunlockPage),
-          TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    SelfunlockPage
-  ]
+  exports: [SelfunlockPage]
 })
 export class SelfunlockPageModule {}

@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { GmppPruchasPage } from './gmpp-pruchas';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { GmppPruchasPage } from "./gmpp-pruchas";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    GmppPruchasPage,
-  ],
+  declarations: [GmppPruchasPage],
   imports: [
     IonicPageModule.forChild(GmppPruchasPage),
-          TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    GmppPruchasPage
-  ]
+  exports: [GmppPruchasPage]
 })
 export class GmppPruchasPageModule {}

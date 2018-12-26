@@ -1,18 +1,14 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { RetireaccountPage } from './retireaccount';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { RetireaccountPage } from "./retireaccount";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    RetireaccountPage,
-  ],
+  declarations: [RetireaccountPage],
   imports: [
     IonicPageModule.forChild(RetireaccountPage),
-      TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    RetireaccountPage
-  ]
+  exports: [RetireaccountPage]
 })
 export class RetireaccountPageModule {}

@@ -1,60 +1,75 @@
-<ion-header color='bar'>
-	<ion-navbar color='bar'>
-		<ion-title>Chat</ion-title>
-	</ion-navbar>
+<ion-header color="bar">
+  <ion-navbar color="secondary">
+    <ion-title>{{ toUser.fullname }}</ion-title>
+  </ion-navbar>
 </ion-header>
 <ion-content scrollDownOnLoad="true">
-	<ion-infinite-scroll position='top'  (ionInfinite)="doInfinite($event)" *ngIf="!this.last" >
-		 <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data..."></ion-infinite-scroll-content>
-	 </ion-infinite-scroll>
-	<div *ngFor="let message of messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
-		<div *ngIf="user._id !== message.userId">
-			<img (click)="viewProfile(message)" class="profile-pic left" [src]="toUser.pic" />
-			<!--  wave-->
-			<div class="chat-bubble left slide-left">
+  <ion-infinite-scroll
+    position="top"
+    (ionInfinite)="doInfinite($event)"
+    *ngIf="!this.last"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    ></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div
+    *ngFor="let message of messages"
+    class="message-wrapper"
+    on-hold="onMessageHold($event, $index, message)"
+  >
+    <div *ngIf="user._id !== message.userId">
+      <img
+        (click)="viewProfile(message)"
+        class="profile-pic left"
+        [src]="toUser.pic"
+      />
+      <!-- wave -->
+      <div class="chat-bubble left slide-left">
+        <div class="message" [innerHTML]="message.text" autolinker></div>
 
-				<div class="message" [innerHTML]="message.text" autolinker>
-				</div>
+        <div class="message-detail">
+          <span (click)="viewProfile(message)" class="bold">
+            {{ toUser.fullname }} </span
+          >, <span>11:11 pm</span>
+        </div>
+      </div>
+    </div>
 
-				<div class="message-detail">
-					<span (click)="viewProfile(message)" class="bold">{{toUser.username}}</span>,
-					<span>11:11 pm</span>
-				</div>
+    <div *ngIf="user._id === message.userId">
+      <img
+        (click)="viewProfile(message)"
+        class="profile-pic right"
+        [src]="user.pic"
+      />
+      <!-- onerror="onProfilePicError(this)" -->
 
-			</div>
-		</div>
+      <div class="chat-bubble right slide-right">
+        <div class="message" [innerHTML]="message.text" autolinker></div>
 
-		<div *ngIf="user._id === message.userId">
+        <div class="message-detail">
+          <span (click)="viewProfile(message)" class="bold">
+            {{ user.fullname }} </span
+          >, <span>11:11 pm</span>
+        </div>
+      </div>
+    </div>
 
-			<img (click)="viewProfile(message)" class="profile-pic right" [src]="user.pic"  />
-<!--
-onerror="onProfilePicError(this)" -->
-
-			<div class="chat-bubble right slide-right">
-
-				<div class="message" [innerHTML]="message.text" autolinker>
-				</div>
-
-				<div class="message-detail">
-					<span (click)="viewProfile(message)" class="bold">{{user.username}}</span>,
-					<span>11:11 pm</span>
-				</div>
-
-			</div>
-
-		</div>
-
-		<div class="cf"></div>
-
-	</div>
+    <div class="cf"></div>
+  </div>
 </ion-content>
 <ion-footer>
-	<form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
-		<ion-item>
-			<ion-input formControlName="message" [(ngModel)]="chatBox" placeholder="Send {{toUser.username}} a message..."></ion-input>
-			<button ion-button clear (click)="send(chatBox)" item-end><ion-icon class="footer-btn" name="send"></ion-icon></button>
-		</ion-item>
-	</form>
-
-
+  <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
+    <ion-item>
+      <ion-input
+        formControlName="message"
+        [(ngModel)]="chatBox"
+        placeholder="{{ 'message' | translate }}"
+      ></ion-input>
+      <button ion-button clear (click)="send(chatBox)" item-end>
+        <ion-icon class="footer-btn" name="send"></ion-icon>
+      </button>
+    </ion-item>
+  </form>
 </ion-footer>

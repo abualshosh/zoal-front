@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController,ViewController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import {
+  IonicPage,
+  NavController,
+  ViewController,
+  NavParams
+} from "ionic-angular";
 
 /**
  * Generated class for the SelectUserPage page.
@@ -10,29 +15,31 @@ import { IonicPage, NavController,ViewController, NavParams } from 'ionic-angula
 
 @IonicPage()
 @Component({
-  selector: 'page-select-user',
-  templateUrl: 'select-user.html',
+  selector: "page-select-user",
+  templateUrl: "select-user.html"
 })
 export class SelectUserPage {
-currentItems:any=[];
-username:any;
+  connections: any = [];
+  username: any;
 
-  constructor(public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams) {
-this.username=localStorage.getItem('username');
-    this.currentItems=JSON.parse(localStorage.getItem("connections"));
+  constructor(
+    public viewCtrl: ViewController,
+    public navCtrl: NavController,
+    public navParams: NavParams
+  ) {
+    this.username = localStorage.getItem("username");
+    this.connections = JSON.parse(localStorage.getItem("connections"));
   }
 
-
-  dismiss(item) {
-//    let data = { 'foo': 'bar' };
-
-  this.viewCtrl.dismiss(item.userName);
-
-
-
+  dismissWithConnection(contact) {
+    this.viewCtrl.dismiss(contact.userName);
   }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
   ionViewDidLoad() {
     //console.log('ionViewDidLoad SelectUserPage');
   }
-
 }

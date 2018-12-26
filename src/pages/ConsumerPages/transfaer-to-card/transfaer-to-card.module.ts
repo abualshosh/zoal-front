@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TransfaerToCardPage } from './transfaer-to-card';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { TransfaerToCardPage } from "./transfaer-to-card";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    TransfaerToCardPage,
-  ],
+  declarations: [TransfaerToCardPage],
   imports: [
     IonicPageModule.forChild(TransfaerToCardPage),
-        TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    TransfaerToCardPage
-  ]
+  exports: [TransfaerToCardPage]
 })
 export class TransfaerToCardPageModule {}

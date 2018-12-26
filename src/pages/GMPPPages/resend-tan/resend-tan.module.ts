@@ -1,18 +1,14 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { ResendTanPage } from './resend-tan';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { ResendTanPage } from "./resend-tan";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    ResendTanPage,
-  ],
+  declarations: [ResendTanPage],
   imports: [
     IonicPageModule.forChild(ResendTanPage),
-      TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    ResendTanPage
-  ]
+  exports: [ResendTanPage]
 })
 export class ResendTanPageModule {}

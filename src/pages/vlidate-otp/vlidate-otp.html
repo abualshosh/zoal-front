@@ -1,32 +1,30 @@
 <ion-header>
-  
-    <ion-navbar color='bar'>
-      <ion-title>{{'login'|translate}}</ion-title>
-    </ion-navbar>
-  
-  </ion-header>
-  
-  
-  <ion-content>
-    <div class="splash-info">
-      <div class="splash-logo"></div>
-      <div class="splash-intro">
-          {{'enterCode'|translate}}
-      </div>    </div>
-    <form  class="form">
-      <ion-list>
-  
-        <ion-item>
-          <ion-label floating>{{'NUMBER'|translate}}</ion-label>
-          <ion-input type="number" [(ngModel)]="account.otp" name="otp"></ion-input>
-        </ion-item>
-  
-   <div padding>
-  
-     <button ion-button (click)="vlidate()" color="primary" block>{{'Submit'| translate}}</button>
-        </div>
-  
-      </ion-list>
-    </form>
-  </ion-content>
-  
+  <ion-navbar color="secondary">
+    <ion-title>{{ "login" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="splash-info">
+    <div class="splash-logo"></div>
+    <div class="splash-intro">{{ "enterCode" | translate }}</div>
+  </div>
+  <form class="form">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>{{ "NUMBER" | translate }}</ion-label>
+        <ion-input
+          type="number"
+          [(ngModel)]="account.otp"
+          name="otp"
+        ></ion-input>
+      </ion-item>
+
+      <div padding>
+        <button ion-button (click)="vlidate()" color="primary" block>
+          {{ "Submit" | translate }}
+        </button>
+      </div>
+    </ion-list>
+  </form>
+</ion-content>

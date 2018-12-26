@@ -1,101 +1,123 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
+import { Component } from "@angular/core";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  ModalController
+} from "ionic-angular";
 
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { LoadingController } from 'ionic-angular';
-import { GetServicesProvider } from '../../../providers/get-services/get-services';
-import { AlertController } from 'ionic-angular';
-import * as NodeRSA from 'node-rsa';
-import * as uuid from 'uuid';
-import { UserProvider } from '../../../providers/user/user';
-import {Storage} from '@ionic/storage';
-import {Card} from '../../../models/cards';
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { LoadingController } from "ionic-angular";
+import { GetServicesProvider } from "../../../providers/get-services/get-services";
+import { AlertController } from "ionic-angular";
+import * as NodeRSA from "node-rsa";
+import * as uuid from "uuid";
+import { UserProvider } from "../../../providers/user/user";
+import { Storage } from "@ionic/storage";
+import { Card } from "../../../models/cards";
 /**
  * Generated class for the GmppBalancePage page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
- @IonicPage()
- @Component({
-   selector: 'page-selflock',
-   templateUrl: 'selflock.html',
- })
- export class SelflockPage {
+@IonicPage()
+@Component({
+  selector: "page-selflock",
+  templateUrl: "selflock.html"
+})
+export class SelflockPage {
+  consumerIdentifier: any;
+  private bal: any;
+  private todo: FormGroup;
+  public cards: Card[] = [];
 
-  consumerIdentifier:any;
-    private bal : any;
-    private todo : FormGroup;
-    public cards:Card[]=[];
+  public GetServicesProvider: GetServicesProvider;
+  constructor(
+    private formBuilder: FormBuilder,
+    public loadingCtrl: LoadingController,
+    public GetServicesProviderg: GetServicesProvider,
+    public alertCtrl: AlertController,
+    public user: UserProvider,
+    public storage: Storage,
+    public modalCtrl: ModalController
+  ) {
+    this.consumerIdentifier = "249" + localStorage.getItem("username");
 
-   public GetServicesProvider : GetServicesProvider;
-    constructor( private formBuilder: FormBuilder ,public loadingCtrl: LoadingController , public GetServicesProviderg : GetServicesProvider,public alertCtrl: AlertController
-    ,public user:UserProvider,public storage:Storage,public modalCtrl:ModalController) {
-      this.consumerIdentifier="249"+localStorage.getItem('username');
+    //user.printuser();
+    this.GetServicesProvider = GetServicesProviderg;
+    this.todo = this.formBuilder.group({
+      consumerPIN: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(4),
+          Validators.pattern("[0-9]*")
+        ])
+      ]
+    });
+  }
 
-      //user.printuser();
-  this.GetServicesProvider=GetServicesProviderg;
-      this.todo = this.formBuilder.group({
-
-
-           consumerPIN: ['',Validators.compose([Validators.required,Validators.minLength(4),Validators.maxLength(4), Validators.pattern('[0-9]*')])]
-
-      });
-
+  showAlert(data: any) {
+    let message: any;
+    if (data.responseCode != null) {
+      message = data.responseMessage;
+    } else {
+      message = "Connection error";
     }
+    let alert = this.alertCtrl.create({
+      title: "ERROR",
+      message: message,
 
-    showAlert(balance : any ) {
-     let alert = this.alertCtrl.create({
-       title: 'Error!',
-       message: balance.responseMessage,
+      buttons: ["OK"],
+      cssClass: "alertCustomCss"
+    });
+    alert.present();
+  }
 
-       buttons: ['OK'],
-        cssClass: 'alertCustomCss'
-     });
-     alert.present();
-   }
-
-
-    logForm(){
-  if(this.todo.valid){
+  logForm() {
+    if (this.todo.valid) {
       let loader = this.loadingCtrl.create({
-       content: "Please wait..."
-     });
-     loader.present();
-     var dat=this.todo.value;
+        content: "Please wait..."
+      });
+      loader.present();
+      var dat = this.todo.value;
 
-      dat.UUID=uuid.v4();
-     dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
-dat.consumerIdentifier=this.consumerIdentifier;
-    //console.log(dat.IPIN)
-     dat.isConsumer='true';
+      dat.UUID = uuid.v4();
+      dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
+        dat.UUID + dat.consumerPIN
+      );
+      dat.consumerIdentifier = this.consumerIdentifier;
+      //console.log(dat.IPIN)
+      dat.isConsumer = "true";
 
-    this.GetServicesProvider.load(this.todo.value,'gmpp/lockAccount').then(data => {
-     this.bal = data;
-      //console.log(data)
-      if(data != null && data.responseCode==1){
-       loader.dismiss();
-      // this.showAlert(data);
+      this.GetServicesProvider.load(this.todo.value, "gmpp/lockAccount").then(
+        data => {
+          this.bal = data;
+          //console.log(data)
+          if (data != null && data.responseCode == 1) {
+            loader.dismiss();
+            // this.showAlert(data);
 
-    var datas =[
-      {"tital":"Status","desc":data.responseMessage}
-     ];
-       let modal = this.modalCtrl.create('ReModelPage', {"data":datas},{ cssClass: 'inset-modals' });
-     modal.present();
-     this.todo.reset();
-   // this.submitAttempt=false;
-    }else{
-     loader.dismiss();
-    if(data.responseCode!=null){
-    this.showAlert(data);}else{
-  data.responseMessage="Connection Error";
-  this.showAlert(data);
+            var datas = [{ tital: "Status", desc: data.responseMessage }];
+            let modal = this.modalCtrl.create(
+              "ReModelPage",
+              { data: datas },
+              { cssClass: "inset-modals" }
+            );
+            modal.present();
+            this.todo.reset();
+            // this.submitAttempt=false;
+          } else {
+            loader.dismiss();
+            this.showAlert(data);
+            this.todo.reset();
+            //  this.submitAttempt=false;
+          }
+        }
+      );
+      dat.consumerPIN = null;
     }
-this.todo.reset();
-  //  this.submitAttempt=false;
-    }
-   });
-   dat.consumerPIN=null;
-    }}
-
+  }
 }

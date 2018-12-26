@@ -5,7 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar color="bar">
+  <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
     <ion-title>{{ "SpecialPayment" | translate }}</ion-title>
   </ion-navbar>
@@ -26,6 +26,15 @@
             >{{ "USEWallet" | translate }}</ion-label
           >
         </ion-item>
+        <div
+          *ngIf="
+            !todo.controls.entityId.valid &&
+            todo.controls.mobilewallet.value &&
+            submitAttempt
+          "
+        >
+          <p>{{ "validWalletError" | translate }}</p>
+        </div>
         <ion-item *ngIf="todo.controls.mobilewallet.value">
           <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
           <ion-input
@@ -45,8 +54,8 @@
         <ion-item *ngIf="!todo.controls.mobilewallet.value">
           <ion-label stacked>{{ "Card" | translate }}</ion-label>
           <ion-select
-            okText="{{'Submit'|translate}}"
-            cancelText="{{'Close'|translate}}"
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
             (ionChange)="onSelectChange($event)"
             style="padding-left:5%;"
             no-padding
@@ -78,7 +87,7 @@
           <p>{{ "validamountError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label floating>{{ "Amount" | translate }}</ion-label>
+          <ion-label stacked>{{ "Amount" | translate }}</ion-label>
           <ion-input
             type="number"
             formControlName="Amount"
@@ -113,7 +122,7 @@
           <p>{{ "validMerchantIdError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label floating>{{ "MerchantId" | translate }}</ion-label>
+          <ion-label stacked>{{ "MerchantId" | translate }}</ion-label>
           <ion-input
             type="number"
             formControlName="MerchantId"

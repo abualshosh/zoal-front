@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {FormsPage} from '../forms/test';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { FormsPage } from "../forms/test";
 /**
  * Generated class for the InquiryListPage page.
  *
@@ -9,22 +9,20 @@ import {FormsPage} from '../forms/test';
  */
 @IonicPage()
 @Component({
-  selector: 'page-inquiry-list',
-  templateUrl: 'inquiry-list.html',
+  selector: "page-inquiry-list",
+  templateUrl: "inquiry-list.html"
 })
 export class InquiryListPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad InquiryListPage');
   }
- openPage(page) {
-     if(page=='FormsPage'){
-         this.navCtrl.push(FormsPage);
-     }else{
-   this.navCtrl.push(page);}
-
+  openPage(page) {
+    if (page == "FormsPage") {
+      this.navCtrl.push(FormsPage);
+    } else {
+      this.navCtrl.push(page);
+    }
   }
 }

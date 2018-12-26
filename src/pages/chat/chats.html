@@ -1,27 +1,22 @@
 <ion-header>
-  <ion-navbar color='bar'>
-    <ion-title>
-      {{'chat' | translate }}
-    </ion-title>
+  <ion-navbar color="secondary">
+    <ion-title> {{ "chat" | translate }} </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="chats">
   <ion-list>
-   
     <ion-item *ngFor="let chat of chats" (click)="viewMessages(chat)">
-      <ion-avatar item-start>
-        <img [src]="chat.imageUrl">
-      </ion-avatar>
-      <h2>{{chat.title}}</h2>
-      <p>{{chat.lastMessage}}</p>
-      <h6 item-end>{{chat.timestamp | date: 'dd/MM/yyyy' }}</h6>
+      <ion-avatar item-start> <img [src]="chat.imageUrl" /> </ion-avatar>
+      <h2>{{ chat.fullname }}</h2>
+      <p>{{ chat.lastMessage }}</p>
+      <h6 item-end>{{ chat.timestamp | date: "dd/MM/yyyy" }}</h6>
       <!-- <ion-note item-end><ion-badge item-end>1</ion-badge></ion-note> -->
     </ion-item>
   </ion-list>
- 
-   
+
   <ion-fab end bottom>
-  <button ion-fab color="primary" (click)="selectNew()"  ><ion-icon name='add'></ion-icon></button>
+    <button ion-fab color="primary" (click)="selectNew()">
+      <ion-icon name="add"></ion-icon>
+    </button>
   </ion-fab>
 </ion-content>
-

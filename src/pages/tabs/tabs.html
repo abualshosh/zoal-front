@@ -1,23 +1,58 @@
-<ion-tabs #myTabs selectedIndex="2" >
+<ion-tabs #myTabs selectedIndex="2">
+  <ion-tab
+    tabsHideOnSubPages="true"
+    [root]="tab1Root"
+    tabTitle="{{ 'feeds' | translate }}"
+    tabIcon="home"
+  ></ion-tab>
 
+  <ion-tab
+    tabsHideOnSubPages="true"
+    [root]="tab4Root"
+    (click)="tab4BadgeCount = 0"
+    tabBadge="{{ tab4BadgeCount > 0 ? tab4BadgeCount : null }}"
+    tabBadgeStyle="danger"
+    tabTitle="{{ 'chat' | translate }}"
+    tabIcon="chatbubbles"
+  ></ion-tab>
+  <ion-tab
+    tabsHideOnSubPages="true"
+    [root]="tab5Root"
+    [tabTitle]=""
+    tabIcon=""
+  ></ion-tab>
 
-  <ion-tab tabsHideOnSubPages="true" [root]="tab1Root" tabTitle="{{ 'feeds' | translate }}" tabIcon="home"></ion-tab>
+  <ion-tab
+    tabsHideOnSubPages="true"
+    [root]="tab2Root"
+    tabTitle="{{ 'Contacts' | translate }}"
+    tabIcon="contacts"
+  ></ion-tab>
+  <ion-tab
+    tabsHideOnSubPages="true"
+    [root]="tab3Root"
+    tabTitle="{{ 'profile' | translate }}"
+    tabIcon="person"
+  ></ion-tab>
 
-  <ion-tab tabsHideOnSubPages="true" [root]="tab4Root" (click)="tab4BadgeCount=0;" tabBadge="{{ tab4BadgeCount>0 ? tab4BadgeCount : null}}" tabBadgeStyle="danger" tabTitle="{{ 'chat' | translate }}" tabIcon="chatbubbles"></ion-tab>
- <ion-tab tabsHideOnSubPages="true" [root]="tab5Root" [tabTitle]="" tabIcon=""></ion-tab>
-
-  <ion-tab tabsHideOnSubPages="true" [root]="tab2Root" tabTitle="{{ 'Contacts' | translate }}" tabIcon="contacts"></ion-tab>
-  <ion-tab tabsHideOnSubPages="true" [root]="tab3Root" tabTitle="{{ 'profile' | translate }}" tabIcon="person"></ion-tab>
-
-
-  <ion-fab bottom  center style="border-top: 0.55px solid rgba(0, 0, 0, 0.3);
+  <ion-fab
+    bottom
+    center
+    style="border-top: 0.55px solid rgba(0, 0, 0, 0.3);
     z-index: 10;
     
     border-top-left-radius: 50%;
-    border-top-right-radius: 50%;">
-    <button style="background:linear-gradient(to bottom, #ed2124 50%, #f05826);" ion-fab width="57" height="57" (click)="selectTab()">
+    border-top-right-radius: 50%;"
+  >
+    <button
+      style="background:linear-gradient(to bottom, #ed2124 50%, #f05826);"
+      ion-fab
+      width="57"
+      height="57"
+      (click)="selectTab()"
+    >
       <!-- <ion-icon name="cash" role="img" ></ion-icon> -->
-       <img style="width:100%;" role="img" src="assets/img/icon.png">
-     </button>
+      <img style="width:100%;" role="img" src="assets/img/icon.png" />
+    </button>
   </ion-fab>
 </ion-tabs>

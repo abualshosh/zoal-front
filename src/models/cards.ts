@@ -1,5 +1,3 @@
-
-
 /*
   Generated class for the UserProvider provider.
 
@@ -8,16 +6,15 @@
 */
 
 export class Card {
+  constructor(
+    public CARDNAME,
+    public pan: string,
+    public panview: string,
+    public expDate: string,
+    public selected: boolean
+  ) {}
 
-
-
-  constructor(public CARDNAME,public pan : string,public panview : string,public expDate:string,public selected:boolean) {
-
-  }
-
-  printuser(){
-
+  printuser() {
     //console.log(this.pan);
   }
-
 }

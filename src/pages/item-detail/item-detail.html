@@ -1,70 +1,75 @@
-<ion-header color='primary'>
-
-  <ion-navbar  color='primary'>
-    <ion-title></ion-title>
-  </ion-navbar>
-
+<ion-header color="primary">
+  <ion-navbar color="primary"> <ion-title></ion-title> </ion-navbar>
 </ion-header>
 
-
 <ion-content no-padding>
-  <div *ngIf="post.haveImage" class="item-profile" text-center #profilePic [style.background-image]="'url('+this.api.url+'/postimage/'+post.id+' )'">
-  </div>
+  <div
+    *ngIf="post.haveImage"
+    class="item-profile"
+    text-center
+    #profilePic
+    [style.background-image]="
+      'url(' + this.api.url + '/postimage/' + post.id + ' )'
+    "
+  ></div>
 
-  <div class="item-detail" padding>
-    <ion-item class="itemDev" (click)="openOtherProfile('OtherProfilePage',post)">
+  <div>
+    <ion-item
+      class="itemDev"
+      (click)="openOtherProfile('OtherProfilePage', post)"
+    >
       <ion-avatar item-start>
-       <img [src]="this.api.url+'/profileimage/'+post.profile.userName">
+        <img [src]="this.api.url + '/profileimage/' + post.profile.userName" />
       </ion-avatar>
-       <h2 class="sticky">{{post.profile.fullName}}</h2>
-      <p>{{post.postDate}}</p>
+      <h2 class="sticky">{{ post.profile.fullName }}</h2>
+      <p>{{ post.postDate | date: "dd/MM/yyyy hh:mm" }}</p>
+      <div>
+        <button ion-button clear small icon-left (click)="viewlikes(post)">
+          <ion-icon name="thumbs-up"></ion-icon>
+          {{ post.posttolikes.length }}
+        </button>
+        <button ion-button clear small icon-left>
+          <ion-icon name="text"></ion-icon>
+          {{ post.posttocomments.length }}
+        </button>
+      </div>
     </ion-item>
-    <p>{{post.postTxt}}</p>
   </div>
-  <div class="bor">
-    <ion-row>
-      <ion-col>
-        <button ion-button color="purple" clear small icon-left (click)="like(post)">
-
-            <ion-icon name='thumbs-up'></ion-icon>
-               {{post.posttolikes.length}} Likes
-          </button>
-      </ion-col>
-      <ion-col>
-        <button ion-button color="purple" clear small icon-left (click)="comment(post)">
-            <ion-icon name='text'></ion-icon>
-            {{post.posttocomments.length}} comments
-          </button>
-      </ion-col>
-      <ion-col align-self-center text-center>
-        <p>
-        </p>
-      </ion-col>
-    </ion-row>
+  <div padding class="item-detail">
+    <p>{{ post.postTxt }}</p>
   </div>
-<div >
-  <ion-list >
-
-      <ion-item *ngFor="let comments of post.posttocomments" class="item-detail"  class="itemDev" (click)="openOtherProfile('OtherProfilePage',post)" no-padding>
-          <ion-avatar item-start>
-           <img [src]="this.api.url+'/profileimage/'+comments.profile.userName">
-          </ion-avatar>
-           <h2 class="sticky">{{comments.profile.fullName}}</h2>
-            <ion-note item-end>{{comments.commentDate |relativeTime }}</ion-note>
-            <p>{{comments.commentTxt}}</p>
-        </ion-item>
-      
-  </ion-list>
-</div>
- 
+  <ion-item>
+    <ion-list>
+      <ion-item
+        *ngFor="let comments of post.posttocomments"
+        class="item-detail"
+        class="itemDev"
+        (click)="openOtherProfile('OtherProfilePage', post)"
+        no-padding
+      >
+        <ion-avatar item-start>
+          <img
+            [src]="this.api.url + '/profileimage/' + comments.profile.userName"
+          />
+        </ion-avatar>
+        <h2 class="sticky">{{ comments.profile.fullName }}</h2>
+        <ion-note item-end>{{ comments.commentDate | relativeTime }}</ion-note>
+        <p>{{ comments.commentTxt }}</p>
+      </ion-item>
+    </ion-list>
+  </ion-item>
 </ion-content>
 <ion-footer>
-    <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
-      <ion-item>
-        <ion-input formControlName="message"  placeholder="add Comment..."></ion-input>
-        <button type="submit" ion-button clear  item-end><ion-icon class="footer-btn" name="send"></ion-icon></button>
-      </ion-item>
-    </form>
-  
-  
-  </ion-footer>
+  <form [formGroup]="messageForm" (submit)="send()" novalidate>
+    <ion-item>
+      <ion-input
+        required
+        formControlName="message"
+        placeholder="{{ 'addComment' | translate }}"
+      ></ion-input>
+      <button type="submit" ion-button clear item-end>
+        <ion-icon class="footer-btn" name="send"></ion-icon>
+      </button>
+    </ion-item>
+  </form>
+</ion-footer>

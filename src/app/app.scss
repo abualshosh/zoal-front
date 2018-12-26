@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/v2/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,49 +13,52 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-.ios, .md {
+.ios,
+.md {
   // ion-item{
   //   padding: 0;
   // }
   // ion-label , ion-input ,ion-select,ion-option{
   //   padding-left: 5%;;
   // }
-  .masters{
-    margin-top:1%; 
+  .masters {
+    margin-top: 1%;
   }
-  .subbutn{
+  .subbutn {
     width: 80%;
     margin-left: 10%;
-
-  }.mask-text {
+  }
+  .mask-text {
     -webkit-text-security: disc;
     -moz-webkit-text-security: disc;
     -moz-text-security: disc;
-}
-  .con{
+  }
+  .con {
     padding-bottom: 50px;
   }
-  .con ion-item{
+  .con ion-item {
     padding: 0px;
-    ion-label , ion-input ,ion-datetime, p{
+    ion-label,
+    ion-input,
+    ion-datetime,
+    p {
       padding-left: 15px;
     }
   }
-  .con p{
-    color:map-get($colors ,  danger);
+  .con p {
+    color: map-get($colors, danger);
     padding-left: 15px;
   }
-ion-modal.inset-modal {
-  // transparent black background overlay
-  background-color: rgba(0, 0, 0, .5) !important;
-  transition: opacity .25s ease-in-out;
- //padding: 4vh 4vw;
-}
-ion-modal.inset-modal-box {
-  // transparent black background overlay
-  background-color: rgba(0, 0, 0, .5) !important;
-  transition: opacity .25s ease-in-out;
- padding: 18vh 8vw;
-}
-
+  ion-modal.inset-modal {
+    // transparent black background overlay
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    transition: opacity 0.25s ease-in-out;
+    //padding: 4vh 4vw;
+  }
+  ion-modal.inset-modal-box {
+    // transparent black background overlay
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    transition: opacity 0.25s ease-in-out;
+    padding: 18vh 8vw;
+  }
 }

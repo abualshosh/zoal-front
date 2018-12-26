@@ -1,18 +1,14 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { LinkacconutPage } from './linkacconut';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { LinkacconutPage } from "./linkacconut";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    LinkacconutPage,
-  ],
+  declarations: [LinkacconutPage],
   imports: [
     IonicPageModule.forChild(LinkacconutPage),
-          TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    LinkacconutPage
-  ]
+  exports: [LinkacconutPage]
 })
 export class LinkacconutPageModule {}

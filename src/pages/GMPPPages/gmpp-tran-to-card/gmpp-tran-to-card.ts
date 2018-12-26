@@ -1,16 +1,21 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { Component } from "@angular/core";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  ModalController
+} from "ionic-angular";
 
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { LoadingController } from 'ionic-angular';
-import { GetServicesProvider } from '../../../providers/get-services/get-services';
-import { AlertController } from 'ionic-angular';
-import * as NodeRSA from 'node-rsa';
-import * as uuid from 'uuid';
-import { UserProvider } from '../../../providers/user/user';
-import { Storage } from '@ionic/storage';
-import { Card } from '../../../models/cards';
-import * as moment from 'moment';
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { LoadingController } from "ionic-angular";
+import { GetServicesProvider } from "../../../providers/get-services/get-services";
+import { AlertController } from "ionic-angular";
+import * as NodeRSA from "node-rsa";
+import * as uuid from "uuid";
+import { UserProvider } from "../../../providers/user/user";
+import { Storage } from "@ionic/storage";
+import { Card } from "../../../models/cards";
+import * as moment from "moment";
 
 /**
  * Generated class for the GmppBalancePage page.
@@ -20,43 +25,51 @@ import * as moment from 'moment';
  */
 @IonicPage()
 @Component({
-  selector: 'page-gmpp-tran-to-card',
-  templateUrl: 'gmpp-tran-to-card.html',
+  selector: "page-gmpp-tran-to-card",
+  templateUrl: "gmpp-tran-to-card.html"
 })
 export class GmppTranToCardPage {
-
   consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
-  constructor(private formBuilder: FormBuilder, public loadingCtrl: LoadingController, public GetServicesProviderg: GetServicesProvider, public alertCtrl: AlertController
-    , public user: UserProvider, public storage: Storage, public modalCtrl: ModalController) {
-      this.consumerIdentifier="249"+localStorage.getItem('username');
-
+  constructor(
+    private formBuilder: FormBuilder,
+    public loadingCtrl: LoadingController,
+    public GetServicesProviderg: GetServicesProvider,
+    public alertCtrl: AlertController,
+    public user: UserProvider,
+    public storage: Storage,
+    public modalCtrl: ModalController
+  ) {
+    this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
-
-      transactionAmount: ['', Validators.required],
-      consumerPIN: ['', Validators.required]
-
+      transactionAmount: ["", Validators.required],
+      consumerPIN: ["", Validators.required]
     });
-
   }
 
-  showAlert(balance: any) {
+  showAlert(data: any) {
+    let message: any;
+    if (data.responseCode != null) {
+      message = data.responseMessage;
+    } else {
+      message = "Connection error";
+    }
     let alert = this.alertCtrl.create({
-      title: 'Error!',
-      message: balance.responseMessage,
-      buttons: ['OK'],
-      cssClass: 'alertCustomCss'
+      title: "ERROR",
+      message: message,
+
+      buttons: ["OK"],
+      cssClass: "alertCustomCss"
     });
     alert.present();
   }
-
 
   logForm() {
     this.submitAttempt = true;
@@ -69,55 +82,59 @@ export class GmppTranToCardPage {
 
       dat.UUID = uuid.v4();
       dat.consumerIdentifier = this.consumerIdentifier;
-      dat.consumerPIN=this.GetServicesProvider.encryptGmpp(dat.UUID+dat.consumerPIN);
+      dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
+        dat.UUID + dat.consumerPIN
+      );
 
       //console.log(dat.IPIN)
-      dat.isConsumer = 'true';
+      dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(this.todo.value, 'gmpp/transferWalletToAccount').then(data => {
+      this.GetServicesProvider.load(
+        this.todo.value,
+        "gmpp/transferWalletToAccount"
+      ).then(data => {
         this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 1) {
           loader.dismiss();
           // this.showAlert(data);
-          var datetime= moment(data.tranDateTime, 'DDMMyyHhmmss').format("DD/MM/YYYY  hh:mm:ss");
+          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+            "DD/MM/YYYY  hh:mm:ss"
+          );
 
-          var datas ={
-            "destinationIdentifier":data.destinationIdentifier,
-            "fee":data.fee,
-            "externalFee":data.externalFee
-            ,"transactionAmount":data.transactionAmount
-            ,"totalAmount":data.totalAmount
-            ,"transactionId":data.transactionId
-            ,date:datetime
+          var datas = {
+            destinationIdentifier: data.destinationIdentifier,
+            fee: data.fee,
+            externalFee: data.externalFee,
+            transactionAmount: data.transactionAmount,
+            totalAmount: data.totalAmount,
+            transactionId: data.transactionId,
+            date: datetime
           };
-          var dat =[];
-          var main =[];
-          var mainData={
-            "TransfarefromWalletToCard":data.totalAmount
-          }
-          dat.push({"WalletNumber":data.consumerIdentifier})
+          var dat = [];
+          var main = [];
+          var mainData = {
+            TransfarefromWalletToCard: data.totalAmount
+          };
+          dat.push({ WalletNumber: data.consumerIdentifier });
           main.push(mainData);
           dat.push(datas);
-            let modal = this.modalCtrl.create('BranchesPage', {"data":dat,"main":main},{ cssClass: 'inset-modal' });
-      
+          let modal = this.modalCtrl.create(
+            "BranchesPage",
+            { data: dat, main: main },
+            { cssClass: "inset-modal" }
+          );
+
           modal.present();
           this.todo.reset();
           this.submitAttempt = false;
         } else {
           loader.dismiss();
-          if (data.responseCode != null) {
-            this.showAlert(data);
-          } else {
-            data.responseMessage = "Connection Error";
-            this.showAlert(data);
-          }
+          this.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;
         }
       });
-
     }
   }
-
 }

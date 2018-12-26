@@ -69,10 +69,16 @@ export class CustomesInqueryPage {
     });
   }
 
-  showAlert(balance: any) {
+  showAlert(data: any) {
+    let message: any;
+    if (data.responseCode != null) {
+      message = data.responseMessage;
+    } else {
+      message = 'Connection error';
+    }
     let alert = this.alertCtrl.create({
       title: "ERROR",
-      message: balance.responseMessage,
+      message: message,
 
       buttons: ["OK"],
       cssClass: "alertCustomCss"

@@ -5,31 +5,29 @@ page-item-detail {
     background-size: cover;
     height: 250px;
   }
-.bor{
-  border: 1px solid lightgrey;
-  width: 100%;
-  background: white;
- 
-}
-.bar-footer {
-  overflow: visible !important;
-}
+  .bor {
+    border: 1px solid lightgrey;
+    width: 100%;
+    background: white;
+  }
+  .bar-footer {
+    overflow: visible !important;
+  }
 
-.bar-footer textarea {
-  resize: none;
-  height: 25px;
-}
+  .bar-footer textarea {
+    resize: none;
+    height: 25px;
+  }
 
-/* fixes an ios bug bear */
-button.ion-android-send {
-  padding-top: 2px;
-}
+  /* fixes an ios bug bear */
+  button.ion-android-send {
+    padding-top: 2px;
+  }
 
-.footer-btn {
-      font-size: x-large;
-}
+  .footer-btn {
+    font-size: x-large;
+  }
   .item-detail {
     width: 100%;
-    
   }
 }

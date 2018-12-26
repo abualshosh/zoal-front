@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 //import decode from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
-
   public getToken(): string {
-    return localStorage.getItem('id_token');
+    return localStorage.getItem("id_token");
   }
 
   public isAuthenticated(): boolean {
@@ -15,5 +14,4 @@ export class AuthService {
     // whether or not the token is expired
     return true;
   }
-
 }

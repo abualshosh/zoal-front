@@ -4,7 +4,6 @@ $font-path: "../assets/fonts";
 
 @import "ionic.globals";
 
-
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
@@ -12,8 +11,8 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:        #000;
-$background-color:  #FAFAFA;
+$text-color: #000;
+$background-color: #fafafa;
 //$app-direction: rtl;
 
 // Named Color Variables
@@ -25,37 +24,28 @@ $background-color:  #FAFAFA;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  bar:        #F5f5f5,
-  primary:    #E64A19,
-  secondary:  #E64A19,
-  danger:     #b71c1c,
-  light:      #ffffff,
-  dark:       #222,
-  fabs:         #FF7043,
-  green:     green
+  bar: #f5f5f5,
+  primary: #e64a19,
+  secondary: #e64a19,
+  danger: #b71c1c,
+  light: #ffffff,
+  dark: #222,
+  fabs: #ff7043,
+  green: green
 );
-
 
 // App iOS Variables
 // --------------------------------------------------
-// iOS only Sass variables can go here 
-
-
-
+// iOS only Sass variables can go here
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-$spinner-md-crescent-color : #0277BD;
-
-
+$spinner-md-crescent-color: #0277bd;
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
 
 // App Theme
 // --------------------------------------------------
@@ -66,14 +56,12 @@ $spinner-md-crescent-color : #0277BD;
 
 @import "ionic.theme.default";
 
-
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
-
 
 // Fonts
 // --------------------------------------------------

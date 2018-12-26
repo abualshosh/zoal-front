@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { GmppTranToCardPage } from './gmpp-tran-to-card';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { GmppTranToCardPage } from "./gmpp-tran-to-card";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    GmppTranToCardPage,
-  ],
+  declarations: [GmppTranToCardPage],
   imports: [
     IonicPageModule.forChild(GmppTranToCardPage),
-      TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    GmppTranToCardPage
-  ]
+  exports: [GmppTranToCardPage]
 })
 export class GmppTranToCardPageModule {}

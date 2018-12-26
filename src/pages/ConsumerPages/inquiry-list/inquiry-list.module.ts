@@ -1,17 +1,13 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { InquiryListPage } from './inquiry-list';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { InquiryListPage } from "./inquiry-list";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    InquiryListPage,
-  ],
+  declarations: [InquiryListPage],
   imports: [
     IonicPageModule.forChild(InquiryListPage),
-      TranslateModule.forChild()
+    TranslateModule.forChild()
   ],
-  exports: [
-    InquiryListPage
-  ]
+  exports: [InquiryListPage]
 })
 export class InquiryListPageModule {}

@@ -6,8 +6,9 @@ import { Injectable } from "@angular/core";
  */
 @Injectable()
 export class Api {
-  //  public urlip: string ='mobappszone.xyz:8080';
-  //  public urlip: string ='192.168.98.120:8080';
+  // public urlip = "196.223.158.38:8080";
+  // public urlip = "196.168.98.137:8080";
+  // public urlip = "196.168.8.100:8080";
   public urlip = "127.0.0.1:8080";
   public url: string = "http://" + this.urlip + "/api";
 
@@ -27,6 +28,7 @@ export class Api {
     //     reqOpts.params.set(k, params[k]);
     //   }
     // }
+
     if (params) {
       endpoint = endpoint + params;
     }

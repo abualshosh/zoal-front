@@ -5,80 +5,133 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar color="bar">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>{{'E15' | translate}}</ion-title>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "E15" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content no-padding class="masters">
   <div class="con">
-
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
         <ion-item>
-          <ion-toggle  [disabled]="showWallet" formControlName="mobilewallet" (ionChange)="WalletAvalible($event)"></ion-toggle>
+          <ion-toggle
+            [disabled]="showWallet"
+            formControlName="mobilewallet"
+            (ionChange)="WalletAvalible($event)"
+          ></ion-toggle>
           <ion-label class="label">
-          <ion-icon name='phone-portrait' item-start></ion-icon>{{'USEWallet' | translate}}</ion-label>
+            <ion-icon name="phone-portrait" item-start></ion-icon
+            >{{ "USEWallet" | translate }}</ion-label
+          >
         </ion-item>
+        <div
+          *ngIf="
+            !todo.controls.entityId.valid &&
+            todo.controls.mobilewallet.value &&
+            submitAttempt
+          "
+        >
+          <p>{{ "validWalletError" | translate }}</p>
+        </div>
         <ion-item *ngIf="todo.controls.mobilewallet.value">
-          <ion-label stacked>{{'WalletNumber' | translate}}</ion-label>
-          <ion-input type="number" formControlName="entityId" required></ion-input>
+          <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="entityId"
+            required
+          ></ion-input>
         </ion-item>
 
-        <div *ngIf="!validCard && submitAttempt&& !todo.controls.mobilewallet.value">
-          <p>{{'validcardError'| translate}}</p>
-            </div>
-            <ion-item *ngIf="!todo.controls.mobilewallet.value">
-                  <ion-label stacked>{{'Card' | translate}}</ion-label>
-                  <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}"  (ionChange)="onSelectChange($event)" style="padding-left:5%;" no-padding interface="action-sheet" formControlName="Card" interface="popover" >
-                    <ion-option  *ngFor="let Card of cards"  [value]="Card">{{Card.pan}}</ion-option>
-
-                  </ion-select>
-                </ion-item>
+        <div
+          *ngIf="
+            !validCard && submitAttempt && !todo.controls.mobilewallet.value
+          "
+        >
+          <p>{{ "validcardError" | translate }}</p>
+        </div>
+        <ion-item *ngIf="!todo.controls.mobilewallet.value">
+          <ion-label stacked>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
+            (ionChange)="onSelectChange($event)"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
+            formControlName="Card"
+            interface="popover"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">
+              {{ Card.pan }}
+            </ion-option>
+          </ion-select>
+        </ion-item>
         <div *ngIf="!todo.controls.INVOICENUMBER.valid && submitAttempt">
-          <p>{{'validINVOICENUMBERError'| translate}}</p>
+          <p>{{ "validINVOICENUMBERError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label floating>{{'INVOICENUMBER' | translate}}</ion-label>
-          <ion-input type="number" formControlName="INVOICENUMBER" required></ion-input>
+          <ion-label stacked>{{ "INVOICENUMBER" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="INVOICENUMBER"
+            required
+          ></ion-input>
         </ion-item>
 
         <div *ngIf="!todo.controls.PHONENUMBER.valid && submitAttempt">
-            <p>{{'validvoucherNumberError'| translate}}</p>
+          <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
-       
+
         <ion-item>
-           
-                    
-          <ion-label floating>{{'PhoneNumber' | translate}}  
-          </ion-label>
-          <ion-input type="number" formControlName="PHONENUMBER" required></ion-input>
+          <ion-label stacked>{{ "PhoneNumber" | translate }} </ion-label>
+          <ion-input
+            type="number"
+            formControlName="PHONENUMBER"
+            required
+          ></ion-input>
         </ion-item>
 
         <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
-          <p>{{'validamountError'| translate}}</p>
+          <p>{{ "validamountError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label floating>{{'Amount' | translate}}</ion-label>
-          <ion-input type="number" formControlName="Amount" required></ion-input>
+          <ion-label stacked>{{ "Amount" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="Amount"
+            required
+          ></ion-input>
         </ion-item>
 
         <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
-          <p *ngIf="todo.controls.mobilewallet.value">{{'validipinError'| translate}}</p>
-          <p *ngIf="!todo.controls.mobilewallet.value"> {{'validpinError'| translate}}</p>
-    </div>
-<ion-item>
-<ion-label *ngIf="todo.controls.mobilewallet.value" stacked> {{'PIN'|translate}}</ion-label>
-<ion-label *ngIf="!todo.controls.mobilewallet.value" stacked> {{'IPIN'|translate}}</ion-label>
-          <ion-input class="mask-text" type="number" formControlName="IPIN" required></ion-input>
+          <p *ngIf="todo.controls.mobilewallet.value">
+            {{ "validipinError" | translate }}
+          </p>
+          <p *ngIf="!todo.controls.mobilewallet.value">
+            {{ "validpinError" | translate }}
+          </p>
+        </div>
+        <ion-item>
+          <ion-label *ngIf="todo.controls.mobilewallet.value" stacked>
+            {{ "PIN" | translate }}</ion-label
+          >
+          <ion-label *ngIf="!todo.controls.mobilewallet.value" stacked>
+            {{ "IPIN" | translate }}</ion-label
+          >
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="IPIN"
+            required
+          ></ion-input>
         </ion-item>
-
       </ion-list>
 
-      <button class="subbutn" ion-button type="submit" color="secondary">{{'Submit'|translate}}</button>
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
     </form>
   </div>
 </ion-content>

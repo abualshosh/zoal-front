@@ -1,60 +1,74 @@
 <ion-header>
-  <ion-navbar color='bar'>
-    <ion-title>{{'UserSettings' | translate }}</ion-title>
+  <ion-navbar color="secondary">
+    <ion-title>{{ "UserSettings" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-list>
     <ion-list-header>
       <ion-avatar item-start (click)="updateProfileImage()">
-        <img-loader fallbackAsPlaceholde="true" fallback="assets/img/userPlaceholder.png" [src]="this.api.url+'/profileimage/'+profile.userName"
-          useImg>
+        <img-loader
+          fallbackAsPlaceholde="true"
+          fallback="assets/img/userPlaceholder.png"
+          [src]="this.api.url + '/profileimage/' + profile.userName"
+          useImg
+        >
         </img-loader>
       </ion-avatar>
-      <p class="username">{{profile.fullName}}</p>
-      <p>+249 {{profile.userName}}</p>
+      <p class="username">{{ profile.fullName }}</p>
+      <p>+249 {{ profile.userName }}</p>
     </ion-list-header>
   </ion-list>
   <ion-list no-border>
-    <ion-list-header>
-      {{'General' | translate }}
-    </ion-list-header>
+    <ion-list-header> {{ "General" | translate }} </ion-list-header>
     <ion-item>
-      <ion-icon name='settings' item-start></ion-icon>
-      <ion-label>{{'AppLanguage' | translate }}</ion-label>
-      <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;" [(ngModel)]="language" (ngModelChange)="ChangeLang()">
-        <ion-option *ngFor="let language of languages" [value]="language.Code" >{{language.language | translate}}</ion-option>
+      <ion-icon name="settings" item-start></ion-icon>
+      <ion-label>{{ "AppLanguage" | translate }}</ion-label>
+      <ion-select
+        okText="{{'Submit'|translate}}"
+        cancelText="{{'Close'|translate}}"
+        style="padding-left:5%;"
+        [(ngModel)]="language"
+        (ngModelChange)="ChangeLang()"
+      >
+        <ion-option
+          *ngFor="let language of languages"
+          [value]="language.Code"
+          >{{ language.language | translate }}</ion-option
+        >
       </ion-select>
     </ion-item>
-
   </ion-list>
   <ion-list>
-    <ion-list-header>
-      {{'Transfera' | translate }}
-    </ion-list-header>
+    <ion-list-header> {{ "Transfera" | translate }} </ion-list-header>
     <ion-item>
-
-      <ion-toggle [(ngModel)]="profile.accepteTransfer" (ngModelChange)="toggleNotifications()"></ion-toggle>
-      <ion-label class="label">{{'AccepteTransfer' | translate }}</ion-label>
-      <ion-icon name='notifications' item-start></ion-icon>
+      <ion-toggle
+        [(ngModel)]="profile.accepteTransfer"
+        (ngModelChange)="toggleNotifications()"
+      ></ion-toggle>
+      <ion-label class="label">{{ "AccepteTransfer" | translate }}</ion-label>
+      <ion-icon name="notifications" item-start></ion-icon>
     </ion-item>
     <ion-item *ngIf="profile.accepteTransfer">
-      <ion-icon name='card' item-start></ion-icon>
-      <ion-label>{{'MainCard' | translate }}</ion-label>
-      <ion-select  okText="{{'Submit'|translate}}" cancelText="{{'Close'|translate}}" style="padding-left:5%;" [(ngModel)]="paymentMethod">
-        <ion-option *ngFor="let method of paymentMethods" [value]="method">{{method}}</ion-option>
+      <ion-icon name="card" item-start></ion-icon>
+      <ion-label>{{ "MainCard" | translate }}</ion-label>
+      <ion-select
+        okText="{{'Submit'|translate}}"
+        cancelText="{{'Close'|translate}}"
+        style="padding-left:5%;"
+        [(ngModel)]="paymentMethod"
+      >
+        <ion-option *ngFor="let method of paymentMethods" [value]="method">
+          {{ method }}
+        </ion-option>
       </ion-select>
     </ion-item>
-
   </ion-list>
   <ion-list>
-    <ion-list-header>
-        {{'Other' | translate }}
-    </ion-list-header>
+    <!-- <ion-list-header> {{ "Other" | translate }} </ion-list-header> -->
     <ion-item>
-     
       <button ion-button (click)="logOut()" item-end>
-          {{'LogOut' | translate }}
+        {{ "LogOut" | translate }}
       </button>
     </ion-item>
   </ion-list>

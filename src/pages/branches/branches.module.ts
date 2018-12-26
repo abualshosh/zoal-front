@@ -1,20 +1,15 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { BranchesPage } from './branches';
-import {KeysPipeModule} from '../../app/pipekeymodule';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { IonicPageModule } from "ionic-angular";
+import { BranchesPage } from "./branches";
+import { KeysPipeModule } from "../../app/pipekeymodule";
+import { TranslateModule } from "@ngx-translate/core";
 @NgModule({
-  declarations: [
-    BranchesPage,
-     
-  ],
+  declarations: [BranchesPage],
   imports: [
     IonicPageModule.forChild(BranchesPage),
-        TranslateModule.forChild(),
-        KeysPipeModule
+    TranslateModule.forChild(),
+    KeysPipeModule
   ],
-  exports: [
-    BranchesPage
-  ]
+  exports: [BranchesPage]
 })
 export class BranchesPageModule {}

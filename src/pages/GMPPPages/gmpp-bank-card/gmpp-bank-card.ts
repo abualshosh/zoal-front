@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 /**
  * Generated class for the GmppBankCardPage page.
@@ -9,19 +9,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  */
 @IonicPage()
 @Component({
-  selector: 'page-gmpp-bank-card',
-  templateUrl: 'gmpp-bank-card.html',
+  selector: "page-gmpp-bank-card",
+  templateUrl: "gmpp-bank-card.html"
 })
 export class GmppBankCardPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad GmppBankCardPage');
   }
-openPage(page) {
- this.navCtrl.push(page);
-
-}
+  openPage(page) {
+    this.navCtrl.push(page);
+  }
 }

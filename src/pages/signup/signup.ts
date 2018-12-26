@@ -4,7 +4,8 @@ import {
   IonicPage,
   NavController,
   ToastController,
-  LoadingController
+  LoadingController,
+  AlertController
 } from "ionic-angular";
 
 import { User } from "../../providers/providers";
@@ -33,7 +34,8 @@ export class SignupPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    public alertCtrl: AlertController
   ) {
     this.signup = this.formBuilder.group({
       PHONENUMBER: [
@@ -52,8 +54,33 @@ export class SignupPage {
     });
   }
 
+  showAlert(data: any) {
+    let message: any;
+    if (data.responseCode != null) {
+      message = data.responseMessage;
+    } else {
+      message = "Connection error";
+    }
+    let alert = this.alertCtrl.create({
+      title: "ERROR",
+      message: message,
+
+      buttons: ["OK"],
+      cssClass: "alertCustomCss"
+    });
+    alert.present();
+  }
+
+  showToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: "top"
+    });
+    toast.present();
+  }
+
   doSignup() {
-    // Attempt to login in through our User service
     this.submitAttempt = true;
 
     if (this.signup.valid) {
@@ -61,33 +88,37 @@ export class SignupPage {
         content: "Please wait..."
       });
       loader.present();
+
       this.account.password = this.signup.controls["PHONENUMBER"].value;
       this.account.login = this.signup.controls["PHONENUMBER"].value;
+      this.account.username = this.signup.controls["PHONENUMBER"].value;
+
       this.user.login(this.account).subscribe(
         resp => {
           loader.dismiss();
-          let toast = this.toastCtrl.create({
-            message: this.signupErrorString,
-            duration: 3000,
-            position: "top"
-          });
-          toast.present();
+          this.showToast(this.signupErrorString);
           this.submitAttempt = false;
         },
         err => {
           this.user.sendOtp(this.account).subscribe(
             (res: any) => {
-              loader.dismiss();
               if (res.success == true) {
+                loader.dismiss();
                 this.navCtrl.setRoot("VlidateOtpPage", {
                   username: this.account.username,
                   OtpType: "signup"
                 });
+              } else {
+                loader.dismiss();
+                this.showToast(this.signupErrorString);
+                this.submitAttempt = false;
               }
               this.submitAttempt = false;
             },
             err => {
               console.error("ERROR", err);
+              loader.dismiss();
+              this.showAlert(err);
               this.submitAttempt = false;
             }
           );

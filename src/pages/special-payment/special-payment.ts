@@ -65,7 +65,15 @@ export class SpecialPaymentPage {
       pan: [""],
       Card: [""],
       MerchantId: [""],
-      entityId: [""],
+      entityId: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("[0-9]*")
+        ])
+      ],
       mobilewallet: [""],
       IPIN: [
         "",
@@ -76,12 +84,11 @@ export class SpecialPaymentPage {
           Validators.pattern("[0-9]*")
         ])
       ],
-      // PHONENUMBER: ["", Validators.required],
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
     this.todo.controls["entityId"].setValue(
-      "249" + localStorage.getItem("username")
+      "0" + localStorage.getItem("username")
     );
   }
 
@@ -104,10 +111,16 @@ export class SpecialPaymentPage {
     }
   }
 
-  showAlert(balance: any) {
+  showAlert(data: any) {
+    let message: any;
+    if (data.responseCode != null) {
+      message = data.responseMessage;
+    } else {
+      message = "Connection error";
+    }
     let alert = this.alertCtrl.create({
       title: "ERROR",
-      message: balance.responseMessage,
+      message: message,
 
       buttons: ["OK"],
       cssClass: "alertCustomCss"
@@ -117,17 +130,18 @@ export class SpecialPaymentPage {
 
   WalletAvalible(event) {
     this.profile = JSON.parse(localStorage.getItem("profile"));
-    if (!this.profile.phoneNumber) {
-      let modal = this.modalCtrl.create(
-        "SignupModalPage",
-        {},
-        { cssClass: "inset-modals" }
-      );
-      modal.present();
-      this.todo.reset();
+    // if (!this.profile.phoneNumber) {
+    //   let modal = this.modalCtrl.create(
+    //     "SignupModalPage",
+    //     {},
+    //     { cssClass: "inset-modals" }
+    //   );
+    //   modal.present();
+    //   this.todo.reset();
 
-      this.showWallet = true;
-    } else if (this.cards) {
+    //   this.showWallet = true;
+    // } else
+    if (this.cards) {
       if (this.cards.length <= 0) {
         this.showWallet = true;
         let modal = this.modalCtrl.create(
@@ -178,7 +192,7 @@ export class SpecialPaymentPage {
       dat.id = dat.MerchantId;
       if (dat.mobilewallet) {
         dat.isMobilePayment = true;
-        dat.phoneNumber = "249" + localStorage.getItem("username");
+        dat.phoneNumber = dat.entityId;
         dat.pan = "";
       } else {
         dat.isMobilePayment = false;
@@ -234,14 +248,14 @@ export class SpecialPaymentPage {
           this.submitAttempt = false;
 
           this.todo.controls["entityId"].setValue(
-            "249" + localStorage.getItem("username")
+            "0" + localStorage.getItem("username")
           );
         } else {
           loader.dismiss();
           this.showAlert(data);
           this.clearInput();
           this.todo.controls["entityId"].setValue(
-            "249" + localStorage.getItem("username")
+            "0" + localStorage.getItem("username")
           );
 
           this.submitAttempt = false;

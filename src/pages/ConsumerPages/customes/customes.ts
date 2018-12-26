@@ -30,12 +30,16 @@ import { Card } from "../../../models/cards";
   templateUrl: "customes.html"
 })
 export class CustomesPage {
+  showWallet: boolean = false;
+  profile: any;
   public title: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   public payee: any[] = [];
   submitAttempt: boolean = false;
+  validCard: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
@@ -48,6 +52,15 @@ export class CustomesPage {
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
+      if (this.cards) {
+        if (this.cards.length <= 0) {
+          this.showWallet = true;
+          this.todo.controls["mobilewallet"].setValue(true);
+        }
+      } else {
+        this.showWallet = true;
+        this.todo.controls["mobilewallet"].setValue(true);
+      }
     });
 
     this.title = "Custom Service";
@@ -58,6 +71,16 @@ export class CustomesPage {
       pan: [""],
       Card: ["", Validators.required],
       Payee: [""],
+      entityId: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("[0-9]*")
+        ])
+      ],
+      mobilewallet: [""],
       IPIN: [
         "",
         Validators.compose([
@@ -71,12 +94,22 @@ export class CustomesPage {
       DECLARANTCODE: ["", Validators.required],
       Amount: ["", Validators.required]
     });
+    this.todo.controls["mobilewallet"].setValue(false);
+    this.todo.controls["entityId"].setValue(
+      "0" + localStorage.getItem("username")
+    );
   }
 
-  showAlert(balance: any) {
+  showAlert(data: any) {
+    let message: any;
+    if (data.responseCode != null) {
+      message = data.responseMessage;
+    } else {
+      message = "Connection error";
+    }
     let alert = this.alertCtrl.create({
       title: "ERROR",
-      message: balance.responseMessage,
+      message: message,
 
       buttons: ["OK"],
       cssClass: "alertCustomCss"
@@ -84,14 +117,60 @@ export class CustomesPage {
     alert.present();
   }
 
+  WalletAvalible(event) {
+    this.profile = JSON.parse(localStorage.getItem("profile"));
+    // if (!this.profile.phoneNumber) {
+    //   let modal = this.modalCtrl.create(
+    //     "SignupModalPage",
+    //     {},
+    //     { cssClass: "inset-modals" }
+    //   );
+    //   modal.present();
+    //   this.todo.reset();
+
+    //   this.showWallet = true;
+    // } else
+    if (this.cards) {
+      if (this.cards.length <= 0) {
+        this.showWallet = true;
+        let modal = this.modalCtrl.create(
+          "HintModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    } else {
+      this.showWallet = true;
+
+      let modal = this.modalCtrl.create(
+        "HintModalPage",
+        {},
+        { cssClass: "inset-modals" }
+      );
+      modal.present();
+    }
+  }
+
+  onSelectChange(selectedValue: any) {
+    var dat = this.todo.value;
+    if (dat.Card && !dat.mobilewallet) {
+      this.validCard = true;
+    }
+  }
+
   logForm() {
+    var dat = this.todo.value;
+    if (dat.Card && !dat.mobilewallet) {
+      this.validCard = true;
+    }
     this.submitAttempt = true;
     if (this.todo.valid) {
       let loader = this.loadingCtrl.create({
         content: "Please wait..."
       });
       loader.present();
-      var dat = this.todo.value;
+      dat = this.todo.value;
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
@@ -100,14 +179,23 @@ export class CustomesPage {
 
       dat.tranAmount = dat.Amount;
 
-      dat.pan = dat.Card.pan;
-      dat.expDate = dat.Card.expDate;
-      dat.authenticationType = "00";
+      if (dat.mobilewallet) {
+        dat.entityType = "Mobile Wallet";
+
+        dat.authenticationType = "10";
+        dat.pan = "";
+      } else {
+        dat.pan = dat.Card.pan;
+        dat.expDate = dat.Card.expDate;
+        dat.authenticationType = "00";
+        dat.entityId = "";
+      }
 
       dat.fromAccountType = "00";
       dat.toAccountType = "00";
 
-      dat.paymentInfo = "BANKCODE=" + dat.BANKCODE + "/DECLARANTCODE=" + dat.DECLARANTCODE;
+      dat.paymentInfo =
+        "BANKCODE=" + dat.BANKCODE + "/DECLARANTCODE=" + dat.DECLARANTCODE;
       dat.payeeId = "Custom Service";
 
       //console.log(dat)

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 /**
  * Generated class for the TransferListPage page.
@@ -9,20 +9,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  */
 @IonicPage()
 @Component({
-  selector: 'page-transfer-list',
-  templateUrl: 'transfer-list.html',
+  selector: "page-transfer-list",
+  templateUrl: "transfer-list.html"
 })
 export class TransferListPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad TransferListPage');
   }
- openPage(page) {
-     
-   this.navCtrl.push(page);
-
+  openPage(page) {
+    this.navCtrl.push(page);
   }
 }

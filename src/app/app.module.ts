@@ -13,7 +13,6 @@ import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
 import { AuthHttp, AuthConfig, JwtHelper } from "angular2-jwt";
-import { Items } from "../mocks/providers/items";
 import { Settings } from "../providers/providers";
 import { User, UserProvider } from "../providers/providers";
 import { Api } from "../providers/providers";
@@ -31,7 +30,6 @@ import { FCM } from "@ionic-native/fcm";
 import { Firebase } from "@ionic-native/firebase";
 import { IonicImageLoader } from "ionic-image-loader";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
-import { ObjNgForPipe } from "../pipes/obj-ng-for/obj-ng-for";
 import { NativePageTransitions } from "@ionic-native/native-page-transitions";
 import { CardIO } from "@ionic-native/card-io";
 // The translate loader needs to know where to load i18n files
@@ -56,7 +54,7 @@ export function provideSettings(storage: Storage) {
 }
 
 @NgModule({
-  declarations: [MyApp, ObjNgForPipe],
+  declarations: [MyApp],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -80,7 +78,6 @@ export function provideSettings(storage: Storage) {
 
   providers: [
     Api,
-    Items,
     User,
     File,
     PhotoViewer,

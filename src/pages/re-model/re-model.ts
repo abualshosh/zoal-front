@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IonicPage, ViewController, NavParams } from "ionic-angular";
-import { ObjNgForPipe } from "../../pipes/obj-ng-for/obj-ng-for";
+// import { ObjNgForPipe } from "../../pipes/obj-ng-for/obj-ng-for";
 import { Pipe, PipeTransform } from "@angular/core";
 /**
  * Generated class for the ReModelPage page.

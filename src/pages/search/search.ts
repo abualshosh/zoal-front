@@ -8,9 +8,6 @@ import {
 } from "@ionic-native/contacts";
 import { Api } from "../../providers/providers";
 
-import { Item } from "../../models/item";
-import { Items } from "../../providers/providers";
-
 @IonicPage()
 @Component({
   selector: "page-search",
@@ -25,8 +22,7 @@ export class SearchPage {
     public api: Api,
     private contacts: Contacts,
     public navCtrl: NavController,
-    public navParams: NavParams,
-    public items: Items
+    public navParams: NavParams
   ) {
     this.username = localStorage.getItem("username");
     this.currentItems = JSON.parse(localStorage.getItem("connections"));

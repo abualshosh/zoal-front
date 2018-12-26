@@ -3,8 +3,6 @@ import { IonicPage, NavController, NavParams, Content } from "ionic-angular";
 import { Api } from "../../providers/providers";
 import { FormControl, FormBuilder } from "@angular/forms";
 
-import { Items } from "../../providers/providers";
-
 @IonicPage()
 @Component({
   selector: "page-item-detail",
@@ -19,10 +17,9 @@ export class ItemDetailPage {
     public formBuilder: FormBuilder,
     public navCtrl: NavController,
     navParams: NavParams,
-    items: Items,
     public api: Api
   ) {
-    this.post = navParams.get("item") || items.defaultItem;
+    this.post = navParams.get("item");
     this.messageForm = formBuilder.group({
       message: new FormControl("")
     });

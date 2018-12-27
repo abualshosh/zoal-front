@@ -56,7 +56,7 @@ export class CustomsPage {
       }
     });
 
-    this.title = "Custom Service";
+    this.title = "customsServices";
 
     //user.printuser();
 

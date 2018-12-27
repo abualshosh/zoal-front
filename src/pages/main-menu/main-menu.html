@@ -8,29 +8,30 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 <ion-content class="card-background-page">
   <ion-grid style="height:100%;" no-padding>
     <ion-row style="height:100%;">
       <ion-col style="height:100%;">
         <div
           style=" position: relative; height:100%; text-align: center; background-color:#9ccc65;"
-          (click)="scan()"
+          (click)="scanQr()"
         >
           <div class="img-container"><img src="assets/img/mp.jpg" /></div>
           <div class="card-title"><ion-icon name="qr-scanner"></ion-icon></div>
-          <div class="card-subtitle">{{ "Scan and Pay" | translate }}</div>
+          <div class="card-subtitle">{{ "scanQr" | translate }}</div>
         </div>
       </ion-col>
       <ion-col>
         <div
           style="height:100%; text-align: center; background-color:#ab47bc;"
-          (click)="open('QrGeneratorPage')"
+          (click)="openPage('QrGeneratorPage')"
         >
           <div class="img-container"><img src="assets/img/cp.jpg" /></div>
           <div class="card-title">
             <div class="cercil"><ion-icon name="barcode"></ion-icon></div>
           </div>
-          <div class="card-subtitle">{{ "my QR Code" | translate }}</div>
+          <div class="card-subtitle">{{ "qrCode" | translate }}</div>
         </div>
       </ion-col>
     </ion-row>
@@ -38,7 +39,7 @@
       <ion-col style="height:100%;">
         <div
           style="height:100%; text-align: center; background-color:#1976d2;"
-          (click)="openlist('Paymentpages')"
+          (click)="openPagesList('Paymentpages')"
         >
           <div class="img-container">
             <img src="assets/img/paymentServices.jpg" />
@@ -46,19 +47,21 @@
           <div class="card-title">
             <div class="cercil"><ion-icon name="cart"></ion-icon></div>
           </div>
-          <div class="card-subtitle">{{ "payserv" | translate }}</div>
+          <div class="card-subtitle">{{ "paymentServices" | translate }}</div>
         </div>
       </ion-col>
       <ion-col>
         <div
           style="height:100%; text-align: center; background-color:#673ab7;"
-          (click)="openlist('TransferPages')"
+          (click)="openPagesList('TransferPages')"
         >
           <div class="img-container"><img src="assets/img/cp.jpg" /></div>
           <div class="card-title">
             <div class="cercil"><ion-icon name="swap"></ion-icon></div>
           </div>
-          <div class="card-subtitle">{{ "transervice" | translate }}</div>
+          <div class="card-subtitle">
+            {{ "transactionServices" | translate }}
+          </div>
         </div>
       </ion-col>
     </ion-row>
@@ -66,19 +69,19 @@
       <ion-col style="height:100%;">
         <div
           style="height:100%; text-align: center; background-color:#b71c1c;"
-          (click)="openlist('Gmpppages')"
+          (click)="openPagesList('Gmpppages')"
         >
           <div class="img-container"><img src="assets/img/mp.jpg" /></div>
           <div class="card-title">
             <div class="cercil"><ion-icon name="build"></ion-icon></div>
           </div>
-          <div class="card-subtitle">{{ "otherservice" | translate }}</div>
+          <div class="card-subtitle">{{ "otherServices" | translate }}</div>
         </div>
       </ion-col>
       <ion-col>
         <div
           style="height:100%; text-align: center; background-color:#03a9f4;"
-          (click)="open('CardDetailPage')"
+          (click)="openPage('CardDetailPage')"
         >
           <div class="img-container">
             <img src="assets/img/paymentServices.jpg" />
@@ -86,7 +89,7 @@
           <div class="card-title">
             <div class="cercil"><ion-icon name="card"></ion-icon></div>
           </div>
-          <div class="card-subtitle">{{ "Cards" | translate }}</div>
+          <div class="card-subtitle">{{ "cardServices" | translate }}</div>
         </div>
       </ion-col>
     </ion-row>

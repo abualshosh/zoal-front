@@ -32,7 +32,7 @@ import * as moment from "moment";
               <ion-label stacked>{{ "Card" | translate }}</ion-label>
               <ion-select
                 okText="{{ 'Submit' | translate }}"
-                cancelText="{{ 'Close' | translate }}"
+                cancelText="{{ 'close' | translate }}"
                 style="padding-left:5%;"
                 no-padding
                 interface="action-sheet"

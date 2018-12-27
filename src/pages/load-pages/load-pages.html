@@ -8,8 +8,8 @@
 <ion-content no-padding class="masters">
   <div>
     <ion-item
-      *ngFor="let page of list"
-      (click)="open(page.component, page.var)"
+      *ngFor="let page of pages"
+      (click)="openPage(page.component, page.var)"
     >
       <ion-icon name="{{ page.icon }}" item-start></ion-icon>
       {{ page.title | translate }}

@@ -50,21 +50,14 @@ export class CardDetailPage {
       expDate: ["", Validators.required]
     });
 
-    this.translateService.get("confirmDelete").subscribe(value => {
-      this.confirmDeleteMessage = value;
-    });
-
-    this.translateService.get("delete").subscribe(value => {
-      this.deleteMessage = value;
-    });
-
-    this.translateService.get("Submit").subscribe(value => {
-      this.submitMessage = value;
-    });
-
-    this.translateService.get("Close").subscribe(value => {
-      this.closeMessage = value;
-    });
+    translateService
+      .get(["confirmDelete", "delete", "Submit", "close"])
+      .subscribe(values => {
+        this.confirmDeleteMessage = values["confirmDelete"];
+        this.deleteMessage = values["delete"];
+        this.submitMessage = values["Submit"];
+        this.closeMessage = values["close"];
+      });
 
     this.storage.get("cards").then(val => {
       this.cards = val;

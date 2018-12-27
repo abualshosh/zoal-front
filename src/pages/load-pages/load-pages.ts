@@ -7,19 +7,16 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
   templateUrl: "load-pages.html"
 })
 export class LoadPagesPage {
-  list: any[];
-  title;
+  pages: any[];
+  title: string;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.list = this.navParams.get("list");
+    this.pages = this.navParams.get("pages");
     this.title = this.navParams.get("title");
   }
 
-  ionViewDidLoad() {
-    console.log("ionViewDidLoad LoadPagesPage");
-  }
+  ionViewDidLoad() {}
 
-  open(page, name) {
-    //this.openGmppSignup();
+  openPage(page, name) {
     if (name) {
       this.navCtrl.push(page, {
         name: name
@@ -27,9 +24,5 @@ export class LoadPagesPage {
     } else {
       this.navCtrl.push(page);
     }
-  }
-
-  openPage(page) {
-    this.navCtrl.push(page);
   }
 }

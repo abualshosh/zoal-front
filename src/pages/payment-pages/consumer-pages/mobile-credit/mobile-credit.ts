@@ -69,7 +69,7 @@ export class MobileCreditPage {
     });
 
     this.title = this.navParams.get("name");
-    if (this.title === "billpayment") {
+    if (this.title === "mobileBillPayment") {
       this.payee = [
         {
           PayeeName: "Zain Bill Payment",

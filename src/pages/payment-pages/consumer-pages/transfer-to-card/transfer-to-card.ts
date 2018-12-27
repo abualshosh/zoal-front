@@ -25,6 +25,7 @@ import {
 } from "@ionic-native/barcode-scanner";
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import * as moment from "moment";
+import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
 @Component({
@@ -38,6 +39,7 @@ export class TransferToCardPage {
   private todo: FormGroup;
   public cards: Card[] = [];
   submitAttempt: boolean = false;
+  qrPrompt: string;
 
   public GetServicesProvider: GetServicesProvider;
   constructor(
@@ -50,6 +52,7 @@ export class TransferToCardPage {
     public GetServicesProviderg: GetServicesProvider,
     public alertCtrl: AlertController,
     public user: UserProvider,
+    public translateService: TranslateService,
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
@@ -88,6 +91,10 @@ export class TransferToCardPage {
       //console.log(this.navParams.get("pan"));
       this.todo.controls["ToCard"].setValue(this.navParams.get("pan"));
     }
+
+    this.translateService.get("qrCode").subscribe(value => {
+      this.qrPrompt = value;
+    });
   }
 
   showAlert(data: any) {
@@ -109,7 +116,7 @@ export class TransferToCardPage {
 
   scan() {
     this.options = {
-      prompt: "Scan your barcode "
+      prompt: this.qrPrompt
     };
     this.barcodeScanner.scan(this.options).then(
       barcodeData => {

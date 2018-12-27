@@ -1,20 +1,16 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ "MOBILEPAYMENT" | translate }}</ion-title>
+    <ion-title>{{ "mobilePayment" | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only><ion-icon name="bulb"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <!-- <ion-slides pager autoplay="2500" class="round">
-    <ion-slide *ngFor="let slide of slides" class="text-center slider-item" [ngStyle]="{'background-image': 'url(' + slide.imageUrl +')'}">
-    </ion-slide>
-  </ion-slides> -->
   <ion-row class="align-center" style="margin-left:10px">
     <p>
       {{ "registerMobile" | translate }} <br />
-      {{ "switchmobile" | translate }}
+      {{ "switchMobile" | translate }}
     </p>
   </ion-row>
   <ion-row class="align-center">
@@ -32,7 +28,7 @@
     </ion-col>
     <ion-col col-6>
       <button ion-button full color="secondary" (click)="dismiss()">
-        {{ "Close" | translate }}
+        {{ "close" | translate }}
       </button>
     </ion-col>
   </ion-row>

@@ -2,19 +2,12 @@ import { Component, ViewChild, NgZone } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { IonicPage, NavController, Events } from "ionic-angular";
 import { Api } from "../../providers/providers";
-import { Tab1Root } from "../pages";
 import { Tab2Root } from "../pages";
-// import { Tab3Root } from "../pages";
 import { StompService } from "ng2-stomp-service";
 import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
 import { FCM } from "@ionic-native/fcm";
 import { Platform } from "ionic-angular";
-import {
-  Contacts,
-  Contact,
-  ContactField,
-  ContactName
-} from "@ionic-native/contacts";
+import { Contacts } from "@ionic-native/contacts";
 
 @IonicPage()
 @Component({
@@ -23,16 +16,19 @@ import {
 })
 export class TabsPage {
   username: any;
+
   tab1Root: any = "FeedsPage";
   tab2Root: any = Tab2Root;
   tab3Root: any = "UserSettingsPage";
   tab4Root: any = "ChatsPage";
   tab5Root: any = "MainMenuPage";
+
   tab1Title: any;
   tab2Title: any;
   tab3Title: any;
   tab4Title: any;
   tab5Title: any;
+
   tab4BadgeCount = 0;
   upcontacts: any = [];
   currentItems: any = [];
@@ -51,11 +47,10 @@ export class TabsPage {
     public translateService: TranslateService
   ) {
     translateService
-      .get(["feeds", "Contacts", "profile", "chat", "Pay"])
+      .get(["feeds", "contacts", "profile", "chat", "Pay"])
       .subscribe(values => {
-        // alert("ds");
         this.tab1Title = values["feeds"];
-        this.tab2Title = values["Contacts"];
+        this.tab2Title = values["contacts"];
         this.tab3Title = values["profile"];
         this.tab4Title = values["chat"];
         this.tab5Title = values["Pay"];
@@ -67,32 +62,30 @@ export class TabsPage {
 
         this.username = localStorage.getItem("username");
         this.uploadContacts();
-        if (typeof fcm === "undefined") {
-          // alert("FCMPlugin is installed correctly");
-        }
+
         fcm.getToken().then(token => {
           if (token) {
             localStorage.setItem("FCMToken", token);
-            this.connectWs(localStorage.getItem("id_token"), token);
+            this.connectWebSocket(localStorage.getItem("id_token"), token);
           }
         });
 
         fcm.onNotification().subscribe(data => {
-          if (data.wasTapped) {
-            alert(JSON.stringify(data));
-          } else {
-            // alert("Received in foreground");
-          }
+          // if (data.wasTapped) {
+          //   alert(JSON.stringify(data));
+          // } else {
+          //   alert("Received in foreground");
+          // }
         });
 
         fcm.onTokenRefresh().subscribe(token => {
           if (token) {
             localStorage.setItem("FCMToken", token);
-            this.connectWs(localStorage.getItem("id_token"), token);
+            this.connectWebSocket(localStorage.getItem("id_token"), token);
           }
         });
       } else {
-        this.connectWs(localStorage.getItem("id_token"), null);
+        this.connectWebSocket(localStorage.getItem("id_token"), null);
       }
     });
   }
@@ -134,13 +127,12 @@ export class TabsPage {
     );
   }
 
-  connectWs(token: any, FcmToken: any) {
+  connectWebSocket(token: any, FcmToken: any) {
     //configuration
     this.stomp.configure({
       host:
-        "http://" +
-        this.api.urlip +
-        "/websocket/tracker?access_token=" +
+        this.api.wsurl +
+        "/tracker?access_token=" +
         token +
         "&FcmToken=" +
         localStorage.getItem("FCMToken"),
@@ -241,10 +233,8 @@ export class TabsPage {
         }
 
         let seq = this.api.post("connections", this.upcontacts).share();
-        //    this.posts=this.postsTest;
         seq.subscribe(
           (res: any) => {
-            // If the API returned a successful response, mark the user as logged in
             if (res) {
               this.currentItems = [];
               for (var i = 0; i < res.length; i++) {

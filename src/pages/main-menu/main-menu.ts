@@ -1,7 +1,6 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import {
   NavController,
-  Slides,
   IonicPage,
   ModalController,
   PopoverController
@@ -12,6 +11,7 @@ import {
 } from "@ionic-native/barcode-scanner";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../models/cards";
+import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
 @Component({
@@ -19,34 +19,32 @@ import { Card } from "../../models/cards";
   templateUrl: "main-menu.html"
 })
 export class MainMenuPage {
-  @ViewChild("slider") slider: Slides;
-  createdCode = null;
-  Paymentpages: any[] = [
+  paymentPages: any[] = [
     {
-      title: "TOPUP",
+      title: "mobileCredit",
       component: "MobileCreditPage",
       icon: "phone-portrait",
-      var: "TOPUP"
+      var: "mobileCredit"
     },
     {
-      title: "billpayment",
+      title: "mobileBillPayment",
       component: "MobileCreditPage",
       icon: "phone-landscape",
-      var: "billpayment"
+      var: "mobileBillPayment"
     },
     {
-      title: "NEC",
+      title: "electricityServices",
       component: "ElectricityServicesPage",
       icon: "flash",
       var: ""
     },
     {
-      title: "Custom Service",
+      title: "customsServices",
       component: "CustomsPage",
       icon: "briefcase",
       var: ""
     },
-    { title: "E15", component: "E15Page", icon: "document", var: "" },
+    { title: "e15Services", component: "E15Page", icon: "document", var: "" },
     {
       title: "Higher Education",
       component: "MohePage",
@@ -54,84 +52,91 @@ export class MainMenuPage {
       var: ""
     },
     {
-      title: "SpecialPayment",
+      title: "specialPaymentServices",
       component: "SpecialPaymentPage",
       icon: "card",
       var: ""
     }
   ];
 
-  Consumerpages: any[] = [];
+  consumerPages: any[] = [];
 
-  Gmpppages: any[] = [
-    { title: "Pruchas", component: "GmppPruchasPage", icon: "cart", var: "" },
-    { title: "CashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
+  gmppPages: any[] = [
+    { title: "purchase", component: "GmppPruchasPage", icon: "cart", var: "" },
+    { title: "cashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
     {
-      title: "ChangePin",
+      title: "changePin",
       component: "GmppChangePinPage",
       icon: "construct",
       var: ""
     },
     {
-      title: "Linkacconut",
+      title: "linkAccount",
       component: "LinkacconutPage",
       icon: "link",
       var: ""
     },
-    { title: "LOOKAccount", component: "SelflockPage", icon: "lock", var: "" },
+    { title: "lockAccount", component: "SelflockPage", icon: "lock", var: "" },
     {
-      title: "UNLOOKAccount",
+      title: "unlockAccount",
       component: "SelfunlockPage",
       icon: "unlock",
       var: ""
     },
     {
-      title: "History",
+      title: "transactionHistory",
       component: "TransactionHistoryPage",
       icon: "clock",
       var: ""
     }
   ];
 
-  TransferPages: any[] = [
-    { title: "Transfer", component: "GmppTransPage", icon: "swap", var: "" },
+  transferPages: any[] = [
+    { title: "transfer", component: "GmppTransPage", icon: "swap", var: "" },
     {
-      title: "TranToCard",
+      title: "transferToCard",
       component: "TransferToCardPage",
       icon: "person",
       var: ""
     },
-    { title: "CARDLESS", component: "CardLessPage", icon: "print", var: "" },
+    { title: "cardLess", component: "CardLessPage", icon: "print", var: "" },
     {
-      title: "TransfarefromWalletToCard",
+      title: "transferFromWalletToCard",
       component: "GmppTranToCardPage",
       icon: "swap",
       var: ""
     },
     {
-      title: "TransfareFromCardToWallet",
+      title: "transferFromCardToWallet",
       component: "GmppTranFromCardPage",
       icon: "swap",
       var: ""
     }
   ];
 
-  public pet: any = "puppies";
-  scanData: {};
   public cards: Card[] = [];
   profile: any;
-  options: BarcodeScannerOptions;
+
+  scanData: {};
+  qrPrompt: string;
+  qrOptions: BarcodeScannerOptions;
+
   constructor(
     public popoverCtrl: PopoverController,
     public storage: Storage,
     public modalCtrl: ModalController,
     private barcodeScanner: BarcodeScanner,
+    public translateService: TranslateService,
     public navCtrl: NavController
   ) {
-    this.createdCode = "12321312312312";
     this.profile = JSON.parse(localStorage.getItem("profile"));
+
     this.storage.get("cards").then(val => {
       this.cards = val;
+    });
+
+    this.translateService.get("qrCode").subscribe(value => {
+      this.qrPrompt = value;
     });
   }
 
@@ -142,30 +147,30 @@ export class MainMenuPage {
     });
   }
 
-  openlist(list) {
+  openPagesList(list) {
     let listout;
     let title;
     if (list == "Paymentpages") {
-      listout = this.Paymentpages;
-      title = "payserv";
+      listout = this.paymentPages;
+      title = "paymentServices";
     } else if (list == "Gmpppages") {
-      listout = this.Gmpppages;
-      title = "otherservice";
+      listout = this.gmppPages;
+      title = "otherServices";
     } else if (list == "TransferPages") {
-      listout = this.TransferPages;
-      title = "transervice";
+      listout = this.transferPages;
+      title = "transactionServices";
     }
     this.navCtrl.push("LoadPagesPage", {
-      list: listout,
+      pages: listout,
       title: title
     });
   }
 
-  scan() {
-    this.options = {
-      prompt: "Scan your barcode "
+  scanQr() {
+    this.qrOptions = {
+      prompt: this.qrPrompt
     };
-    this.barcodeScanner.scan(this.options).then(
+    this.barcodeScanner.scan(this.qrOptions).then(
       barcodeData => {
         //alert(barcodeData.text);
         if (barcodeData.text) {
@@ -181,90 +186,7 @@ export class MainMenuPage {
     );
   }
 
-  openGmppSignup() {
-    let modal = this.modalCtrl.create(
-      "GmppSignupModalPage",
-      {},
-      { cssClass: "inset-modals" }
-    );
-    modal.present();
-  }
-
-  openGmpp(page, name) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
-    console.log(this.profile);
-
-    if (!this.profile.phoneNumber) {
-      let modal = this.modalCtrl.create(
-        "GmppSignupModalPage",
-        {},
-        { cssClass: "inset-modals" }
-      );
-      modal.present();
-    } else {
-      this.open(page, name);
-    }
-  }
-
-  openConsumer(page, name) {
-    this.storage.get("cards").then(val => {
-      this.cards = val;
-
-      if (!this.cards) {
-        let modal = this.modalCtrl.create(
-          "AddCardModalPage",
-          {},
-          { cssClass: "inset-modals" }
-        );
-        modal.present();
-      } else {
-        if (this.cards.length <= 0) {
-          let modal = this.modalCtrl.create(
-            "AddCardModalPage",
-            {},
-            { cssClass: "inset-modals" }
-          );
-          modal.present();
-        } else {
-          this.open(page, name);
-        }
-      }
-    });
-  }
-
-  openPayment(page, name) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
-    this.storage.get("cards").then(val => {
-      this.cards = val;
-
-      if (!this.cards && !this.profile.phoneNumber) {
-        let modal = this.modalCtrl.create(
-          "AddCardModalPage",
-          {},
-          { cssClass: "inset-modals" }
-        );
-        modal.present();
-      } else {
-        if (this.cards) {
-          if (this.cards.length <= 0 && !this.profile.phoneNumber) {
-            let modal = this.modalCtrl.create(
-              "AddCardModalPage",
-              {},
-              { cssClass: "inset-modals" }
-            );
-            modal.present();
-          } else {
-            this.open(page, name);
-          }
-        } else {
-          this.open(page, name);
-        }
-      }
-    });
-  }
-
-  open(page, name) {
-    //this.openGmppSignup();
+  openPage(page, name) {
     if (name) {
       this.navCtrl.push(page, {
         name: name
@@ -274,7 +196,5 @@ export class MainMenuPage {
     }
   }
 
-  ngAfterViewInit() {
-    //  this.slider.freeMode = true;
-  }
+  ngAfterViewInit() {}
 }

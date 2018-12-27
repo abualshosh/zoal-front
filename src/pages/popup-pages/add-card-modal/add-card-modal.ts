@@ -21,10 +21,12 @@ export class AddCardModalPage {
   ) {
     this.myParam = params.get("myParam");
   }
+
   addCard() {
     this.navCtrl.push("CardDetailPage");
     this.viewCtrl.dismiss();
   }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }

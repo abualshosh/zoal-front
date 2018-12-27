@@ -25,8 +25,8 @@
       <ion-icon name="settings" item-start></ion-icon>
       <ion-label>{{ "AppLanguage" | translate }}</ion-label>
       <ion-select
-        okText="{{'Submit'|translate}}"
-        cancelText="{{'Close'|translate}}"
+        okText="{{ 'Submit' | translate }}"
+        cancelText="{{ 'close' | translate }}"
         style="padding-left:5%;"
         [(ngModel)]="language"
         (ngModelChange)="ChangeLang()"
@@ -53,8 +53,8 @@
       <ion-icon name="card" item-start></ion-icon>
       <ion-label>{{ "MainCard" | translate }}</ion-label>
       <ion-select
-        okText="{{'Submit'|translate}}"
-        cancelText="{{'Close'|translate}}"
+        okText="{{ 'Submit' | translate }}"
+        cancelText="{{ 'close' | translate }}"
         style="padding-left:5%;"
         [(ngModel)]="paymentMethod"
       >

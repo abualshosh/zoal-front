@@ -17,20 +17,6 @@ import { Api } from "../../../providers/providers";
 })
 export class GmppSignupModalPage {
   profile: any;
-  slides = [
-    {
-      id: 1,
-      imageUrl: "assets/img/slides/square.png"
-    },
-    {
-      id: 2,
-      imageUrl: "assets/img/slides/square-2.jpg"
-    },
-    {
-      id: 3,
-      imageUrl: "assets/img/slides/square-3.jpg"
-    }
-  ];
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -42,16 +28,23 @@ export class GmppSignupModalPage {
     public modalCtrl: ModalController
   ) {}
 
-  showAlert(balance: any) {
+  showAlert(data: any) {
+    let message: any;
+    if (data.responseCode != null) {
+      message = data.responseMessage;
+    } else {
+      message = "Connection error";
+    }
     let alert = this.alertCtrl.create({
-      title: balance.responseStatus,
-      message: balance.responseMessage,
+      title: "ERROR",
+      message: message,
 
       buttons: ["OK"],
       cssClass: "alertCustomCss"
     });
     alert.present();
   }
+
   signup() {
     var dat = {
       UUID: uuid.v4(),
@@ -97,7 +90,6 @@ export class GmppSignupModalPage {
 
   dismiss() {
     this.profile = JSON.parse(localStorage.getItem("profile"));
-    //  this.profile.phoneNumber=null;//"249"+localStorage.getItem('username');
     localStorage.setItem("profile", JSON.stringify(this.profile));
     this.viewCtrl.dismiss();
   }

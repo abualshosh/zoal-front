@@ -1,8 +1,7 @@
-
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>{{ "NEC" | translate }}</ion-title>
+    <ion-title>{{ "electricityServices" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -49,7 +48,7 @@
           <ion-label stacked>{{ "Card" | translate }}</ion-label>
           <ion-select
             okText="{{ 'Submit' | translate }}"
-            cancelText="{{ 'Close' | translate }}"
+            cancelText="{{ 'close' | translate }}"
             (ionChange)="onSelectChange($event)"
             style="padding-left:5%;"
             no-padding

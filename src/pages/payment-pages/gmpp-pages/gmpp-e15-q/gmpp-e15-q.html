@@ -1,0 +1,78 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "E15" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-list>
+        <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+          <p>{{ "validcardError" | translate }}</p>
+        </div>
+
+        <ion-item>
+          <ion-label stacked>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
+            style="padding-left:5%;"
+            interface="action-sheet"
+            formControlName="Card"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">{{
+              Card.CARDNAME
+            }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.INVOICENUMBER.valid && submitAttempt">
+          <p>{{ "validINVOICENUMBERError" | translate }}</p>
+        </div>
+
+        <ion-item>
+          <ion-label stacked>{{ "INVOICENUMBER" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="INVOICENUMBER"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.PHONENUMBER.valid && submitAttempt">
+          <p>{{ "validvoucherNumberError" | translate }}</p>
+        </div>
+
+        <ion-item>
+          <ion-label stacked>{{ "PhoneNumber" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="PHONENUMBER"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+          <p>{{ "validipinError" | translate }}</p>
+        </div>
+
+        <ion-item>
+          <ion-label stacked> {{ "IPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="IPIN"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

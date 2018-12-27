@@ -1,0 +1,69 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "TransfareFromCardToWallet" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-list>
+        <div *ngIf="!todo.controls.transactionAmount.valid && submitAttempt">
+          <p>{{ "validamountError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "Amount" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="transactionAmount"
+            required
+          ></ion-input>
+        </ion-item>
+        <div *ngIf="!todo.controls.expDate.valid && submitAttempt">
+          <p>{{ "validexpDateError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "EXPDATE" | translate }} </ion-label>
+          <ion-datetime
+            type="Date"
+            displayFormat="YYMM"
+            pickerFormat="MM YYYY"
+            max="2030-12-31"
+            formControlName="expDate"
+            required
+          ></ion-datetime>
+        </ion-item>
+        <div *ngIf="!todo.controls.ipin.valid && submitAttempt">
+          <p>{{ "validipinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "IPIN" | translate }} </ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="ipin"
+            required
+          ></ion-input>
+        </ion-item>
+        <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
+          <p>{{ "validpinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "PIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="consumerPIN"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

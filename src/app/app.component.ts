@@ -24,10 +24,10 @@ export class MyApp {
     { title: "Welcome", component: "WelcomePage" },
     { title: "Tabs", component: "TabsPage" },
     { title: "Cards", component: "CardsPage" },
-    { title: "Content", component: "ContentPage" },
+    { title: "User Settings", component: "UserSettingsPage" },
     { title: "Login", component: "LoginPage" },
     { title: "Signup", component: "SignupPage" },
-    { title: "Search", component: "SearchPage" }
+    { title: "Contacts", component: "ContactsPage" }
   ];
 
   constructor(

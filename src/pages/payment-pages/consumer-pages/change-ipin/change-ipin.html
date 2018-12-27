@@ -1,0 +1,77 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "ChangeIPin" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-list>
+        <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+          <p>{{ "validcardError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{'Submit'|translate}}"
+            cancelText="{{'Close'|translate}}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
+            formControlName="Card"
+            interface="popover"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">{{
+              Card.pan
+            }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+          <p>{{ "validipinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "IPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="IPIN"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.newIPIN.valid && submitAttempt">
+          <p>{{ "validnewipinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "NEWIPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="newIPIN"
+            required
+          ></ion-input>
+        </ion-item>
+        <div *ngIf="!todo.controls.ConnewIPIN.valid && submitAttempt">
+          <p>{{ "validConnewIPINError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "CONNEWIPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="ConnewIPIN"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

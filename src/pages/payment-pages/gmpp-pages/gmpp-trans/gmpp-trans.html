@@ -1,0 +1,60 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title> {{ "Transfer" | translate }}</ion-title>
+    <ion-buttons end> </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-list>
+        <div
+          *ngIf="!todo.controls.destinationIdentifier.valid && submitAttempt"
+          item-end
+        >
+          <p>{{ "validvoucherNumberError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>
+            {{ "destinationIdentifier" | translate }}
+          </ion-label>
+          <ion-input
+            type="number"
+            formControlName="destinationIdentifier"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.transactionAmount.valid && submitAttempt">
+          <p>{{ "validamountError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "Amount" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="transactionAmount"
+            required
+          ></ion-input>
+        </ion-item>
+        <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
+          <p>{{ "validpinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "PIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="consumerPIN"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

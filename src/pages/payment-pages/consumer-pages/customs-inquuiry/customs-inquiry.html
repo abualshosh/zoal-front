@@ -1,0 +1,76 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ this.title | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-list>
+        <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+          <p>{{ "validcardError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{'Submit'|translate}}"
+            cancelText="{{'Close'|translate}}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
+            formControlName="Card"
+            interface="popover"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">{{
+              Card.pan
+            }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.BANKCODE.valid && submitAttempt">
+          <p>{{ "validBANKCODEError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "BANKCODE" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="BANKCODE"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.DECLARANTCODE.valid && submitAttempt">
+          <p>{{ "validDECLARANTCODEError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "DECLARANTCODE" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="DECLARANTCODE"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+          <p>{{ "validipinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "IPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="IPIN"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

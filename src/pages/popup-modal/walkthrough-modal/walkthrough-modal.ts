@@ -31,22 +31,24 @@ export class WalkthroughModalPage {
   ) {}
   gmpp() {
     let modal = this.modalCtrl.create(
-      "SignupModalPage",
+      "GmppSignupModalPage",
       {},
       { cssClass: "inset-modals" }
     );
     modal.present();
     this.viewCtrl.dismiss();
   }
+
   consumer() {
     let modal = this.modalCtrl.create(
-      "HintModalPage",
+      "AddCardModalPage",
       {},
       { cssClass: "inset-modals" }
     );
     modal.present();
     this.viewCtrl.dismiss();
   }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }

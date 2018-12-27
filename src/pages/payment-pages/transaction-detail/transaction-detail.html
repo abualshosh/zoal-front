@@ -1,0 +1,47 @@
+<ion-content no-padding>
+  <div>
+    <ion-toolbar>
+      <ion-title> {{ "Transaction Details" | translate }} </ion-title>
+      <ion-buttons start>
+        <button ion-button (click)="dismiss()">
+          <span ion-text color="dark" showWhen="ios">Cancel</span>
+          <ion-icon color="dark" name="md-close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+    <!-- <ion-item    no-lines style="text-align: center;" >
+      -->
+    <div *ngFor="let item of (main | keys)">
+      <div style="text-align: center;" *ngFor="let itm of (item.value | keys)">
+        <ion-item no-lines style="text-align: center;">
+          {{ itm.key | translate }} <br />
+          {{ itm.value }} {{ "SDG" | translate }} <br />
+
+          <ion-icon
+            color="green"
+            name="checkmark-circle"
+            style="zoom:5.0;"
+          ></ion-icon>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- </ion-item > -->
+  </div>
+
+  <ion-grid *ngFor="let item of (items | keys)">
+    <ion-row *ngFor="let itm of (item.value | keys)">
+      <ion-item class="no-padding">
+        <ion-col text-wrap> {{ itm.key | translate }}: </ion-col>
+
+        <ion-col item-end>
+          <ion-note item-end> {{ itm.value }} </ion-note>
+        </ion-col>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
+
+  <button class="subbutn" ion-button (click)="dismiss()" color="secondary">
+    {{ "Close" | translate }}
+  </button>
+</ion-content>

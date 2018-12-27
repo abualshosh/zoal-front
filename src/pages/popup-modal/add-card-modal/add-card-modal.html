@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ "ATM_CASHCARD" | translate }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only><ion-icon name="bulb"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <p>{{ "Cash_card_option" | translate }}</p>
+  <br />
+  <br />
+  <br />
+  <button ion-button full color="secondary" (click)="addCard()">
+    {{ "ADDCARD" | translate }}
+  </button>
+  <button ion-button full color="bar" (click)="dismiss()">
+    {{ "Close" | translate }}
+  </button>
+</ion-content>

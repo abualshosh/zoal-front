@@ -1,0 +1,87 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "TranToCard" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo">
+      <ion-list>
+        <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+          <p>{{ "validcardError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{'Submit'|translate}}"
+            cancelText="{{'Close'|translate}}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
+            formControlName="Card"
+            interface="popover"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">{{
+              Card.pan
+            }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.ToCard.valid && submitAttempt">
+          <p>{{ "validTocardError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked color="white;"
+            >{{ "ToCard" | translate }}
+          </ion-label>
+          <ion-input type="number" formControlName="ToCard"></ion-input>
+          <button
+            style="background-color: white;"
+            ion-button
+            item-end
+            (click)="scan()"
+          >
+            <ion-icon color="dark" name="barcode"></ion-icon>
+          </button>
+        </ion-item>
+        <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
+          <p>{{ "validamountError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "Amount" | translate }}</ion-label>
+          <ion-input type="number" formControlName="Amount"></ion-input>
+        </ion-item>
+        <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+          <p>{{ "validipinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "IPIN" | translate }}</ion-label>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="IPIN"
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button
+        (click)="logForm()"
+        class="subbutn"
+        ion-button
+        type="submit"
+        color="secondary"
+      >
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+    <!--
+      <ion-item color="">HELP</ion-item>
+      <iframe width="100%" height="200px" [src]="trustedVideoUrl" frameborder="0" allowfullscreen>
+          <ion-spinner class="spineer" name="crescent" ></ion-spinner>
+      </iframe>
+    -->
+  </div>
+</ion-content>

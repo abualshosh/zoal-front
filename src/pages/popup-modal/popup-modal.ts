@@ -21,7 +21,7 @@ export class PopupModalsPage {
   ) {}
 
   openHintModal() {
-    this.openModal("HintModalPage");
+    this.openModal("AddCardModalPage");
   }
 
   openWalkthroughModal() {
@@ -29,7 +29,7 @@ export class PopupModalsPage {
   }
 
   openSignupModal() {
-    this.openModal("SignupModalPage");
+    this.openModal("GmppSignupModalPage");
   }
 
   openModal(pageName) {

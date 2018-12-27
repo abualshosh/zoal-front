@@ -9,6 +9,8 @@
   "SpecialPayment": "Special Payment",
   "Card": "Card Number",
   "QR": "QR Code",
+  "confirmDelete": "Are you sure",
+  "delete": "Delete",
   "SelectUser": "Select User",
   "Chat": "Chat",
   "message": "Send a message...",

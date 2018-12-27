@@ -1,0 +1,177 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+
+    <ion-title>{{ "HighEdu" | translate }}</ion-title>
+  </ion-navbar>
+  <ion-segment color="dark" [(ngModel)]="type" class="">
+    <ion-segment-button value="mohe" class="">
+      {{ "Sudanes" | translate }}
+    </ion-segment-button>
+    <ion-segment-button value="moheArab" class="">
+      {{ "Arab" | translate }}
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-list>
+        <ion-item>
+          <ion-toggle
+            [disabled]="showWallet"
+            formControlName="mobilewallet"
+            (ionChange)="WalletAvalible($event)"
+          ></ion-toggle>
+          <ion-label class="label">
+            <ion-icon name="phone-portrait" item-start></ion-icon
+            >{{ "USEWallet" | translate }}</ion-label
+          >
+        </ion-item>
+        <div
+          *ngIf="
+            !todo.controls.entityId.valid &&
+            todo.controls.mobilewallet.value &&
+            submitAttempt
+          "
+        >
+          <p>{{ "validWalletError" | translate }}</p>
+        </div>
+        <ion-item *ngIf="todo.controls.mobilewallet.value">
+          <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="entityId"
+            required
+          ></ion-input>
+        </ion-item>
+        <div
+          *ngIf="
+            !validCard && submitAttempt && !todo.controls.mobilewallet.value
+          "
+        >
+          <p>{{ "validcardError" | translate }}</p>
+        </div>
+        <ion-item *ngIf="!todo.controls.mobilewallet.value">
+          <ion-label stacked>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
+            (ionChange)="onSelectChange($event)"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
+            formControlName="Card"
+            interface="popover"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">{{
+              Card.pan
+            }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.CourseID.valid && submitAttempt">
+          <p>{{ "validCourseIDError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "CourseID" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
+            style="padding-left:5%;"
+            interface="alert"
+            formControlName="CourseID"
+          >
+            <ion-option *ngFor="let CourseID of CourseIDs" [value]="CourseID">{{
+              CourseID.title | translate
+            }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="!todo.controls.FormKind.valid && submitAttempt">
+          <p>{{ "validFormKindError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "FormKind" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
+            style="padding-left:5%;"
+            interface="alert"
+            formControlName="FormKind"
+          >
+            <ion-option *ngFor="let FormKind of FormKinds" [value]="FormKind">{{
+              FormKind.title | translate
+            }}</ion-option>
+          </ion-select>
+        </ion-item>
+        <div [ngSwitch]="type">
+          <div *ngSwitchCase="'mohe'">
+            <div *ngIf="!todo.controls.SETNUMBER.valid && submitAttempt">
+              <p>{{ "validSETNUMBERError" | translate }}</p>
+            </div>
+            <ion-item>
+              <ion-label stacked>{{ "SETNUMBER" | translate }}</ion-label>
+              <ion-input type="number" formControlName="SETNUMBER"></ion-input>
+            </ion-item>
+          </div>
+          <div *ngSwitchCase="'moheArab'">
+            <div *ngIf="!todo.controls.STUCNAME.valid && submitAttempt">
+              <p>{{ "validSTUCNAMEError" | translate }}</p>
+            </div>
+            <ion-item>
+              <ion-label stacked>{{ "STUCNAME" | translate }}</ion-label>
+              <ion-input type="text" formControlName="STUCNAME"></ion-input>
+            </ion-item>
+            <div *ngIf="!todo.controls.STUCPHONE.valid && submitAttempt">
+              <p>{{ "validvoucherNumberError" | translate }}</p>
+            </div>
+            <ion-item>
+              <ion-label stacked>{{ "STUCPHONE" | translate }}</ion-label>
+              <ion-input type="number" formControlName="STUCPHONE"></ion-input>
+            </ion-item>
+          </div>
+        </div>
+        <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
+          <p>{{ "validamountError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "Amount" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="Amount"
+            required
+          ></ion-input>
+        </ion-item>
+        <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+          <p *ngIf="todo.controls.mobilewallet.value">
+            {{ "validipinError" | translate }}
+          </p>
+          <p *ngIf="!todo.controls.mobilewallet.value">
+            {{ "validpinError" | translate }}
+          </p>
+        </div>
+        <ion-item>
+          <ion-label *ngIf="todo.controls.mobilewallet.value" stacked>
+            {{ "PIN" | translate }}</ion-label
+          >
+          <ion-label *ngIf="!todo.controls.mobilewallet.value" stacked>
+            {{ "IPIN" | translate }}</ion-label
+          >
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="IPIN"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button ion-button class="subbutn" type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

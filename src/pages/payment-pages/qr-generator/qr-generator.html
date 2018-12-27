@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "QR" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="todo">
+    <ion-list>
+      <ion-card>
+        <ion-item *ngIf="!createdCode">
+          <h2>{{ "QRmessage" | translate }}</h2>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
+            style="padding-left:5%;"
+            (ionChange)="onChange()"
+            interface="action-sheet"
+            formControlName="Card"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">
+              {{ Card.pan }}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+  </form>
+  <ion-card *ngIf="createdCode">
+    <ngx-qrcode [qrc-value]="createdCode"></ngx-qrcode>
+    <ion-card-content>
+      <p>Card: {{ createdCode }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

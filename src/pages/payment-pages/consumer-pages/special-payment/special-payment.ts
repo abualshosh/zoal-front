@@ -69,9 +69,9 @@ export class SpecialPaymentPage {
         "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249][0-9]*")
         ])
       ],
       mobilewallet: [""],
@@ -88,7 +88,7 @@ export class SpecialPaymentPage {
     });
     this.todo.controls["mobilewallet"].setValue(false);
     this.todo.controls["entityId"].setValue(
-      "0" + localStorage.getItem("username")
+      "249" + localStorage.getItem("username")
     );
   }
 
@@ -187,7 +187,7 @@ export class SpecialPaymentPage {
       dat = this.todo.value;
 
       dat.uUID = uuid.v4();
-      dat.iPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
+      dat.iPIN = this.GetServicesProvider.encrypt(dat.uUID + dat.IPIN);
       dat.amount = dat.Amount;
       dat.id = dat.MerchantId;
       if (dat.mobilewallet) {

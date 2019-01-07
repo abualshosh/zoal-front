@@ -62,15 +62,15 @@ export class CustomsPage {
 
     this.todo = this.formBuilder.group({
       pan: [""],
-      Card: ["", Validators.required],
+      Card: [""],
       Payee: [""],
       entityId: [
         "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249][0-9]*")
         ])
       ],
       mobilewallet: [""],
@@ -89,8 +89,28 @@ export class CustomsPage {
     });
     this.todo.controls["mobilewallet"].setValue(false);
     this.todo.controls["entityId"].setValue(
-      "0" + localStorage.getItem("username")
+      "249" + localStorage.getItem("username")
     );
+  }
+
+  clearInput() {
+    this.todo.controls["pan"].reset();
+    this.todo.controls["Card"].reset();
+    this.todo.controls["entityId"].reset();
+    this.todo.controls["Payee"].reset();
+    this.todo.controls["IPIN"].reset();
+    this.todo.controls["BANKCODE"].reset();
+    this.todo.controls["DECLARANTCODE"].reset();
+    this.todo.controls["Amount"].reset();
+    if (this.cards) {
+      if (this.cards.length <= 0) {
+        this.showWallet = true;
+        this.todo.controls["mobilewallet"].setValue(true);
+      }
+    } else {
+      this.showWallet = true;
+      this.todo.controls["mobilewallet"].setValue(true);
+    }
   }
 
   showAlert(data: any) {
@@ -159,6 +179,9 @@ export class CustomsPage {
     }
     this.submitAttempt = true;
     if (this.todo.valid) {
+      if (!dat.mobilewallet && !this.validCard) {
+        return;
+      }
       let loader = this.loadingCtrl.create({
         content: "Please wait..."
       });
@@ -205,6 +228,7 @@ export class CustomsPage {
           var datas;
 
           datas = {
+            UUID: data.UUID,
             acqTranFee: data.acqTranFee,
             issuerTranFee: data.issuerTranFee,
             tranAmount: data.tranAmount,
@@ -214,10 +238,15 @@ export class CustomsPage {
 
           var main = [];
           var mainData = {
-            "Custom Service": data.tranAmount
+            Customs: data.tranAmount
           };
           main.push(mainData);
           var dat = [];
+          if (data.PAN) {
+            dat.push({ Card: data.PAN });
+          } else {
+            dat.push({ WalletNumber: data.entityId });
+          }
 
           if (Object.keys(data.billInfo).length > 0) {
             dat.push(data.billInfo);
@@ -229,12 +258,21 @@ export class CustomsPage {
             { cssClass: "inset-modal" }
           );
           modal.present();
-          this.todo.reset();
+          this.clearInput();
           this.submitAttempt = false;
+
+          this.todo.controls["entityId"].setValue(
+            "0" + localStorage.getItem("username")
+          );
         } else {
           loader.dismiss();
           this.showAlert(data);
-          this.todo.reset();
+          this.clearInput();
+
+          this.todo.controls["entityId"].setValue(
+            "0" + localStorage.getItem("username")
+          );
+
           this.submitAttempt = false;
         }
       });

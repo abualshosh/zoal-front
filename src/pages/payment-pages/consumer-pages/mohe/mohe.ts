@@ -94,9 +94,9 @@ export class MohePage {
         "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249][0-9]*")
         ])
       ],
       CourseID: ["", Validators.required],
@@ -126,7 +126,7 @@ export class MohePage {
     });
     this.todo.controls["mobilewallet"].setValue(false);
     this.todo.controls["entityId"].setValue(
-      "0" + localStorage.getItem("username")
+      "249" + localStorage.getItem("username")
     );
   }
 

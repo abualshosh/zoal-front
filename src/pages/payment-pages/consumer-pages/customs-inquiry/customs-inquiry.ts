@@ -102,11 +102,11 @@ export class CustomsInquiryPage {
       dat.toAccountType = "00";
       dat.paymentInfo =
         "BANKCODE=" + dat.BANKCODE + "/DECLARANTCODE=" + dat.DECLARANTCODE;
-      dat.payeeId = this.navParams.get("title");
-      dat.pan = dat.Card.pan;
+      dat.payeeId = "0010030003";
+      dat.PAN = dat.Card.pan;
       dat.expDate = dat.Card.expDate;
       //console.log(dat)
-      this.GetServicesProvider.load(dat, "Billquiry").then(data => {
+      this.GetServicesProvider.load(dat, "consumer/getBill").then(data => {
         this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {

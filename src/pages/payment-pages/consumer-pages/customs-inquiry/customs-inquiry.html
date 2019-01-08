@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
@@ -16,17 +15,17 @@
         <ion-item>
           <ion-label stacked>{{ "Card" | translate }}</ion-label>
           <ion-select
-            okText="{{'Submit'|translate}}"
-            cancelText="{{'Close'|translate}}"
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'Close' | translate }}"
             style="padding-left:5%;"
             no-padding
             interface="action-sheet"
             formControlName="Card"
             interface="popover"
           >
-            <ion-option *ngFor="let Card of cards" [value]="Card">{{
-              Card.pan
-            }}</ion-option>
+            <ion-option *ngFor="let Card of cards" [value]="Card">
+              {{ Card.pan }}
+            </ion-option>
           </ion-select>
         </ion-item>
 
@@ -46,7 +45,7 @@
           <p>{{ "validDECLARANTCODEError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label stacked>{{ "DECLARANTCODE" | translate }}</ion-label>
+          <ion-label stacked>{{ "Declarant" | translate }}</ion-label>
           <ion-input
             type="number"
             formControlName="DECLARANTCODE"

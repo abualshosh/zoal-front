@@ -32,6 +32,7 @@ import { IonicImageLoader } from "ionic-image-loader";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
 import { NativePageTransitions } from "@ionic-native/native-page-transitions";
 import { CardIO } from "@ionic-native/card-io";
+import { StorageProvider } from '../providers/storage/storage';
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -105,7 +106,8 @@ export function provideSettings(storage: Storage) {
     },
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    StorageProvider
   ]
 })
 export class AppModule {}

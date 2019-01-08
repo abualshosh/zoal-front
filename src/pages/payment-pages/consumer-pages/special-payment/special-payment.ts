@@ -218,13 +218,15 @@ export class SpecialPaymentPage {
             acqTranFee: data.acqTranFee,
             issuerTranFee: data.issuerTranFee,
             tranAmount: data.tranAmount,
+            serviceProviderId: data.serviceProviderId,
+            serviceInfo: data.serviceInfo,
             tranCurrency: data.tranCurrency,
             date: datetime
           };
 
           var main = [];
           var mainData = {
-            E15: data.tranAmount
+            SpecialPayment: data.tranAmount
           };
           main.push(mainData);
           var dat = [];
@@ -234,9 +236,9 @@ export class SpecialPaymentPage {
             dat.push({ WalletNumber: data.entityId });
           }
           // dat.push({"Status":data.responseMessage});
-          if (Object.keys(data.billInfo).length > 0) {
-            dat.push(data.billInfo);
-          }
+          // if (Object.keys(data.billInfo).length > 0) {
+          //   dat.push(data.billInfo);
+          // }
           dat.push(datas);
           let modal = this.modalCtrl.create(
             "TransactionDetailPage",

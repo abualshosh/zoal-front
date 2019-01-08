@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>{{ "accountPayment" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+  <ion-grid style="height:100%;" no-padding>
+    <ion-row style="height:100%;">
+      <ion-col style="height:100%;">
+        <div
+          style=" position: relative; height:100%; text-align: center; background-color:#9ccc65;"
+          (click)="scanQr()"
+        >
+          <div class="card-title"><ion-icon name="qr-scanner"></ion-icon></div>
+          <div class="card-subtitle">{{ "scanQr" | translate }}</div>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div
+          style="height:100%; text-align: center; background-color:#ab47bc;"
+          (click)="openPage('QrGeneratorPage')"
+        >
+          <div class="card-title">
+            <div class="cercil"><ion-icon name="barcode"></ion-icon></div>
+          </div>
+          <div class="card-subtitle">{{ "qrCode" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row style="height:100%;">
+      <ion-col style="height:100%;">
+        <div
+          style="height:100%; text-align: center; background-color:#1976d2;"
+          (click)="openPagesList('telecomPages')"
+        >
+          <div class="card-title">
+            <div class="cercil"><ion-icon name="call"></ion-icon></div>
+          </div>
+          <div class="card-subtitle">{{ "telecomServices" | translate }}</div>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div
+          style="height:100%; text-align: center; background-color:#673ab7;"
+          (click)="openPage('ElectricityServicesPage')"
+        >
+          <div class="card-title">
+            <div class="cercil"><ion-icon name="flash"></ion-icon></div>
+          </div>
+          <div class="card-subtitle">
+            {{ "electricityServices" | translate }}
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row style="height:100%;">
+      <ion-col style="height:100%;">
+        <div
+          style="height:100%; text-align: center; background-color:#b71c1c;"
+          (click)="openPagesList('govermentPages')"
+        >
+          <div class="card-title">
+            <div class="cercil"><ion-icon name="briefcase"></ion-icon></div>
+          </div>
+          <div class="card-subtitle">{{ "govermentServices" | translate }}</div>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div
+          style="height:100%; text-align: center; background-color:#03a9f4;"
+          (click)="openPagesList('transferPages')"
+        >
+          <div class="card-title">
+            <div class="cercil"><ion-icon name="cash"></ion-icon></div>
+          </div>
+          <div class="card-subtitle">{{ "transferServices" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row style="height:100%;">
+      <ion-col style="height:100%;">
+        <div
+          style="height:100%; text-align: center; background-color:#b71c1c;"
+          (click)="openPage('SpecialPaymentPage')"
+        >
+          <div class="card-title">
+            <div class="cercil"><ion-icon name="heart"></ion-icon></div>
+          </div>
+          <div class="card-subtitle">{{ "charityServices" | translate }}</div>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div
+          style="height:100%; text-align: center; background-color:#03a9f4;"
+          (click)="openPage('SpecialPaymentPage')"
+        >
+          <div class="card-title">
+            <div class="cercil"><ion-icon name="basket"></ion-icon></div>
+          </div>
+          <div class="card-subtitle">{{ "giftsServices" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -22,6 +22,6 @@ export class PaymentMethodPage {
   }
 
   openGmppPage() {
-    this.navCtrl.setRoot("MainMenuPage");
+    this.navCtrl.setRoot("GmppMenuPage");
   }
 }

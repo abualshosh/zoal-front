@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> ZoalPay </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="dark" showWhen="ios">Cancel</span>
+        <ion-icon color="dark" name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="masters">
+  <div class="con">
+    <ion-item
+      *ngFor="let item of items"
+      class="no-padding"
+      style="text-align: center;"
+    >
+      {{ item.tital | translate }}
+      <ion-col text-wrap style="font-size: 30px; ">
+        <br />
+        {{ item.desc | translate }}
+      </ion-col>
+      <br />
+      <ion-icon
+        color="green"
+        name="checkmark-circle"
+        style="zoom:3.0;"
+      ></ion-icon>
+    </ion-item>
+  </div>
+  <button class="subbutn" ion-button (click)="dismiss()" color="secondary">
+    {{ "close" | translate }}
+  </button>
+</ion-content>

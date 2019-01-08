@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title> Description </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="light" showWhen="ios">Cancel</span>
+        <ion-icon color="light" name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <ion-item *ngFor="let item of items">
+      <div class="conBlack">
+        <ion-item *ngFor="let itm of item.value">
+          {{ itm.key | translate }} <br />
+          <ion-note> {{ itm.value }} </ion-note>
+        </ion-item>
+      </div>
+    </ion-item>
+  </div>
+</ion-content>

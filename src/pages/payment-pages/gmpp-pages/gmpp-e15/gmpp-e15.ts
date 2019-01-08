@@ -15,35 +15,39 @@ import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
-import * as moment from "moment";
 
 @IonicPage()
 @Component({
-  selector: "page-gmpp-cash-out",
-  templateUrl: "gmpp-cash-out.html"
+  selector: "page-gmpp-e15",
+  templateUrl: "gmpp-e15.html"
 })
-export class GmppCashOutPage {
-  consumerIdentifier: any;
+export class GmppE15Page {
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
+  public payee: any[] = [];
   submitAttempt: boolean = false;
-  public GetServicesProvider: GetServicesProvider;
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
-    public GetServicesProviderg: GetServicesProvider,
+    public GetServicesProvider: GetServicesProvider,
     public alertCtrl: AlertController,
     public user: UserProvider,
     public storage: Storage,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public navParams: NavParams
   ) {
-    this.consumerIdentifier = "249" + localStorage.getItem("username");
-    this.GetServicesProvider = GetServicesProviderg;
+    this.storage.get("cards").then(val => {
+      this.cards = val;
+    });
+
+    //user.printuser();
+
     this.todo = this.formBuilder.group({
-      cashOutAll: [, ""],
-      transactionAmount: ["", Validators.required],
-      consumerPIN: [
+      pan: [""],
+      Card: ["", Validators.required],
+      Payee: [""],
+      IPIN: [
         "",
         Validators.compose([
           Validators.required,
@@ -51,9 +55,18 @@ export class GmppCashOutPage {
           Validators.maxLength(4),
           Validators.pattern("[0-9]*")
         ])
+      ],
+      INVOICENUMBER: ["", Validators.required],
+      PHONENUMBER: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("[0-9]*")
+        ])
       ]
     });
-    this.todo.controls["cashOutAll"].setValue(false);
   }
 
   showAlert(data: any) {
@@ -73,18 +86,7 @@ export class GmppCashOutPage {
     alert.present();
   }
 
-  CASHOUT(e) {
-    this.todo.controls["cashOutAll"].setValue(
-      !this.todo.controls["cashOutAll"].value
-    );
-  }
-
   logForm() {
-    //console.log(this.todo.controls['cashOutAll'].value)
-    //console.log(this.todo.controls['transactionAmount'].value)
-    if (this.todo.controls["cashOutAll"].value) {
-      this.todo.controls["transactionAmount"].setValue(0);
-    }
     this.submitAttempt = true;
     if (this.todo.valid) {
       let loader = this.loadingCtrl.create({
@@ -94,47 +96,37 @@ export class GmppCashOutPage {
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
-      dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
-        dat.UUID + dat.consumerPIN
-      );
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
       //console.log(dat.IPIN)
-      dat.isConsumer = "true";
-
-      this.GetServicesProvider.load(
-        this.todo.value,
-        "gmpp/doCashOutWithTan"
-      ).then(data => {
+      dat.tranCurrency = "SDG";
+      dat.mbr = "1";
+      dat.tranAmount = dat.Amount;
+      dat.toCard = dat.ToCard;
+      dat.authenticationType = "00";
+      dat.fromAccountType = "00";
+      dat.toAccountType = "00";
+      dat.paymentInfo =
+        "SERVICEID=2/INVOICENUMBER=" +
+        dat.INVOICENUMBER +
+        "/PHONENUMBER=" +
+        dat.PHONENUMBER;
+      dat.payeeId = this.navParams.get("title");
+      dat.pan = dat.Card.pan;
+      dat.expDate = dat.Card.expDate;
+      //console.log(dat)
+      this.GetServicesProvider.load(dat, "Billquiry").then(data => {
         this.bal = data;
         //console.log(data)
-        if (data != null && data.responseCode == 1) {
+        if (data != null && data.responseCode == 0) {
           loader.dismiss();
           // this.showAlert(data);
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
 
-          var datas = {
-            destinationIdentifier: data.destinationIdentifier,
-            tan: data.tan,
-
-            fee: data.fee,
-            transactionAmount: data.transactionAmount,
-            totalAmount: data.totalAmount,
-            transactionId: data.transactionId,
-            date: datetime
-          };
           var dat = [];
-          var main = [];
-          var mainData = {
-            CashOut: data.totalAmount
-          };
-          dat.push({ WalletNumber: data.consumerIdentifier });
-          main.push(mainData);
-          dat.push(datas);
+          dat.push({ Status: data.responseMessage });
+          dat.push(data.billInfo);
           let modal = this.modalCtrl.create(
             "TransactionDetailPage",
-            { data: dat, main: main },
+            { data: dat },
             { cssClass: "inset-modal" }
           );
           modal.present();
@@ -147,7 +139,6 @@ export class GmppCashOutPage {
           this.submitAttempt = false;
         }
       });
-      dat.consumerPIN = null;
     }
   }
 }

@@ -191,7 +191,7 @@ export class GmppMohePage {
               { tital: "Total Amount", desc: data.totalAmount }
             ];
             let modal = this.modalCtrl.create(
-              "ReModelPage",
+              "GmppReceiptPage",
               { data: datas },
               { cssClass: "inset-modal" }
             );

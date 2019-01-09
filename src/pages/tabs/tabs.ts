@@ -21,7 +21,7 @@ export class TabsPage {
   tab2Root: any = Tab2Root;
   tab3Root: any = "UserSettingsPage";
   tab4Root: any = "ChatsPage";
-  tab5Root: any = "MainMenuPage";
+  tab5Root: any = "PaymentMethodPage";
 
   tab1Title: any;
   tab2Title: any;

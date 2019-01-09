@@ -18,8 +18,11 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 })
 export class QrGeneratorPage {
   public cards: Card[] = [];
+  public wallets = ["564654", "45644654", "5465454"];
   private todo: FormGroup;
-  createdCode = null;
+  isGmpp: boolean;
+  panQr = null;
+  walletQr = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,15 +30,23 @@ export class QrGeneratorPage {
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
+    this.isGmpp = navParams.get("isGmpp");
+
     this.storage.get("cards").then(val => {
       this.cards = val;
     });
+
     this.todo = this.formBuilder.group({
-      Card: ["", Validators.required]
+      Card: ["", Validators.required],
+      wallet: ["", Validators.required]
     });
   }
   onChange() {
-    this.createdCode = this.todo.value.Card.pan;
+    if (!this.isGmpp) {
+      this.panQr = this.todo.value.Card.pan;
+    } else {
+      this.walletQr = this.todo.value.wallet;
+    }
   }
   ionViewDidLoad() {
     //console.log('ionViewDidLoad QrGeneratorPage');

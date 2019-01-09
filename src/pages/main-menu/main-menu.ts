@@ -62,7 +62,7 @@ export class MainMenuPage {
   consumerPages: any[] = [];
 
   gmppPages: any[] = [
-    { title: "purchase", component: "GmppPruchasPage", icon: "cart", var: "" },
+    { title: "purchase", component: "GmppPurchasePage", icon: "cart", var: "" },
     { title: "cashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
     {
       title: "changePin",
@@ -72,14 +72,19 @@ export class MainMenuPage {
     },
     {
       title: "linkAccount",
-      component: "LinkacconutPage",
+      component: "GmppLinkAccountPage",
       icon: "link",
       var: ""
     },
-    { title: "lockAccount", component: "SelflockPage", icon: "lock", var: "" },
+    {
+      title: "lockAccount",
+      component: "GmppSelfLockPage",
+      icon: "lock",
+      var: ""
+    },
     {
       title: "unlockAccount",
-      component: "SelfunlockPage",
+      component: "GmppSelfUnlockPage",
       icon: "unlock",
       var: ""
     },
@@ -92,7 +97,12 @@ export class MainMenuPage {
   ];
 
   transferPages: any[] = [
-    { title: "transfer", component: "GmppTransPage", icon: "swap", var: "" },
+    {
+      title: "transfer",
+      component: "GmppTranToWalletPage",
+      icon: "swap",
+      var: ""
+    },
     {
       title: "transferToCard",
       component: "TransferToCardPage",

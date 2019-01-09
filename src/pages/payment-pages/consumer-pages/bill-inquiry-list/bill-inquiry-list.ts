@@ -97,7 +97,7 @@ export class BillInquiryListPage {
 
     var page = "BillInquiryPage";
     if (item.PAYEENAME.includes("E15")) {
-      page = "GmppE15QPage";
+      page = "GmppE15Page";
     } else if (item.PAYEENAME.includes("Custom")) {
       page = "CustomsInquiryPage";
     }

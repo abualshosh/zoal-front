@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="secondary">
     <ion-title>{{ user.profile.fullName }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -34,7 +34,7 @@
         <a
           button
           ion-button
-          href="tel:{{user.phoneNumber}}"
+          href="tel:{{ user.phoneNumber }}"
           color="danger"
           item-end
           medium
@@ -51,7 +51,9 @@
           color="secondary"
           item-end
           medium
-          href="whatsapp://send?text=Hi from ionic&phone=+{{user.phoneNumber}}&abid=+{{user.phoneNumber}}"
+          href="whatsapp://send?text=Hi from ionic&phone=+{{
+            user.phoneNumber
+          }}&abid=+{{ user.phoneNumber }}"
           >Open App</a
         >
       </ion-item>

@@ -131,7 +131,7 @@ export class ChangeIpinPage {
 
             var datas = [{ tital: "Status", desc: data.responseMessage }];
             let modal = this.modalCtrl.create(
-              "ReModelPage",
+              "GmppReceiptPage",
               { data: datas },
               { cssClass: "inset-modals" }
             );

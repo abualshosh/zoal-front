@@ -29,7 +29,7 @@ import * as moment from "moment";
   templateUrl: "gmpp-tran-from-card.html"
 })
 export class GmppTranFromCardPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
@@ -44,10 +44,19 @@ export class GmppTranFromCardPage {
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
-    this.consumerIdentifier = "249" + localStorage.getItem("username");
+    // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       transactionAmount: ["", Validators.required],
       expDate: ["", Validators.required],
       ipin: [
@@ -102,7 +111,7 @@ export class GmppTranFromCardPage {
         dat.UUID + dat.consumerPIN
       );
       dat.ipin = this.GetServicesProvider.encryptGmpp(dat.UUID + dat.ipin);
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerIdentifier = dat.walletNumber;
       //console.log(dat.IPIN)
       dat.isConsumer = "true";
       var date = new Date(dat.expDate);

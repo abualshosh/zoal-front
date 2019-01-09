@@ -27,7 +27,7 @@ import { Card } from "../../../../models/cards";
   templateUrl: "gmpp-retire-account.html"
 })
 export class GmppRetireAccountPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   private complate: FormGroup;
@@ -38,28 +38,30 @@ export class GmppRetireAccountPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
+    public navCtrl: NavController,
     public alertCtrl: AlertController,
     public user: UserProvider,
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
-    this.storage.get("username").then(val => {
-      this.consumerIdentifier = val;
-    });
-    this.storage.get("RUUID").then(val => {
-      this.storage.set("RetireACCOUNT", "TRUE");
-      this.storage.set("RUUID", "2711dbcd-0314-431b-8731-97266974f28d");
-    });
-    this.storage.get("RetireACCOUNT").then(val => {
-      if (val != null) {
-        this.compleate = val;
-      }
-    });
+    // this.storage.get("username").then(val => {
+    //   this.consumerIdentifier = val;
+    // });
+
     //user.printuser();
     //  this.compleate='TRUE';
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       retireReason: ["", Validators.required],
       consumerPIN: [
         "",
@@ -83,6 +85,18 @@ export class GmppRetireAccountPage {
           Validators.pattern("[0-9]*")
         ])
       ]
+    });
+  }
+
+  ionViewDidLoad() {
+    // this.storage.get("RUUID").then(val => {
+    //   this.storage.set("RetireACCOUNT", "TRUE");
+    //   this.storage.set("RUUID", "2711dbcd-0314-431b-8731-97266974f28d");
+    // });
+    this.storage.get("RetireACCOUNT").then(val => {
+      if (val != null) {
+        this.compleate = val;
+      }
     });
   }
 
@@ -118,10 +132,10 @@ export class GmppRetireAccountPage {
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
-      dat.consumerPIN = this.GetServicesProvider.encrypt(
+      dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerIdentifier = dat.walletNumber;
 
       //console.log(dat.IPIN)
       dat.isConsumer = "true";
@@ -135,6 +149,7 @@ export class GmppRetireAccountPage {
             this.storage.set("RUUID", dat.UUID);
             //   this.storage.set("primaryAccountNumber",dat.primaryAccountNumber);
             loader.dismiss();
+            this.compleate = "TRUE";
             // this.showAlert(data);
 
             var datas = [
@@ -175,7 +190,7 @@ export class GmppRetireAccountPage {
           dat.consumerOTP = this.GetServicesProvider.encrypt(
             dat.UUID + dat.consumerOTP
           );
-          dat.consumerIdentifier = this.consumerIdentifier;
+          dat.consumerIdentifier = this.todo.controls["walletNumber"].value;
           //console.log(dat.originalTranUUID)
           //console.log(dat.IPIN)
 

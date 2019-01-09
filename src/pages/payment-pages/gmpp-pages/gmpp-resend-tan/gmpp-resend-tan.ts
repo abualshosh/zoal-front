@@ -27,7 +27,7 @@ import { Card } from "../../../../models/cards";
   templateUrl: "gmpp-resend-tan.html"
 })
 export class GmppResendTanPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
@@ -42,13 +42,22 @@ export class GmppResendTanPage {
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
-    this.storage.get("username").then(val => {
-      this.consumerIdentifier = val;
-    });
+    // this.storage.get("username").then(val => {
+    //   this.consumerIdentifier = val;
+    // });
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       transactionId: ["", Validators.required],
       consumerPIN: [
         "",
@@ -89,10 +98,10 @@ export class GmppResendTanPage {
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
-      dat.consumerPIN = this.GetServicesProvider.encrypt(
+      dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerIdentifier = dat.walletNumber;
       //console.log(dat.IPIN)
       dat.originatorType = "Consumer";
       dat.tranType = "CASHOUT";

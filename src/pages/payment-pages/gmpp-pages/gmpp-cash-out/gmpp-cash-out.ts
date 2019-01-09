@@ -23,7 +23,7 @@ import * as moment from "moment";
   templateUrl: "gmpp-cash-out.html"
 })
 export class GmppCashOutPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
@@ -38,9 +38,18 @@ export class GmppCashOutPage {
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
-    this.consumerIdentifier = "249" + localStorage.getItem("username");
+    // this.consumerIdentifier = "249" + localStorage.getItem("username");
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       cashOutAll: [, ""],
       transactionAmount: ["", Validators.required],
       consumerPIN: [
@@ -97,7 +106,7 @@ export class GmppCashOutPage {
       dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerIdentifier = dat.walletNumber;
       //console.log(dat.IPIN)
       dat.isConsumer = "true";
 

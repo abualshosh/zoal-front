@@ -15,6 +15,11 @@ import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import * as moment from "moment";
+import {
+  BarcodeScanner,
+  BarcodeScannerOptions
+} from "@ionic-native/barcode-scanner";
+import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
 @Component({
@@ -22,26 +27,40 @@ import * as moment from "moment";
   templateUrl: "gmpp-tran-to-wallet.html"
 })
 export class GmppTranToWalletPage {
-  consumerIdentifier: any;
+  options: BarcodeScannerOptions;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
+  qrPrompt: string;
   constructor(
+    private barcodeScanner: BarcodeScanner,
     private formBuilder: FormBuilder,
+    private navParams: NavParams,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public alertCtrl: AlertController,
+    public translateService: TranslateService,
     public user: UserProvider,
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
-    this.consumerIdentifier = "249" + localStorage.getItem("username");
+    // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       destinationIdentifier: [
         "",
         Validators.compose([
@@ -62,6 +81,15 @@ export class GmppTranToWalletPage {
         ])
       ]
     });
+    if (this.navParams.get("wallet")) {
+      this.todo.controls["destinationIdentifier"].setValue(
+        this.navParams.get("wallet")
+      );
+    }
+
+    this.translateService.get("qrCode").subscribe(value => {
+      this.qrPrompt = value;
+    });
   }
 
   showAlert(data: any) {
@@ -81,6 +109,25 @@ export class GmppTranToWalletPage {
     alert.present();
   }
 
+  scan() {
+    this.options = {
+      prompt: this.qrPrompt
+    };
+    this.barcodeScanner.scan(this.options).then(
+      barcodeData => {
+        if (barcodeData.text) {
+          // alert(barcodeData.text);
+          this.todo.controls["destinationIdentifier"].setValue(
+            barcodeData.text
+          );
+        }
+      },
+      err => {
+        //console.log("Error occured : " + err);
+      }
+    );
+  }
+
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
@@ -94,7 +141,7 @@ export class GmppTranToWalletPage {
       dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerIdentifier = dat.walletNumber;
       //console.log(dat.IPIN)
       dat.isConsumer = "true";
 

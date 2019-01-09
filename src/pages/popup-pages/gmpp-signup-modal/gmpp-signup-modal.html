@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="secondary">
     <ion-title>{{ "mobilePayment" | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only><ion-icon name="bulb"></ion-icon></button>
@@ -8,28 +8,25 @@
 </ion-header>
 <ion-content>
   <ion-row class="align-center" style="margin-left:10px">
-    <p>
-      {{ "registerMobile" | translate }} <br />
-      {{ "switchMobile" | translate }}
-    </p>
+    <p>{{ "registerMobile" | translate }} <br /></p>
   </ion-row>
-  <ion-row class="align-center">
-    <ion-col>
-      <button ion-button full (click)="signup()">
-        {{ "signup" | translate }}
-      </button>
-    </ion-col>
-  </ion-row>
-  <ion-row class="align-center">
-    <ion-col col-6>
-      <button ion-button full color="secondary" (click)="login()">
-        {{ "switch" | translate }}
-      </button>
-    </ion-col>
-    <ion-col col-6>
-      <button ion-button full color="secondary" (click)="dismiss()">
-        {{ "close" | translate }}
-      </button>
-    </ion-col>
-  </ion-row>
+  <form [formGroup]="todo" (ngSubmit)="signup()">
+    <ion-list>
+      <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
+        <p>{{ "validwalletError" | translate }}</p>
+      </div>
+      <ion-item>
+        <ion-label stacked> {{ "walletNumber" | translate }}</ion-label>
+        <ion-input
+          type="number"
+          formControlName="walletNumber"
+          required
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button class="subbutn" ion-button type="submit" color="secondary">
+      {{ "Submit" | translate }}
+    </button>
+  </form>
 </ion-content>

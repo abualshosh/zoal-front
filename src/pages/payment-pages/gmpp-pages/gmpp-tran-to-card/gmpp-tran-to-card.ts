@@ -29,7 +29,7 @@ import * as moment from "moment";
   templateUrl: "gmpp-tran-to-card.html"
 })
 export class GmppTranToCardPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
@@ -44,11 +44,20 @@ export class GmppTranToCardPage {
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
-    this.consumerIdentifier = "249" + localStorage.getItem("username");
+    // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       transactionAmount: ["", Validators.required],
       consumerPIN: ["", Validators.required]
     });
@@ -81,7 +90,7 @@ export class GmppTranToCardPage {
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerIdentifier = dat.walletNumber;
       dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );

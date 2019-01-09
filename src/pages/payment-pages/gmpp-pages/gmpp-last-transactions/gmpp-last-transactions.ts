@@ -27,7 +27,7 @@ import { Card } from "../../../../models/cards";
   templateUrl: "gmpp-last-transactions.html"
 })
 export class GmppLastTransactionsPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
@@ -42,11 +42,20 @@ export class GmppLastTransactionsPage {
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
-    this.consumerIdentifier = localStorage.getItem("username");
+    // this.consumerIdentifier = localStorage.getItem("username");
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       consumerPIN: [
         "",
         Validators.compose([
@@ -85,8 +94,10 @@ export class GmppLastTransactionsPage {
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
-      //dat.consumerPIN=this.GetServicesProvider.encrypt(dat.UUID+dat.consumerPIN);
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
+        dat.UUID + dat.consumerPIN
+      );
+      dat.consumerIdentifier = dat.walletNumber;
       //console.log(dat.IPIN)
       dat.isConsumer = "true";
 

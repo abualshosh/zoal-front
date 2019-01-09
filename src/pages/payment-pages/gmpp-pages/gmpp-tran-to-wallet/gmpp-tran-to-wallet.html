@@ -10,6 +10,17 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
+        <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
+          <p>{{ "validwalletError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "walletNumber" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="walletNumber"
+            required
+          ></ion-input>
+        </ion-item>
         <div
           *ngIf="!todo.controls.destinationIdentifier.valid && submitAttempt"
           item-end
@@ -25,6 +36,14 @@
             formControlName="destinationIdentifier"
             required
           ></ion-input>
+          <button
+            style="background-color: white;"
+            ion-button
+            item-end
+            (click)="scan()"
+          >
+            <ion-icon color="dark" name="barcode"></ion-icon>
+          </button>
         </ion-item>
 
         <div *ngIf="!todo.controls.transactionAmount.valid && submitAttempt">

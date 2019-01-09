@@ -22,7 +22,7 @@ import { Card } from "../../../../models/cards";
   templateUrl: "gmpp-change-pin.html"
 })
 export class GmppChangePinPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
@@ -38,11 +38,20 @@ export class GmppChangePinPage {
     public modalCtrl: ModalController,
     public navCtrl: NavController
   ) {
-    this.consumerIdentifier = "249" + localStorage.getItem("username");
+    // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       oldPIN: ["", Validators.required],
       newPIN: ["", Validators.required],
       connewPIN: ["", Validators.required]
@@ -81,7 +90,7 @@ export class GmppChangePinPage {
         dat.newPIN = this.GetServicesProvider.encryptGmpp(
           dat.UUID + dat.newPIN
         );
-        dat.consumerIdentifier = this.consumerIdentifier;
+        dat.consumerIdentifier = dat.walletNumber;
         //console.log(dat)
         dat.isConsumer = "true";
         dat.connewPIN = "";

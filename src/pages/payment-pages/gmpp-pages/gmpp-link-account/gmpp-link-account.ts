@@ -27,7 +27,7 @@ import { Card } from "../../../../models/cards";
   templateUrl: "gmpp-link-account.html"
 })
 export class GmppLinkAccountPage {
-  consumerIdentifier: any;
+  // consumerIdentifier: any;
   private bal: any;
   private todo: FormGroup;
   private complate: FormGroup;
@@ -51,6 +51,15 @@ export class GmppLinkAccountPage {
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ],
       primaryAccountNumber: [
         "",
         Validators.compose([
@@ -76,7 +85,7 @@ export class GmppLinkAccountPage {
   }
 
   ionViewDidLoad() {
-    this.consumerIdentifier = "249" + localStorage.getItem("username");
+    // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     this.storage.get("LINKACCOUNT").then(val => {
       // this.storage.set('LINKACCOUNT','TRUE');
@@ -125,7 +134,7 @@ export class GmppLinkAccountPage {
       dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );
-      dat.consumerIdentifier = this.consumerIdentifier;
+      dat.consumerIdentifier = dat.walletNumber;
 
       //console.log(dat.IPIN)
       dat.isConsumer = "true";
@@ -183,7 +192,7 @@ export class GmppLinkAccountPage {
               dat.consumerOTP = this.GetServicesProvider.encryptGmpp(
                 dat.UUID + dat.consumerOTP
               );
-              dat.consumerIdentifier = this.consumerIdentifier;
+              dat.consumerIdentifier = this.todo.controls["walletNumber"].value;
               //console.log(this.complate.value)
               //console.log(dat.IPIN)
 

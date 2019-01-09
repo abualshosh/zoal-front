@@ -1,8 +1,7 @@
-
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>Home</ion-title>
+    <ion-title>{{ "retireGmppAccount" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -10,6 +9,17 @@
   <div class="con" [ngSwitch]="compleate">
     <form [formGroup]="todo" (ngSubmit)="logForm()" *ngSwitchCase="'FALSE'">
       <ion-list>
+        <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
+          <p>{{ "validwalletError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "walletNumber" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="walletNumber"
+            required
+          ></ion-input>
+        </ion-item>
         <ion-item>
           <ion-label stacked>retire Reason</ion-label>
           <ion-input type="text" formControlName="retireReason" required>
@@ -38,7 +48,6 @@
       *ngSwitchCase="'TRUE'"
     >
       <ion-list>
-        sdfsfsdfsdfdsfsdffsdff
         <ion-item>
           <ion-label stacked>OTP (SENT IN SMS)</ion-label>
           <ion-input type="text" formControlName="consumerOTP" required>

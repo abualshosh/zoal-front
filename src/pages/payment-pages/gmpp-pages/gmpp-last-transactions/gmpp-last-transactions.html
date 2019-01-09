@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
@@ -10,6 +9,17 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
+        <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
+          <p>{{ "validwalletError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "walletNumber" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="walletNumber"
+            required
+          ></ion-input>
+        </ion-item>
         <ion-item>
           <ion-label stacked>{{ "PIN" | translate }}</ion-label>
           <ion-input

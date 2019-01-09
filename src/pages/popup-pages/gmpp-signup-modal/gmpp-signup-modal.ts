@@ -9,6 +9,7 @@ import {
 } from "ionic-angular";
 import { GetServicesProvider } from "../../../providers/get-services/get-services";
 import * as uuid from "uuid";
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Api } from "../../../providers/providers";
 @IonicPage()
 @Component({
@@ -17,16 +18,30 @@ import { Api } from "../../../providers/providers";
 })
 export class GmppSignupModalPage {
   profile: any;
+  private todo: FormGroup;
 
   constructor(
     public loadingCtrl: LoadingController,
     public api: Api,
+    private formBuilder: FormBuilder,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public viewCtrl: ViewController,
     public GetServicesProvider: GetServicesProvider,
     public modalCtrl: ModalController
-  ) {}
+  ) {
+    this.todo = this.formBuilder.group({
+      walletNumber: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("[249].[0-9]*")
+        ])
+      ]
+    });
+  }
 
   showAlert(data: any) {
     let message: any;
@@ -46,10 +61,13 @@ export class GmppSignupModalPage {
   }
 
   signup() {
-    var dat = {
-      UUID: uuid.v4(),
-      consumerIdentifier: "249" + localStorage.getItem("username")
-    };
+    let dat = this.todo.value;
+    // var dat = {
+    //   UUID: uuid.v4(),
+    //   consumerIdentifier: "249" + localStorage.getItem("username")
+    // };
+    dat.UUID = uuid.v4();
+    dat.consumerIdentifier = dat.walletNumber;
     let loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
@@ -66,7 +84,7 @@ export class GmppSignupModalPage {
             localStorage.setItem("profile", JSON.stringify(this.profile));
             var datas = [{ tital: "Status", desc: data.responseMessage }];
             let modal = this.modalCtrl.create(
-              "ReModelPage",
+              "GmppReceiptPage",
               { data: datas },
               { cssClass: "inset-modals" }
             );
@@ -84,7 +102,7 @@ export class GmppSignupModalPage {
   }
 
   login() {
-    this.navCtrl.push("SwitchaccountPage");
+    this.navCtrl.push("GmppSwitchAccountPage");
     this.viewCtrl.dismiss();
   }
 

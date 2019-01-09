@@ -32,6 +32,7 @@ export class ElectricityServicesPage {
   showWallet: boolean = false;
   submitAttempt: boolean = false;
   validCard: boolean = false;
+  isGmpp: boolean;
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
@@ -44,14 +45,22 @@ export class ElectricityServicesPage {
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
-      if (this.cards) {
-        if (this.cards.length <= 0) {
-          this.showWallet = true;
-          this.todo.controls["mobilewallet"].setValue(true);
-        }
-      } else {
+      // if (this.cards) {
+      //   if (this.cards.length <= 0) {
+      //     this.showWallet = true;
+      //     this.todo.controls["mobilewallet"].setValue(true);
+      //   }
+      // } else {
+      //   this.showWallet = true;
+      //   this.todo.controls["mobilewallet"].setValue(true);
+      // }
+      this.isGmpp = this.navParams.get("isGmpp");
+      if (this.isGmpp) {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
+      } else {
+        this.showWallet = false;
+        this.todo.controls["mobilewallet"].setValue(false);
       }
     });
     this.title = this.navParams.get("name");
@@ -85,9 +94,9 @@ export class ElectricityServicesPage {
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    this.todo.controls["entityId"].setValue(
-      "249" + localStorage.getItem("username")
-    );
+    // this.todo.controls["entityId"].setValue(
+    //   "249" + localStorage.getItem("username")
+    // );
   }
 
   clearInput() {
@@ -257,17 +266,17 @@ export class ElectricityServicesPage {
           modal.present();
           this.clearInput();
           this.submitAttempt = false;
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
         } else {
           loader.dismiss();
           this.showAlert(data);
           this.clearInput();
           this.submitAttempt = false;
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
         }
       });
     }

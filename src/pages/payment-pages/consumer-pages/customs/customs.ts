@@ -88,9 +88,9 @@ export class CustomsPage {
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    this.todo.controls["entityId"].setValue(
-      "249" + localStorage.getItem("username")
-    );
+    // this.todo.controls["entityId"].setValue(
+    //   "249" + localStorage.getItem("username")
+    // );
   }
 
   clearInput() {
@@ -261,17 +261,17 @@ export class CustomsPage {
           this.clearInput();
           this.submitAttempt = false;
 
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
         } else {
           loader.dismiss();
           this.showAlert(data);
           this.clearInput();
 
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
 
           this.submitAttempt = false;
         }

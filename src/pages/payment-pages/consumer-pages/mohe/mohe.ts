@@ -59,6 +59,7 @@ export class MohePage {
   ];
 
   public type: any = "mohe";
+  isGmpp: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,14 +73,22 @@ export class MohePage {
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
-      if (this.cards) {
-        if (this.cards.length <= 0) {
-          this.showWallet = true;
-          this.todo.controls["mobilewallet"].setValue(true);
-        }
-      } else {
+      // if (this.cards) {
+      //   if (this.cards.length <= 0) {
+      //     this.showWallet = true;
+      //     this.todo.controls["mobilewallet"].setValue(true);
+      //   }
+      // } else {
+      //   this.showWallet = true;
+      //   this.todo.controls["mobilewallet"].setValue(true);
+      // }
+      this.isGmpp = this.navParams.get("isGmpp");
+      if (this.isGmpp) {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
+      } else {
+        this.showWallet = false;
+        this.todo.controls["mobilewallet"].setValue(false);
       }
     });
 
@@ -125,9 +134,9 @@ export class MohePage {
       mobilewallet: [""]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    this.todo.controls["entityId"].setValue(
-      "249" + localStorage.getItem("username")
-    );
+    // this.todo.controls["entityId"].setValue(
+    //   "249" + localStorage.getItem("username")
+    // );
   }
 
   clearInput() {
@@ -317,18 +326,18 @@ export class MohePage {
           modal.present();
           this.clearInput();
           this.submitAttempt = false;
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
         } else {
           loader.dismiss();
 
           this.showAlert(data);
           this.clearInput();
           this.submitAttempt = false;
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
         }
       });
     }

@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
@@ -19,7 +18,7 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        <ion-item>
+        <!-- <ion-item>
           <ion-toggle
             [disabled]="showWallet"
             formControlName="mobilewallet"
@@ -29,7 +28,7 @@
             <ion-icon name="phone-portrait" item-start></ion-icon
             >{{ "USEWallet" | translate }}</ion-label
           >
-        </ion-item>
+        </ion-item> -->
         <div
           *ngIf="
             !todo.controls.entityId.valid &&

@@ -9,9 +9,11 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
 export class LoadPagesPage {
   pages: any[];
   title: string;
+  isGmpp: boolean;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.pages = this.navParams.get("pages");
     this.title = this.navParams.get("title");
+    this.isGmpp = this.navParams.get("isGmpp");
   }
 
   ionViewDidLoad() {}
@@ -19,10 +21,13 @@ export class LoadPagesPage {
   openPage(page, name) {
     if (name) {
       this.navCtrl.push(page, {
-        name: name
+        name: name,
+        isGmpp: this.isGmpp
       });
     } else {
-      this.navCtrl.push(page);
+      this.navCtrl.push(page, {
+        isGmpp: this.isGmpp
+      });
     }
   }
 }

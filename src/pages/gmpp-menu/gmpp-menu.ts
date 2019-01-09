@@ -35,18 +35,6 @@ export class GmppMenuPage {
   ];
 
   govermentPages: any[] = [
-    {
-      title: "customsServices",
-      component: "CustomsPage",
-      icon: "briefcase",
-      var: ""
-    },
-    {
-      title: "customsInquiry",
-      component: "CustomsInquiryPage",
-      icon: "briefcase",
-      var: ""
-    },
     { title: "e15Services", component: "E15Page", icon: "document", var: "" },
     {
       title: "Higher Education",
@@ -79,6 +67,61 @@ export class GmppMenuPage {
       title: "gmppPurchasePage",
       component: "GmppPurchasePage",
       icon: "person",
+      var: ""
+    },
+    { title: "cashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
+    {
+      title: "changePin",
+      component: "GmppChangePinPage",
+      icon: "construct",
+      var: ""
+    },
+    {
+      title: "linkAccount",
+      component: "GmppLinkAccountPage",
+      icon: "link",
+      var: ""
+    },
+    {
+      title: "lockAccount",
+      component: "GmppSelfLockPage",
+      icon: "lock",
+      var: ""
+    },
+    {
+      title: "unlockAccount",
+      component: "GmppSelfUnlockPage",
+      icon: "unlock",
+      var: ""
+    },
+    {
+      title: "gmppLastTransactionsPage",
+      component: "GmppLastTransactionsPage",
+      icon: "clock",
+      var: ""
+    },
+    {
+      title: "gmppBalancePage",
+      component: "GmppBalancePage",
+      icon: "clock",
+      var: ""
+    },
+    {
+      title: "gmppResendTanPage",
+      component: "GmppResendTanPage",
+      icon: "clock",
+      var: ""
+    },
+    {
+      title: "gmppRetireAccountPage",
+      component: "GmppRetireAccountPage",
+      icon: "clock",
+      var: ""
+    },
+    {
+      title: "gmppSignupModalPage",
+      component: "GmppSignupModalPage",
+      icon: "clock",
       var: ""
     }
   ];
@@ -118,7 +161,8 @@ export class GmppMenuPage {
     }
     this.navCtrl.push("LoadPagesPage", {
       pages: listout,
-      title: title
+      title: title,
+      isGmpp: true
     });
   }
 

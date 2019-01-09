@@ -36,6 +36,7 @@ export class E15Page {
   public cards: Card[] = [];
   public payee: any[] = [];
   validCard: boolean = false;
+  isGmpp: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,14 +50,22 @@ export class E15Page {
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
-      if (this.cards) {
-        if (this.cards.length <= 0) {
-          this.showWallet = true;
-          this.todo.controls["mobilewallet"].setValue(true);
-        }
-      } else {
+      // if (this.cards) {
+      //   if (this.cards.length <= 0) {
+      //     this.showWallet = true;
+      //     this.todo.controls["mobilewallet"].setValue(true);
+      //   }
+      // } else {
+      //   this.showWallet = true;
+      //   this.todo.controls["mobilewallet"].setValue(true);
+      // }
+      this.isGmpp = this.navParams.get("isGmpp");
+      if (this.isGmpp) {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
+      } else {
+        this.showWallet = false;
+        this.todo.controls["mobilewallet"].setValue(false);
       }
     });
 
@@ -70,9 +79,9 @@ export class E15Page {
         "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          Validators.pattern("249[0-9]*")
         ])
       ],
       mobilewallet: [""],
@@ -90,17 +99,17 @@ export class E15Page {
         "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249][0-9]*")
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("[0-9]*")
         ])
       ],
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    this.todo.controls["entityId"].setValue(
-      "249" + localStorage.getItem("username")
-    );
+    // this.todo.controls["entityId"].setValue(
+    //   "249" + localStorage.getItem("username")
+    // );
   }
 
   clearInput() {
@@ -273,16 +282,16 @@ export class E15Page {
           this.clearInput();
           this.submitAttempt = false;
 
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
         } else {
           loader.dismiss();
           this.showAlert(data);
           this.clearInput();
-          this.todo.controls["entityId"].setValue(
-            "0" + localStorage.getItem("username")
-          );
+          // this.todo.controls["entityId"].setValue(
+          //   "0" + localStorage.getItem("username")
+          // );
 
           this.submitAttempt = false;
         }

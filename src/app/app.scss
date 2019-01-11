@@ -27,6 +27,7 @@
   .subbutn {
     width: 80%;
     margin-left: 10%;
+    margin-right: 10%;
   }
   .mask-text {
     -webkit-text-security: disc;
@@ -43,11 +44,13 @@
     ion-datetime,
     p {
       padding-left: 15px;
+      padding-right: 15px;
     }
   }
   .con p {
     color: map-get($colors, danger);
     padding-left: 15px;
+    padding-right: 15px;
   }
   ion-modal.inset-modal {
     // transparent black background overlay

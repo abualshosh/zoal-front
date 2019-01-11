@@ -1,7 +1,13 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController } from "ionic-angular";
-import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
+import {
+  IonicPage,
+  NavController,
+  MenuController,
+  Platform
+} from "ionic-angular";
+import { SQLite } from "@ionic-native/sqlite";
 import { TranslateService } from "@ngx-translate/core";
+import { Storage } from "@ionic/storage";
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -23,18 +29,40 @@ export class WelcomePage {
   constructor(
     private translate: TranslateService,
     public sqlite: SQLite,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public menuCtrl: MenuController,
+    public platform: Platform,
+    public storage: Storage
   ) {
+    this.checkDirection();
     this.language = this.translate.getDefaultLang();
     if (!this.language) {
-      this.language = "ar";
+      this.storage.set("lang", "ar").then(lang => {
+        this.language = lang;
+        this.translate.setDefaultLang(this.language);
+      });
     }
+
+    this.menuCtrl.enable(false, "sideMenu");
   }
 
   ChangeLang() {
-    localStorage.setItem("lang", this.language);
-    this.translate.setDefaultLang(this.language);
-    this.translate.use(this.language); // Set your language here
+    this.storage.set("lang", this.language).then(lang => {
+      this.language = lang;
+      this.translate.setDefaultLang(this.language);
+      this.translate.use(this.language);
+      this.checkDirection();
+    });
+  }
+
+  checkDirection() {
+    this.storage.get("lang").then(lang => {
+      if (lang === "ar") {
+        this.platform.setDir("rtl", true);
+      } else {
+        this.platform.setDir("ltr", true);
+      }
+    });
   }
 
   login() {

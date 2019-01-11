@@ -1,6 +1,11 @@
 import { Component, ViewChild, NgZone } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { IonicPage, NavController, Events } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  Events,
+  MenuController
+} from "ionic-angular";
 import { Api } from "../../providers/providers";
 import { Tab2Root } from "../pages";
 import { StompService } from "ng2-stomp-service";
@@ -33,6 +38,7 @@ export class TabsPage {
   upcontacts: any = [];
   currentItems: any = [];
   subscription: any;
+  profile: any;
 
   constructor(
     private contacts: Contacts,
@@ -44,7 +50,8 @@ export class TabsPage {
     public events: Events,
     public stomp: StompService,
     public navCtrl: NavController,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    public menuCtrl: MenuController
   ) {
     translateService
       .get(["feeds", "contacts", "profile", "chat", "Pay"])
@@ -55,6 +62,11 @@ export class TabsPage {
         this.tab4Title = values["chat"];
         this.tab5Title = values["Pay"];
       });
+
+    this.menuCtrl.enable(true, "sideMenu");
+
+    this.profile = JSON.parse(localStorage.getItem("profile"));
+    this.events.publish("profile", this.profile);
 
     platform.ready().then(() => {
       if (this.platform.is("cordova")) {

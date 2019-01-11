@@ -2,7 +2,7 @@ import { Component, ViewChild } from "@angular/core";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
 import { TranslateService } from "@ngx-translate/core";
-import { Config, Nav, Platform, App } from "ionic-angular";
+import { Config, Nav, Platform, App, MenuController } from "ionic-angular";
 import { Api } from "../providers/providers";
 import { ImageLoaderConfig } from "ionic-image-loader";
 import { Storage } from "@ionic/storage";
@@ -21,6 +21,16 @@ export class MyApp {
       title: "profileCreatePage",
       component: "ProfileCreatePage",
       icon: "person"
+    },
+    {
+      title: "aboutUsPage",
+      component: "AboutUsPage",
+      icon: "information-circle"
+    },
+    {
+      title: "contactUsPage",
+      component: "ContactUsPage",
+      icon: "mail"
     }
   ];
 
@@ -102,44 +112,39 @@ export class MyApp {
 
   sideMenuPages: any = [];
 
-  user: any;
   language: any;
-  username: any;
   profile: any;
+
   languages: any[] = [
     { language: "English", Code: "en" },
     { language: "Arabic", Code: "ar" }
   ];
+  isRtl: boolean;
 
   constructor(
     private imageLoaderConfig: ImageLoaderConfig,
     private translate: TranslateService,
-    platform: Platform,
+    public platform: Platform,
     public storage: Storage,
     public events: Events,
     public api: Api,
     public app: App,
     private config: Config,
     private statusBar: StatusBar,
+    public menuCtrl: MenuController,
     private splashScreen: SplashScreen
   ) {
     if (localStorage.getItem("logdin") == "true") {
       this.rootPage = "TabsPage";
     }
 
-    events.subscribe("isGmpp", isGmpp => {
-      if (isGmpp == "gmpp") {
-        this.sideMenuPages = this.gmppPages;
-      } else if (isGmpp == "consumer") {
-        this.sideMenuPages = this.consumerPages;
-      } else {
-        this.sideMenuPages = [];
-      }
-    });
+    this.subscribeToPaymentMethodChange();
 
     this.language = this.translate.getDefaultLang();
-    this.username = localStorage.getItem("username");
-    this.profile = JSON.parse(localStorage.getItem("profile"));
+
+    this.events.subscribe("profile", profile => {
+      this.profile = profile;
+    });
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -148,33 +153,62 @@ export class MyApp {
       imageLoaderConfig.setImageReturnType("base64");
       this.statusBar.backgroundColorByHexString("#e0e0e0");
       this.statusBar.styleDefault();
-      // this.statusBar.styleLightContent();
       this.splashScreen.hide();
       this.initTranslate();
+      this.checkDirection();
     });
   }
 
   initTranslate() {
-    // Set the default language for translation strings, and the current language.
-    var lang = localStorage.getItem("lang");
-
-    if (lang !== undefined && lang !== "" && lang !== null) {
-      this.translate.setDefaultLang(localStorage.getItem("lang"));
-      this.translate.use(localStorage.getItem("lang"));
-    } else {
-      this.translate.setDefaultLang("ar");
-      this.translate.use("ar"); // Set your language here
-    }
+    this.storage.get("lang").then(lang => {
+      if (lang !== undefined && lang !== "" && lang !== null) {
+        this.translate.setDefaultLang(lang);
+        this.translate.use(lang);
+      } else {
+        this.storage.set("lang", "ar").then(lang => {
+          this.isRtl = true;
+          this.translate.setDefaultLang(lang);
+          this.translate.use(lang);
+        });
+      }
+    });
 
     this.translate.get(["BACK_BUTTON_TEXT"]).subscribe(values => {
       this.config.set("ios", "backButtonText", values.BACK_BUTTON_TEXT);
     });
   }
 
+  subscribeToPaymentMethodChange() {
+    this.events.subscribe("isGmpp", isGmpp => {
+      if (isGmpp === "gmpp") {
+        this.sideMenuPages = this.gmppPages;
+      } else if (isGmpp === "consumer") {
+        this.sideMenuPages = this.consumerPages;
+      } else {
+        this.sideMenuPages = [];
+      }
+    });
+  }
+
+  checkDirection() {
+    this.storage.get("lang").then(lang => {
+      if (lang === "ar") {
+        this.platform.setDir("rtl", true);
+        this.isRtl = true;
+      } else {
+        this.platform.setDir("ltr", true);
+        this.isRtl = false;
+      }
+    });
+  }
+
   ChangeLang() {
-    localStorage.setItem("lang", this.language);
-    this.translate.setDefaultLang(this.language);
-    this.translate.use(this.language); // Set your language here
+    this.storage.set("lang", this.language).then(lang => {
+      this.language = lang;
+      this.translate.setDefaultLang(this.language);
+      this.translate.use(this.language);
+      this.checkDirection();
+    });
   }
 
   toggleNotifications() {
@@ -191,6 +225,7 @@ export class MyApp {
   logOut() {
     localStorage.clear();
     this.storage.clear();
+    this.menuCtrl.close("sideMenu").then(() => {});
     this.app.getRootNav().setRoot("WelcomePage");
   }
 

@@ -91,12 +91,13 @@
     <plugin name="cordova-plugin-contacts" spec="^3.0.0" />
     <plugin name="cordova-sqlite-storage" spec="^2.1.2" />
     <plugin name="phonegap-plugin-barcodescanner" spec="^7.0.0" />
-    <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
     <plugin name="com-sarriaroman-photoviewer" spec="^1.1.11" />
     <plugin name="cordova-plugin-statusbar" spec="^2.3.0" />
     <plugin name="com.telerik.plugins.nativepagetransitions" spec="^0.6.5" />
     <allow-navigation href="http://192.168.42.228:8100" />
     <allow-navigation href="http://192.168.98.120:8100" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <engine name="android" spec="^6.4.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
+    <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="2.4.0" />
+    <engine name="android" spec="7.1.4" />
 </widget>

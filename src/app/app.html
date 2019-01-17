@@ -1,4 +1,4 @@
-<ion-menu id="sideMenu" *ngIf="!isRtl" [content]="content">
+<ion-menu id="sideMenu" [content]="content">
   <ion-header>
     <ion-toolbar color="secondary">
       <ion-title>{{ "sideMenu" | translate }}</ion-title>
@@ -26,7 +26,7 @@
         cancelText="{{ 'close' | translate }}"
         style="padding-left:5%;"
         [(ngModel)]="language"
-        (ngModelChange)="ChangeLang()"
+        (ngModelChange)="changeLang()"
       >
         <ion-option *ngFor="let language of languages" [value]="language.Code"
           >{{ language.language | translate }}
@@ -41,7 +41,7 @@
       <ion-label class="label"> {{ "AccepteTransfer" | translate }} </ion-label>
       <ion-icon name="notifications" item-start></ion-icon>
     </ion-item>
-    <ion-item *ngIf="profile">
+    <!-- <ion-item *ngIf="profile">
       <ion-icon name="card" item-start></ion-icon>
       <ion-label>{{ "MainCard" | translate }}</ion-label>
       <ion-select
@@ -54,87 +54,7 @@
           {{ method }}
         </ion-option>
       </ion-select>
-    </ion-item>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        <ion-icon name="{{ p.icon }}" item-start></ion-icon>
-        {{ p.title }}
-      </button>
-      <button
-        menuClose
-        ion-item
-        *ngFor="let p of sideMenuPages"
-        (click)="openPage(p)"
-      >
-        <ion-icon name="{{ p.icon }}" item-start></ion-icon>
-        {{ p.title }}
-      </button>
-    </ion-list>
-    <ion-item>
-      <button ion-button (click)="logOut()" item-end>
-        {{ "LogOut" | translate }}
-      </button>
-    </ion-item>
-  </ion-content>
-</ion-menu>
-
-<ion-menu id="sideMenu" *ngIf="isRtl" [content]="content">
-  <ion-header>
-    <ion-toolbar color="secondary">
-      <ion-title>{{ "sideMenu" | translate }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-item *ngIf="profile">
-      <ion-avatar item-start (click)="updateProfileImage()">
-        <img-loader
-          fallbackAsPlaceholde="true"
-          fallback="assets/img/userPlaceholder.png"
-          [src]="this.api.url + '/profileimage/' + profile.userName"
-          useImg
-        >
-        </img-loader>
-      </ion-avatar>
-      <p class="username">{{ profile.fullName }}</p>
-      <p>+249 {{ profile.userName }}</p>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="settings" item-start></ion-icon>
-      <ion-label>{{ "AppLanguage" | translate }}</ion-label>
-      <ion-select
-        okText="{{ 'Submit' | translate }}"
-        cancelText="{{ 'close' | translate }}"
-        style="padding-left:5%;"
-        [(ngModel)]="language"
-        (ngModelChange)="ChangeLang()"
-      >
-        <ion-option *ngFor="let language of languages" [value]="language.Code"
-          >{{ language.language | translate }}
-        </ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item *ngIf="profile">
-      <ion-toggle
-        [(ngModel)]="profile.accepteTransfer"
-        (ngModelChange)="toggleNotifications()"
-      ></ion-toggle>
-      <ion-label class="label"> {{ "AccepteTransfer" | translate }} </ion-label>
-      <ion-icon name="notifications" item-start></ion-icon>
-    </ion-item>
-    <ion-item *ngIf="profile">
-      <ion-icon name="card" item-start></ion-icon>
-      <ion-label>{{ "MainCard" | translate }}</ion-label>
-      <ion-select
-        okText="{{ 'Submit' | translate }}"
-        cancelText="{{ 'close' | translate }}"
-        style="padding-left:5%;"
-        [(ngModel)]="paymentMethod"
-      >
-        <ion-option *ngFor="let method of paymentMethods" [value]="method">
-          {{ method }}
-        </ion-option>
-      </ion-select>
-    </ion-item>
+    </ion-item> -->
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon name="{{ p.icon }}" item-start></ion-icon>

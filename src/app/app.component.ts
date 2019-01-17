@@ -89,6 +89,11 @@ export class MyApp {
 
   consumerPages: any = [
     {
+      title: "generateIpinPage",
+      component: "GenerateIpinPage",
+      icon: "construct"
+    },
+    {
       title: "cardDetailPage",
       component: "CardDetailPage",
       icon: "card"
@@ -155,7 +160,6 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.initTranslate();
-      this.checkDirection();
     });
   }
 
@@ -164,11 +168,12 @@ export class MyApp {
       if (lang !== undefined && lang !== "" && lang !== null) {
         this.translate.setDefaultLang(lang);
         this.translate.use(lang);
+        this.checkDirection();
       } else {
         this.storage.set("lang", "ar").then(lang => {
-          this.isRtl = true;
           this.translate.setDefaultLang(lang);
           this.translate.use(lang);
+          this.checkDirection();
         });
       }
     });
@@ -192,19 +197,16 @@ export class MyApp {
 
   checkDirection() {
     this.storage.get("lang").then(lang => {
-      if (lang === "ar") {
+      if (lang === "ar" && this.platform.dir() === "ltr") {
         this.platform.setDir("rtl", true);
-        this.isRtl = true;
-      } else {
+      } else if (lang === "en" && this.platform.dir() === "rtl") {
         this.platform.setDir("ltr", true);
-        this.isRtl = false;
       }
     });
   }
 
-  ChangeLang() {
+  changeLang() {
     this.storage.set("lang", this.language).then(lang => {
-      this.language = lang;
       this.translate.setDefaultLang(this.language);
       this.translate.use(this.language);
       this.checkDirection();
@@ -225,7 +227,7 @@ export class MyApp {
   logOut() {
     localStorage.clear();
     this.storage.clear();
-    this.menuCtrl.close("sideMenu").then(() => {});
+    this.menuCtrl.close("sideMenu");
     this.app.getRootNav().setRoot("WelcomePage");
   }
 

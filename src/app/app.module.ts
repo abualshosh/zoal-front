@@ -12,7 +12,6 @@ import { IonicStorageModule, Storage } from "@ionic/storage";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
-import { AuthHttp, AuthConfig, JwtHelper } from "angular2-jwt";
 import { Settings } from "../providers/providers";
 import { User, UserProvider } from "../providers/providers";
 import { Api } from "../providers/providers";
@@ -32,7 +31,8 @@ import { IonicImageLoader } from "ionic-image-loader";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
 import { NativePageTransitions } from "@ionic-native/native-page-transitions";
 import { CardIO } from "@ionic-native/card-io";
-import { StorageProvider } from '../providers/storage/storage';
+import { StorageProvider } from "../providers/storage/storage";
+import { InAppBrowser } from "@ionic-native/in-app-browser";
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -97,7 +97,7 @@ export function provideSettings(storage: Storage) {
     UserProvider,
     FCM,
     NgxQRCodeModule,
-
+    InAppBrowser,
     GetServicesProvider,
     {
       provide: HTTP_INTERCEPTORS,

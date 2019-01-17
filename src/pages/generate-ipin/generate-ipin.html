@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>{{ "generateIpin" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form
+      [formGroup]="generateIpinForm"
+      (ngSubmit)="submit()"
+      *ngIf="!isComplete"
+    >
+      <ion-list>
+        <div *ngIf="!generateIpinForm.controls.card.valid && submitAttempt">
+          <p>{{ "validcardError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "Card" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
+            formControlName="card"
+            interface="popover"
+          >
+            <ion-option *ngFor="let Card of cards" [value]="Card">
+              {{ Card.pan }}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div
+          *ngIf="!generateIpinForm.controls.phoneNumber.valid && submitAttempt"
+        >
+          <p>{{ "validvoucherNumberError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "PhoneNumber" | translate }} </ion-label>
+          <ion-input
+            type="number"
+            formControlName="phoneNumber"
+            required
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+
+    <form
+      [formGroup]="completeForm"
+      (ngSubmit)="submitCompletion()"
+      *ngIf="isComplete"
+    >
+      <ion-list>
+        <div *ngIf="!completeForm.controls.otp.valid && submitAttempt">
+          <p>{{ "validOtpError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "OTP" | translate }}</ion-label>
+          <ion-input type="number" formControlName="otp" required> </ion-input>
+        </ion-item>
+        <div *ngIf="!completeForm.controls.ipin.valid && submitAttempt">
+          <p>{{ "validIpinError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "ipin" | translate }}</ion-label>
+          <ion-input type="number" formControlName="ipin" required> </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

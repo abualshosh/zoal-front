@@ -37,7 +37,7 @@ export class ConsumerMenuPage {
       var: ""
     },
     {
-      title: "customsInquiry",
+      title: "customsInquiryPage",
       component: "CustomsInquiryPage",
       icon: "briefcase",
       var: ""
@@ -55,7 +55,7 @@ export class ConsumerMenuPage {
     {
       title: "transferToCard",
       component: "TransferToCardPage",
-      icon: "person",
+      icon: "swap",
       var: ""
     },
     { title: "cardLess", component: "CardLessPage", icon: "print", var: "" }

@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  PopoverController
+} from "ionic-angular";
 import {
   BarcodeScannerOptions,
   BarcodeScanner
@@ -25,12 +30,6 @@ export class GmppMenuPage {
       component: "MobileCreditPage",
       icon: "phone-landscape",
       var: "mobileBillPayment"
-    },
-    {
-      title: "GmppWalletDetailPage",
-      component: "GmppWalletDetailPage",
-      icon: "",
-      var: ""
     }
   ];
 
@@ -44,38 +43,7 @@ export class GmppMenuPage {
     }
   ];
 
-  transferPages: any[] = [
-    {
-      title: "gmppTranToWallet",
-      component: "GmppTranToWalletPage",
-      icon: "person",
-      var: ""
-    },
-    {
-      title: "gmppTranToCard",
-      component: "GmppTranToCardPage",
-      icon: "person",
-      var: ""
-    },
-    {
-      title: "gmppTranFromCardPage",
-      component: "GmppTranFromCardPage",
-      icon: "person",
-      var: ""
-    },
-    {
-      title: "gmppPurchasePage",
-      component: "GmppPurchasePage",
-      icon: "person",
-      var: ""
-    },
-    { title: "cashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
-    {
-      title: "changePin",
-      component: "GmppChangePinPage",
-      icon: "construct",
-      var: ""
-    },
+  walletManagementPages: any[] = [
     {
       title: "linkAccount",
       component: "GmppLinkAccountPage",
@@ -95,33 +63,43 @@ export class GmppMenuPage {
       var: ""
     },
     {
-      title: "gmppLastTransactionsPage",
-      component: "GmppLastTransactionsPage",
-      icon: "clock",
-      var: ""
-    },
-    {
-      title: "gmppBalancePage",
-      component: "GmppBalancePage",
-      icon: "clock",
-      var: ""
-    },
-    {
       title: "gmppResendTanPage",
       component: "GmppResendTanPage",
-      icon: "clock",
+      icon: "refresh",
       var: ""
     },
     {
       title: "gmppRetireAccountPage",
       component: "GmppRetireAccountPage",
-      icon: "clock",
+      icon: "trash",
+      var: ""
+    }
+  ];
+
+  transferPages: any[] = [
+    {
+      title: "gmppPurchasePage",
+      component: "GmppPurchasePage",
+      icon: "pricetag",
+      var: ""
+    },
+    { title: "cashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
+    {
+      title: "gmppTranToWallet",
+      component: "GmppTranToWalletPage",
+      icon: "swap",
       var: ""
     },
     {
-      title: "gmppSignupModalPage",
-      component: "GmppSignupModalPage",
-      icon: "clock",
+      title: "gmppTranToCard",
+      component: "GmppTranToCardPage",
+      icon: "swap",
+      var: ""
+    },
+    {
+      title: "gmppTranFromCardPage",
+      component: "GmppTranFromCardPage",
+      icon: "swap",
       var: ""
     }
   ];
@@ -135,6 +113,7 @@ export class GmppMenuPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public popoverCtrl: PopoverController,
     public storage: Storage,
     private barcodeScanner: BarcodeScanner,
     public translateService: TranslateService
@@ -163,6 +142,17 @@ export class GmppMenuPage {
       pages: listout,
       title: title,
       isGmpp: true
+    });
+  }
+
+  openOptionsMenu(event) {
+    let popover = this.popoverCtrl.create("LoadPagesPage", {
+      pages: this.walletManagementPages,
+      title: "walletManagement",
+      isGmpp: true
+    });
+    popover.present({
+      ev: event
     });
   }
 

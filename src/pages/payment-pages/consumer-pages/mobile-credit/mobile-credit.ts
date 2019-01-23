@@ -10,11 +10,11 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
+import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -24,9 +24,9 @@ import { Card } from "../../../../models/cards";
 export class MobileCreditPage {
   profile: any;
 
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
+  public wallets: Wallet[] = [];
   public title: any;
   showWallet: boolean = false;
   validCard: boolean = false;
@@ -46,36 +46,31 @@ export class MobileCreditPage {
   ];
   submitAttempt: boolean = false;
   isGmpp: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
     public alertCtrl: AlertController,
     public user: UserProvider,
+    public navCtrl: NavController,
+    public storageProvider: StorageProvider,
     public storage: Storage,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.storage.get("cards").then(val => {
-      this.cards = val;
-      // if (this.cards) {
-      //   if (this.cards.length <= 0) {
-      //     this.showWallet = true;
-      //     this.todo.controls["mobilewallet"].setValue(true);
-      //   }
-      // } else {
-      //   this.showWallet = true;
-      //   this.todo.controls["mobilewallet"].setValue(true);
-      // }
-      this.isGmpp = this.navParams.get("isGmpp");
-      if (this.isGmpp) {
-        this.showWallet = true;
-        this.todo.controls["mobilewallet"].setValue(true);
-      } else {
-        this.showWallet = false;
-        this.todo.controls["mobilewallet"].setValue(false);
-      }
-    });
+    // this.storage.get("cards").then(val => {
+    //   this.cards = val;
+    // if (this.cards) {
+    //   if (this.cards.length <= 0) {
+    //     this.showWallet = true;
+    //     this.todo.controls["mobilewallet"].setValue(true);
+    //   }
+    // } else {
+    //   this.showWallet = true;
+    //   this.todo.controls["mobilewallet"].setValue(true);
+    // }
+    // });
 
     this.title = this.navParams.get("name");
     if (this.title === "mobileBillPayment") {
@@ -99,7 +94,7 @@ export class MobileCreditPage {
     this.todo = this.formBuilder.group({
       pan: [""],
       mobilewallet: [""],
-      Card: [""],
+      Card: ["", Validators.required],
       entityId: [
         "",
         Validators.compose([
@@ -134,6 +129,55 @@ export class MobileCreditPage {
     // this.todo.controls["entityId"].setValue(
     //   "249" + localStorage.getItem("username")
     // );
+  }
+
+  ionViewDidLoad() {
+    this.checkIsGmpp();
+  }
+
+  checkIsGmpp() {
+    this.isGmpp = this.navParams.get("isGmpp");
+    if (this.isGmpp) {
+      this.storageProvider.getItems().then(wallets => {
+        this.wallets = wallets;
+        this.showWallet = true;
+        this.todo.controls["mobilewallet"].setValue(true);
+        this.todo.controls["Card"].disable();
+        this.isCardWalletAvailable("wallet");
+      });
+    } else {
+      this.storage.get("cards").then(cards => {
+        this.cards = cards;
+        this.showWallet = false;
+        this.todo.controls["mobilewallet"].setValue(false);
+        this.todo.controls["entityId"].disable();
+        this.isCardWalletAvailable("card");
+      });
+    }
+  }
+
+  isCardWalletAvailable(choice: string) {
+    if (choice === "card") {
+      if (!this.cards || this.cards.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "AddCardModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    } else {
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "WalkthroughModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    }
   }
 
   clearInput() {
@@ -254,7 +298,6 @@ export class MobileCreditPage {
 
       //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();

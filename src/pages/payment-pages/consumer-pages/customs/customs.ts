@@ -11,7 +11,6 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
@@ -26,7 +25,6 @@ export class CustomsPage {
   showWallet: boolean = false;
   profile: any;
   public title: any;
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   public payee: any[] = [];
@@ -41,6 +39,7 @@ export class CustomsPage {
     public user: UserProvider,
     public storage: Storage,
     public modalCtrl: ModalController,
+    public navCtrl: NavController,
     public navParams: NavParams
   ) {
     this.storage.get("cards").then(val => {
@@ -49,10 +48,12 @@ export class CustomsPage {
         if (this.cards.length <= 0) {
           this.showWallet = true;
           this.todo.controls["mobilewallet"].setValue(true);
+          this.noCardAvailable();
         }
       } else {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
+        this.noCardAvailable();
       }
     });
 
@@ -62,12 +63,12 @@ export class CustomsPage {
 
     this.todo = this.formBuilder.group({
       pan: [""],
-      Card: [""],
+      Card: ["", Validators.required],
       Payee: [""],
       entityId: [
         "",
         Validators.compose([
-          Validators.required,
+          // Validators.required,
           Validators.minLength(12),
           Validators.maxLength(12),
           Validators.pattern("[249][0-9]*")
@@ -91,6 +92,16 @@ export class CustomsPage {
     // this.todo.controls["entityId"].setValue(
     //   "249" + localStorage.getItem("username")
     // );
+  }
+
+  noCardAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "AddCardModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   clearInput() {
@@ -216,7 +227,6 @@ export class CustomsPage {
 
       //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
@@ -228,7 +238,6 @@ export class CustomsPage {
           var datas;
 
           datas = {
-            UUID: data.UUID,
             acqTranFee: data.acqTranFee,
             issuerTranFee: data.issuerTranFee,
             tranAmount: data.tranAmount,
@@ -238,7 +247,7 @@ export class CustomsPage {
 
           var main = [];
           var mainData = {
-            Customs: data.tranAmount
+            customsServices: data.tranAmount
           };
           main.push(mainData);
           var dat = [];

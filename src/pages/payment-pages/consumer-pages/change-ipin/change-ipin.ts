@@ -1,37 +1,26 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ModalController
-} from "ionic-angular";
+import { IonicPage, NavController, ModalController } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
-/**
- * Generated class for the CardLessPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
 @IonicPage()
 @Component({
   selector: "page-change-ipin",
   templateUrl: "change-ipin.html"
 })
 export class ChangeIpinPage {
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
@@ -44,6 +33,9 @@ export class ChangeIpinPage {
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
+      if (!this.cards || this.cards.length <= 0) {
+        this.noCardAvailable();
+      }
     });
 
     //user.printuser();
@@ -78,6 +70,16 @@ export class ChangeIpinPage {
         ])
       ]
     });
+  }
+
+  noCardAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "AddCardModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   showAlert(data: any) {
@@ -123,7 +125,6 @@ export class ChangeIpinPage {
           this.todo.value,
           "consumer/ChangeIPIN"
         ).then(data => {
-          this.bal = data;
           //console.log(data)
           if (data != null && data.responseCode == 0) {
             loader.dismiss();

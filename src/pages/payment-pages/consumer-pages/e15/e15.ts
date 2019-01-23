@@ -11,17 +11,12 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
-/**
- * Generated class for the E15Page page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+
 @IonicPage()
 @Component({
   selector: "page-e15",
@@ -31,9 +26,9 @@ export class E15Page {
   showWallet: boolean = false;
   profile: any;
   submitAttempt: boolean = false;
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
+  public wallets: Wallet[];
   public payee: any[] = [];
   validCard: boolean = false;
   isGmpp: boolean;
@@ -44,36 +39,30 @@ export class E15Page {
     public GetServicesProvider: GetServicesProvider,
     public alertCtrl: AlertController,
     public user: UserProvider,
+    public navCtrl: NavController,
     public storage: Storage,
     public modalCtrl: ModalController,
+    public storageProvider: StorageProvider,
     public navParams: NavParams
   ) {
-    this.storage.get("cards").then(val => {
-      this.cards = val;
-      // if (this.cards) {
-      //   if (this.cards.length <= 0) {
-      //     this.showWallet = true;
-      //     this.todo.controls["mobilewallet"].setValue(true);
-      //   }
-      // } else {
-      //   this.showWallet = true;
-      //   this.todo.controls["mobilewallet"].setValue(true);
-      // }
-      this.isGmpp = this.navParams.get("isGmpp");
-      if (this.isGmpp) {
-        this.showWallet = true;
-        this.todo.controls["mobilewallet"].setValue(true);
-      } else {
-        this.showWallet = false;
-        this.todo.controls["mobilewallet"].setValue(false);
-      }
-    });
+    // this.storage.get("cards").then(val => {
+    //   this.cards = val;
+    // if (this.cards) {
+    //   if (this.cards.length <= 0) {
+    //     this.showWallet = true;
+    //     this.todo.controls["mobilewallet"].setValue(true);
+    //   }
+    // } else {
+    //   this.showWallet = true;
+    //   this.todo.controls["mobilewallet"].setValue(true);
+    // }
+    // });
 
     //user.printuser();
 
     this.todo = this.formBuilder.group({
       pan: [""],
-      Card: [""],
+      Card: ["", Validators.required],
       Payee: [""],
       entityId: [
         "",
@@ -110,6 +99,55 @@ export class E15Page {
     // this.todo.controls["entityId"].setValue(
     //   "249" + localStorage.getItem("username")
     // );
+  }
+
+  ionViewDidLoad() {
+    this.checkIsGmpp();
+  }
+
+  checkIsGmpp() {
+    this.isGmpp = this.navParams.get("isGmpp");
+    if (this.isGmpp) {
+      this.storageProvider.getItems().then(wallets => {
+        this.wallets = wallets;
+        this.showWallet = true;
+        this.todo.controls["mobilewallet"].setValue(true);
+        this.todo.controls["Card"].disable();
+        this.isCardWalletAvailable("wallet");
+      });
+    } else {
+      this.storage.get("cards").then(cards => {
+        this.cards = cards;
+        this.showWallet = false;
+        this.todo.controls["mobilewallet"].setValue(false);
+        this.todo.controls["entityId"].disable();
+        this.isCardWalletAvailable("card");
+      });
+    }
+  }
+
+  isCardWalletAvailable(choice: string) {
+    if (choice === "card") {
+      if (!this.cards || this.cards.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "AddCardModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    } else {
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "WalkthroughModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    }
   }
 
   clearInput() {
@@ -237,7 +275,6 @@ export class E15Page {
 
       //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
@@ -259,7 +296,7 @@ export class E15Page {
 
           var main = [];
           var mainData = {
-            E15: data.tranAmount
+            e15Services: data.tranAmount
           };
           main.push(mainData);
           var dat = [];

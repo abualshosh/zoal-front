@@ -4,7 +4,12 @@
 
     <ion-title>{{ "HighEdu" | translate }}</ion-title>
   </ion-navbar>
-  <ion-segment color="dark" [(ngModel)]="type" class="">
+  <ion-segment
+    color="dark"
+    (ionChange)="checkType($event)"
+    [(ngModel)]="type"
+    class=""
+  >
     <ion-segment-button value="mohe" class="">
       {{ "Sudanes" | translate }}
     </ion-segment-button>
@@ -40,11 +45,19 @@
         </div>
         <ion-item *ngIf="todo.controls.mobilewallet.value">
           <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
-          <ion-input
-            type="number"
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
             formControlName="entityId"
-            required
-          ></ion-input>
+            interface="popover"
+          >
+            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
+              {{ wallet.number }}
+            </ion-option>
+          </ion-select>
         </ion-item>
         <div
           *ngIf="

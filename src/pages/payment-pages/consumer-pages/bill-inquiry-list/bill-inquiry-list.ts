@@ -31,10 +31,7 @@ export class BillInquiryListPage {
     });
     loader.present();
 
-    this.GetServicesProvider.loadList(
-      { data: "getPayeesList" },
-      "getPayee"
-    ).then(
+    this.GetServicesProvider.load({ data: "getPayeesList" }, "getPayee").then(
       data => {
         if (data != null && data.length > 0) {
           var i: any;
@@ -52,13 +49,13 @@ export class BillInquiryListPage {
         } else {
           loader.dismiss();
           this.showAlert("Connection Error!");
-          this.navCtrl.setRoot("MainPage");
+          this.navCtrl.pop();
         }
       },
       error => {
         loader.dismiss();
         this.showAlert("Connection Error!");
-        this.navCtrl.setRoot("MainPage");
+        this.navCtrl.pop();
       }
     );
 

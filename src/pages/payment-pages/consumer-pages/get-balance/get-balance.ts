@@ -1,9 +1,13 @@
 import { Component } from "@angular/core";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController, ModalController, IonicPage } from "ionic-angular";
+import {
+  LoadingController,
+  ModalController,
+  IonicPage,
+  NavController
+} from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
@@ -16,22 +20,26 @@ import * as moment from "moment";
   templateUrl: "get-balance.html"
 })
 export class GetBalancePage {
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public alertCtrl: AlertController,
+    public navCtrl: NavController,
     public user: UserProvider,
     public storage: Storage,
     public modalCtrl: ModalController
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
+      if (!this.cards || this.cards.length <= 0) {
+        this.noCardAvailable();
+      }
     });
 
     //  user.printuser();
@@ -50,6 +58,16 @@ export class GetBalancePage {
     });
   }
 
+  noCardAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "AddCardModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
+  }
+
   showAlert(balance: any) {
     let alert = this.alertCtrl.create({
       title: "Error!",
@@ -59,29 +77,6 @@ export class GetBalancePage {
       cssClass: "alertCustomCss"
     });
     alert.present();
-  }
-
-  encrypt(msg: any) {
-    // //var ursa: any;
-    // //var key=ursa.createPublicKeyFromComponents('9E07C2D85FA9788AD3D0204A19E72EA02A3324F955457486F49D1BEC92331F9AE78522E444AD9263BC88E7551BD0E55AFE7978B068A1D8D27DDD1747137B6A7D','010001');
-    // //return  key.encrypt(msg, 'utf8', 'base64');
-    // //var uuidV4=new uuidV4();
-    //
-    // var key = new NodeRSA();
-    //
-    // // key.importKey({
-    // //     n: new Buffer('9E07C2D85FA9788AD3D0204A19E72EA02A3324F955457486F49D1BEC92331F9AE78522E444AD9263BC88E7551BD0E55AFE7978B068A1D8D27DDD1747137B6A7D', 'hex'),
-    // //     e: 65537,
-    // //     d:null,
-    // //     p: null,
-    // //     q: null,
-    // //     dmp1: null,
-    // //     dmq1: null,
-    // //     coeff: null
-    // // }, 'components-public');
-    // //var publicComponents = key.exportKey('components-public');
-    // ////console.log(publicComponents);
-    // return key.encrypt(msg, 'base64');
   }
 
   logForm() {
@@ -104,7 +99,6 @@ export class GetBalancePage {
       dat.expDate = dat.Card.expDate;
       //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/getBalance").then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();

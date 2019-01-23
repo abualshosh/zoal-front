@@ -7,12 +7,7 @@ import {
   Content
 } from "ionic-angular";
 import { Api } from "../../../providers/providers";
-/**
- * Generated class for the HistoryPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 @IonicPage()
 @Component({
   selector: "page-transaction-history",
@@ -24,28 +19,7 @@ export class TransactionHistoryPage {
   size: any;
   page: any = 0;
   history = [];
-  checkBoxes = [
-    {
-      id: 1,
-      name: "E15",
-      value: false
-    },
-    {
-      id: 2,
-      name: "E152",
-      value: false
-    },
-    {
-      id: 2,
-      name: "E152",
-      value: false
-    },
-    {
-      id: 2,
-      name: "E152",
-      value: false
-    }
-  ];
+
   @ViewChild("content") content: Content;
   constructor(
     public navCtrl: NavController,
@@ -65,28 +39,23 @@ export class TransactionHistoryPage {
     );
   }
 
-  search() {
-    this.checkBoxes.forEach(box => {
-      //console.log(box.value)
-    });
+  doRefresh(refresher) {
+    this.api.get("historiesmobile", "?page=0&size=15", null).subscribe(
+      (res: any) => {
+        this.last = res.last;
+        //console.log(this.size)
+        this.history = res.content;
+        refresher.complete();
+      },
+      err => {
+        console.error("ERROR", err);
+        refresher.complete();
+      }
+    );
   }
 
-  toggleSearch() {
-    if (this.showSearchbar) {
-      this.showSearchbar = false;
-    } else {
-      this.showSearchbar = true;
-    }
-
-    this.content.resize();
-  }
-
-  check() {
-    this.content.resize();
-  }
-
-  itemSelected(input) {
-    var data = input.detailes;
+  itemSelected(transaction) {
+    var data = transaction.detailes;
 
     data = JSON.parse(data.substr(data.indexOf("response    ") + 12));
     var datas;
@@ -104,7 +73,7 @@ export class TransactionHistoryPage {
         tranCurrency: data.tranCurrency,
         //  ,"balance":data.balance.available
         transactionId: data.transactionId,
-        date: input.transactionDate
+        date: transaction.transactionDate
       };
     } else {
       datas = {
@@ -119,7 +88,7 @@ export class TransactionHistoryPage {
         tranAmount: data.tranAmount,
         tranCurrency: data.tranCurrency,
         transactionId: data.transactionId,
-        date: input.transactionDate
+        date: transaction.transactionDate
       };
     }
 
@@ -153,11 +122,11 @@ export class TransactionHistoryPage {
     var main = [];
     var mainData = {};
 
-    mainData[input.transactionType] = data.totalAmount
+    mainData[transaction.transactionType] = data.totalAmount
       ? data.totalAmount
       : data.tranAmount;
-    if (!mainData[input.transactionType]) {
-      mainData[input.transactionType] = data.transactionAmount;
+    if (!mainData[transaction.transactionType]) {
+      mainData[transaction.transactionType] = data.transactionAmount;
     }
     main.push(mainData);
     dat.push(voucher);

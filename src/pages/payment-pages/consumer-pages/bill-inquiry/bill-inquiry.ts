@@ -10,7 +10,6 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
@@ -23,23 +22,27 @@ import { Card } from "../../../../models/cards";
 })
 export class BillInquiryPage {
   submitAttempt: boolean = false;
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   public payee: any[] = [];
   public title: any;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
     public alertCtrl: AlertController,
     public user: UserProvider,
+    public navCtrl: NavController,
     public storage: Storage,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
+      if (!this.cards || this.cards.length <= 0) {
+        this.noCardAvailable();
+      }
     });
 
     this.title = this.navParams.get("name");
@@ -68,6 +71,16 @@ export class BillInquiryPage {
         ])
       ]
     });
+  }
+
+  noCardAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "AddCardModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   showAlert(data: any) {
@@ -112,7 +125,6 @@ export class BillInquiryPage {
       dat.expDate = dat.Card.expDate;
       //console.log(dat)
       this.GetServicesProvider.load(dat, "Billquiry").then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();

@@ -10,7 +10,6 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
@@ -22,26 +21,31 @@ import { Card } from "../../../../models/cards";
   templateUrl: "customs-inquiry.html"
 })
 export class CustomsInquiryPage {
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   public payee: any[] = [];
   public title: any;
 
   submitAttempt: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
     public alertCtrl: AlertController,
     public user: UserProvider,
+    public navCtrl: NavController,
     public storage: Storage,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
+      if (!this.cards || this.cards.length <= 0) {
+        this.noCardAvailable();
+      }
     });
+
     this.title = this.navParams.get("name");
 
     //user.printuser();
@@ -62,6 +66,16 @@ export class CustomsInquiryPage {
       BANKCODE: ["", Validators.required],
       DECLARANTCODE: ["", Validators.required]
     });
+  }
+
+  noCardAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "AddCardModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   showAlert(data: any) {
@@ -107,18 +121,24 @@ export class CustomsInquiryPage {
       dat.expDate = dat.Card.expDate;
       //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/getBill").then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           // this.showAlert(data);
 
-          var dat = [];
+          var main = [];
+          var mainData = {
+            customsInquiryPage: data.billInfo.Amount
+          };
+          main.push(mainData);
 
+          var dat = [];
+          dat.push({ Card: data.PAN });
           dat.push(data.billInfo);
+          console.log(data);
           let modal = this.modalCtrl.create(
             "TransactionDetailPage",
-            { data: dat },
+            { data: dat, main: main },
             { cssClass: "inset-modal" }
           );
           modal.present();

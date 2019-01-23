@@ -31,11 +31,19 @@
         </div>
         <ion-item *ngIf="todo.controls.mobilewallet.value">
           <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
-          <ion-input
-            type="number"
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
             formControlName="entityId"
-            required
-          ></ion-input>
+            interface="popover"
+          >
+            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
+              {{ wallet.number }}
+            </ion-option>
+          </ion-select>
         </ion-item>
         <div
           *ngIf="

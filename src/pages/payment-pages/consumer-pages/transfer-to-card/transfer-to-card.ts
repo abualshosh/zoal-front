@@ -10,20 +10,14 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import {
-  NativePageTransitions,
-  NativeTransitionOptions
-} from "@ionic-native/native-page-transitions";
-import {
   BarcodeScanner,
   BarcodeScannerOptions
 } from "@ionic-native/barcode-scanner";
-import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import * as moment from "moment";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -34,8 +28,6 @@ import { TranslateService } from "@ngx-translate/core";
 })
 export class TransferToCardPage {
   options: BarcodeScannerOptions;
-  trustedVideoUrl: any;
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   submitAttempt: boolean = false;
@@ -44,13 +36,12 @@ export class TransferToCardPage {
   public GetServicesProvider: GetServicesProvider;
   constructor(
     private barcodeScanner: BarcodeScanner,
-    private nativePageTransitions: NativePageTransitions,
-    private domSanitizer: DomSanitizer,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public alertCtrl: AlertController,
+    public navCtrl: NavController,
     public user: UserProvider,
     public translateService: TranslateService,
     public storage: Storage,
@@ -58,10 +49,11 @@ export class TransferToCardPage {
   ) {
     this.storage.get("cards").then(val => {
       this.cards = val;
+      if (!this.cards || this.cards.length <= 0) {
+        this.noCardAvailable();
+      }
     });
-    this.trustedVideoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      "https://www.youtube.com/embed/yzRW5ZPqoyo"
-    );
+
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
       Card: ["", Validators.required],
@@ -95,6 +87,16 @@ export class TransferToCardPage {
     this.translateService.get("qrCode").subscribe(value => {
       this.qrPrompt = value;
     });
+  }
+
+  noCardAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "AddCardModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   showAlert(data: any) {
@@ -156,7 +158,6 @@ export class TransferToCardPage {
         this.todo.value,
         "consumer/doCardTransfer"
       ).then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
@@ -175,7 +176,7 @@ export class TransferToCardPage {
 
           var main = [];
           var mainData = {
-            TranToCard: data.tranAmount
+            transferToCard: data.tranAmount
           };
           main.push(mainData);
 

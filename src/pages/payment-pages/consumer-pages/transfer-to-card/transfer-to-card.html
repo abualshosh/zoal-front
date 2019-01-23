@@ -37,13 +37,8 @@
             >{{ "ToCard" | translate }}
           </ion-label>
           <ion-input type="number" formControlName="ToCard"></ion-input>
-          <button
-            style="background-color: white;"
-            ion-button
-            item-end
-            (click)="scan()"
-          >
-            <ion-icon color="dark" name="barcode"></ion-icon>
+          <button ion-button item-end (click)="scan()">
+            <ion-icon name="barcode"></ion-icon>
           </button>
         </ion-item>
         <div *ngIf="!todo.controls.Amount.valid && submitAttempt">

@@ -1,19 +1,13 @@
 <ion-header>
   <ion-navbar color="secondary">
     <ion-title>{{ "transactionHistory" | translate }}</ion-title>
-
-    <!-- <ion-buttons end>
-      <button ion-button item-end (click)="toggleSearch()">
-        <ion-icon name="clock"></ion-icon>
-      </button>
-    </ion-buttons> -->
   </ion-navbar>
-  <!-- <ion-toolbar *ngIf="showSearchbar">
-    <button ion-button (click)="search()">search</button>
-  </ion-toolbar> -->
 </ion-header>
 
 <ion-content no-padding #content>
+  <ion-refresher (ionRefresh)="doRefresh($event)" color="primary">
+    <ion-refresher-content color="primary"></ion-refresher-content>
+  </ion-refresher>
   <ion-list>
     <button ion-item *ngFor="let hist of history" (click)="itemSelected(hist)">
       {{ hist.transactionType | translate }}
@@ -37,7 +31,7 @@
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="!this.last">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data..."
+      loadingText="..."
     ></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

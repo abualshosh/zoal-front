@@ -11,17 +11,12 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
-/**
- * Generated class for the MohePage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+
 @IonicPage()
 @Component({
   selector: "page-mohe",
@@ -30,9 +25,9 @@ import { Card } from "../../../../models/cards";
 export class MohePage {
   profile: any;
   showWallet: boolean = false;
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
+  public wallets: Wallet[] = [];
   public payee: any[] = [];
   public isArab = false;
   validCard: boolean = false;
@@ -67,37 +62,31 @@ export class MohePage {
     public GetServicesProvider: GetServicesProvider,
     public alertCtrl: AlertController,
     public user: UserProvider,
+    public navCtrl: NavController,
+    public storageProvider: StorageProvider,
     public storage: Storage,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.storage.get("cards").then(val => {
-      this.cards = val;
-      // if (this.cards) {
-      //   if (this.cards.length <= 0) {
-      //     this.showWallet = true;
-      //     this.todo.controls["mobilewallet"].setValue(true);
-      //   }
-      // } else {
-      //   this.showWallet = true;
-      //   this.todo.controls["mobilewallet"].setValue(true);
-      // }
-      this.isGmpp = this.navParams.get("isGmpp");
-      if (this.isGmpp) {
-        this.showWallet = true;
-        this.todo.controls["mobilewallet"].setValue(true);
-      } else {
-        this.showWallet = false;
-        this.todo.controls["mobilewallet"].setValue(false);
-      }
-    });
+    // this.storage.get("cards").then(val => {
+    //   this.cards = val;
+    // if (this.cards) {
+    //   if (this.cards.length <= 0) {
+    //     this.showWallet = true;
+    //     this.todo.controls["mobilewallet"].setValue(true);
+    //   }
+    // } else {
+    //   this.showWallet = true;
+    //   this.todo.controls["mobilewallet"].setValue(true);
+    // }
+    // });
 
     //this.title=this.navParams.get("name");
     //user.printuser();
 
     this.todo = this.formBuilder.group({
       pan: [""],
-      Card: [""],
+      Card: ["", Validators.required],
       Payee: [""],
       entityId: [
         "",
@@ -137,6 +126,57 @@ export class MohePage {
     // this.todo.controls["entityId"].setValue(
     //   "249" + localStorage.getItem("username")
     // );
+
+    this.checkType(event);
+  }
+
+  ionViewDidLoad() {
+    this.checkIsGmpp();
+  }
+
+  checkIsGmpp() {
+    this.isGmpp = this.navParams.get("isGmpp");
+    if (this.isGmpp) {
+      this.storageProvider.getItems().then(wallets => {
+        this.wallets = wallets;
+        this.showWallet = true;
+        this.todo.controls["mobilewallet"].setValue(true);
+        this.todo.controls["Card"].disable();
+        this.isCardWalletAvailable("wallet");
+      });
+    } else {
+      this.storage.get("cards").then(cards => {
+        this.cards = cards;
+        this.showWallet = false;
+        this.todo.controls["mobilewallet"].setValue(false);
+        this.todo.controls["entityId"].disable();
+        this.isCardWalletAvailable("card");
+      });
+    }
+  }
+
+  isCardWalletAvailable(choice: string) {
+    if (choice === "card") {
+      if (!this.cards || this.cards.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "AddCardModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    } else {
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "WalkthroughModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    }
   }
 
   clearInput() {
@@ -223,12 +263,25 @@ export class MohePage {
     }
   }
 
+  checkType(_event) {
+    if (this.type === "mohe") {
+      this.todo.controls["SETNUMBER"].enable();
+      this.todo.controls["STUCNAME"].disable();
+      this.todo.controls["STUCPHONE"].disable();
+    } else {
+      this.todo.controls["SETNUMBER"].disable();
+      this.todo.controls["STUCNAME"].enable();
+      this.todo.controls["STUCPHONE"].enable();
+    }
+  }
+
   logForm() {
     var dat = this.todo.value;
     if (dat.Card && !dat.mobilewallet) {
       this.validCard = true;
     }
     this.submitAttempt = true;
+
     if (this.todo.valid) {
       if (!dat.mobilewallet && !this.validCard) {
         return;
@@ -282,7 +335,6 @@ export class MohePage {
       this.title = dat.payeeId;
       //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        this.bal = data;
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
@@ -301,7 +353,7 @@ export class MohePage {
 
           var main = [];
           var mainData = {
-            [this.title]: data.tranAmount
+            HighEdu: data.tranAmount
           };
           main.push(mainData);
           var dat = [];

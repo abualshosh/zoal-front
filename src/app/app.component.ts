@@ -18,11 +18,6 @@ export class MyApp {
 
   pages: any[] = [
     {
-      title: "profileCreatePage",
-      component: "ProfileCreatePage",
-      icon: "person"
-    },
-    {
       title: "aboutUsPage",
       component: "AboutUsPage",
       icon: "information-circle"
@@ -58,32 +53,7 @@ export class MyApp {
     {
       title: "changePin",
       component: "GmppChangePinPage",
-      icon: "construct"
-    },
-    {
-      title: "linkAccount",
-      component: "GmppLinkAccountPage",
-      icon: "link"
-    },
-    {
-      title: "lockAccount",
-      component: "GmppSelfLockPage",
-      icon: "lock"
-    },
-    {
-      title: "unlockAccount",
-      component: "GmppSelfUnlockPage",
-      icon: "unlock"
-    },
-    {
-      title: "gmppRetireAccountPage",
-      component: "GmppRetireAccountPage",
-      icon: "trash"
-    },
-    {
-      title: "gmppResendTanPage",
-      component: "GmppResendTanPage",
-      icon: "refresh"
+      icon: "key"
     }
   ];
 
@@ -111,7 +81,7 @@ export class MyApp {
     {
       title: "changeIpinPage",
       component: "ChangeIpinPage",
-      icon: "construct"
+      icon: "key"
     }
   ];
 

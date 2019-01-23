@@ -6,10 +6,11 @@ import { Injectable } from "@angular/core";
  */
 @Injectable()
 export class Api {
-  // public ip = "196.223.158.38:8080";
-  // public ip = "196.168.98.137:8080";
-  // public ip = "196.168.8.100:8080";
-  public ip = "127.0.0.1:8080";
+  public ip = "196.223.158.38:1919"; // Next Dev Server
+  // public ip = "192.168.98.120:8889";
+  // public ip = "192.168.98.137:1919";
+  // public ip = "192.168.8.100:8080";
+  // public ip = "localhost:8080";
   public url: string = "http://" + this.ip + "/api";
   public wsurl: string = "http://" + this.ip + "/websocket";
 

@@ -4,16 +4,16 @@
       <ion-title> {{ "Transaction Details" | translate }} </ion-title>
       <ion-buttons start>
         <button ion-button (click)="dismiss()">
-          <span ion-text color="dark" showWhen="ios">Cancel</span>
-          <ion-icon color="dark" name="md-close"></ion-icon>
+          <span ion-text showWhen="ios">Cancel</span>
+          <ion-icon name="md-close"></ion-icon>
         </button>
       </ion-buttons>
     </ion-toolbar>
     <!-- <ion-item    no-lines style="text-align: center;" >
       -->
     <div *ngFor="let item of (main | keys)">
-      <div style="text-align: center;" *ngFor="let itm of (item.value | keys)">
-        <ion-item no-lines style="text-align: center;">
+      <div text-center *ngFor="let itm of (item.value | keys)">
+        <ion-item no-lines text-center>
           {{ itm.key | translate }} <br />
           {{ itm.value }} {{ "SDG" | translate }} <br />
 
@@ -32,11 +32,8 @@
   <ion-grid *ngFor="let item of (items | keys)">
     <ion-row *ngFor="let itm of (item.value | keys)">
       <ion-item class="no-padding">
-        <ion-col text-wrap> {{ itm.key | translate }}: </ion-col>
-
-        <ion-col item-end>
-          <ion-note item-end> {{ itm.value }} </ion-note>
-        </ion-col>
+        <ion-col text-wrap> {{ itm.key | translate }} : </ion-col>
+        <ion-col item-end> {{ itm.value }} </ion-col>
       </ion-item>
     </ion-row>
   </ion-grid>

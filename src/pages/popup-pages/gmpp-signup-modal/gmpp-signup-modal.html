@@ -10,23 +10,33 @@
   <ion-row class="align-center" style="margin-left:10px">
     <p>{{ "registerMobile" | translate }} <br /></p>
   </ion-row>
-  <form [formGroup]="todo" (ngSubmit)="signup()">
-    <ion-list>
-      <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
-        <p>{{ "validwalletError" | translate }}</p>
-      </div>
-      <ion-item>
-        <ion-label stacked> {{ "walletNumber" | translate }}</ion-label>
-        <ion-input
-          type="number"
-          formControlName="walletNumber"
-          required
-        ></ion-input>
-      </ion-item>
-    </ion-list>
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="signup()">
+      <ion-list>
+        <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
+          <p>{{ "validWalletError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
+            formControlName="walletNumber"
+            interface="popover"
+          >
+            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
+              {{ wallet.number }}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
 
-    <button class="subbutn" ion-button type="submit" color="secondary">
-      {{ "Submit" | translate }}
-    </button>
-  </form>
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
 </ion-content>

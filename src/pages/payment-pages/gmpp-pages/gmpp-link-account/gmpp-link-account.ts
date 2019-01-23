@@ -1,26 +1,15 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ModalController
-} from "ionic-angular";
+import { IonicPage, NavController, ModalController } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
-/**
- * Generated class for the GmppBalancePage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+
 @IonicPage()
 @Component({
   selector: "page-gmpp-link-account",
@@ -31,11 +20,12 @@ export class GmppLinkAccountPage {
   private bal: any;
   private todo: FormGroup;
   private complate: FormGroup;
-  public cards: Card[] = [];
+  public wallets: Wallet[];
   public compleate: any = "FALSE";
   public submitAttempt: boolean = false;
 
   public GetServicesProvider: GetServicesProvider;
+
   constructor(
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
@@ -44,12 +34,21 @@ export class GmppLinkAccountPage {
     public alertCtrl: AlertController,
     public user: UserProvider,
     public storage: Storage,
+    public storageProvider: StorageProvider,
     public modalCtrl: ModalController
   ) {
     //user.printuser();
     //  this.compleate='TRUE';
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
+
+    this.storageProvider.getItems().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+
     this.todo = this.formBuilder.group({
       walletNumber: [
         "",
@@ -95,6 +94,16 @@ export class GmppLinkAccountPage {
         this.compleate = val;
       }
     });
+  }
+
+  noWalletAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "WalkthroughModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   showAlert(data: any) {
@@ -173,6 +182,7 @@ export class GmppLinkAccountPage {
   }
 
   ComplateForm() {
+    this.submitAttempt = true;
     if (this.complate.valid) {
       let loader = this.loadingCtrl.create({
         content: "Please wait..."
@@ -213,10 +223,11 @@ export class GmppLinkAccountPage {
                     { cssClass: "inset-modals" }
                   );
                   modal.present();
-
+                  this.submitAttempt = false;
                   this.Cancle();
                   this.navCtrl.pop();
                 } else {
+                  this.submitAttempt = false;
                   loader.dismiss();
                   this.showAlert(data);
                 }

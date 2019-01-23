@@ -1,20 +1,14 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ModalController
-} from "ionic-angular";
+import { IonicPage, NavController, ModalController } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
+import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -23,11 +17,12 @@ import { Card } from "../../../../models/cards";
 })
 export class GmppChangePinPage {
   // consumerIdentifier: any;
-  private bal: any;
   private todo: FormGroup;
-  public cards: Card[] = [];
+  public wallets: Wallet[];
+  submitAttempt: boolean = false;
 
   public GetServicesProvider: GetServicesProvider;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
@@ -36,12 +31,21 @@ export class GmppChangePinPage {
     public user: UserProvider,
     public storage: Storage,
     public modalCtrl: ModalController,
+    public storageProvider: StorageProvider,
     public navCtrl: NavController
   ) {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
+
+    this.storageProvider.getItems().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+
     this.todo = this.formBuilder.group({
       walletNumber: [
         "",
@@ -56,6 +60,16 @@ export class GmppChangePinPage {
       newPIN: ["", Validators.required],
       connewPIN: ["", Validators.required]
     });
+  }
+
+  noWalletAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "WalkthroughModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   showAlert(data: any) {
@@ -76,6 +90,7 @@ export class GmppChangePinPage {
   }
 
   logForm() {
+    this.submitAttempt = true;
     if (this.todo.valid) {
       let loader = this.loadingCtrl.create({
         content: "Please wait..."
@@ -96,7 +111,6 @@ export class GmppChangePinPage {
         dat.connewPIN = "";
         this.GetServicesProvider.load(this.todo.value, "gmpp/changePIN").then(
           data => {
-            this.bal = data;
             //console.log(data)
             if (data != null && data.responseCode == 1) {
               loader.dismiss();
@@ -107,7 +121,9 @@ export class GmppChangePinPage {
                 { cssClass: "inset-modals" }
               );
               modal.present();
+              this.submitAttempt = false;
             } else {
+              this.submitAttempt = false;
               loader.dismiss();
               this.showAlert(data);
               this.todo.reset();
@@ -115,6 +131,7 @@ export class GmppChangePinPage {
           }
         );
       } else {
+        this.submitAttempt = false;
         loader.dismiss();
         var data = { responseMessage: "" };
         data.responseMessage = "PIN Miss Match";

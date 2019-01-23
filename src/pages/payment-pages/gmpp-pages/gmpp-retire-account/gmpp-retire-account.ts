@@ -1,26 +1,15 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ModalController
-} from "ionic-angular";
+import { IonicPage, NavController, ModalController } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
-/**
- * Generated class for the GmppBalancePage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+
 @IonicPage()
 @Component({
   selector: "page-gmpp-retire-account",
@@ -28,12 +17,13 @@ import { Card } from "../../../../models/cards";
 })
 export class GmppRetireAccountPage {
   // consumerIdentifier: any;
-  private bal: any;
   private todo: FormGroup;
   private complate: FormGroup;
-  public cards: Card[] = [];
+  public wallets: Wallet[];
+  submitAttempt: boolean = false;
   public compleate: any = "FALSE";
   public GetServicesProvider: GetServicesProvider;
+
   constructor(
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
@@ -42,6 +32,7 @@ export class GmppRetireAccountPage {
     public alertCtrl: AlertController,
     public user: UserProvider,
     public storage: Storage,
+    public storageProvider: StorageProvider,
     public modalCtrl: ModalController
   ) {
     // this.storage.get("username").then(val => {
@@ -52,6 +43,14 @@ export class GmppRetireAccountPage {
     //  this.compleate='TRUE';
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
+
+    this.storageProvider.getItems().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+
     this.todo = this.formBuilder.group({
       walletNumber: [
         "",
@@ -100,6 +99,16 @@ export class GmppRetireAccountPage {
     });
   }
 
+  noWalletAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "WalkthroughModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
+  }
+
   showAlert(data: any) {
     let message: any;
     if (data.responseCode != null) {
@@ -124,6 +133,7 @@ export class GmppRetireAccountPage {
   }
 
   logForm() {
+    this.submitAttempt = true;
     if (this.todo.valid) {
       let loader = this.loadingCtrl.create({
         content: "Please wait..."
@@ -140,9 +150,8 @@ export class GmppRetireAccountPage {
       //console.log(dat.IPIN)
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.loadGmpp(this.todo.value, "Retirewallet").then(
+      this.GetServicesProvider.load(this.todo.value, "Retirewallet").then(
         data => {
-          this.bal = data;
           //console.log(data)
           if (data != null && data.responseCode == 1) {
             this.storage.set("RetireACCOUNT", "TRUE");
@@ -162,7 +171,9 @@ export class GmppRetireAccountPage {
               { cssClass: "inset-modal" }
             );
             modal.present();
+            this.submitAttempt = false;
           } else {
+            this.submitAttempt = false;
             loader.dismiss();
             this.showAlert(data);
           }
@@ -172,6 +183,7 @@ export class GmppRetireAccountPage {
   }
 
   ComplateForm() {
+    this.submitAttempt = true;
     if (this.complate.valid) {
       let loader = this.loadingCtrl.create({
         content: "Please wait..."
@@ -194,11 +206,10 @@ export class GmppRetireAccountPage {
           //console.log(dat.originalTranUUID)
           //console.log(dat.IPIN)
 
-          this.GetServicesProvider.loadGmpp(
+          this.GetServicesProvider.load(
             this.complate.value,
             "ComplateRetirewallet"
           ).then(data => {
-            this.bal = data;
             //console.log(data)
             if (data != null && data.responseCode == 1) {
               loader.dismiss();
@@ -211,8 +222,10 @@ export class GmppRetireAccountPage {
                 { cssClass: "inset-modal" }
               );
               modal.present();
+              this.submitAttempt = false;
               this.Cancle();
             } else {
+              this.submitAttempt = false;
               loader.dismiss();
               this.showAlert(data);
             }

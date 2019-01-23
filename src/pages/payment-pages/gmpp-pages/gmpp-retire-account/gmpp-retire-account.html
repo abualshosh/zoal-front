@@ -10,22 +10,37 @@
     <form [formGroup]="todo" (ngSubmit)="logForm()" *ngSwitchCase="'FALSE'">
       <ion-list>
         <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
-          <p>{{ "validwalletError" | translate }}</p>
+          <p>{{ "validWalletError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label stacked> {{ "walletNumber" | translate }}</ion-label>
-          <ion-input
-            type="number"
+          <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            style="padding-left:5%;"
+            no-padding
+            interface="action-sheet"
             formControlName="walletNumber"
-            required
-          ></ion-input>
+            interface="popover"
+          >
+            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
+              {{ wallet.number }}
+            </ion-option>
+          </ion-select>
         </ion-item>
+
+        <div *ngIf="!todo.controls.retireReason.valid && submitAttempt">
+          <p>{{ "validRetireReasonError" | translate }}</p>
+        </div>
         <ion-item>
           <ion-label stacked>retire Reason</ion-label>
           <ion-input type="text" formControlName="retireReason" required>
           </ion-input>
         </ion-item>
 
+        <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
+          <p>{{ "validpinError" | translate }}</p>
+        </div>
         <ion-item>
           <ion-label stacked>PIN</ion-label>
           <ion-input
@@ -48,12 +63,18 @@
       *ngSwitchCase="'TRUE'"
     >
       <ion-list>
+        <div *ngIf="!todo.controls.consumerOTP.valid && submitAttempt">
+          <p>{{ "validConsumerOtpError" | translate }}</p>
+        </div>
         <ion-item>
           <ion-label stacked>OTP (SENT IN SMS)</ion-label>
           <ion-input type="text" formControlName="consumerOTP" required>
           </ion-input>
         </ion-item>
 
+        <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">
+          <p>{{ "validpinError" | translate }}</p>
+        </div>
         <ion-item>
           <ion-label stacked>PIN</ion-label>
           <ion-input

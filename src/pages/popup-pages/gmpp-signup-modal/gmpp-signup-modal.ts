@@ -11,6 +11,7 @@ import { GetServicesProvider } from "../../../providers/get-services/get-service
 import * as uuid from "uuid";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Api } from "../../../providers/providers";
+import { Wallet, StorageProvider } from "../../../providers/storage/storage";
 @IonicPage()
 @Component({
   selector: "page-gmpp-signup-modal",
@@ -19,6 +20,8 @@ import { Api } from "../../../providers/providers";
 export class GmppSignupModalPage {
   profile: any;
   private todo: FormGroup;
+  public wallets: Wallet[];
+  submitAttempt: boolean = false;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -28,8 +31,16 @@ export class GmppSignupModalPage {
     public alertCtrl: AlertController,
     public viewCtrl: ViewController,
     public GetServicesProvider: GetServicesProvider,
+    public storageProvider: StorageProvider,
     public modalCtrl: ModalController
   ) {
+    this.storageProvider.getItems().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+
     this.todo = this.formBuilder.group({
       walletNumber: [
         "",
@@ -41,6 +52,16 @@ export class GmppSignupModalPage {
         ])
       ]
     });
+  }
+
+  noWalletAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "WalkthroughModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
   }
 
   showAlert(data: any) {
@@ -61,49 +82,50 @@ export class GmppSignupModalPage {
   }
 
   signup() {
+    this.submitAttempt = true;
     let dat = this.todo.value;
     // var dat = {
     //   UUID: uuid.v4(),
     //   consumerIdentifier: "249" + localStorage.getItem("username")
     // };
-    dat.UUID = uuid.v4();
-    dat.consumerIdentifier = dat.walletNumber;
-    let loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    loader.present();
+    if (this.todo.valid) {
+      dat.UUID = uuid.v4();
+      dat.consumerIdentifier = dat.walletNumber;
+      let loader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+      loader.present();
 
-    this.GetServicesProvider.load(dat, "gmpp/registerConsumer").then(data => {
-      loader.dismiss();
+      this.GetServicesProvider.load(dat, "gmpp/registerConsumer").then(data => {
+        loader.dismiss();
 
-      if (data.responseCode == 1) {
-        this.profile = JSON.parse(localStorage.getItem("profile"));
-        this.profile.phoneNumber = "249" + localStorage.getItem("username");
-        this.api.put("/profiles", this.profile).subscribe(
-          (res: any) => {
-            localStorage.setItem("profile", JSON.stringify(this.profile));
-            var datas = [{ tital: "Status", desc: data.responseMessage }];
-            let modal = this.modalCtrl.create(
-              "GmppReceiptPage",
-              { data: datas },
-              { cssClass: "inset-modals" }
-            );
-            modal.present();
-            this.viewCtrl.dismiss();
-          },
-          err => {
-            //console.log(err);
-          }
-        );
-      } else {
-        this.showAlert(data);
-      }
-    });
-  }
-
-  login() {
-    this.navCtrl.push("GmppSwitchAccountPage");
-    this.viewCtrl.dismiss();
+        if (data.responseCode == 1) {
+          this.profile = JSON.parse(localStorage.getItem("profile"));
+          this.profile.phoneNumber = "249" + localStorage.getItem("username");
+          this.api.put("/profiles", this.profile).subscribe(
+            (res: any) => {
+              this.submitAttempt = false;
+              localStorage.setItem("profile", JSON.stringify(this.profile));
+              var datas = [{ tital: "Status", desc: data.responseMessage }];
+              let modal = this.modalCtrl.create(
+                "GmppReceiptPage",
+                { data: datas },
+                { cssClass: "inset-modals" }
+              );
+              modal.present();
+              this.viewCtrl.dismiss();
+            },
+            err => {
+              this.submitAttempt = false;
+              //console.log(err);
+            }
+          );
+        } else {
+          this.submitAttempt = false;
+          this.showAlert(data);
+        }
+      });
+    }
   }
 
   dismiss() {

@@ -1,26 +1,15 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ModalController
-} from "ionic-angular";
+import { IonicPage, NavController, ModalController } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
-/**
- * Generated class for the GmppBalancePage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+
 @IonicPage()
 @Component({
   selector: "page-gmpp-last-transactions",
@@ -28,9 +17,9 @@ import { Card } from "../../../../models/cards";
 })
 export class GmppLastTransactionsPage {
   // consumerIdentifier: any;
-  private bal: any;
   private todo: FormGroup;
-  public cards: Card[] = [];
+  public submitAttempt = false;
+  public wallets: Wallet[];
 
   public GetServicesProvider: GetServicesProvider;
   constructor(
@@ -40,12 +29,22 @@ export class GmppLastTransactionsPage {
     public alertCtrl: AlertController,
     public user: UserProvider,
     public storage: Storage,
+    public storageProvider: StorageProvider,
+    public navCtrl: NavController,
     public modalCtrl: ModalController
   ) {
     // this.consumerIdentifier = localStorage.getItem("username");
 
     //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
+
+    this.storageProvider.getItems().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+
     this.todo = this.formBuilder.group({
       walletNumber: [
         "",
@@ -68,6 +67,16 @@ export class GmppLastTransactionsPage {
     });
   }
 
+  noWalletAvailable() {
+    this.navCtrl.pop();
+    let modal = this.modalCtrl.create(
+      "WalkthroughModalPage",
+      {},
+      { cssClass: "inset-modals" }
+    );
+    modal.present();
+  }
+
   showAlert(data: any) {
     let message: any;
     if (data.responseCode != null) {
@@ -86,6 +95,7 @@ export class GmppLastTransactionsPage {
   }
 
   logForm() {
+    this.submitAttempt = true;
     if (this.todo.valid) {
       let loader = this.loadingCtrl.create({
         content: "Please wait..."
@@ -105,7 +115,7 @@ export class GmppLastTransactionsPage {
         this.todo.value,
         "gmpp/getLastTransactions"
       ).then(data => {
-        this.bal = data;
+        this.submitAttempt = false;
         //console.log(data)
         if (data != null && data.responseCode == 1) {
           loader.dismiss();
@@ -125,6 +135,7 @@ export class GmppLastTransactionsPage {
           this.todo.reset();
           // this.submitAttempt=false;
         } else {
+          this.submitAttempt = false;
           loader.dismiss();
           this.showAlert(data);
           this.todo.reset();

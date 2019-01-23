@@ -36,19 +36,18 @@ export class WelcomePage {
   ) {
     this.checkDirection();
     this.language = this.translate.getDefaultLang();
-    if (!this.language) {
-      this.storage.set("lang", "ar").then(lang => {
-        this.language = lang;
-        this.translate.setDefaultLang(this.language);
-      });
-    }
+    // if (!this.language) {
+    //   this.storage.set("lang", "ar").then(lang => {
+    //     this.language = lang;
+    //     this.translate.setDefaultLang(this.language);
+    //   });
+    // }
 
     this.menuCtrl.enable(false, "sideMenu");
   }
 
   ChangeLang() {
     this.storage.set("lang", this.language).then(lang => {
-      this.language = lang;
       this.translate.setDefaultLang(this.language);
       this.translate.use(this.language);
       this.checkDirection();
@@ -57,9 +56,9 @@ export class WelcomePage {
 
   checkDirection() {
     this.storage.get("lang").then(lang => {
-      if (lang === "ar") {
+      if (lang === "ar" && this.platform.dir() === "ltr") {
         this.platform.setDir("rtl", true);
-      } else {
+      } else if (lang === "en" && this.platform.dir() === "rtl") {
         this.platform.setDir("ltr", true);
       }
     });

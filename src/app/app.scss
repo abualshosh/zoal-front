@@ -21,6 +21,72 @@
   // ion-label , ion-input ,ion-select,ion-option{
   //   padding-left: 5%;;
   // }
+
+  ion-icon {
+    &[class*="custom-"] {
+      mask-size: contain;
+      mask-position: 50% 50%;
+      mask-repeat: no-repeat;
+      background: currentColor;
+      width: 1em;
+      height: 1em;
+    }
+
+    &[class*="custom-barcode"] {
+      mask-image: url(../assets/icon/myqr.svg);
+    }
+    &[class*="custom-qr-scanner"] {
+      mask-image: url(../assets/icon/scan_pay.svg);
+    }
+    &[class*="custom-telecom"] {
+      mask-image: url(../assets/icon/telecom.svg);
+    }
+    &[class*="custom-flash"] {
+      mask-image: url(../assets/icon/electricity.svg);
+    }
+    &[class*="custom-briefcase"] {
+      mask-image: url(../assets/icon/government_sevices.svg);
+    }
+    &[class*="custom-cash"] {
+      mask-image: url(../assets/icon/transfer_services.svg);
+    }
+    &[class*="custom-heart"] {
+      mask-image: url(../assets/icon/charity.svg);
+    }
+    &[class*="custom-basket"] {
+      mask-image: url(../assets/icon/gift.svg);
+    }
+    &[class*="custom-home"] {
+      mask-image: url(../assets/icon/home.svg);
+    }
+    &[class*="custom-person"] {
+      mask-image: url(../assets/icon/profile.svg);
+    }
+    &[class*="custom-contacts"] {
+      mask-image: url(../assets/icon/contacts.svg);
+    }
+    &[class*="custom-chatbubbles"] {
+      mask-image: url(../assets/icon/chat.svg);
+    }
+  }
+
+  .side-menu {
+    background-color: map-get($colors, secondary);
+    color: map-get($colors, bar);
+    ion-item {
+      background-color: map-get($colors, secondary);
+      color: map-get($colors, bar);
+    }
+    ion-select {
+      color: map-get($colors, bar);
+    }
+    ion-label {
+      color: map-get($colors, bar);
+    }
+    p {
+      color: map-get($colors, bar);
+    }
+  }
   .masters {
     margin-top: 1%;
   }

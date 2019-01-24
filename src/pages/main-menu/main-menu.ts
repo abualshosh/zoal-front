@@ -14,35 +14,10 @@ import { Storage } from "@ionic/storage";
 
 @IonicPage()
 @Component({
-  selector: "page-gmpp-menu",
-  templateUrl: "gmpp-menu.html"
+  selector: "page-main-menu",
+  templateUrl: "main-menu.html"
 })
-export class GmppMenuPage {
-  telecomPages: any[] = [
-    {
-      title: "mobileCredit",
-      component: "MobileCreditPage",
-      icon: "phone-portrait",
-      var: "mobileCredit"
-    },
-    {
-      title: "mobileBillPayment",
-      component: "MobileCreditPage",
-      icon: "phone-landscape",
-      var: "mobileBillPayment"
-    }
-  ];
-
-  govermentPages: any[] = [
-    { title: "e15Services", component: "E15Page", icon: "document", var: "" },
-    {
-      title: "Higher Education",
-      component: "MohePage",
-      icon: "school",
-      var: ""
-    }
-  ];
-
+export class MainMenuPage {
   walletManagementPages: any[] = [
     {
       title: "linkAccount",
@@ -76,7 +51,64 @@ export class GmppMenuPage {
     }
   ];
 
+  telecomPages: any[] = [
+    {
+      title: "mobileCredit",
+      component: "MobileCreditPage",
+      icon: "phone-portrait",
+      var: "mobileCredit"
+    },
+    {
+      title: "mobileBillPayment",
+      component: "MobileCreditPage",
+      icon: "phone-landscape",
+      var: "mobileBillPayment"
+    }
+  ];
+
+  govermentPages: any[] = [
+    {
+      title: "customsServices",
+      component: "CustomsPage",
+      icon: "briefcase",
+      var: ""
+    },
+    {
+      title: "customsInquiryPage",
+      component: "CustomsInquiryPage",
+      icon: "briefcase",
+      var: ""
+    },
+    { title: "e15Services", component: "E15Page", icon: "document", var: "" },
+    {
+      title: "Higher Education",
+      component: "MohePage",
+      icon: "school",
+      var: ""
+    }
+  ];
+
+  gmppGovermentPages: any[] = [
+    { title: "e15Services", component: "E15Page", icon: "document", var: "" },
+    {
+      title: "Higher Education",
+      component: "MohePage",
+      icon: "school",
+      var: ""
+    }
+  ];
+
   transferPages: any[] = [
+    {
+      title: "transferToCard",
+      component: "TransferToCardPage",
+      icon: "swap",
+      var: ""
+    },
+    { title: "cardLess", component: "CardLessPage", icon: "print", var: "" }
+  ];
+
+  gmppTransferPages: any[] = [
     {
       title: "gmppPurchasePage",
       component: "GmppPurchasePage",
@@ -109,39 +141,22 @@ export class GmppMenuPage {
   scanData: {};
   qrPrompt: string;
   qrOptions: BarcodeScannerOptions;
+  isGmpp: boolean = false;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public popoverCtrl: PopoverController,
     public storage: Storage,
     private barcodeScanner: BarcodeScanner,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    public popoverCtrl: PopoverController,
+    public navCtrl: NavController,
+    public navParams: NavParams
   ) {
     this.profile = JSON.parse(localStorage.getItem("profile"));
 
+    this.isGmpp = this.navParams.get("isGmpp");
+
     this.translateService.get("qrCode").subscribe(value => {
       this.qrPrompt = value;
-    });
-  }
-
-  openPagesList(list) {
-    let listout;
-    let title;
-    if (list == "telecomPages") {
-      listout = this.telecomPages;
-      title = "telecomServices";
-    } else if (list == "govermentPages") {
-      listout = this.govermentPages;
-      title = "govermentServices";
-    } else if (list == "transferPages") {
-      listout = this.transferPages;
-      title = "transferServices";
-    }
-    this.navCtrl.push("LoadPagesPage", {
-      pages: listout,
-      title: title,
-      isGmpp: true
     });
   }
 
@@ -156,6 +171,44 @@ export class GmppMenuPage {
     });
   }
 
+  openPagesList(list) {
+    let pages;
+    let title;
+    if (list == "telecomPages") {
+      pages = this.telecomPages;
+      title = "telecomServices";
+    } else if (list == "govermentPages") {
+      if (this.isGmpp) {
+        pages = this.gmppGovermentPages;
+      } else {
+        pages = this.govermentPages;
+      }
+
+      title = "govermentServices";
+    } else if (list == "transferPages") {
+      if (this.isGmpp) {
+        pages = this.gmppTransferPages;
+      } else {
+        pages = this.transferPages;
+      }
+
+      title = "transferServices";
+    }
+
+    if (this.isGmpp) {
+      this.navCtrl.push("LoadPagesPage", {
+        pages: pages,
+        title: title,
+        isGmpp: true
+      });
+    } else {
+      this.navCtrl.push("LoadPagesPage", {
+        pages: pages,
+        title: title
+      });
+    }
+  }
+
   scanQr() {
     this.qrOptions = {
       prompt: this.qrPrompt
@@ -163,7 +216,11 @@ export class GmppMenuPage {
     this.barcodeScanner.scan(this.qrOptions).then(
       barcodeData => {
         //alert(barcodeData.text);
-        if (barcodeData.text) {
+        if (barcodeData.text && !this.isGmpp) {
+          this.navCtrl.push("TransferToCardPage", {
+            pan: barcodeData.text
+          });
+        } else {
           this.navCtrl.push("GmppTranToWalletPage", {
             wallet: barcodeData.text
           });
@@ -176,10 +233,10 @@ export class GmppMenuPage {
     );
   }
 
-  openPage(page, param) {
-    if (param) {
+  openPage(page) {
+    if (this.isGmpp) {
       this.navCtrl.push(page, {
-        isGmpp: param
+        isGmpp: true
       });
     } else {
       this.navCtrl.push(page);

@@ -1,16 +1,16 @@
 import { NgModule } from "@angular/core";
 import { IonicPageModule } from "ionic-angular";
-import { GmppMenuPage } from "./gmpp-menu";
+import { MainMenuPage } from "./main-menu";
 import { NgxQRCodeModule } from "ngx-qrcode2";
 import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [GmppMenuPage],
+  declarations: [MainMenuPage],
   imports: [
     NgxQRCodeModule,
-    IonicPageModule.forChild(GmppMenuPage),
+    IonicPageModule.forChild(MainMenuPage),
     TranslateModule.forChild()
   ],
-  exports: [GmppMenuPage]
+  exports: [MainMenuPage]
 })
-export class GmppMenuPageModule {}
+export class MainMenuPageModule {}

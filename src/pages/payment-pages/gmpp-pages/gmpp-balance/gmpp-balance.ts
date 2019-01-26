@@ -4,12 +4,13 @@ import { IonicPage, ModalController, NavController } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import * as moment from "moment";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -27,9 +28,10 @@ export class GmppBalancePage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    public alertCtrl: AlertController,
+    
     public user: UserProvider,
     public storage: Storage,
+    public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
     public navCtrl: NavController,
     public modalCtrl: ModalController
@@ -78,22 +80,7 @@ export class GmppBalancePage {
     modal.present();
   }
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
+  
 
   logForm() {
     this.submitAttempt = true;
@@ -115,7 +102,6 @@ export class GmppBalancePage {
           //console.log(data)
           if (data != null && data.responseCode == 1) {
             loader.dismiss();
-            // this.showAlert(data);
             //  data.availableBalance=0;
             var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
               "DD/MM/YYYY  hh:mm:ss"
@@ -148,7 +134,7 @@ export class GmppBalancePage {
             this.submitAttempt = false;
           } else {
             loader.dismiss();
-            this.showAlert(data);
+            this.alertProvider.showAlert(data);
             this.todo.reset();
             this.submitAttempt = false;
           }

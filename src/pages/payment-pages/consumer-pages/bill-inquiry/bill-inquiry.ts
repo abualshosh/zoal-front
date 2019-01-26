@@ -9,11 +9,12 @@ import {
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
+import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -31,10 +32,11 @@ export class BillInquiryPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    public alertCtrl: AlertController,
+    
     public user: UserProvider,
     public navCtrl: NavController,
     public storage: Storage,
+    public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
@@ -83,22 +85,7 @@ export class BillInquiryPage {
     modal.present();
   }
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
+  
 
   logForm() {
     this.submitAttempt = true;
@@ -126,8 +113,6 @@ export class BillInquiryPage {
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
-          // this.showAlert(data);
-
           var dat = [];
 
           dat.push(data.billInfo);
@@ -141,7 +126,7 @@ export class BillInquiryPage {
           this.submitAttempt = false;
         } else {
           loader.dismiss();
-          this.showAlert(data);
+          this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;
         }

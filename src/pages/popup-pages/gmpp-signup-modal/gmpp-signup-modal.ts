@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import {
   ViewController,
   IonicPage,
-  AlertController,
   ModalController,
   NavController,
   LoadingController
@@ -12,6 +11,7 @@ import * as uuid from "uuid";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Api } from "../../../providers/providers";
 import { Wallet, StorageProvider } from "../../../providers/storage/storage";
+import { AlertProvider } from "../../../providers/alert/alert";
 @IonicPage()
 @Component({
   selector: "page-gmpp-signup-modal",
@@ -28,10 +28,10 @@ export class GmppSignupModalPage {
     public api: Api,
     private formBuilder: FormBuilder,
     public navCtrl: NavController,
-    public alertCtrl: AlertController,
     public viewCtrl: ViewController,
     public GetServicesProvider: GetServicesProvider,
     public storageProvider: StorageProvider,
+    public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
     this.storageProvider.getItems().then(wallets => {
@@ -62,23 +62,6 @@ export class GmppSignupModalPage {
       { cssClass: "inset-modals" }
     );
     modal.present();
-  }
-
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
   }
 
   signup() {
@@ -120,7 +103,7 @@ export class GmppSignupModalPage {
           );
         } else {
           this.submitAttempt = false;
-          this.showAlert(data);
+          this.alertProvider.showAlert(data);
         }
       });
     }

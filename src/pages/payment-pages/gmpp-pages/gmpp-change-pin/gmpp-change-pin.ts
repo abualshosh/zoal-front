@@ -4,11 +4,12 @@ import { IonicPage, NavController, ModalController } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -27,9 +28,10 @@ export class GmppChangePinPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    public alertCtrl: AlertController,
+    
     public user: UserProvider,
     public storage: Storage,
+    public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public storageProvider: StorageProvider,
     public navCtrl: NavController
@@ -72,22 +74,7 @@ export class GmppChangePinPage {
     modal.present();
   }
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
+  
 
   logForm() {
     this.submitAttempt = true;
@@ -123,7 +110,7 @@ export class GmppChangePinPage {
             } else {
               this.submitAttempt = false;
               loader.dismiss();
-              this.showAlert(data);
+              this.alertProvider.showAlert(data);
               this.todo.reset();
             }
           }
@@ -133,7 +120,7 @@ export class GmppChangePinPage {
         loader.dismiss();
         var data = { responseMessage: "" };
         data.responseMessage = "PIN Miss Match";
-        this.showAlert(data);
+        this.alertProvider.showAlert(data);
       }
     }
   }

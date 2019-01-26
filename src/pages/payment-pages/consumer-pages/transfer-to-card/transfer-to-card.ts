@@ -9,7 +9,7 @@ import {
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
@@ -20,6 +20,7 @@ import {
 } from "@ionic-native/barcode-scanner";
 import * as moment from "moment";
 import { TranslateService } from "@ngx-translate/core";
+import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -40,11 +41,12 @@ export class TransferToCardPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    public alertCtrl: AlertController,
+    
     public navCtrl: NavController,
     public user: UserProvider,
     public translateService: TranslateService,
     public storage: Storage,
+    public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
     this.storage.get("cards").then(val => {
@@ -99,22 +101,7 @@ export class TransferToCardPage {
     modal.present();
   }
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
+  
 
   scan() {
     this.options = {
@@ -190,7 +177,7 @@ export class TransferToCardPage {
           this.submitAttempt = false;
         } else {
           loader.dismiss();
-          this.showAlert(data);
+          this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;
         }

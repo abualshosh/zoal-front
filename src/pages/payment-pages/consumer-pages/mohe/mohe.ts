@@ -10,12 +10,13 @@ import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -60,11 +61,12 @@ export class MohePage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    public alertCtrl: AlertController,
+    
     public user: UserProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public storage: Storage,
+    public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
@@ -204,22 +206,7 @@ export class MohePage {
 
   ionViewWillEnter() {}
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
+  
 
   WalletAvalible(event) {
     this.profile = JSON.parse(localStorage.getItem("profile"));
@@ -382,7 +369,7 @@ export class MohePage {
         } else {
           loader.dismiss();
 
-          this.showAlert(data);
+          this.alertProvider.showAlert(data);
           this.clearInput();
           this.submitAttempt = false;
           // this.todo.controls["entityId"].setValue(

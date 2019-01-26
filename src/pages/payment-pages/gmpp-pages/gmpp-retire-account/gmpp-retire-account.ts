@@ -4,11 +4,12 @@ import { IonicPage, NavController, ModalController } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -29,9 +30,10 @@ export class GmppRetireAccountPage {
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public navCtrl: NavController,
-    public alertCtrl: AlertController,
+    
     public user: UserProvider,
     public storage: Storage,
+    public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
     public modalCtrl: ModalController
   ) {
@@ -109,22 +111,7 @@ export class GmppRetireAccountPage {
     modal.present();
   }
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
+  
 
   Cancle() {
     this.storage.set("RetireACCOUNT", "FALSE");
@@ -157,8 +144,6 @@ export class GmppRetireAccountPage {
             //   this.storage.set("primaryAccountNumber",dat.primaryAccountNumber);
             loader.dismiss();
             this.compleate = "TRUE";
-            // this.showAlert(data);
-
             var datas = [
               { tital: "Status", desc: data.responseMessage },
               { tital: "SMS", desc: "An SMS will be sent shortly" }
@@ -173,7 +158,7 @@ export class GmppRetireAccountPage {
           } else {
             this.submitAttempt = false;
             loader.dismiss();
-            this.showAlert(data);
+            this.alertProvider.showAlert(data);
           }
         }
       );
@@ -209,8 +194,6 @@ export class GmppRetireAccountPage {
             //console.log(data)
             if (data != null && data.responseCode == 1) {
               loader.dismiss();
-              // this.showAlert(data);
-
               var datas = [{ tital: "Status", desc: data.responseMessage }];
               let modal = this.modalCtrl.create(
                 "GmppReceiptPage",
@@ -223,7 +206,7 @@ export class GmppRetireAccountPage {
             } else {
               this.submitAttempt = false;
               loader.dismiss();
-              this.showAlert(data);
+              this.alertProvider.showAlert(data);
             }
           });
         }

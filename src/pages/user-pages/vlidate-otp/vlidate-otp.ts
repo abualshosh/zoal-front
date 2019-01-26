@@ -3,19 +3,13 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  AlertController,
   LoadingController,
   ToastController
 } from "ionic-angular";
 import { User } from "../../../providers/providers";
 import { MainPage } from "../../pages";
 import { TranslateService } from "@ngx-translate/core";
-/**
- * Generated class for the VlidateOtpPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -38,7 +32,7 @@ export class VlidateOtpPage {
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
-    public alertCtrl: AlertController,
+    public alertProvider: AlertProvider,
     public translateService: TranslateService
   ) {
     this.account.login = navParams.get("username");
@@ -47,23 +41,6 @@ export class VlidateOtpPage {
     this.translateService.get("OTP_ERROR").subscribe(value => {
       this.otpErrorString = value;
     });
-  }
-
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
   }
 
   showToast(message) {
@@ -102,7 +79,7 @@ export class VlidateOtpPage {
       err => {
         console.error("ERROR", err);
         loader.dismiss();
-        this.showAlert(err);
+        this.alertProvider.showAlert(err);
       }
     );
   }

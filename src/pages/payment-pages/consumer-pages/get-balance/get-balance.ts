@@ -7,12 +7,13 @@ import {
   NavController
 } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import * as moment from "moment";
+import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -29,10 +30,11 @@ export class GetBalancePage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    public alertCtrl: AlertController,
+    
     public navCtrl: NavController,
     public user: UserProvider,
     public storage: Storage,
+    public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
     this.storage.get("cards").then(val => {
@@ -100,7 +102,6 @@ export class GetBalancePage {
         //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
-          // this.showAlert(data);
           var main = [];
           var mainData = {
             balance: data.balance.available
@@ -128,10 +129,10 @@ export class GetBalancePage {
         } else {
           loader.dismiss();
           if (data.responseCode != null) {
-            this.showAlert(data);
+            this.alertProvider.showAlert(data);
           } else {
             data.responseMessage = "Connection Error";
-            this.showAlert(data);
+            this.alertProvider.showAlert(data);
           }
           this.todo.reset();
           this.submitAttempt = false;

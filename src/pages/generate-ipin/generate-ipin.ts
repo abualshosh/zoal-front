@@ -6,11 +6,12 @@ import {
   LoadingController
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { AlertController } from "ionic-angular";
+
 import * as uuid from "uuid";
 import { GetServicesProvider } from "../../providers/get-services/get-services";
 import { Card } from "../../models/cards";
 import { Storage } from "@ionic/storage";
+import { AlertProvider } from "../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -33,7 +34,7 @@ export class GenerateIpinPage {
     public loadingCtrl: LoadingController,
     public getServicesProvider: GetServicesProvider,
     public storage: Storage,
-    public alertCtrl: AlertController
+    public alertProvider: AlertProvider
   ) {
     this.storage.get("cards").then(cards => {
       this.cards = cards;
@@ -86,23 +87,6 @@ export class GenerateIpinPage {
     }
   }
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
-
   submit() {
     this.submitAttempt = true;
     if (this.generateIpinForm.valid) {
@@ -128,7 +112,7 @@ export class GenerateIpinPage {
               this.submitAttempt = false;
             } else {
               loader.dismiss();
-              this.showAlert(res);
+              this.alertProvider.showAlert(res);
               this.isComplete = false;
               this.clearInput("generateIpinForm");
               this.submitAttempt = false;
@@ -136,7 +120,7 @@ export class GenerateIpinPage {
           },
           err => {
             loader.dismiss();
-            this.showAlert(err);
+            this.alertProvider.showAlert(err);
             this.isComplete = false;
             this.clearInput("generateIpinForm");
             this.submitAttempt = false;
@@ -167,14 +151,14 @@ export class GenerateIpinPage {
               this.submitAttempt = false;
             } else {
               loader.dismiss();
-              this.showAlert(res);
+              this.alertProvider.showAlert(res);
               this.clearInput("completeForm");
               this.submitAttempt = false;
             }
           },
           err => {
             loader.dismiss();
-            this.showAlert(err);
+            this.alertProvider.showAlert(err);
             this.clearInput("completeForm");
             this.submitAttempt = false;
           }

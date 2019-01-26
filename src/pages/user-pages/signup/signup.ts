@@ -4,12 +4,12 @@ import {
   IonicPage,
   NavController,
   ToastController,
-  LoadingController,
-  AlertController
+  LoadingController
 } from "ionic-angular";
 
 import { User } from "../../../providers/providers";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -35,7 +35,7 @@ export class SignupPage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public translateService: TranslateService,
-    public alertCtrl: AlertController
+    public alertProvider: AlertProvider
   ) {
     this.signup = this.formBuilder.group({
       PHONENUMBER: [
@@ -52,23 +52,6 @@ export class SignupPage {
     this.translateService.get("SIGNUP_ERROR").subscribe(value => {
       this.signupErrorString = value;
     });
-  }
-
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
   }
 
   showToast(message) {
@@ -116,7 +99,7 @@ export class SignupPage {
             err => {
               console.error("ERROR", err);
               loader.dismiss();
-              this.showAlert(err);
+              this.alertProvider.showAlert(err);
               this.submitAttempt = false;
             }
           );

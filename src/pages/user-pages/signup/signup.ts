@@ -84,9 +84,7 @@ export class SignupPage {
     this.submitAttempt = true;
 
     if (this.signup.valid) {
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
 
       this.account.password = this.signup.controls["PHONENUMBER"].value;

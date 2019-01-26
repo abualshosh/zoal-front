@@ -106,9 +106,7 @@ export class GenerateIpinPage {
   submit() {
     this.submitAttempt = true;
     if (this.generateIpinForm.valid) {
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
 
       let requestData = this.generateIpinForm.value;
@@ -150,9 +148,7 @@ export class GenerateIpinPage {
   submitCompletion() {
     this.submitAttempt = true;
     if (this.completeForm.valid) {
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
 
       let requestData = this.completeForm.value;

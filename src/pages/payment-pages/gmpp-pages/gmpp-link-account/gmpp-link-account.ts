@@ -133,9 +133,7 @@ export class GmppLinkAccountPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
       var dat = this.todo.value;
 
@@ -184,9 +182,7 @@ export class GmppLinkAccountPage {
   ComplateForm() {
     this.submitAttempt = true;
     if (this.complate.valid) {
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
       var dat = this.complate.value;
 

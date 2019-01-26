@@ -100,9 +100,7 @@ export class GmppPurchasePage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
       var dat = this.todo.value;
 

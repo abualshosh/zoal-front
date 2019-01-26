@@ -8,7 +8,6 @@ import { AlertController } from "ionic-angular";
 import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
 
 @IonicPage()
@@ -98,9 +97,7 @@ export class GmppSelfUnlockPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
       var dat = this.todo.value;
 

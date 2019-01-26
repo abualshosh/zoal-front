@@ -239,9 +239,7 @@ export class E15Page {
       if (!dat.mobilewallet && !this.validCard) {
         return;
       }
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
       dat = this.todo.value;
 

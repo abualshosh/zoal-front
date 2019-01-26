@@ -71,9 +71,7 @@ export class LoginPage {
       this.account.username = this.login.controls["PHONENUMBER"].value;
       this.account.password = this.account.username;
 
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
 
       this.user.login(this.account).subscribe(

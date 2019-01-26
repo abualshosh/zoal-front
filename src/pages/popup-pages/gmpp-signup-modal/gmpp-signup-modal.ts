@@ -91,9 +91,7 @@ export class GmppSignupModalPage {
     if (this.todo.valid) {
       dat.UUID = uuid.v4();
       dat.consumerIdentifier = dat.walletNumber;
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
 
       this.GetServicesProvider.load(dat, "gmpp/registerConsumer").then(data => {

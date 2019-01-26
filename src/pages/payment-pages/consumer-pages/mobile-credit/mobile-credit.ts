@@ -268,9 +268,7 @@ export class MobileCreditPage {
       if (!dat.mobilewallet && !this.validCard) {
         return;
       }
-      let loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+      let loader = this.loadingCtrl.create();
       loader.present();
 
       dat.UUID = uuid.v4();

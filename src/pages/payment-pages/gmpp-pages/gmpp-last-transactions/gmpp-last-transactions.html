@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>{{ "lastTran" | translate }}</ion-title>
+    <ion-title>{{ "gmppLastTransactionsPage" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -30,7 +30,7 @@
         </ion-item>
 
         <div *ngIf="!todo.controls.walletNumber.valid && submitAttempt">
-          <p>{{ "validPINError" | translate }}</p>
+          <p>{{ "validpinError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>{{ "PIN" | translate }}</ion-label>

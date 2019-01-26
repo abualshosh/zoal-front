@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>{{ "transferFromCardToWallet" | translate }}</ion-title>
+    <ion-title>{{ "gmppTranFromCardPage" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -46,10 +46,12 @@
           <ion-label stacked> {{ "EXPDATE" | translate }} </ion-label>
           <ion-datetime
             type="Date"
-            displayFormat="YYMM"
+            displayFormat="MM YYYY"
             pickerFormat="MM YYYY"
-            max="2030-12-31"
+            max="2050-12-31"
             formControlName="expDate"
+            doneText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
             required
           ></ion-datetime>
         </ion-item>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>{{ "BalInq" | translate }}</ion-title>
+    <ion-title>{{ "getBalancePage" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -23,9 +23,9 @@
             formControlName="Card"
             interface="popover"
           >
-            <ion-option *ngFor="let Card of cards" [value]="Card">{{
-              Card.pan
-            }}</ion-option>
+            <ion-option *ngFor="let Card of cards" [value]="Card">
+              {{ Card.pan }}
+            </ion-option>
           </ion-select>
         </ion-item>
 

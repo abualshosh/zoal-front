@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>{{ "retireGmppAccount" | translate }}</ion-title>
+    <ion-title>{{ "gmppRetireAccountPage" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -33,7 +33,7 @@
           <p>{{ "validRetireReasonError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label stacked>retire Reason</ion-label>
+          <ion-label stacked>{{ "retireReason" | translate }}</ion-label>
           <ion-input type="text" formControlName="retireReason" required>
           </ion-input>
         </ion-item>
@@ -42,7 +42,7 @@
           <p>{{ "validpinError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label stacked>PIN</ion-label>
+          <ion-label stacked>{{ "PIN" | translate }}</ion-label>
           <ion-input
             class="mask-text"
             type="number"
@@ -76,7 +76,7 @@
           <p>{{ "validpinError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label stacked>PIN</ion-label>
+          <ion-label stacked>{{ "PIN" | translate }}</ion-label>
           <ion-input
             class="mask-text"
             type="number"

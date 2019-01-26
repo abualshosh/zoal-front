@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="secondary">
-    <ion-title> {{ "wallet" | translate }} </ion-title>
+    <ion-title> {{ "gmppWalletDetailPage" | translate }} </ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -36,7 +36,7 @@
   <div class="con">
     <form [formGroup]="form" (submit)="addWallet()">
       <div *ngIf="!form.controls.walletNumber.valid && submitAttempt">
-        <p>{{ "invalidWalletNumber" | translate }}</p>
+        <p>{{ "validWalletError" | translate }}</p>
       </div>
       <ion-item>
         <ion-input

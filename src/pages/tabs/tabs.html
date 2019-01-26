@@ -3,7 +3,7 @@
     tabsHideOnSubPages="true"
     [root]="tab1Root"
     tabTitle="{{ 'feeds' | translate }}"
-    tabIcon="home"
+    tabIcon="custom-home"
   ></ion-tab>
 
   <ion-tab
@@ -13,7 +13,7 @@
     tabBadge="{{ tab4BadgeCount > 0 ? tab4BadgeCount : null }}"
     tabBadgeStyle="danger"
     tabTitle="{{ 'chat' | translate }}"
-    tabIcon="chatbubbles"
+    tabIcon="custom-chatbubbles"
   ></ion-tab>
 
   <ion-tab
@@ -27,14 +27,14 @@
     tabsHideOnSubPages="true"
     [root]="tab2Root"
     tabTitle="{{ 'contacts' | translate }}"
-    tabIcon="contacts"
+    tabIcon="custom-contacts"
   ></ion-tab>
 
   <ion-tab
     tabsHideOnSubPages="true"
     [root]="tab3Root"
     tabTitle="{{ 'profile' | translate }}"
-    tabIcon="person"
+    tabIcon="custom-person"
   ></ion-tab>
 
   <ion-fab
@@ -47,7 +47,7 @@
     border-top-right-radius: 50%;"
   >
     <button
-      style="background:linear-gradient(to bottom, #ed2124 50%, #f05826);"
+      class="gradient-button"
       ion-fab
       width="57"
       height="57"

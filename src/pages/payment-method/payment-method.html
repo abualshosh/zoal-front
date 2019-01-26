@@ -1,5 +1,6 @@
 <ion-header>
   <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
     <ion-title>{{ "greeting" | translate }} {{ profile.fullName }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -12,8 +13,7 @@
           style=" position: relative; height:100%; text-align: center;"
           (click)="openConsumerPage()"
         >
-          <div class="img-container" style="background-color:violet;"></div>
-          <div class="card-title"><ion-icon name="qr-scanner"></ion-icon></div>
+          <div class="card-title"><ion-icon name="card"></ion-icon></div>
           <div class="card-subtitle">{{ "consumerPayment" | translate }}</div>
         </div>
       </ion-col>
@@ -24,8 +24,7 @@
           style=" position: relative; height:100%; text-align: center;"
           (click)="openGmppPage()"
         >
-          <div class="img-container" style="background-color:#9ccc65;"></div>
-          <div class="card-title"><ion-icon name="qr-scanner"></ion-icon></div>
+          <div class="card-title"><ion-icon name="wallet"></ion-icon></div>
           <div class="card-subtitle">{{ "gmppPayment" | translate }}</div>
         </div>
       </ion-col>

@@ -1,12 +1,12 @@
 <ion-menu id="sideMenu" [content]="content">
-  <ion-header>
+  <ion-header transparent no-border>
     <ion-toolbar color="secondary">
-      <ion-title>{{ "sideMenu" | translate }}</ion-title>
+      <ion-title text-center>{{ "sideMenu" | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
-    <ion-item *ngIf="profile">
-      <ion-avatar item-start (click)="updateProfileImage()">
+  <ion-content padding class="side-menu">
+    <div text-center *ngIf="profile">
+      <ion-avatar class="avatar" (click)="updateProfileImage()">
         <img-loader
           fallbackAsPlaceholde="true"
           fallback="assets/img/userPlaceholder.png"
@@ -15,9 +15,9 @@
         >
         </img-loader>
       </ion-avatar>
-      <p class="username">{{ profile.fullName }}</p>
-      <p>+249 {{ profile.userName }}</p>
-    </ion-item>
+      <h5>{{ profile.fullName }}</h5>
+      <h6>+249 {{ profile.userName }}</h6>
+    </div>
     <ion-item>
       <ion-icon name="settings" item-start></ion-icon>
       <ion-label>{{ "AppLanguage" | translate }}</ion-label>
@@ -56,24 +56,28 @@
       </ion-select>
     </ion-item> -->
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <ion-item
+        menuClose
+        ion-item
+        *ngFor="let p of pages"
+        (click)="openPage(p)"
+      >
         <ion-icon name="{{ p.icon }}" item-start></ion-icon>
-        {{ p.title }}
-      </button>
-      <button
+        {{ p.title | translate }}
+      </ion-item>
+      <ion-item
         menuClose
         ion-item
         *ngFor="let p of sideMenuPages"
         (click)="openPage(p)"
       >
         <ion-icon name="{{ p.icon }}" item-start></ion-icon>
-        {{ p.title }}
-      </button>
+        {{ p.title | translate }}
+      </ion-item>
     </ion-list>
-    <ion-item>
-      <button ion-button (click)="logOut()" item-end>
-        {{ "LogOut" | translate }}
-      </button>
+    <ion-item no-lines (click)="logOut()">
+      <ion-icon name="log-out" item-start></ion-icon>
+      {{ "LogOut" | translate }}
     </ion-item>
   </ion-content>
 </ion-menu>

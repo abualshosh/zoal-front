@@ -5,6 +5,7 @@ import {
   NavParams,
   PopoverController
 } from "ionic-angular";
+import { Events } from "ionic-angular";
 import {
   BarcodeScannerOptions,
   BarcodeScanner
@@ -149,7 +150,8 @@ export class MainMenuPage {
     public translateService: TranslateService,
     public popoverCtrl: PopoverController,
     public navCtrl: NavController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public events: Events
   ) {
     this.profile = JSON.parse(localStorage.getItem("profile"));
 
@@ -241,5 +243,9 @@ export class MainMenuPage {
     } else {
       this.navCtrl.push(page);
     }
+  }
+
+  ionViewWillLeave() {
+    this.events.publish("isGmpp", "neither");
   }
 }

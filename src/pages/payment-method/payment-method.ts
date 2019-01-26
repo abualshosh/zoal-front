@@ -19,17 +19,25 @@ export class PaymentMethodPage {
     this.events.publish("isGmpp", "neither");
   }
 
-  ionViewDidLoad() {
-    console.log("ionViewDidLoad PaymentMethodPage");
-  }
+  ionViewDidLoad() {}
 
   openConsumerPage() {
+    const animationsOptions = {
+      animation: "ios-transition",
+      duration: 1000
+    };
+
     this.events.publish("isGmpp", "consumer");
-    this.navCtrl.setRoot("ConsumerMenuPage");
+    this.navCtrl.push("MainMenuPage", {}, animationsOptions);
   }
 
   openGmppPage() {
+    const animationsOptions = {
+      animation: "ios-transition",
+      duration: 1000
+    };
+
     this.events.publish("isGmpp", "gmpp");
-    this.navCtrl.setRoot("GmppMenuPage");
+    this.navCtrl.push("MainMenuPage", { isGmpp: true }, animationsOptions);
   }
 }

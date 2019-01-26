@@ -15,12 +15,15 @@
 // automatically applied to the <body> element in the app.
 .ios,
 .md {
-  // ion-item{
-  //   padding: 0;
-  // }
-  // ion-label , ion-input ,ion-select,ion-option{
-  //   padding-left: 5%;;
-  // }
+  .avatar {
+    img {
+      margin-left: auto;
+      margin-right: auto;
+      height: 7em;
+      width: 7em;
+      border-radius: 50%;
+    }
+  }
 
   ion-icon {
     &[class*="custom-"] {
@@ -71,10 +74,14 @@
   }
 
   .side-menu {
-    background-color: map-get($colors, secondary);
+    background: linear-gradient(
+      to bottom,
+      map-get($colors, secondary) 40%,
+      map-get($colors, custom-red)
+    );
     color: map-get($colors, bar);
     ion-item {
-      background-color: map-get($colors, secondary);
+      background-color: transparent;
       color: map-get($colors, bar);
     }
     ion-select {

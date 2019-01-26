@@ -36,9 +36,9 @@ export class MyApp {
       icon: "person-add"
     },
     {
-      title: "GmppWalletDetailPage",
+      title: "gmppWalletDetailPage",
       component: "GmppWalletDetailPage",
-      icon: "card"
+      icon: "bookmarks"
     },
     {
       title: "gmppBalancePage",

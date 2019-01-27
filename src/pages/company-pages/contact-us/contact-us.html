@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>{{ "contactUsPage" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="con">
+    <form [formGroup]="contactForm" (ngSubmit)="sendMessage()">
+      <ion-list>
+        <div *ngIf="!contactForm.controls.title.valid && submitAttempt">
+          <p>{{ "validContactMessageTitleError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>
+            {{ "contactMessageTitle" | translate }}
+          </ion-label>
+          <ion-input type="text" formControlName="title" required></ion-input>
+        </ion-item>
+
+        <div *ngIf="!contactForm.controls.message.valid && submitAttempt">
+          <p>{{ "validContactMessageError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "contactMessage" | translate }} </ion-label>
+          <ion-textarea
+            rows="5"
+            formControlName="message"
+            required
+          ></ion-textarea>
+        </ion-item>
+      </ion-list>
+
+      <button class="subbutn" ion-button type="submit" color="secondary">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

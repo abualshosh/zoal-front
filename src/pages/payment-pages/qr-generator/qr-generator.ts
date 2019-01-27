@@ -1,15 +1,15 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  ModalController
+} from "ionic-angular";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../models/cards";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-
-/**
- * Generated class for the QrGeneratorPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { StorageProvider } from "../../../providers/storage/storage";
+import { PhotoViewer } from "@ionic-native/photo-viewer";
 
 @IonicPage()
 @Component({
@@ -18,7 +18,7 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 })
 export class QrGeneratorPage {
   public cards: Card[] = [];
-  public wallets = ["564654", "45644654", "5465454"];
+  public wallets = [];
   private todo: FormGroup;
   isGmpp: boolean;
   panQr = null;
@@ -28,19 +28,60 @@ export class QrGeneratorPage {
     private formBuilder: FormBuilder,
     public storage: Storage,
     public navCtrl: NavController,
+    public modalCtrl: ModalController,
+    public storageProvider: StorageProvider,
+    private photoViewer: PhotoViewer,
     public navParams: NavParams
   ) {
-    this.isGmpp = navParams.get("isGmpp");
-
-    this.storage.get("cards").then(val => {
-      this.cards = val;
-    });
-
     this.todo = this.formBuilder.group({
       Card: ["", Validators.required],
       wallet: ["", Validators.required]
     });
   }
+
+  ionViewDidLoad() {
+    this.checkIsGmpp();
+  }
+
+  checkIsGmpp() {
+    this.isGmpp = this.navParams.get("isGmpp");
+    if (this.isGmpp) {
+      this.storageProvider.getItems().then(wallets => {
+        this.wallets = wallets;
+        this.isCardWalletAvailable("wallet");
+      });
+    } else {
+      this.storage.get("cards").then(cards => {
+        this.cards = cards;
+        this.isCardWalletAvailable("card");
+      });
+    }
+  }
+
+  isCardWalletAvailable(choice: string) {
+    if (choice === "card") {
+      if (!this.cards || this.cards.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "AddCardModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    } else {
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.navCtrl.pop();
+        let modal = this.modalCtrl.create(
+          "WalkthroughModalPage",
+          {},
+          { cssClass: "inset-modals" }
+        );
+        modal.present();
+      }
+    }
+  }
+
   onChange() {
     if (!this.isGmpp) {
       this.panQr = this.todo.value.Card.pan;
@@ -48,7 +89,14 @@ export class QrGeneratorPage {
       this.walletQr = this.todo.value.wallet;
     }
   }
-  ionViewDidLoad() {
-    //console.log('ionViewDidLoad QrGeneratorPage');
+
+  showQrCode(): void {
+    const canvas = document.querySelector("canvas") as HTMLCanvasElement;
+    const imageData = canvas.toDataURL("image/jpeg").toString();
+    this.viewImage(imageData);
+  }
+
+  viewImage(img: any) {
+    this.photoViewer.show(img, "", { share: true });
   }
 }

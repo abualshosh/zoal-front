@@ -1,2 +1,8 @@
 page-qr-generator {
+  .qrcode {
+    canvas[style] {
+      width: 100% !important;
+      height: 17em !important;
+    }
+  }
 }

@@ -9,7 +9,7 @@
   <form [formGroup]="todo">
     <ion-list>
       <ion-card>
-        <ion-item *ngIf="!createdCode">
+        <ion-item *ngIf="!createdCode && !isGmpp">
           <h2>{{ "QRmessage" | translate }}</h2>
         </ion-item>
         <ion-item *ngIf="!isGmpp">
@@ -27,6 +27,9 @@
             </ion-option>
           </ion-select>
         </ion-item>
+        <ion-item *ngIf="!createdCode && isGmpp">
+          <h2>{{ "qrMessageWallet" | translate }}</h2>
+        </ion-item>
         <ion-item *ngIf="isGmpp">
           <ion-label floating>{{ "wallet" | translate }}</ion-label>
           <ion-select
@@ -37,24 +40,23 @@
             interface="action-sheet"
             formControlName="wallet"
           >
-            <ion-option *ngFor="let wallet of wallets" [value]="wallet">
-              {{ wallet }}
+            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
+              {{ wallet.number }}
             </ion-option>
           </ion-select>
         </ion-item>
       </ion-card>
     </ion-list>
   </form>
-  <ion-card *ngIf="panQr">
-    <ngx-qrcode [qrc-value]="panQr"></ngx-qrcode>
-    <ion-card-content>
-      <p>Card: {{ panQr }}</p>
-    </ion-card-content>
-  </ion-card>
-  <ion-card *ngIf="walletQr">
-    <ngx-qrcode [qrc-value]="walletQr"></ngx-qrcode>
-    <ion-card-content>
-      <p>wallet: {{ walletQr }}</p>
-    </ion-card-content>
+  <ion-card *ngIf="panQr || walletQr">
+    <ion-item *ngIf="panQr">
+      <ngx-qrcode qrc-element-type="canvas" [qrc-value]="panQr"></ngx-qrcode>
+    </ion-item>
+    <ion-item *ngIf="walletQr">
+      <ngx-qrcode qrc-element-type="canvas" [qrc-value]="walletQr"></ngx-qrcode>
+    </ion-item>
+    <button ion-button full (click)="showQrCode()">
+      {{ "viewQrCode" | translate }}
+    </button>
   </ion-card>
 </ion-content>

@@ -33,6 +33,7 @@
   "errorMessage": "Connection Error",
   "errorTitle": "Error",
   "errorButton": "Ok",
+  "viewQrCode": "Download | Share",
   "HOME": "Home",
   "scanQr": "Scan and Pay",
   "transactionServices": "Transaction Services",

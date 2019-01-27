@@ -33,6 +33,7 @@
   "errorMessage": "خطأ في الاتصال",
   "errorTitle": "خطأ",
   "errorButton": "موافق",
+  "viewQrCode": "تحميل | مشاركة",
   "HOME": "الرئيسيه",
   "MerchantId": "التاجر",
   "specialPaymentServices": "الدفعية الخاصه",

@@ -1,31 +1,29 @@
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>{{ "greeting" | translate }} {{ profile.fullName }}</ion-title>
+    <ion-title>{{ "greeting" | translate }} {{ profile?.fullName }}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-grid style="height:100%;">
     <ion-row style="height:100%;">
       <ion-col style="height:100%;">
-        <div
-          style=" position: relative; height:100%; text-align: center;"
-          (click)="openConsumerPage()"
-        >
-          <div class="card-title"><ion-icon name="card"></ion-icon></div>
-          <div class="card-subtitle">{{ "consumerPayment" | translate }}</div>
+        <div style=" position: relative; height:100%; text-align: center;">
+          <button class="card-title" (click)="openConsumerPage()">
+            <ion-icon name="custom-card"></ion-icon>
+          </button>
+          <h4 class="card-subtitle">{{ "consumerPayment" | translate }}</h4>
         </div>
       </ion-col>
     </ion-row>
     <ion-row style="height:100%;">
       <ion-col style="height:100%;">
-        <div
-          style=" position: relative; height:100%; text-align: center;"
-          (click)="openGmppPage()"
-        >
-          <div class="card-title"><ion-icon name="wallet"></ion-icon></div>
-          <div class="card-subtitle">{{ "gmppPayment" | translate }}</div>
+        <div style=" position: relative; height:100%; text-align: center;">
+          <button class="card-title" (click)="openGmppPage()">
+            <ion-icon name="custom-wallet"></ion-icon>
+          </button>
+          <h4 class="card-subtitle">{{ "gmppPayment" | translate }}</h4>
         </div>
       </ion-col>
     </ion-row>

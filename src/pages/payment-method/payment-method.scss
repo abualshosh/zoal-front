@@ -1,24 +1,21 @@
 page-payment-method {
-  .card-title ion-icon {
-    margin-top: 20%;
-  }
-
   .card-title {
-    position: absolute;
+    position: relative;
     text-align: center;
-    font-size: 3em;
-    width: 100%;
-    height: 100%;
-    border-radius: 10%;
-    background-color: map-get($colors, secondary);
+    font-size: 8vh;
+    width: 30vh;
+    height: 30vh;
+    border-radius: 50%;
+    background: linear-gradient(
+      to right,
+      map-get($colors, custom-red) 5%,
+      map-get($colors, secondary)
+    );
     color: map-get($colors, bar);
   }
 
   .card-subtitle {
-    font-size: 1.2em;
-    position: absolute;
-    top: 70%;
-    width: 100%;
-    color: map-get($colors, bar);
+    // font-size: 0.4em;
+    color: map-get($colors, secondary);
   }
 }

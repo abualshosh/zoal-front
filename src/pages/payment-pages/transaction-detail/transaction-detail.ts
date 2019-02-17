@@ -27,24 +27,19 @@ export class TransactionDetailPage {
 
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].tranCurrency) {
-        //console.log(  this.items);
         translateService.get(["SDG"]).subscribe(values => {
           this.items[i].tranCurrency = values["SDG"];
         });
       }
 
       if (this.items[i].Card) {
+        let stars = "";
+        for (let index = 0; index < this.items[i].Card.length - 10; index++) {
+          stars += "*";
+        }
         this.items[i].Card = this.items[i].Card.replace(
-          this.items[i].Card.substring(6, this.items[i].Card.length - 3),
-          "***********"
-        );
-      } else if (this.items[i].WalletNumber) {
-        this.items[i].WalletNumber = this.items[i].WalletNumber.replace(
-          this.items[i].WalletNumber.substring(
-            6,
-            this.items[i].WalletNumber.length - 3
-          ),
-          "*******"
+          this.items[i].Card.substring(6, this.items[i].Card.length - 4),
+          stars
         );
       }
     }

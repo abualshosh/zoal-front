@@ -9,13 +9,12 @@
         </button>
       </ion-buttons>
     </ion-toolbar>
-    <!-- <ion-item    no-lines style="text-align: center;" >
-      -->
     <div *ngFor="let item of (main | keys)">
       <div text-center *ngFor="let itm of (item.value | keys)">
         <ion-item no-lines text-center>
-          {{ itm.key | translate }} <br />
-          {{ itm.value }} {{ "SDG" | translate }} <br />
+          {{ itm.key | translate }}
+          <div *ngIf="itm.value">{{ itm.value }} {{ "SDG" | translate }}</div>
+          <br />
 
           <ion-icon
             color="green"
@@ -25,15 +24,13 @@
         </ion-item>
       </div>
     </div>
-
-    <!-- </ion-item > -->
   </div>
 
   <ion-grid *ngFor="let item of (items | keys)">
     <ion-row *ngFor="let itm of (item.value | keys)">
       <ion-item class="no-padding">
         <ion-col text-wrap> {{ itm.key | translate }} : </ion-col>
-        <ion-col item-end> {{ itm.value }} </ion-col>
+        <ion-col dir="ltr" item-end> {{ itm.value }} </ion-col>
       </ion-item>
     </ion-row>
   </ion-grid>

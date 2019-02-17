@@ -1,20 +1,17 @@
 import { Component } from "@angular/core";
 import { IonicPage, ViewController, NavParams } from "ionic-angular";
-// import { ObjNgForPipe } from "../../pipes/obj-ng-for/obj-ng-for";
-import { Pipe, PipeTransform } from "@angular/core";
 
 @IonicPage()
 @Component({
   selector: "page-gmpp-receipt",
-
   templateUrl: "gmpp-receipt.html"
 })
 export class GmppReceiptPage {
   public items: any[] = [];
   constructor(public viewCtrl: ViewController, public navParams: NavParams) {
     this.items = this.navParams.get("data");
-    var i: any;
-    for (i = 0; i < this.items.length; i++) {
+
+    for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].desc == null || this.items[i].desc == "") {
         this.items.splice(i, 1);
       }
@@ -22,6 +19,7 @@ export class GmppReceiptPage {
   }
 
   ionViewDidLoad() {}
+
   dismiss() {
     this.viewCtrl.dismiss();
   }

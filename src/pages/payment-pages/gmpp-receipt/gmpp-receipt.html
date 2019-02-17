@@ -1,10 +1,12 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title> {{ "gmppRecipt" | translate }} </ion-title>
+    <ion-title> {{ "gmppReciptPage" | translate }} </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
-        <span ion-text color="dark" showWhen="ios">Cancel</span>
-        <ion-icon color="dark" name="md-close"></ion-icon>
+        <span ion-text showWhen="ios">
+          {{ "BACK_BUTTON_TEXT" | translate }}</span
+        >
+        <ion-icon name="md-close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>

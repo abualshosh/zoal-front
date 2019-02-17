@@ -5,7 +5,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content no-padding style="background-color: #f0f0f0;">
-  <img *ngIf="posts.length == 0" src="assets/img/nopost.png" />
+  <h2 text-center *ngIf="posts.length == 0">{{ "noPosts" | translate }}</h2>
   <ion-refresher (ionRefresh)="doRefresh($event)" color="primary">
     <ion-refresher-content color="primary"></ion-refresher-content>
   </ion-refresher>
@@ -24,8 +24,8 @@
         <h2 class="sticky">{{ post.profile.fullName }}</h2>
         <p>{{ post.postDate | date: "dd/MM/yyyy hh:mm" }}</p>
       </ion-item>
-      <ion-card-content (click)="openOtherProfile('PostDetailPage', post)">
-        <p>{{ post.postTxt }}</p>
+      <ion-card-content (click)="openPost('PostDetailPage', post)">
+        <h2 text-wrap>{{ post.postTxt }}</h2>
       </ion-card-content>
 
       <img-loader
@@ -56,7 +56,7 @@
             clear
             small
             icon-left
-            (click)="openOtherProfile('PostDetailPage', post)"
+            (click)="openPost('PostDetailPage', post)"
           >
             <ion-icon name="text"></ion-icon>
             {{ post.posttocomments.length }} {{ "comments" | translate }}

@@ -4,17 +4,13 @@ import {
   NavController,
   NavParams,
   AlertController,
-  LoadingController
+  LoadingController,
+  Events
 } from "ionic-angular";
 import { Api } from "../../../providers/providers";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
-
-/**
- * Generated class for the FeedsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { StorageProvider } from "../../../providers/storage/storage";
+import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -26,19 +22,19 @@ export class FeedsPage {
   size: any;
   page: any = 0;
   posts = [];
-  postsTest = [];
 
   constructor(
     private photoViewer: PhotoViewer,
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
+    public storageProvider: StorageProvider,
+    public alertProvider: AlertProvider,
     public loadingCtrl: LoadingController,
+    public events: Events,
     public api: Api
   ) {
-    let loading = this.loadingCtrl.create({
-      content: "Getting posts..."
-    });
+    let loading = this.loadingCtrl.create();
     loading.present();
     this.api.get("Fposts", "?page=0&size=5", null).subscribe(
       (res: any) => {
@@ -46,31 +42,30 @@ export class FeedsPage {
           this.last = res.last;
           this.posts = res.content;
           loading.dismiss();
-        } else {
-          this.posts = this.postsTest;
-          setTimeout(() => {
-            loading.dismiss();
-          }, 3000);
         }
       },
       err => {
-        this.posts = this.postsTest;
-        setTimeout(() => {
-          loading.dismiss();
-        }, 3000);
-
-        if (!this.posts.length) {
-          this.showAlert("no posts available");
-        } else {
-          this.showAlert(err);
-        }
-        console.error("ERROR", err);
+        loading.dismiss();
+        this.alertProvider.showAlert(err);
       }
     );
+
+    events.subscribe("profile:updated", () => {
+      this.api.get("Fposts", "?page=0&size=5", null).subscribe(
+        (res: any) => {
+          if (res) {
+            this.last = res.last;
+            this.posts = res.content;
+          }
+        },
+        err => {
+          this.alertProvider.showAlert(err);
+        }
+      );
+    });
   }
 
   doRefresh(refresher) {
-    //console.log('Begin async operation', refresher);
     this.api.get("Fposts", "?page=0&size=5", null).subscribe(
       (res: any) => {
         if (res) {
@@ -84,35 +79,41 @@ export class FeedsPage {
       },
       err => {
         refresher.complete();
-        this.showAlert(err);
-        console.error("ERROR", err);
+        this.alertProvider.showAlert(err);
       }
     );
   }
 
   like(post: any) {
-    var profileData: any = JSON.parse(localStorage.getItem("profile"));
-    this.api
-      .post(
-        "likesDTO",
-        { profile: profileData.id, posts: post.id },
-        { observe: "response" }
-      )
-      .subscribe(
-        (res: any) => {
-          if (res.status === 201) {
-            post.posttolikes.push(res);
-          } else if (res.status === 202) {
-            post.posttolikes.pop(res);
+    this.storageProvider.getProfile().subscribe(val => {
+      let profileData = val;
+
+      this.api
+        .post(
+          "likesDTO",
+          { profile: profileData.id, posts: post.id },
+          { observe: "response" }
+        )
+        .subscribe(
+          (res: any) => {
+            if (res.status === 201) {
+              post.posttolikes.push(res);
+            } else if (res.status === 202) {
+              post.posttolikes.pop(res);
+            }
+          },
+          err => {
+            this.alertProvider.showToast("failedToLike");
           }
-        },
-        err => {
-          console.error("ERROR", err);
-        }
-      );
+        );
+    });
   }
 
   openOtherProfile(page: any, post: any) {
+    this.navCtrl.push(page, { item: post.profile });
+  }
+
+  openPost(page: any, post: any) {
     this.navCtrl.push(page, { item: post });
   }
 
@@ -124,47 +125,21 @@ export class FeedsPage {
     );
   }
 
-  showAlert(data: any) {
-    let message: any;
-    if (data.responseCode != null) {
-      message = data.responseMessage;
-    } else {
-      message = "Connection error";
-    }
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: message,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
-
   doInfinite(infiniteScroll) {
     this.page = this.page + 1;
     this.api.get("Fposts", "?page=" + this.page + "&size=5", null).subscribe(
       (res: any) => {
         if (res) {
           this.last = res.last;
-          //console.log(this.size);
           for (let i = 0; i < res.content.length; i++) {
             this.posts.push(res.content[i]);
           }
           infiniteScroll.complete();
-        } else {
-          this.posts = this.postsTest;
         }
       },
-      err => {
-        this.posts = this.postsTest;
-
-        console.error("ERROR", err);
-      }
+      err => {}
     );
   }
 
-  ionViewDidLoad() {
-    //console.log('ionViewDidLoad FeedsPage');
-  }
+  ionViewDidLoad() {}
 }

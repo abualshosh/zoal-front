@@ -10,44 +10,21 @@
     (ionInput)="getItems($event)"
     placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
   ></ion-searchbar>
-  <button ion-button block (click)="uploadContacts()">
-    {{ "ImportContacts" | translate }}
-  </button>
   <ion-list>
-    <ion-item *ngFor="let item of currentItems">
-      <ion-avatar item-start>
+    <ion-item *ngFor="let item of connections">
+      <ion-avatar item-start (click)="openProfile(item)">
         <img [src]="this.api.url + '/profileimage/' + item.userName" />
       </ion-avatar>
-      <div>
+      <div (click)="openConversation(item)">
         <h2>{{ item.fullName }}</h2>
-        <p>+249{{ item.userName }}</p>
+        <p>249-{{ item.userName }}</p>
       </div>
-
-      <!--
-        <div *ngIf="item.profileOne.userName!=this.username">
-                <h2>{{item.profileOne.userName}}</h2>
-                <p>{{item.profileOne.fullName}}</p>
-        </div>
-        <div *ngIf="item.profileTow.userName!=this.username">
-        <h2>{{item.profileTow.userName}}</h2>
-        <p>{{item.profileTow.fullName}}</p>
-        </div>
-      -->
-      <!--
-        <button ion-button (click)="openItem(item)" clear item-end>
-          {{ "Send" | translate }}
-        </button>
-      -->
-
-      <ion-note item-end *ngIf="item.note">{{ item.note }}</ion-note>
     </ion-item>
-    <!--
-      <span *ngFor="let contact of contactlist" >
-        <ion-item >
-       {{contact.displayName}}
-       <p>{{contact.phoneNumbers[0].value}}</p>
-        </ion-item>
-      </span>
-    -->
   </ion-list>
+
+  <ion-fab end bottom>
+    <button ion-fab color="primary" (click)="uploadContacts()">
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

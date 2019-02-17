@@ -1,12 +1,16 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
 import {
-  Contacts,
-  Contact,
-  ContactField,
-  ContactName
-} from "@ionic-native/contacts";
+  IonicPage,
+  NavController,
+  NavParams,
+  LoadingController,
+  Events
+} from "ionic-angular";
+import { Contacts } from "@ionic-native/contacts";
 import { Api } from "../../../providers/providers";
+import { AlertProvider } from "../../../providers/alert/alert";
+import { ChatProvider } from "../../../providers/chat/chat";
+import { StorageProvider } from "../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -14,31 +18,42 @@ import { Api } from "../../../providers/providers";
   templateUrl: "contacts.html"
 })
 export class ContactsPage {
-  currentItems: any = [];
-  contactlist: any = [];
+  connections: any = [];
   username: any;
   upcontacts: any = [];
+  profile: any;
+
   constructor(
     public api: Api,
     private contacts: Contacts,
+    public loadingCtrl: LoadingController,
     public navCtrl: NavController,
+    public alertProvider: AlertProvider,
+    private chatService: ChatProvider,
+    public storageProvider: StorageProvider,
+    public events: Events,
     public navParams: NavParams
   ) {
     this.username = localStorage.getItem("username");
-    this.currentItems = JSON.parse(localStorage.getItem("connections"));
+    this.connections = JSON.parse(localStorage.getItem("connections"));
+
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
   }
 
-  /**
-   * Perform a service for the proper items.
-   */
+  ionViewDidLoad() {
+    this.uploadContacts();
+  }
+
   getItems(ev) {
     let val = ev.target.value;
     if (!val || !val.trim()) {
-      this.currentItems = JSON.parse(localStorage.getItem("connections"));
+      this.connections = JSON.parse(localStorage.getItem("connections"));
       return;
     }
-    if (this.currentItems) {
-      this.currentItems = this.currentItems.filter(v => {
+    if (this.connections) {
+      this.connections = this.connections.filter(v => {
         if (v.fullName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
           return true;
         }
@@ -49,84 +64,89 @@ export class ContactsPage {
   }
 
   uploadContacts() {
+    let loader = this.loadingCtrl.create();
+    loader.present();
+
     var opts = {
-      //  filter : "M",
       multiple: true,
       hasPhoneNumber: true
     };
 
     this.contacts.find(["*"], opts).then(
       contacts => {
-        // alert(contacts.length);
-        for (var i = 0; i < contacts.length; i++) {
-          let cont = contacts[i].phoneNumbers[0].value;
-          contacts[i].phoneNumbers[0].value = cont
-            .replace(/ /g, "")
-            .replace(")", "")
-            .replace("-", "")
-            .trim()
-            .slice(-9);
-          if (!isNaN(+contacts[i].phoneNumbers[0].value)) {
-            this.upcontacts.push({ login: contacts[i].phoneNumbers[0].value });
+        for (let i = 0; i < contacts.length; i++) {
+          for (let j = 0; j < contacts[i].phoneNumbers.length; j++) {
+            let cont = contacts[i].phoneNumbers[j].value;
+            contacts[i].phoneNumbers[j].value = cont
+              .replace(/ /g, "")
+              .replace(")", "")
+              .replace("(", "")
+              .replace("-", "")
+              .trim()
+              .replace(/^(\+249|00249|249|0)/g, "");
+            if (contacts[i].phoneNumbers[j].value) {
+              this.upcontacts.push({
+                login: contacts[i].phoneNumbers[j].value
+              });
+            }
           }
         }
 
-        let seq = this.api.post("connections", this.upcontacts).share();
-        //    this.posts=this.postsTest;
-        seq.subscribe(
+        this.api.post("connections", this.upcontacts).subscribe(
           (res: any) => {
-            // If the API returned a successful response, mark the user as logged in
             if (res) {
-              //console.log(this.username)
-
-              //console.log(res)
-              this.currentItems = [];
-              for (var i = 0; i < res.length; i++) {
+              this.connections = [];
+              for (let i = 0; i < res.length; i++) {
                 if (res[i].profileOne.userName != this.username) {
-                  this.currentItems.push(res[i].profileOne);
+                  this.connections.push(res[i].profileOne);
                 } else if (res[i].profileTow.userName != this.username) {
-                  this.currentItems.push(res[i].profileTow);
+                  this.connections.push(res[i].profileTow);
                 }
               }
-              // this.currentItems=res;
               localStorage.setItem(
                 "connections",
-                JSON.stringify(this.currentItems)
+                JSON.stringify(this.connections)
               );
-              //  this._loggedIn(res);
-              //  localStorage.setItem('id_token', res.id_token);
-              //  //console.log( localStorage.getItem('id_token'));
+              loader.dismiss();
+              this.upcontacts = [];
             } else {
-              //  this.currentItems=this.postsTest;
+              loader.dismiss();
+              this.upcontacts = [];
             }
           },
           err => {
-            //  this.posts=this.postsTest;
-
-            console.error("ERROR", err);
+            loader.dismiss();
+            this.upcontacts = [];
+            this.alertProvider.showAlert("failedToUploadContacts", true);
           }
         );
-
-        // this.contactlist=contacts;
       },
       error => {
-        //console.log(error);
+        loader.dismiss();
+        this.upcontacts = [];
+        this.alertProvider.showAlert("failedToReadContacts", true);
       }
     );
   }
 
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(item: any) {
-    if (item.profileTow.userName != this.username) {
-      item = item.profileTow;
-    } else {
-      item = item.profileOne;
-    }
-
+  openProfile(item: any) {
     this.navCtrl.push("ProfilePage", {
       item: item
+    });
+  }
+
+  openConversation(toUser) {
+    const con = {
+      user: this.profile,
+      toUser: toUser
+    };
+
+    this.chatService.createConversation(con).subscribe(res => {
+      this.events.publish("conversation:created", con, Date.now());
+
+      this.navCtrl.push("ChatPage", {
+        con: res
+      });
     });
   }
 }

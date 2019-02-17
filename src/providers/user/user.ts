@@ -1,26 +1,25 @@
 import "rxjs/add/operator/toPromise";
-import * as stompjs from "stompjs";
 
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { Api } from "../api/api";
 import { Card } from "../../models/cards";
 import "rxjs/add/operator/map";
-import * as NodeRSA from "node-rsa";
 import { Events, AlertController } from "ionic-angular";
 import { TranslateService } from "@ngx-translate/core";
-//import { Events } from 'ionic-angular';
 import { StompService } from "ng2-stomp-service";
+import { StorageProvider } from "../storage/storage";
 
 @Injectable()
 export class User {
   _user: any;
   public stompClient: any;
-  private subscription: any;
+
   constructor(
     public events: Events,
     public api: Api,
     public storage: Storage,
+    public storageProvider: StorageProvider,
     public stomp: StompService
   ) {}
 
@@ -34,7 +33,8 @@ export class User {
           //console.log(res)
           localStorage.setItem("id_token", res.id_token);
           localStorage.setItem("username", accountInfo.username);
-          localStorage.setItem("profile", JSON.stringify(res.profile));
+          // localStorage.setItem("profile", JSON.stringify(res.profile));
+          this.storageProvider.setProfile(res.profile);
           localStorage.setItem("Gkey", res.gmppKey);
           localStorage.setItem("Ckey", res.consumerKey);
         }
@@ -86,6 +86,14 @@ export class User {
     );
 
     return seq;
+  }
+
+  updateProfile(data: any) {
+    return this.api.put("profiles", data);
+  }
+
+  updateProfilePic(data) {
+    return this.api.put("profiles-pic", data);
   }
 
   /**

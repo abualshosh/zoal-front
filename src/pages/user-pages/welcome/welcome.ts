@@ -3,18 +3,15 @@ import {
   IonicPage,
   NavController,
   MenuController,
-  Platform
+  Platform,
+  LoadingController
 } from "ionic-angular";
 import { SQLite } from "@ionic-native/sqlite";
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { GetServicesProvider } from "../../../providers/providers";
 
-/**
- * The Welcome Page is a splash page that quickly describes the app,
- * and then directs the user to create an account or log in.
- * If you'd like to immediately put the user onto a login/signup page,
- * we recommend not using the Welcome page.
- */
 @IonicPage()
 @Component({
   selector: "page-welcome",
@@ -26,30 +23,39 @@ export class WelcomePage {
     { language: "English", Code: "en" },
     { language: "عربي", Code: "ar" }
   ];
+
+  isVideo: boolean = false;
+  trustedVideoUrl: SafeResourceUrl;
+
   constructor(
     private translate: TranslateService,
     public sqlite: SQLite,
     public navCtrl: NavController,
     public menuCtrl: MenuController,
     public platform: Platform,
+    public loadingCtrl: LoadingController,
+    private domSanitizer: DomSanitizer,
+    public serviceProvider: GetServicesProvider,
     public storage: Storage
   ) {
     this.checkDirection();
-    this.language = this.translate.getDefaultLang();
-    // if (!this.language) {
-    //   this.storage.set("lang", "ar").then(lang => {
-    //     this.language = lang;
-    //     this.translate.setDefaultLang(this.language);
-    //   });
-    // }
+    this.storage.get("lang").then(lang => (this.language = lang));
 
     this.menuCtrl.enable(false, "sideMenu");
+
+    this.serviceProvider.getWelcomeVideoUrl().subscribe(res => {
+      // res[0].url += "?rel=0;&autoplay=1&mute=1";
+      this.trustedVideoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+        res[0].url
+      );
+      this.isVideo = true;
+    });
   }
 
   ChangeLang() {
     this.storage.set("lang", this.language).then(lang => {
-      this.translate.setDefaultLang(this.language);
-      this.translate.use(this.language);
+      this.translate.setDefaultLang(lang);
+      this.translate.use(lang);
       this.checkDirection();
     });
   }

@@ -51,4 +51,8 @@ export class GetServicesProvider {
       );
     });
   }
+
+  getWelcomeVideoUrl() {
+    return this.api.get("welcome-videos");
+  }
 }

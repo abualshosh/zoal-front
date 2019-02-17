@@ -1,10 +1,15 @@
 <ion-content scroll="false">
-  <div class="splachtends">
-    <!-- <video style="width: 100%; height:90%; padding: 0px; margin:0px;" id="vedio"   preload="auto" autoplay  muted="true" loop><source src="../assets/img/intro.mp4"></video> -->
+  <div *ngIf="isVideo">
+    <iframe
+      width="100%"
+      height="315"
+      [src]="trustedVideoUrl ? trustedVideoUrl : null"
+      frameborder="0"
+      allowfullscreen
+      allow="autoplay; encrypted-media"
+    ></iframe>
   </div>
-  <div class="splash-bg">
-    <!-- <video style="width: 100%; height:90%; padding: 0px; margin:0px;" id="vedio"   preload="auto" autoplay  muted="true" loop><source src="../assets/img/intro.mp4"></video> -->
-  </div>
+  <div *ngIf="!isVideo" class="splash-bg"></div>
   <div class="splash-info">
     <div class="splash-logo"></div>
     <div class="splash-intro">

@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>{{ "accountInfo" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="con">
+    <form [formGroup]="userForm" (ngSubmit)="postData()">
+      <input
+        type="file"
+        #fileInput
+        style="visibility: hidden; height: 0px"
+        formControlName="file"
+        name="file"
+        (change)="processWebImage($event)"
+      />
+      <div class="profile-image-wrapper" (click)="presentActionSheet()">
+        <div
+          class="profile-image-placeholder"
+          *ngIf="!this.userForm.controls.profilePic.value"
+        >
+          <ion-icon name="add"></ion-icon>
+          <div>{{ "ChoseImage" | translate }}</div>
+        </div>
+
+        <div
+          class="profile-image"
+          [style.backgroundImage]="getProfileImageStyle()"
+          *ngIf="this.userForm.controls.profilePic.value"
+        >
+          <img-loader
+            class="profile-image"
+            [src]="this.userForm.controls.profilePic.value"
+          ></img-loader>
+        </div>
+      </div>
+      <ion-list>
+        <div *ngIf="!userForm.controls.fullname.valid && submitAttempt">
+          <p>{{ "validFullnameError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "name" | translate }} </ion-label>
+          <ion-input type="text" formControlName="fullname"></ion-input>
+        </ion-item>
+
+        <div *ngIf="!userForm.controls.email.valid && submitAttempt">
+          <p>{{ "validEmailError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "email" | translate }} </ion-label>
+          <ion-input type="text" formControlName="email"></ion-input>
+        </ion-item>
+
+        <div *ngIf="!userForm.controls.bio.valid && submitAttempt">
+          <p>{{ "validProfileBioError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "profileBio" | translate }} </ion-label>
+          <ion-textarea rows="5" formControlName="bio"></ion-textarea>
+        </ion-item>
+
+        <button class="subbutn" ion-button type="submit" color="secondary">
+          {{ "Submit" | translate }}
+        </button>
+      </ion-list>
+    </form>
+  </div>
+</ion-content>

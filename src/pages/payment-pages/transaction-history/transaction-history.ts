@@ -21,16 +21,16 @@ export class TransactionHistoryPage {
   history = [];
 
   @ViewChild("content") content: Content;
+
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
     public api: Api
   ) {
-    this.api.get("historiesmobile", "?page=0&size=15", null).subscribe(
+    this.api.get("consumer/historiesmobile", "?page=0&size=15", null).subscribe(
       (res: any) => {
         this.last = res.last;
-        //console.log(this.size)
         this.history = res.content;
       },
       err => {
@@ -40,10 +40,9 @@ export class TransactionHistoryPage {
   }
 
   doRefresh(refresher) {
-    this.api.get("historiesmobile", "?page=0&size=15", null).subscribe(
+    this.api.get("consumer/historiesmobile", "?page=0&size=15", null).subscribe(
       (res: any) => {
         this.last = res.last;
-        //console.log(this.size)
         this.history = res.content;
         refresher.complete();
       },
@@ -71,7 +70,6 @@ export class TransactionHistoryPage {
         issuerTranFee: data.issuerTranFee,
         tranAmount: data.tranAmount,
         tranCurrency: data.tranCurrency,
-        //  ,"balance":data.balance.available
         transactionId: data.transactionId,
         date: transaction.transactionDate
       };
@@ -143,11 +141,10 @@ export class TransactionHistoryPage {
   doInfinite(infiniteScroll) {
     this.page = this.page + 1;
     this.api
-      .get("historiesmobile", "?page=" + this.page + "&size=15", null)
+      .get("consumer/historiesmobile", "?page=" + this.page + "&size=15", null)
       .subscribe(
         (res: any) => {
           this.last = res.last;
-          //console.log(this.size);
           for (let i = 0; i < res.content.length; i++) {
             this.history.push(res.content[i]);
           }

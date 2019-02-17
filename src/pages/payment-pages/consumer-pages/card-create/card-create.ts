@@ -8,7 +8,7 @@ import {
 } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 
@@ -27,7 +27,7 @@ export class CardCreatePage {
   constructor(
     public viewCtrl: ViewController,
     private formBuilder: FormBuilder,
-    public user: UserProvider,
+
     public storage: Storage,
     public modalCtrl: ModalController,
     public navParams: NavParams

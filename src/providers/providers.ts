@@ -1,6 +1,6 @@
 import { Api } from "./api/api";
 import { Settings } from "./settings/settings";
-import { User, UserProvider } from "./user/user";
+import { User } from "./user/user";
 import { AuthService } from "./auth/auth";
 import { TokenInterceptor } from "./auth/TokenInt";
 import { GetServicesProvider } from "./get-services/get-services";
@@ -10,6 +10,5 @@ export {
   User,
   AuthService,
   TokenInterceptor,
-  GetServicesProvider,
-  UserProvider
+  GetServicesProvider
 };

@@ -7,7 +7,7 @@ import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 
 import * as uuid from "uuid";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import { AlertProvider } from "../../../../providers/alert/alert";
@@ -28,7 +28,7 @@ export class CardLessPage {
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public navCtrl: NavController,
-    public user: UserProvider,
+
     public storage: Storage,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController

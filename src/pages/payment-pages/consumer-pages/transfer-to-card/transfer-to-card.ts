@@ -11,7 +11,7 @@ import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 
 import * as uuid from "uuid";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import {
@@ -43,7 +43,7 @@ export class TransferToCardPage {
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public navCtrl: NavController,
-    public user: UserProvider,
+
     public translateService: TranslateService,
     public storage: Storage,
     public alertProvider: AlertProvider,

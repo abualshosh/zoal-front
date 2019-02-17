@@ -6,7 +6,7 @@ import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 
 import * as uuid from "uuid";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { Storage } from "@ionic/storage";
 import * as moment from "moment";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
@@ -29,7 +29,7 @@ export class GmppTranFromCardPage {
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     
-    public user: UserProvider,
+
     public storage: Storage,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,

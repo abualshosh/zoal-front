@@ -12,7 +12,7 @@ import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 
 import * as uuid from "uuid";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
@@ -38,7 +38,7 @@ export class SpecialPaymentPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    public user: UserProvider,
+
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public storage: Storage,

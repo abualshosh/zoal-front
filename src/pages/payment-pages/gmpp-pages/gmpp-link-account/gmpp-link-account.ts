@@ -6,7 +6,7 @@ import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 
 import * as uuid from "uuid";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { Storage } from "@ionic/storage";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
@@ -33,7 +33,7 @@ export class GmppLinkAccountPage {
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     
-    public user: UserProvider,
+
     public storage: Storage,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,

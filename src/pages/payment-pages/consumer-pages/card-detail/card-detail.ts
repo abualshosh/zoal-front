@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, ModalController } from "ionic-angular";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { Card } from "../../../../models/cards";
 import { AlertController } from "ionic-angular";
 import { ToastController } from "ionic-angular";
@@ -31,7 +31,7 @@ export class CardDetailPage {
     private formBuilder: FormBuilder,
     public modalCtrl: ModalController,
     public navCtrl: NavController,
-    public user: UserProvider,
+
     public storage: Storage,
     public translateService: TranslateService,
     public alertCtrl: AlertController,

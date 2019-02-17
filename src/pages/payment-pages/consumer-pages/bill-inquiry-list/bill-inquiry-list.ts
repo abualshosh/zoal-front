@@ -6,7 +6,7 @@ import {
   NavController,
   AlertController
 } from "ionic-angular";
-import { UserProvider } from "../../../../providers/user/user";
+
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 @IonicPage()
 @Component({
@@ -23,7 +23,6 @@ export class BillInquiryListPage {
     public alertCtrl: AlertController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    private user: UserProvider,
     public GetServicesProvider: GetServicesProvider
   ) {
     let loader = this.loadingCtrl.create({

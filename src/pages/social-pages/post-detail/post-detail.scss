@@ -1,15 +1,25 @@
 page-post-detail {
+  .comment-text {
+    font-size: 1em;
+  }
+
+  .comment-date {
+    font-size: 0.7em;
+  }
+
   .item-profile {
     width: 100%;
     background-position: center center;
     background-size: cover;
     height: 250px;
   }
+
   .bor {
     border: 1px solid lightgrey;
     width: 100%;
     background: white;
   }
+
   .bar-footer {
     overflow: visible !important;
   }

@@ -5,13 +5,13 @@ import {
   NavParams,
   PopoverController
 } from "ionic-angular";
-import { Events } from "ionic-angular";
 import {
   BarcodeScannerOptions,
   BarcodeScanner
 } from "@ionic-native/barcode-scanner";
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
+import { StorageProvider } from "../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -150,10 +150,12 @@ export class MainMenuPage {
     public translateService: TranslateService,
     public popoverCtrl: PopoverController,
     public navCtrl: NavController,
-    public navParams: NavParams,
-    public events: Events
+    public storageProvider: StorageProvider,
+    public navParams: NavParams
   ) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
 
     this.isGmpp = this.navParams.get("isGmpp");
 
@@ -243,9 +245,5 @@ export class MainMenuPage {
     } else {
       this.navCtrl.push(page);
     }
-  }
-
-  ionViewWillLeave() {
-    this.events.publish("isGmpp", "neither");
   }
 }

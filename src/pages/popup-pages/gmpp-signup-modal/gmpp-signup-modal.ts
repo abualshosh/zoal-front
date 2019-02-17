@@ -81,7 +81,9 @@ export class GmppSignupModalPage {
         loader.dismiss();
 
         if (data.responseCode == 1) {
-          this.profile = JSON.parse(localStorage.getItem("profile"));
+          this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
           this.profile.phoneNumber = "249" + localStorage.getItem("username");
           this.api.put("/profiles", this.profile).subscribe(
             (res: any) => {
@@ -110,7 +112,9 @@ export class GmppSignupModalPage {
   }
 
   dismiss() {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
     localStorage.setItem("profile", JSON.stringify(this.profile));
     this.viewCtrl.dismiss();
   }

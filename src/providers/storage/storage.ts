@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import "rxjs/add/operator/map";
 import { Storage } from "@ionic/storage";
+import "rxjs/add/observable/fromPromise";
+import { Observable } from "rxjs/Observable";
 
 export interface Wallet {
   id: number;
@@ -9,6 +11,8 @@ export interface Wallet {
 }
 
 const WALLETS_KEY = "wallets";
+
+const PROFILE_KEY = "profile";
 
 @Injectable()
 export class StorageProvider {
@@ -26,9 +30,17 @@ export class StorageProvider {
     });
   }
 
+  setProfile(profile): Promise<any> {
+    return this.storage.set(PROFILE_KEY, profile);
+  }
+
   // READ
   getItems(): Promise<Wallet[]> {
     return this.storage.get(WALLETS_KEY);
+  }
+
+  getProfile(): Observable<any> {
+    return Observable.fromPromise(this.storage.get(PROFILE_KEY));
   }
 
   // UPDATE

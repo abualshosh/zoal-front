@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { Events } from "ionic-angular";
+import { StorageProvider } from "../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -13,13 +14,23 @@ export class PaymentMethodPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public events: Events
+    public events: Events,
+    public storageProvider: StorageProvider
   ) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
-    this.events.publish("isGmpp", "neither");
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
+
+    events.subscribe("profile:updated", () => {
+      this.storageProvider.getProfile().subscribe(val => {
+        this.profile = val;
+      });
+    });
   }
 
-  ionViewDidLoad() {}
+  ionViewDidEnter() {
+    this.events.publish("isGmpp", "neither");
+  }
 
   openConsumerPage() {
     const animationsOptions = {

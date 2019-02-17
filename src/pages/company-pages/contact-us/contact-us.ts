@@ -3,11 +3,14 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  LoadingController
+  LoadingController,
+  ModalController
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { GetServicesProvider } from "../../../providers/providers";
 import { AlertProvider } from "../../../providers/alert/alert";
+import * as moment from "moment";
+import { StorageProvider } from "../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -17,6 +20,7 @@ import { AlertProvider } from "../../../providers/alert/alert";
 export class ContactUsPage {
   private contactForm: FormGroup;
   submitAttempt: boolean = false;
+  profile: any;
 
   constructor(
     public navCtrl: NavController,
@@ -24,8 +28,14 @@ export class ContactUsPage {
     public loadingCtrl: LoadingController,
     public serviceProvider: GetServicesProvider,
     public alertProvider: AlertProvider,
+    public modalCtrl: ModalController,
+    public storageProvider: StorageProvider,
     public navParams: NavParams
   ) {
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
+
     this.contactForm = this.formBuilder.group({
       title: [
         "",
@@ -53,15 +63,24 @@ export class ContactUsPage {
       loader.present();
 
       let request = this.contactForm.value;
+      request.userName = this.profile.userName;
+      request.date = moment().format("YYYY-MM-DD HH:MM:SS");
 
-      this.serviceProvider.load(request, "userMessages").then(
+      this.serviceProvider.load(request, "consumer/user-messages").then(
         res => {
           loader.dismiss();
-          this.alertProvider.showAlert(res);
+          let modal = this.modalCtrl.create(
+            "TransactionDetailPage",
+            { data: [], main: [{ contactUsPage: "" }] },
+            { cssClass: "inset-modals" }
+          );
+          modal.present();
+          this.contactForm.reset();
           this.submitAttempt = false;
         },
         err => {
           loader.dismiss();
+          this.contactForm.reset();
           this.alertProvider.showAlert(err);
           this.submitAttempt = false;
         }

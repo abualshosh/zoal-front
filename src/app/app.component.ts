@@ -7,6 +7,7 @@ import { Api } from "../providers/providers";
 import { ImageLoaderConfig } from "ionic-image-loader";
 import { Storage } from "@ionic/storage";
 import { Events } from "ionic-angular";
+import { StorageProvider } from "../providers/storage/storage";
 
 @Component({
   templateUrl: "app.html"
@@ -20,12 +21,12 @@ export class MyApp {
     {
       title: "aboutUsPage",
       component: "AboutUsPage",
-      icon: "information-circle"
+      icon: "custom-about"
     },
     {
       title: "contactUsPage",
       component: "ContactUsPage",
-      icon: "mail"
+      icon: "custom-mail"
     }
   ];
 
@@ -38,7 +39,7 @@ export class MyApp {
     {
       title: "gmppWalletDetailPage",
       component: "GmppWalletDetailPage",
-      icon: "bookmarks"
+      icon: "custom-wallet"
     },
     {
       title: "gmppBalancePage",
@@ -66,7 +67,7 @@ export class MyApp {
     {
       title: "cardDetailPage",
       component: "CardDetailPage",
-      icon: "card"
+      icon: "custom-card"
     },
     {
       title: "getBalancePage",
@@ -107,6 +108,7 @@ export class MyApp {
     private config: Config,
     private statusBar: StatusBar,
     public menuCtrl: MenuController,
+    public storageProvider: StorageProvider,
     private splashScreen: SplashScreen
   ) {
     if (localStorage.getItem("logdin") == "true") {
@@ -115,22 +117,32 @@ export class MyApp {
 
     this.subscribeToPaymentMethodChange();
 
-    this.language = this.translate.getDefaultLang();
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
 
-    this.events.subscribe("profile", profile => {
-      this.profile = profile;
+    events.subscribe("profile:updated", () => {
+      this.storageProvider.getProfile().subscribe(val => {
+        this.profile = val;
+      });
     });
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      imageLoaderConfig.enableDebugMode();
-      imageLoaderConfig.setImageReturnType("base64");
       this.statusBar.backgroundColorByHexString("#e0e0e0");
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.initTranslate();
     });
+
+    // enable debug mode to get console logs and stuff
+    imageLoaderConfig.enableDebugMode();
+    // set a fallback url to use by default in case an image is not found
+    imageLoaderConfig.setFallbackUrl("assets/img/userPlaceholder.png");
+    imageLoaderConfig.setImageReturnType("base64");
+    imageLoaderConfig.setSpinnerColor("secondary");
+    imageLoaderConfig.setSpinnerName("bubbles");
   }
 
   initTranslate() {
@@ -146,6 +158,7 @@ export class MyApp {
           this.checkDirection();
         });
       }
+      this.language = this.translate.getDefaultLang();
     });
 
     this.translate.get(["BACK_BUTTON_TEXT"]).subscribe(values => {
@@ -177,8 +190,8 @@ export class MyApp {
 
   changeLang() {
     this.storage.set("lang", this.language).then(lang => {
-      this.translate.setDefaultLang(this.language);
-      this.translate.use(this.language);
+      this.translate.setDefaultLang(lang);
+      this.translate.use(lang);
       this.checkDirection();
     });
   }
@@ -203,5 +216,10 @@ export class MyApp {
 
   openPage(page) {
     this.nav.push(page.component);
+  }
+
+  openProfile() {
+    this.nav.push("ProfilePage");
+    this.menuCtrl.close();
   }
 }

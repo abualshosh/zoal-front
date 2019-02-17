@@ -12,7 +12,7 @@ import { StompService } from "ng2-stomp-service";
 import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
 import { FCM } from "@ionic-native/fcm";
 import { Platform } from "ionic-angular";
-import { Contacts } from "@ionic-native/contacts";
+import { StorageProvider } from "../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -24,8 +24,8 @@ export class TabsPage {
 
   tab1Root: any = "FeedsPage";
   tab2Root: any = Tab2Root;
-  tab3Root: any = "UserSettingsPage";
-  tab4Root: any = "ChatsPage";
+  tab3Root: any = "ProfilePage";
+  tab4Root: any = "ConversationsPage";
   tab5Root: any = "PaymentMethodPage";
 
   tab1Title: any;
@@ -35,13 +35,10 @@ export class TabsPage {
   tab5Title: any;
 
   tab4BadgeCount = 0;
-  upcontacts: any = [];
-  currentItems: any = [];
   subscription: any;
   profile: any;
 
   constructor(
-    private contacts: Contacts,
     public zone: NgZone,
     public platform: Platform,
     private fcm: FCM,
@@ -51,6 +48,7 @@ export class TabsPage {
     public stomp: StompService,
     public navCtrl: NavController,
     public translateService: TranslateService,
+    public storageProvider: StorageProvider,
     public menuCtrl: MenuController
   ) {
     translateService
@@ -65,15 +63,27 @@ export class TabsPage {
 
     this.menuCtrl.enable(true, "sideMenu");
 
-    this.profile = JSON.parse(localStorage.getItem("profile"));
-    this.events.publish("profile", this.profile);
+    this.events.subscribe("chat:received", msg => {
+      this.zone.run(() => {
+        this.tab4BadgeCount++;
+      });
+    });
+
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+    });
+
+    events.subscribe("profile:updated", () => {
+      this.storageProvider.getProfile().subscribe(val => {
+        this.profile = val;
+      });
+    });
 
     platform.ready().then(() => {
       if (this.platform.is("cordova")) {
         this.initDatabase();
 
         this.username = localStorage.getItem("username");
-        this.uploadContacts();
 
         fcm.getToken().then(token => {
           if (token) {
@@ -160,16 +170,14 @@ export class TabsPage {
     //start connection
     this.stomp.startConnect().then(() => {
       this.stomp.done("init");
-      //console.log('connected');
 
-      //subscribe
       this.subscription = this.stomp.subscribe(
         "/user/queue/messages",
         this.response
       );
+
       //send data
       this.events.subscribe("message", res => {
-        //console.log(greeting)
         this.zone.run(() => {
           this.tab4BadgeCount++;
         });
@@ -225,56 +233,7 @@ export class TabsPage {
     });
   }
 
-  uploadContacts() {
-    var opts = {
-      filter: "M",
-      multiple: true,
-      hasPhoneNumber: true,
-      fields: ["displayName", "name"]
-    };
-
-    this.contacts.find(["*"], opts).then(
-      contacts => {
-        for (var i = 0; i < contacts.length; i++) {
-          let cont = contacts[i].phoneNumbers[0].value;
-          contacts[i].phoneNumbers[0].value = cont
-            .replace(/ /g, "")
-            .trim()
-            .slice(-9);
-          this.upcontacts.push({ login: contacts[i].phoneNumbers[0].value });
-        }
-
-        let seq = this.api.post("connections", this.upcontacts).share();
-        seq.subscribe(
-          (res: any) => {
-            if (res) {
-              this.currentItems = [];
-              for (var i = 0; i < res.length; i++) {
-                if (res[i].profileOne.userName != this.username) {
-                  this.currentItems.push(res[i].profileOne);
-                } else if (res[i].profileTow.userName != this.username) {
-                  this.currentItems.push(res[i].profileTow);
-                }
-              }
-              localStorage.setItem(
-                "connections",
-                JSON.stringify(this.currentItems)
-              );
-            }
-          },
-          err => {
-            console.error("ERROR", err);
-          }
-        );
-      },
-      error => {
-        // console.log(error);
-      }
-    );
-  }
-
   public response = data => {
-    //console.log(data)
     this.events.publish("message", data);
   };
 

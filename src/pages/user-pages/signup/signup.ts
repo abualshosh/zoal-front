@@ -1,11 +1,6 @@
 import { Component } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import {
-  IonicPage,
-  NavController,
-  ToastController,
-  LoadingController
-} from "ionic-angular";
+import { IonicPage, NavController, LoadingController } from "ionic-angular";
 
 import { User } from "../../../providers/providers";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -26,14 +21,11 @@ export class SignupPage {
   private signup: FormGroup;
   submitAttempt: boolean = false;
 
-  private signupErrorString: string;
-
   constructor(
     public navCtrl: NavController,
     public user: User,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController,
     public translateService: TranslateService,
     public alertProvider: AlertProvider
   ) {
@@ -48,19 +40,6 @@ export class SignupPage {
         ])
       ]
     });
-
-    this.translateService.get("SIGNUP_ERROR").subscribe(value => {
-      this.signupErrorString = value;
-    });
-  }
-
-  showToast(message) {
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 3000,
-      position: "top"
-    });
-    toast.present();
   }
 
   doSignup() {
@@ -77,7 +56,7 @@ export class SignupPage {
       this.user.login(this.account).subscribe(
         resp => {
           loader.dismiss();
-          this.showToast(this.signupErrorString);
+          this.alertProvider.showAlert("failedToSignup", true);
           this.submitAttempt = false;
         },
         err => {
@@ -85,21 +64,20 @@ export class SignupPage {
             (res: any) => {
               if (res.success == true) {
                 loader.dismiss();
-                this.navCtrl.setRoot("VlidateOtpPage", {
+                this.navCtrl.push("VlidateOtpPage", {
                   username: this.account.username,
                   OtpType: "signup"
                 });
               } else {
                 loader.dismiss();
-                this.showToast(this.signupErrorString);
+                this.alertProvider.showAlert("failedToSendOTP", true);
                 this.submitAttempt = false;
               }
               this.submitAttempt = false;
             },
             err => {
-              console.error("ERROR", err);
               loader.dismiss();
-              this.alertProvider.showAlert(err);
+              this.alertProvider.showAlert("failedToSendOTP", true);
               this.submitAttempt = false;
             }
           );

@@ -1,13 +1,9 @@
 import { Component } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import {
-  IonicPage,
-  NavController,
-  ToastController,
-  LoadingController
-} from "ionic-angular";
+import { IonicPage, NavController, LoadingController } from "ionic-angular";
 import { User } from "../../../providers/providers";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -20,22 +16,14 @@ export class LoginPage {
     password: "test"
   };
 
-  userInfo: { country_code: string; phoneNumber: string } = {
-    country_code: "",
-    phoneNumber: "test"
-  };
-
   private login: FormGroup;
   submitAttempt: boolean = false;
-
-  // Our translated text strings
-  private loginErrorString: string;
 
   constructor(
     public navCtrl: NavController,
     public user: User,
     public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController,
+    public alertProvider: AlertProvider,
     private formBuilder: FormBuilder,
     public translateService: TranslateService
   ) {
@@ -50,19 +38,6 @@ export class LoginPage {
         ])
       ]
     });
-
-    this.translateService.get("LOGIN_ERROR").subscribe(value => {
-      this.loginErrorString = value;
-    });
-  }
-
-  showToast(message) {
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 3000,
-      position: "top"
-    });
-    toast.present();
   }
 
   doLogin() {
@@ -78,33 +53,30 @@ export class LoginPage {
         resp => {
           this.user.sendOtp({ login: this.account.username }).subscribe(
             (res: any) => {
-              //console.log(res);
               if (res.success) {
                 loader.dismiss();
                 this.submitAttempt = false;
-                this.navCtrl.setRoot("VlidateOtpPage", {
+                this.navCtrl.push("VlidateOtpPage", {
                   username: this.account.username,
                   OtpType: "login"
                 });
               } else {
                 loader.dismiss();
                 this.submitAttempt = false;
-                this.showToast(this.loginErrorString);
+                this.alertProvider.showAlert("failedToSendOTP", true);
               }
             },
             err => {
               loader.dismiss();
               this.submitAttempt = false;
-              console.error("ERROR", err);
+              this.alertProvider.showAlert("failedToSendOTP", true);
             }
           );
         },
         err => {
-          //this.navCtrl.push(MainPage);
-          // Unable to log in
           loader.dismiss();
           this.submitAttempt = false;
-          this.showToast(this.loginErrorString);
+          this.alertProvider.showAlert("failedToLogin", true);
         }
       );
     }

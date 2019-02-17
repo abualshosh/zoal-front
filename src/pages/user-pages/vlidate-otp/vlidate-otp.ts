@@ -3,8 +3,7 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  LoadingController,
-  ToastController
+  LoadingController
 } from "ionic-angular";
 import { User } from "../../../providers/providers";
 import { MainPage } from "../../pages";
@@ -19,43 +18,25 @@ import { AlertProvider } from "../../../providers/alert/alert";
 export class VlidateOtpPage {
   account: { login: string; otp: string } = {
     login: "",
-
     otp: "test"
   };
 
   otpType: any;
-  otpErrorString: String;
 
   constructor(
     public user: User,
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController,
     public alertProvider: AlertProvider,
     public translateService: TranslateService
   ) {
     this.account.login = navParams.get("username");
     this.otpType = navParams.get("OtpType");
-
-    this.translateService.get("OTP_ERROR").subscribe(value => {
-      this.otpErrorString = value;
-    });
   }
 
-  showToast(message) {
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 3000,
-      position: "top"
-    });
-    toast.present();
-  }
-
-  vlidate() {
-    let loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
+  validateOtp() {
+    let loader = this.loadingCtrl.create();
     loader.present();
 
     this.user.validateOtp(this.account).subscribe(
@@ -73,7 +54,7 @@ export class VlidateOtpPage {
           }
         } else {
           loader.dismiss();
-          this.showToast(this.otpErrorString);
+          this.alertProvider.showAlert("OTP_ERROR", true);
         }
       },
       err => {
@@ -84,7 +65,5 @@ export class VlidateOtpPage {
     );
   }
 
-  ionViewDidLoad() {
-    //console.log('ionViewDidLoad VlidateOtpPage');
-  }
+  ionViewDidLoad() {}
 }

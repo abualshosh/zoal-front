@@ -10,24 +10,26 @@
     <div class="splash-intro">{{ "EYPN" | translate }}</div>
   </div>
   <ion-list class="form">
-    <form [formGroup]="login" (ngSubmit)="doLogin()">
-      <div *ngIf="!login.controls.PHONENUMBER.valid && submitAttempt">
-        <p>{{ "validvoucherNumberError" | translate }}</p>
-      </div>
-      <ion-item>
-        <ion-label fixed>+249</ion-label>
-        <ion-input
-          type="number"
-          formControlName="PHONENUMBER"
-          required
-        ></ion-input>
-      </ion-item>
+    <div class="con">
+      <form [formGroup]="login" (ngSubmit)="doLogin()">
+        <div *ngIf="!login.controls.PHONENUMBER.valid && submitAttempt">
+          <p>{{ "validvoucherNumberError" | translate }}</p>
+        </div>
+        <ion-item dir="ltr">
+          <ion-label fixed>+249</ion-label>
+          <ion-input
+            type="number"
+            formControlName="PHONENUMBER"
+            required
+          ></ion-input>
+        </ion-item>
 
-      <div padding>
-        <button ion-button color="primary" block>
-          {{ "login" | translate }}
-        </button>
-      </div>
-    </form>
+        <div padding>
+          <button ion-button color="primary" block>
+            {{ "login" | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
   </ion-list>
 </ion-content>

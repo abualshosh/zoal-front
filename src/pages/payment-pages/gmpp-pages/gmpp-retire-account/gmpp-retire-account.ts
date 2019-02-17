@@ -41,7 +41,7 @@ export class GmppRetireAccountPage {
     //   this.consumerIdentifier = val;
     // });
 
-    //user.printuser();
+    
     //  this.compleate='TRUE';
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
@@ -132,12 +132,12 @@ export class GmppRetireAccountPage {
       );
       dat.consumerIdentifier = dat.walletNumber;
 
-      //console.log(dat.IPIN)
+      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "Retirewallet").then(
         data => {
-          //console.log(data)
+          
           if (data != null && data.responseCode == 1) {
             this.storage.set("RetireACCOUNT", "TRUE");
             this.storage.set("RUUID", dat.UUID);
@@ -185,13 +185,13 @@ export class GmppRetireAccountPage {
           );
           dat.consumerIdentifier = this.todo.controls["walletNumber"].value;
           //console.log(dat.originalTranUUID)
-          //console.log(dat.IPIN)
+          
 
           this.GetServicesProvider.load(
             this.complate.value,
             "ComplateRetirewallet"
           ).then(data => {
-            //console.log(data)
+            
             if (data != null && data.responseCode == 1) {
               loader.dismiss();
               var datas = [{ tital: "Status", desc: data.responseMessage }];

@@ -38,7 +38,7 @@ export class GmppBalancePage {
   ) {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
-    //user.printuser();
+    
     this.GetServicesProvider = GetServicesProviderg;
 
     this.storageProvider.getItems().then(wallets => {
@@ -94,12 +94,12 @@ export class GmppBalancePage {
         dat.UUID + dat.consumerPIN
       );
       dat.consumerIdentifier = dat.walletNumber;
-      //console.log(dat.IPIN)
+      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "gmpp/getSVABalance").then(
         data => {
-          //console.log(data)
+          
           if (data != null && data.responseCode == 1) {
             loader.dismiss();
             //  data.availableBalance=0;

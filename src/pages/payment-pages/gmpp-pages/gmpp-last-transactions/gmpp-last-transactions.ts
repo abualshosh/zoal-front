@@ -37,7 +37,7 @@ export class GmppLastTransactionsPage {
   ) {
     // this.consumerIdentifier = localStorage.getItem("username");
 
-    //user.printuser();
+    
     this.GetServicesProvider = GetServicesProviderg;
 
     this.storageProvider.getItems().then(wallets => {
@@ -93,7 +93,7 @@ export class GmppLastTransactionsPage {
         dat.UUID + dat.consumerPIN
       );
       dat.consumerIdentifier = dat.walletNumber;
-      //console.log(dat.IPIN)
+      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(
@@ -101,7 +101,7 @@ export class GmppLastTransactionsPage {
         "gmpp/getLastTransactions"
       ).then(data => {
         this.submitAttempt = false;
-        //console.log(data)
+        
         if (data != null && data.responseCode == 1) {
           loader.dismiss();
           var datas = [

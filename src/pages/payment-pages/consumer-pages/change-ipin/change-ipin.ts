@@ -26,7 +26,6 @@ export class ChangeIpinPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
     public user: UserProvider,
     public storage: Storage,
     public alertProvider: AlertProvider,
@@ -40,7 +39,6 @@ export class ChangeIpinPage {
       }
     });
 
-    //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
       Card: ["", Validators.required],
@@ -84,8 +82,6 @@ export class ChangeIpinPage {
     modal.present();
   }
 
-  
-
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
@@ -93,30 +89,22 @@ export class ChangeIpinPage {
 
       loader.present();
       var dat = this.todo.value;
-      //console.log(dat.IPIN)
-      //console.log(dat.newIPIN)
+
       if (dat.ConnewIPIN == dat.newIPIN) {
         dat.UUID = uuid.v4();
         dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
         dat.newIPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.newIPIN);
-        //console.log(dat.IPIN)
-
         dat.authenticationType = "00";
         dat.pan = dat.Card.pan;
         dat.expDate = dat.Card.expDate;
-        //console.log(dat)
         dat.ConnewIPIN = "";
-        this.GetServicesProvider.load(
-          this.todo.value,
-          "consumer/ChangeIPIN"
-        ).then(data => {
-          //console.log(data)
+
+        this.GetServicesProvider.load(dat, "consumer/ChangeIPIN").then(data => {
           if (data != null && data.responseCode == 0) {
             loader.dismiss();
-            var datas = [{ tital: "Status", desc: data.responseMessage }];
             let modal = this.modalCtrl.create(
-              "GmppReceiptPage",
-              { data: datas },
+              "TransactionDetailPage",
+              { data: [], main: [{ changeIpinPage: "" }] },
               { cssClass: "inset-modals" }
             );
             modal.present();
@@ -132,7 +120,6 @@ export class ChangeIpinPage {
       } else {
         loader.dismiss();
         var data = { responseMessage: "IPIN Missmatch" };
-        //data.responseMessage="IPIN Missmatch";
         this.alertProvider.showAlert(data);
       }
     }

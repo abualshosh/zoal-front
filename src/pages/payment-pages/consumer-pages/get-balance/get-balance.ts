@@ -30,7 +30,6 @@ export class GetBalancePage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
     public navCtrl: NavController,
     public user: UserProvider,
     public storage: Storage,
@@ -70,17 +69,6 @@ export class GetBalancePage {
     modal.present();
   }
 
-  showAlert(balance: any) {
-    let alert = this.alertCtrl.create({
-      title: "Error!",
-      message: balance.responseMessage,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
-  }
-
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
@@ -90,16 +78,16 @@ export class GetBalancePage {
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      //console.log(dat.IPIN)
+      
       dat.tranCurrency = "SDG";
 
       dat.authenticationType = "00";
       dat.fromAccountType = "00";
       dat.pan = dat.Card.pan;
       dat.expDate = dat.Card.expDate;
-      //console.log(dat)
+      
       this.GetServicesProvider.load(dat, "consumer/getBalance").then(data => {
-        //console.log(data)
+        
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var main = [];

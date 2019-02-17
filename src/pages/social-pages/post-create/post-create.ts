@@ -6,17 +6,15 @@ import {
   IonicPage,
   NavController,
   ViewController,
-  NavParams
+  NavParams,
+  LoadingController
 } from "ionic-angular";
-import {
-  FileTransfer,
-  FileUploadOptions,
-  FileTransferObject
-} from "@ionic-native/file-transfer";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { File, FileEntry } from "@ionic-native/file";
 import { Api } from "../../../providers/providers";
 import { User } from "../../../providers/providers";
+import { TranslateService } from "@ngx-translate/core";
+import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -33,6 +31,11 @@ export class PostCreatePage {
   form: FormGroup;
   type: any;
   username: any;
+
+  choseImage: string;
+  cameraTitle: string;
+  gallery: string;
+
   constructor(
     public user: User,
     public navParams: NavParams,
@@ -40,19 +43,31 @@ export class PostCreatePage {
     public actionSheetCtrl: ActionSheetController,
     private file: File,
     private http: HttpClient,
-    private transfer: FileTransfer,
+    public translateService: TranslateService,
     public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
+    public alertProvider: AlertProvider,
     public viewCtrl: ViewController,
     formBuilder: FormBuilder,
     public camera: Camera
   ) {
+    translateService
+      .get(["ChoseImage", "camera", "gallery"])
+      .subscribe(values => {
+        this.choseImage = values["ChoseImage"];
+        this.cameraTitle = values["camera"];
+        this.gallery = values["gallery"];
+      });
+
     this.form = formBuilder.group({
       profilePic: [""],
       name: ["", Validators.required],
       about: [""],
       file: [""]
     });
+
     this.username = this.navParams.get("username");
+
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
     });
@@ -69,10 +84,10 @@ export class PostCreatePage {
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
-      title: "Chose photo",
+      title: this.choseImage,
       buttons: [
         {
-          text: "Camar",
+          text: this.cameraTitle,
 
           handler: () => {
             this.type = 1;
@@ -80,7 +95,7 @@ export class PostCreatePage {
           }
         },
         {
-          text: "Gallary",
+          text: this.gallery,
           handler: () => {
             this.type = 0;
             this.getPicture();
@@ -102,7 +117,6 @@ export class PostCreatePage {
         .then(
           data => {
             this.form.patchValue({ profilePic: data });
-            //  this.img='data:image/jpg;base64,' + data;
             this.uploadPhoto(data);
           },
           err => {
@@ -115,8 +129,6 @@ export class PostCreatePage {
   }
 
   private uploadPhoto(imageFileUri: any): void {
-    // this.error = null;
-
     this.file
       .resolveLocalFilesystemUrl(imageFileUri)
       .then(entry => (<FileEntry>entry).file(file => this.readFile(file)))
@@ -139,7 +151,6 @@ export class PostCreatePage {
 
       this.form.patchValue({ profilePic: imageData });
     };
-    //alert(event.target.file);
     reader.readAsDataURL(event.target.file);
   }
 
@@ -147,28 +158,18 @@ export class PostCreatePage {
     return "url(" + this.form.controls["profilePic"].value + ")";
   }
 
-  /**
-   * The user cancelled, so we dismiss without sending data back.
-   */
-  cancel() {
-    this.viewCtrl.dismiss();
-  }
-
-  /**
-   * The user is done and wants to create the item, so return it
-   * back to the presenter.
-   */
   done() {
-    // alert(this.img)
     this.postData(this.img);
     if (!this.form.valid) {
       return;
     }
-    //this.viewCtrl.dismiss(this.form.value);
   }
 
   postData(Data: any) {
     const formData = new FormData();
+
+    let loader = this.loadingCtrl.create();
+    loader.present();
 
     formData.append(
       "posts",
@@ -183,51 +184,22 @@ export class PostCreatePage {
         }
       )
     );
+
     if (Data) {
       formData.append("image", Data);
     } else {
       formData.append("image", new Blob([], { type: "NO" }));
     }
-    // alert(this.api.url+"/posts");
-    this.http
-      .post<boolean>(this.api.url + "/posts", formData)
 
-      .subscribe(
-        resp => {
-          this.navCtrl.pop();
-        },
-        err => {
-          alert(err.http_status);
-        }
-      );
-  }
-
-  uploadFile(img: any) {
-    // let loader = this.loadingCtrl.create({
-    //   content: "Uploading..."
-    // });
-    // loader.present();
-    const fileTransfer: FileTransferObject = this.transfer.create();
-
-    let options: FileUploadOptions = {
-      fileKey: "ionicfile",
-      fileName: "ionicfile.jpg",
-      chunkedMode: false,
-      mimeType: "image/jpeg",
-      //  headers: {Authorization: `Bearer ${localStorage.getItem('id_token')}`,content-type:multipart/form-data},
-      params: { posts: { "": "" } }
-    };
-    //alert(this.imageURI);
-    // fileTransfer.upload(img, 'http://192.168.43.74:8080/api/posts', options)
-    //   .then((data) => {
-    //   alert(data+" Uploaded Successfully");
-    //   //this.imageFileName = "http://192.168.0.7:8080/static/images/ionicfile.jpg"
-    // //  loader.dismiss();
-    // //  this.presentToast("Image uploaded successfully");
-    // }, (err) => {
-    //   alert(err.http_status);
-    // //  loader.dismiss();
-    // //  this.presentToast(err);
-    // });
+    this.api.post("posts", formData).subscribe(
+      resp => {
+        loader.dismiss();
+        this.navCtrl.pop();
+      },
+      err => {
+        loader.dismiss();
+        this.alertProvider.showAlert(err);
+      }
+    );
   }
 }

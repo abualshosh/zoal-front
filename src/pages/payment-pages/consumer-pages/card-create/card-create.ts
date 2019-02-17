@@ -8,11 +8,6 @@ import {
 } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
-import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-import { AlertController } from "ionic-angular";
-import * as NodeRSA from "node-rsa";
-import * as uuid from "uuid";
 import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
@@ -23,7 +18,6 @@ import { Card } from "../../../../models/cards";
   templateUrl: "card-create.html"
 })
 export class CardCreatePage {
-  private bal: any;
   private todo: FormGroup;
   public cards: Card[] = [];
   public payee: any[] = [];
@@ -33,9 +27,6 @@ export class CardCreatePage {
   constructor(
     public viewCtrl: ViewController,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
-    public GetServicesProvider: GetServicesProvider,
-    public alertCtrl: AlertController,
     public user: UserProvider,
     public storage: Storage,
     public modalCtrl: ModalController,
@@ -47,8 +38,6 @@ export class CardCreatePage {
       }
     });
 
-    //user.printuser();
-
     this.todo = this.formBuilder.group({
       PAN: [
         "",
@@ -59,7 +48,6 @@ export class CardCreatePage {
           Validators.pattern("[0-9]*")
         ])
       ],
-      //  CARDNAME: ['',Validators.required],
       expDate: ["", Validators.required]
     });
 
@@ -68,17 +56,6 @@ export class CardCreatePage {
       this.todo.get("PAN").setValue(card.pan);
       this.todo.get("expDate").setValue(card.expDate);
     }
-  }
-
-  showAlert(balance: any) {
-    let alert = this.alertCtrl.create({
-      title: "ERROR",
-      message: balance.responseMessage,
-
-      buttons: ["OK"],
-      cssClass: "alertCustomCss"
-    });
-    alert.present();
   }
 
   dismiss() {
@@ -90,10 +67,7 @@ export class CardCreatePage {
     if (this.todo.valid) {
       var dat = this.todo.value;
 
-      //console.log(dat.expDate.substring(2,4)+dat.expDate.substring(5));
       var date = new Date(dat.expDate);
-      //console.log();
-      //console.log();
       this.storage.get("cards").then(val => {
         var mon = "" + (date.getMonth() + 1);
         if (mon.length == 1) {
@@ -119,10 +93,6 @@ export class CardCreatePage {
             }
           }
         }
-        //   }}else{
-        //  this.cards.push(  new Card(dat.PAN,dat.PAN,"XXXXXXXXXX"+dat.PAN.substring(10),date.getFullYear().toString().substring(2,4)+mon,false)
-        // );
-        //   }
         if (!this.edit) {
           this.cards.splice(
             0,

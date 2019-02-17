@@ -33,7 +33,6 @@ export class CustomsInquiryPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    
     public user: UserProvider,
     public navCtrl: NavController,
     public storage: Storage,
@@ -49,8 +48,6 @@ export class CustomsInquiryPage {
     });
 
     this.title = this.navParams.get("name");
-
-    //user.printuser();
 
     this.todo = this.formBuilder.group({
       pan: [""],
@@ -80,8 +77,6 @@ export class CustomsInquiryPage {
     modal.present();
   }
 
-  
-
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
@@ -91,7 +86,7 @@ export class CustomsInquiryPage {
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      //console.log(dat.IPIN)
+
       dat.tranCurrency = "SDG";
 
       dat.tranAmount = dat.Amount;
@@ -104,9 +99,8 @@ export class CustomsInquiryPage {
       dat.payeeId = "0010030003";
       dat.PAN = dat.Card.pan;
       dat.expDate = dat.Card.expDate;
-      //console.log(dat)
+
       this.GetServicesProvider.load(dat, "consumer/getBill").then(data => {
-        //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var main = [];
@@ -117,8 +111,11 @@ export class CustomsInquiryPage {
 
           var dat = [];
           dat.push({ Card: data.PAN });
-          dat.push(data.billInfo);
-          console.log(data);
+
+          if (Object.keys(data.billInfo).length > 0) {
+            dat.push(data.billInfo);
+          }
+
           let modal = this.modalCtrl.create(
             "TransactionDetailPage",
             { data: dat, main: main },

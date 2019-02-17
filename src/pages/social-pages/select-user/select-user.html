@@ -22,24 +22,12 @@
       *ngFor="let connection of connections"
     >
       <ion-avatar item-start>
-        <!-- <img [src]="item.profilePic" /> -->
+        <img [src]="this.api.url + '/profileimage/' + connection.userName" />
       </ion-avatar>
       <div>
         <h2>{{ connection.fullName }}</h2>
         <p>{{ connection.userName }}</p>
       </div>
-
-      <ion-note item-end *ngIf="connection.note">
-        {{ connection.note }}
-      </ion-note>
     </button>
-    <!--
-      <span *ngFor="let contact of contactlist" >
-        <ion-item >
-       {{contact.displayName}}
-       <p>{{contact.phoneNumbers[0].value}}</p>
-        </ion-item>
-      </span>
-    -->
   </ion-list>
 </ion-content>

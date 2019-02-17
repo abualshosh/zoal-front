@@ -38,7 +38,7 @@ export class GmppTranToCardPage {
   ) {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
-    //user.printuser();
+    
     this.GetServicesProvider = GetServicesProviderg;
 
     this.storageProvider.getItems().then(wallets => {
@@ -88,14 +88,14 @@ export class GmppTranToCardPage {
         dat.UUID + dat.consumerPIN
       );
 
-      //console.log(dat.IPIN)
+      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(
         this.todo.value,
         "gmpp/transferWalletToAccount"
       ).then(data => {
-        //console.log(data)
+        
         if (data != null && data.responseCode == 1) {
           loader.dismiss();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(

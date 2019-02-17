@@ -38,7 +38,6 @@ export class SpecialPaymentPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    
     public user: UserProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
@@ -47,19 +46,6 @@ export class SpecialPaymentPage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    // this.storage.get("cards").then(val => {
-    //   this.cards = val;
-    // if (this.cards) {
-    //   if (this.cards.length <= 0) {
-    //     this.showWallet = true;
-    //     this.todo.controls["mobilewallet"].setValue(true);
-    //   }
-    // } else {
-    //   this.showWallet = true;
-    //   this.todo.controls["mobilewallet"].setValue(true);
-    // }
-    // });
-
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],
@@ -86,9 +72,6 @@ export class SpecialPaymentPage {
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    // this.todo.controls["entityId"].setValue(
-    //   "249" + localStorage.getItem("username")
-    // );
   }
 
   ionViewDidLoad() {
@@ -146,7 +129,6 @@ export class SpecialPaymentPage {
     this.todo.controls["entityId"].reset();
     this.todo.controls["MerchantId"].reset();
     this.todo.controls["IPIN"].reset();
-    // this.todo.controls["PHONENUMBER"].reset();
     this.todo.controls["Amount"].reset();
     if (this.cards) {
       if (this.cards.length <= 0) {
@@ -156,43 +138,6 @@ export class SpecialPaymentPage {
     } else {
       this.showWallet = true;
       this.todo.controls["mobilewallet"].setValue(true);
-    }
-  }
-
-  
-
-  WalletAvalible(event) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
-    // if (!this.profile.phoneNumber) {
-    //   let modal = this.modalCtrl.create(
-    //     "GmppSignupModalPage",
-    //     {},
-    //     { cssClass: "inset-modals" }
-    //   );
-    //   modal.present();
-    //   this.todo.reset();
-
-    //   this.showWallet = true;
-    // } else
-    if (this.cards) {
-      if (this.cards.length <= 0) {
-        this.showWallet = true;
-        let modal = this.modalCtrl.create(
-          "AddCardModalPage",
-          {},
-          { cssClass: "inset-modals" }
-        );
-        modal.present();
-      }
-    } else {
-      this.showWallet = true;
-
-      let modal = this.modalCtrl.create(
-        "AddCardModalPage",
-        {},
-        { cssClass: "inset-modals" }
-      );
-      modal.present();
     }
   }
 
@@ -219,6 +164,7 @@ export class SpecialPaymentPage {
 
       dat.uUID = uuid.v4();
       dat.iPIN = this.GetServicesProvider.encrypt(dat.uUID + dat.IPIN);
+      dat.IPIN = "";
       dat.amount = dat.Amount;
       dat.id = dat.MerchantId;
       if (dat.mobilewallet) {
@@ -231,9 +177,7 @@ export class SpecialPaymentPage {
         dat.expDate = dat.Card.expDate;
       }
 
-      //console.log(dat)
       this.GetServicesProvider.load(dat, "specialPayment").then(data => {
-        //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
@@ -262,10 +206,7 @@ export class SpecialPaymentPage {
           } else {
             dat.push({ WalletNumber: data.entityId });
           }
-          // dat.push({"Status":data.responseMessage});
-          // if (Object.keys(data.billInfo).length > 0) {
-          //   dat.push(data.billInfo);
-          // }
+
           dat.push(datas);
           let modal = this.modalCtrl.create(
             "TransactionDetailPage",
@@ -275,17 +216,10 @@ export class SpecialPaymentPage {
           modal.present();
           this.clearInput();
           this.submitAttempt = false;
-
-          // this.todo.controls["entityId"].setValue(
-          //   "0" + localStorage.getItem("username")
-          // );
         } else {
           loader.dismiss();
           this.alertProvider.showAlert(data);
           this.clearInput();
-          // this.todo.controls["entityId"].setValue(
-          //   "0" + localStorage.getItem("username")
-          // );
 
           this.submitAttempt = false;
         }

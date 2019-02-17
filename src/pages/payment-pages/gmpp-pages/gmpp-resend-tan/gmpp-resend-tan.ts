@@ -39,7 +39,7 @@ export class GmppResendTanPage {
     //   this.consumerIdentifier = val;
     // });
 
-    //user.printuser();
+    
     this.GetServicesProvider = GetServicesProviderg;
 
     this.storageProvider.getItems().then(wallets => {
@@ -96,11 +96,11 @@ export class GmppResendTanPage {
         dat.UUID + dat.consumerPIN
       );
       dat.consumerIdentifier = dat.walletNumber;
-      //console.log(dat.IPIN)
+      
       dat.originatorType = "Consumer";
       dat.tranType = "CASHOUT";
       this.GetServicesProvider.load(this.todo.value, "ResendTan").then(data => {
-        //console.log(data)
+        
         if (data != null && data.responseCode == 1) {
           loader.dismiss();
           var datas = [{ tital: "Status", desc: data.responseMessage }];

@@ -105,7 +105,7 @@ export class GmppTranFromCardPage {
       );
       dat.ipin = this.GetServicesProvider.encryptGmpp(dat.UUID + dat.ipin);
       dat.consumerIdentifier = dat.walletNumber;
-      //console.log(dat.IPIN)
+      
       dat.isConsumer = "true";
       var date = new Date(dat.expDate);
       var mon = "" + (date.getMonth() + 1);
@@ -121,7 +121,7 @@ export class GmppTranFromCardPage {
         this.todo.value,
         "gmpp/transferAccountToWallet"
       ).then(data => {
-        //console.log(data)
+        
         if (data != null && data.responseCode == 1) {
           loader.dismiss();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(

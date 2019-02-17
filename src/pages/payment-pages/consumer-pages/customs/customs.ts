@@ -16,6 +16,7 @@ import { UserProvider } from "../../../../providers/user/user";
 import { Storage } from "@ionic/storage";
 import { Card } from "../../../../models/cards";
 import { AlertProvider } from "../../../../providers/alert/alert";
+import { StorageProvider } from "../../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -36,7 +37,7 @@ export class CustomsPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    
+    public storageProvider: StorageProvider,
     public user: UserProvider,
     public storage: Storage,
     public alertProvider: AlertProvider,
@@ -60,8 +61,6 @@ export class CustomsPage {
     });
 
     this.title = "customsServices";
-
-    //user.printuser();
 
     this.todo = this.formBuilder.group({
       pan: [""],
@@ -91,9 +90,6 @@ export class CustomsPage {
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    // this.todo.controls["entityId"].setValue(
-    //   "249" + localStorage.getItem("username")
-    // );
   }
 
   noCardAvailable() {
@@ -126,43 +122,6 @@ export class CustomsPage {
     }
   }
 
-  
-
-  WalletAvalible(event) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
-    // if (!this.profile.phoneNumber) {
-    //   let modal = this.modalCtrl.create(
-    //     "GmppSignupModalPage",
-    //     {},
-    //     { cssClass: "inset-modals" }
-    //   );
-    //   modal.present();
-    //   this.todo.reset();
-
-    //   this.showWallet = true;
-    // } else
-    if (this.cards) {
-      if (this.cards.length <= 0) {
-        this.showWallet = true;
-        let modal = this.modalCtrl.create(
-          "AddCardModalPage",
-          {},
-          { cssClass: "inset-modals" }
-        );
-        modal.present();
-      }
-    } else {
-      this.showWallet = true;
-
-      let modal = this.modalCtrl.create(
-        "AddCardModalPage",
-        {},
-        { cssClass: "inset-modals" }
-      );
-      modal.present();
-    }
-  }
-
   onSelectChange(selectedValue: any) {
     var dat = this.todo.value;
     if (dat.Card && !dat.mobilewallet) {
@@ -186,7 +145,6 @@ export class CustomsPage {
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      //console.log(dat.IPIN)
       dat.tranCurrency = "SDG";
 
       dat.tranAmount = dat.Amount;
@@ -210,9 +168,7 @@ export class CustomsPage {
         "BANKCODE=" + dat.BANKCODE + "/DECLARANTCODE=" + dat.DECLARANTCODE;
       dat.payeeId = "Custom Service";
 
-      //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
@@ -244,6 +200,7 @@ export class CustomsPage {
           if (Object.keys(data.billInfo).length > 0) {
             dat.push(data.billInfo);
           }
+
           dat.push(datas);
           let modal = this.modalCtrl.create(
             "TransactionDetailPage",
@@ -253,18 +210,10 @@ export class CustomsPage {
           modal.present();
           this.clearInput();
           this.submitAttempt = false;
-
-          // this.todo.controls["entityId"].setValue(
-          //   "0" + localStorage.getItem("username")
-          // );
         } else {
           loader.dismiss();
           this.alertProvider.showAlert(data);
           this.clearInput();
-
-          // this.todo.controls["entityId"].setValue(
-          //   "0" + localStorage.getItem("username")
-          // );
 
           this.submitAttempt = false;
         }

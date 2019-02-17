@@ -23,17 +23,7 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        <!-- <ion-item>
-          <ion-toggle
-            [disabled]="showWallet"
-            formControlName="mobilewallet"
-            (ionChange)="WalletAvalible($event)"
-          ></ion-toggle>
-          <ion-label class="label">
-            <ion-icon name="phone-portrait" item-start></ion-icon
-            >{{ "USEWallet" | translate }}</ion-label
-          >
-        </ion-item> -->
+        
         <div
           *ngIf="
             !todo.controls.entityId.valid &&

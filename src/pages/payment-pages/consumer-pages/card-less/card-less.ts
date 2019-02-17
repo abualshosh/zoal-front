@@ -27,7 +27,6 @@ export class CardLessPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
     public navCtrl: NavController,
     public user: UserProvider,
     public storage: Storage,
@@ -41,7 +40,6 @@ export class CardLessPage {
       }
     });
 
-    //user.printuser();
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
       Card: ["", Validators.required],
@@ -80,8 +78,6 @@ export class CardLessPage {
     modal.present();
   }
 
-  
-
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
@@ -91,7 +87,7 @@ export class CardLessPage {
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      //console.log(dat.IPIN)
+
       dat.tranCurrency = "SDG";
 
       dat.tranAmount = dat.Amount;
@@ -101,12 +97,11 @@ export class CardLessPage {
       dat.toAccountType = "00";
       dat.pan = dat.Card.pan;
       dat.expDate = dat.Card.expDate;
-      console.log(dat);
+
       this.GetServicesProvider.load(
         this.todo.value,
         "consumer/generateVoucher"
       ).then(data => {
-        //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var datas;

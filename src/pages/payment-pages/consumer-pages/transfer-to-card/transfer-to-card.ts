@@ -35,13 +35,13 @@ export class TransferToCardPage {
   qrPrompt: string;
 
   public GetServicesProvider: GetServicesProvider;
+
   constructor(
     private barcodeScanner: BarcodeScanner,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
     public navCtrl: NavController,
     public user: UserProvider,
     public translateService: TranslateService,
@@ -82,7 +82,6 @@ export class TransferToCardPage {
       ]
     });
     if (this.navParams.get("pan")) {
-      //console.log(this.navParams.get("pan"));
       this.todo.controls["ToCard"].setValue(this.navParams.get("pan"));
     }
 
@@ -101,8 +100,6 @@ export class TransferToCardPage {
     modal.present();
   }
 
-  
-
   scan() {
     this.options = {
       prompt: this.qrPrompt
@@ -110,13 +107,10 @@ export class TransferToCardPage {
     this.barcodeScanner.scan(this.options).then(
       barcodeData => {
         if (barcodeData.text) {
-          // alert(barcodeData.text);
           this.todo.controls["ToCard"].setValue(barcodeData.text);
         }
       },
-      err => {
-        //console.log("Error occured : " + err);
-      }
+      err => {}
     );
   }
 
@@ -128,7 +122,7 @@ export class TransferToCardPage {
       var dat = this.todo.value;
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      //console.log(dat.IPIN)
+
       dat.tranCurrency = "SDG";
 
       dat.tranAmount = dat.Amount;
@@ -138,12 +132,11 @@ export class TransferToCardPage {
       dat.toAccountType = "00";
       dat.PAN = dat.Card.pan;
       dat.expDate = dat.Card.expDate;
-      //console.log(dat)
+
       this.GetServicesProvider.load(
         this.todo.value,
         "consumer/doCardTransfer"
       ).then(data => {
-        //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var datas;

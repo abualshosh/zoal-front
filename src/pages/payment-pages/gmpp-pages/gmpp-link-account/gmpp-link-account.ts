@@ -39,7 +39,7 @@ export class GmppLinkAccountPage {
     public storageProvider: StorageProvider,
     public modalCtrl: ModalController
   ) {
-    //user.printuser();
+    
     //  this.compleate='TRUE';
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
@@ -130,13 +130,13 @@ export class GmppLinkAccountPage {
       );
       dat.consumerIdentifier = dat.walletNumber;
 
-      //console.log(dat.IPIN)
+      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "gmpp/linkAccount").then(
         data => {
           this.bal = data;
-          //console.log(data)
+          
           if (data != null && data.responseCode == 930) {
             this.storage.set("LINKACCOUNT", "TRUE");
             this.storage.set("LINKUUID", dat.UUID);
@@ -185,14 +185,14 @@ export class GmppLinkAccountPage {
               );
               dat.consumerIdentifier = this.todo.controls["walletNumber"].value;
               //console.log(this.complate.value)
-              //console.log(dat.IPIN)
+              
 
               this.GetServicesProvider.load(
                 this.complate.value,
                 "gmpp/completeLinkAccount"
               ).then(data => {
                 this.bal = data;
-                //console.log(data)
+                
                 if (data != null && data.responseCode == 1) {
                   loader.dismiss();
                   var datas = [{ tital: "Status", desc: data.responseMessage }];

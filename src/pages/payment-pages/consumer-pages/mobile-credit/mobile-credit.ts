@@ -52,7 +52,6 @@ export class MobileCreditPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    
     public user: UserProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
@@ -61,19 +60,6 @@ export class MobileCreditPage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    // this.storage.get("cards").then(val => {
-    //   this.cards = val;
-    // if (this.cards) {
-    //   if (this.cards.length <= 0) {
-    //     this.showWallet = true;
-    //     this.todo.controls["mobilewallet"].setValue(true);
-    //   }
-    // } else {
-    //   this.showWallet = true;
-    //   this.todo.controls["mobilewallet"].setValue(true);
-    // }
-    // });
-
     this.title = this.navParams.get("name");
     if (this.title === "mobileBillPayment") {
       this.payee = [
@@ -91,7 +77,6 @@ export class MobileCreditPage {
         }
       ];
     }
-    //user.printuser();
 
     this.todo = this.formBuilder.group({
       pan: [""],
@@ -128,9 +113,6 @@ export class MobileCreditPage {
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    // this.todo.controls["entityId"].setValue(
-    //   "249" + localStorage.getItem("username")
-    // );
   }
 
   ionViewDidLoad() {
@@ -201,43 +183,6 @@ export class MobileCreditPage {
     }
   }
 
-  WalletAvalible(event) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
-    // if (!this.profile.phoneNumber) {
-    //   let modal = this.modalCtrl.create(
-    //     "GmppSignupModalPage",
-    //     {},
-    //     { cssClass: "inset-modals" }
-    //   );
-    //   modal.present();
-    //   this.todo.reset();
-
-    //   this.showWallet = true;
-    // } else
-    if (this.cards) {
-      if (this.cards.length <= 0) {
-        this.showWallet = true;
-        let modal = this.modalCtrl.create(
-          "AddCardModalPage",
-          {},
-          { cssClass: "inset-modals" }
-        );
-        modal.present();
-      }
-    } else {
-      this.showWallet = true;
-
-      let modal = this.modalCtrl.create(
-        "AddCardModalPage",
-        {},
-        { cssClass: "inset-modals" }
-      );
-      modal.present();
-    }
-  }
-
-  
-
   onSelectChange(selectedValue: any) {
     var dat = this.todo.value;
     if (dat.Card && !dat.mobilewallet) {
@@ -260,7 +205,7 @@ export class MobileCreditPage {
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      //console.log(dat.IPIN)
+
       dat.tranCurrency = "SDG";
 
       dat.tranAmount = dat.Amount;
@@ -281,9 +226,7 @@ export class MobileCreditPage {
       dat.toAccountType = "00";
       dat.paymentInfo = "MPHONE=" + dat.MPHONE;
 
-      //console.log(dat)
       this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        //console.log(data)
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var dats = this.todo.value;
@@ -326,19 +269,12 @@ export class MobileCreditPage {
           modal.present();
           this.clearInput();
           this.submitAttempt = false;
-
-          // this.todo.controls["entityId"].setValue(
-          //   "0" + localStorage.getItem("username")
-          // );
         } else {
           loader.dismiss();
           this.alertProvider.showAlert(data);
 
           this.submitAttempt = false;
           this.clearInput();
-          // this.todo.controls["entityId"].setValue(
-          //   "0" + localStorage.getItem("username")
-          // );
         }
       });
     }

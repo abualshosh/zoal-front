@@ -5,13 +5,7 @@ import {
   ViewController,
   NavParams
 } from "ionic-angular";
-
-/**
- * Generated class for the SelectUserPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Api } from "../../../providers/api/api";
 
 @IonicPage()
 @Component({
@@ -25,7 +19,8 @@ export class SelectUserPage {
   constructor(
     public viewCtrl: ViewController,
     public navCtrl: NavController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public api: Api
   ) {
     this.username = localStorage.getItem("username");
     this.connections = JSON.parse(localStorage.getItem("connections"));
@@ -39,7 +34,5 @@ export class SelectUserPage {
     this.viewCtrl.dismiss();
   }
 
-  ionViewDidLoad() {
-    //console.log('ionViewDidLoad SelectUserPage');
-  }
+  ionViewDidLoad() {}
 }

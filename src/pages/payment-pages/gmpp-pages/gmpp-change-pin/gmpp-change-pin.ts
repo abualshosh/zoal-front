@@ -38,7 +38,7 @@ export class GmppChangePinPage {
   ) {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
-    //user.printuser();
+    
     this.GetServicesProvider = GetServicesProviderg;
 
     this.storageProvider.getItems().then(wallets => {
@@ -91,12 +91,12 @@ export class GmppChangePinPage {
           dat.UUID + dat.newPIN
         );
         dat.consumerIdentifier = dat.walletNumber;
-        //console.log(dat)
+        
         dat.isConsumer = "true";
         dat.connewPIN = "";
         this.GetServicesProvider.load(this.todo.value, "gmpp/changePIN").then(
           data => {
-            //console.log(data)
+            
             if (data != null && data.responseCode == 1) {
               loader.dismiss();
               var datas = [{ tital: "Status", desc: data.responseMessage }];

@@ -38,7 +38,7 @@ export class GmppPurchasePage {
   ) {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
-    //user.printuser();
+    
     this.GetServicesProvider = GetServicesProviderg;
 
     this.storageProvider.getItems().then(wallets => {
@@ -97,12 +97,12 @@ export class GmppPurchasePage {
       );
       dat.consumerIdentifier = dat.walletNumber;
       dat.transactionName = dat.walletNumber;
-      //console.log(dat.IPIN)
+      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "gmpp/doPurchase").then(
         data => {
-          //console.log(data)
+          
           if (data != null && data.responseCode == 1) {
             loader.dismiss();
             var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(

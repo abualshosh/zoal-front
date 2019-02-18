@@ -17,7 +17,6 @@ import {
   BarcodeScanner,
   BarcodeScannerOptions
 } from "@ionic-native/barcode-scanner";
-import { TranslateService } from "@ngx-translate/core";
 import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 
@@ -33,7 +32,6 @@ export class GmppTranToWalletPage {
   public wallets: Wallet[];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
-  qrPrompt: string;
 
   constructor(
     private barcodeScanner: BarcodeScanner,
@@ -41,9 +39,6 @@ export class GmppTranToWalletPage {
     private navParams: NavParams,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
-    public translateService: TranslateService,
-
     public storage: Storage,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
@@ -52,7 +47,6 @@ export class GmppTranToWalletPage {
   ) {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
-    
     this.GetServicesProvider = GetServicesProviderg;
 
     this.storageProvider.getItems().then(wallets => {
@@ -98,10 +92,6 @@ export class GmppTranToWalletPage {
         this.navParams.get("wallet")
       );
     }
-
-    this.translateService.get("qrCode").subscribe(value => {
-      this.qrPrompt = value;
-    });
   }
 
   noWalletAvailable() {
@@ -114,11 +104,9 @@ export class GmppTranToWalletPage {
     modal.present();
   }
 
-  
-
   scan() {
     this.options = {
-      prompt: this.qrPrompt
+      prompt: ""
     };
     this.barcodeScanner.scan(this.options).then(
       barcodeData => {
@@ -147,12 +135,11 @@ export class GmppTranToWalletPage {
         dat.UUID + dat.consumerPIN
       );
       dat.consumerIdentifier = dat.walletNumber;
-      
+
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "gmpp/doTransfer").then(
         data => {
-          
           if (data != null && data.responseCode == 1) {
             loader.dismiss();
             var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(

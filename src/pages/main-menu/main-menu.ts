@@ -9,7 +9,6 @@ import {
   BarcodeScannerOptions,
   BarcodeScanner
 } from "@ionic-native/barcode-scanner";
-import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { StorageProvider } from "../../providers/storage/storage";
 
@@ -140,14 +139,12 @@ export class MainMenuPage {
   profile: any;
 
   scanData: {};
-  qrPrompt: string;
   qrOptions: BarcodeScannerOptions;
   isGmpp: boolean = false;
 
   constructor(
     public storage: Storage,
     private barcodeScanner: BarcodeScanner,
-    public translateService: TranslateService,
     public popoverCtrl: PopoverController,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
@@ -158,10 +155,6 @@ export class MainMenuPage {
     });
 
     this.isGmpp = this.navParams.get("isGmpp");
-
-    this.translateService.get("qrCode").subscribe(value => {
-      this.qrPrompt = value;
-    });
   }
 
   openOptionsMenu(event) {
@@ -215,7 +208,7 @@ export class MainMenuPage {
 
   scanQr() {
     this.qrOptions = {
-      prompt: this.qrPrompt
+      prompt: ""
     };
     this.barcodeScanner.scan(this.qrOptions).then(
       barcodeData => {
@@ -224,7 +217,7 @@ export class MainMenuPage {
           this.navCtrl.push("TransferToCardPage", {
             pan: barcodeData.text
           });
-        } else {
+        } else if (barcodeData.text && this.isGmpp) {
           this.navCtrl.push("GmppTranToWalletPage", {
             wallet: barcodeData.text
           });

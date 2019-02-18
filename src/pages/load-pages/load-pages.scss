@@ -1,2 +1,17 @@
 page-load-pages {
+  .grid-con {
+    margin-top: 5%;
+    display: grid;
+    justify-content: space-around;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 80px 80px 80px;
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
+  }
+
+  .load-grid {
+    display: grid;
+    font-size: 1.3em;
+    color: map-get($colors, secondary);
+  }
 }

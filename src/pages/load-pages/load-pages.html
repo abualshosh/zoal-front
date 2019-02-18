@@ -5,14 +5,15 @@
 </ion-header>
 
 <ion-content no-padding class="masters">
-  <div>
-    <ion-item
+  <div class="grid-con">
+    <div
+      class="load-grid"
+      text-center
       *ngFor="let page of pages"
       (click)="openPage(page.component, page.var)"
     >
       <ion-icon name="{{ page.icon }}" item-start></ion-icon>
-      {{ page.title | translate }}
-      <ion-note item-end> <ion-icon name="arrow-forward"></ion-icon> </ion-note>
-    </ion-item>
+      <div>{{ page.title | translate }}</div>
+    </div>
   </div>
 </ion-content>

@@ -50,12 +50,18 @@
       </div>
 
       <div *ngIf="key == 'favorites'">
+        <div *ngIf="!form.controls.favoriteText.valid && submitAttempt">
+          <p>{{ "validFavoriteTextError" | translate }}</p>
+        </div>
         <ion-item>
           <ion-label stacked> {{ "favoriteText" | translate }}</ion-label>
           <ion-input formControlName="favoriteText"></ion-input>
         </ion-item>
       </div>
 
+      <div *ngIf="!form.controls.name.valid && submitAttempt">
+        <p>{{ "validNameError" | translate }}</p>
+      </div>
       <ion-item>
         <ion-label stacked> {{ "name" | translate }}</ion-label>
         <ion-input formControlName="name"></ion-input>

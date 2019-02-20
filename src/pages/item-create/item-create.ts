@@ -53,8 +53,11 @@ export class ItemCreatePage {
         navParams.get("item") ? this.item.expDate : "",
         Validators.required
       ],
-      favoriteText: [navParams.get("item") ? this.item.favoriteText : ""],
-      name: [navParams.get("item") ? this.item.name : ""]
+      favoriteText: [
+        navParams.get("item") ? this.item.favoriteText : "",
+        Validators.required
+      ],
+      name: [navParams.get("item") ? this.item.name : "", Validators.required]
     });
   }
 
@@ -76,7 +79,7 @@ export class ItemCreatePage {
       this.form.controls["cardNumber"].disable();
       this.form.controls["expDate"].disable();
       this.form.controls["walletNumber"].disable();
-      this.pageTitle = "favoritesDetailPage";
+      this.pageTitle = "favoriteDetailPage";
     }
   }
 

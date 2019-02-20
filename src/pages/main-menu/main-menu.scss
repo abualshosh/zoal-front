@@ -12,7 +12,6 @@ page-main-menu {
   }
 
   .grid-item {
-    width: 100%;
     display: grid;
     font-size: 1.2em;
     color: map-get($colors, secondary);

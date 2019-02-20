@@ -1,17 +1,26 @@
 page-load-pages {
+  ion-content {
+    background: white;
+  }
+
   .grid-con {
-    margin-top: 5%;
     display: grid;
-    justify-content: space-around;
-    grid-template-columns: 100px 100px 100px;
-    grid-template-rows: 80px 80px 80px;
-    grid-column-gap: 10px;
-    grid-row-gap: 15px;
+    justify-content: stretch;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
   }
 
   .load-grid {
     display: grid;
-    font-size: 1.3em;
+    font-size: 1em;
     color: map-get($colors, secondary);
+    border: 2px solid map-get($colors, bar);
+  }
+
+  .grid-icon {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    font-size: 2em;
   }
 }

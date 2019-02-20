@@ -12,7 +12,7 @@
       *ngFor="let page of pages"
       (click)="openPage(page.component, page.var)"
     >
-      <ion-icon name="{{ page.icon }}" item-start></ion-icon>
+      <ion-icon class="grid-icon" name="{{ page.icon }}" item-start></ion-icon>
       <div>{{ page.title | translate }}</div>
     </div>
   </div>

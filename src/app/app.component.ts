@@ -19,7 +19,7 @@ export class MyApp {
 
   pages: any[] = [
     {
-      title: "favoritesDetailPage",
+      title: "favoriteDetailPage",
       component: "CardWalletFavoriteDetailPage",
       icon: "star",
       params: { type: "favorites" }
@@ -43,6 +43,11 @@ export class MyApp {
       icon: "person-add"
     },
     {
+      title: "linkAccount",
+      component: "GmppLinkAccountPage",
+      icon: "link"
+    },
+    {
       title: "gmppWalletDetailPage",
       component: "CardWalletFavoriteDetailPage",
       icon: "custom-wallet",
@@ -57,6 +62,11 @@ export class MyApp {
       title: "gmppLastTransactionsPage",
       component: "GmppLastTransactionsPage",
       icon: "clock"
+    },
+    {
+      title: "gmppResendTanPage",
+      component: "GmppResendTanPage",
+      icon: "refresh"
     },
     {
       title: "changePin",

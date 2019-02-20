@@ -18,39 +18,6 @@ import { StorageProvider } from "../../providers/storage/storage";
   templateUrl: "main-menu.html"
 })
 export class MainMenuPage {
-  walletManagementPages: any[] = [
-    {
-      title: "linkAccount",
-      component: "GmppLinkAccountPage",
-      icon: "link",
-      var: ""
-    },
-    {
-      title: "lockAccount",
-      component: "GmppSelfLockPage",
-      icon: "lock",
-      var: ""
-    },
-    {
-      title: "unlockAccount",
-      component: "GmppSelfUnlockPage",
-      icon: "unlock",
-      var: ""
-    },
-    {
-      title: "gmppResendTanPage",
-      component: "GmppResendTanPage",
-      icon: "refresh",
-      var: ""
-    },
-    {
-      title: "gmppRetireAccountPage",
-      component: "GmppRetireAccountPage",
-      icon: "trash",
-      var: ""
-    }
-  ];
-
   telecomPages: any[] = [
     {
       title: "mobileCredit",
@@ -155,17 +122,6 @@ export class MainMenuPage {
     });
 
     this.isGmpp = this.navParams.get("isGmpp");
-  }
-
-  openOptionsMenu(event) {
-    let popover = this.popoverCtrl.create("LoadPagesPage", {
-      pages: this.walletManagementPages,
-      title: "walletManagement",
-      isGmpp: true
-    });
-    popover.present({
-      ev: event
-    });
   }
 
   openPagesList(list) {

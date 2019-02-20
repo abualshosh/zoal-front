@@ -3,11 +3,6 @@
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
     <ion-title *ngIf="!isGmpp">{{ "consumerPayment" | translate }}</ion-title>
     <ion-title *ngIf="isGmpp">{{ "gmppPayment" | translate }}</ion-title>
-    <ion-buttons *ngIf="isGmpp" end>
-      <a ion-button icon-only (click)="openOptionsMenu($event)">
-        <ion-icon name="more"></ion-icon>
-      </a>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

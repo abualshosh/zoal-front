@@ -1,7 +1,12 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  ModalController
+} from "ionic-angular";
 import { Events } from "ionic-angular";
-import { StorageProvider } from "../../providers/storage/storage";
+import { Item, StorageProvider } from "../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -10,11 +15,14 @@ import { StorageProvider } from "../../providers/storage/storage";
 })
 export class PaymentMethodPage {
   profile: any;
+  cards: Item[];
+  wallets: Item[];
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
+    public modalCtrl: ModalController,
     public storageProvider: StorageProvider
   ) {
     this.storageProvider.getProfile().subscribe(val => {
@@ -30,6 +38,16 @@ export class PaymentMethodPage {
 
   ionViewDidEnter() {
     this.events.publish("isGmpp", "neither");
+    this.loadCardsWallets();
+  }
+
+  loadCardsWallets() {
+    this.storageProvider.getCards().then(cards => {
+      this.cards = cards;
+    });
+    this.storageProvider.getWallets().then(wallets => {
+      this.wallets = wallets;
+    });
   }
 
   openConsumerPage() {
@@ -39,7 +57,12 @@ export class PaymentMethodPage {
     };
 
     this.events.publish("isGmpp", "consumer");
-    this.navCtrl.push("MainMenuPage", {}, animationsOptions);
+
+    if (this.isCardWalletAvailable("card")) {
+      this.navCtrl.push("MainMenuPage", {}, animationsOptions);
+    } else {
+      this.addCardWallet("cards");
+    }
   }
 
   openGmppPage() {
@@ -49,6 +72,39 @@ export class PaymentMethodPage {
     };
 
     this.events.publish("isGmpp", "gmpp");
-    this.navCtrl.push("MainMenuPage", { isGmpp: true }, animationsOptions);
+
+    if (this.isCardWalletAvailable("wallet")) {
+      this.navCtrl.push("MainMenuPage", { isGmpp: true }, animationsOptions);
+    } else {
+      this.addCardWallet("wallets");
+    }
+  }
+
+  isCardWalletAvailable(choice: string): boolean {
+    if (choice === "card") {
+      if (!this.cards || this.cards.length <= 0) {
+        return false;
+      }
+      return true;
+    } else {
+      if (!this.wallets || this.wallets.length <= 0) {
+        return false;
+      }
+      return true;
+    }
+  }
+
+  addCardWallet(type) {
+    let modal = this.modalCtrl.create(
+      "ItemCreatePage",
+      { key: type },
+      {
+        cssClass: "inset-modal-box"
+      }
+    );
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.loadCardsWallets();
+    });
   }
 }

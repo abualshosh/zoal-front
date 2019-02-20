@@ -30,8 +30,11 @@
             formControlName="entityId"
             interface="popover"
           >
-            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
-              {{ wallet.number }}
+            <ion-option
+              *ngFor="let wallet of wallets"
+              [value]="wallet.walletNumber"
+            >
+              {{ wallet.name }}
             </ion-option>
           </ion-select>
         </ion-item>
@@ -55,7 +58,7 @@
             interface="popover"
           >
             <ion-option *ngFor="let Card of cards" [value]="Card">{{
-              Card.pan
+              Card.cardNumber
             }}</ion-option>
           </ion-select>
         </ion-item>

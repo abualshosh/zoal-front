@@ -12,9 +12,8 @@ import { GetServicesProvider } from "../../../../providers/get-services/get-serv
 
 import * as uuid from "uuid";
 
-import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
 import { AlertProvider } from "../../../../providers/alert/alert";
+import { StorageProvider, Item } from "../../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -24,7 +23,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 export class BillInquiryPage {
   submitAttempt: boolean = false;
   private todo: FormGroup;
-  public cards: Card[] = [];
+  public cards: Item[] = [];
   public payee: any[] = [];
   public title: any;
 
@@ -32,15 +31,13 @@ export class BillInquiryPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-    
-
     public navCtrl: NavController,
-    public storage: Storage,
     public alertProvider: AlertProvider,
+    public storageProvider: StorageProvider,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.storage.get("cards").then(val => {
+    this.storageProvider.getCards().then(val => {
       this.cards = val;
       if (!this.cards || this.cards.length <= 0) {
         this.noCardAvailable();
@@ -48,7 +45,6 @@ export class BillInquiryPage {
     });
 
     this.title = this.navParams.get("name");
-    
 
     this.todo = this.formBuilder.group({
       pan: [""],
@@ -85,8 +81,6 @@ export class BillInquiryPage {
     modal.present();
   }
 
-  
-
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
@@ -96,7 +90,7 @@ export class BillInquiryPage {
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      
+
       dat.tranCurrency = "SDG";
       dat.mbr = "1";
       dat.tranAmount = dat.Amount;
@@ -106,11 +100,10 @@ export class BillInquiryPage {
       dat.toAccountType = "00";
       dat.paymentInfo = "MPHONE=" + dat.MPHONE;
       dat.payeeId = this.navParams.get("title");
-      dat.pan = dat.Card.pan;
+      dat.pan = dat.Card.cardNumber;
       dat.expDate = dat.Card.expDate;
-      
+
       this.GetServicesProvider.load(dat, "Billquiry").then(data => {
-        
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
           var dat = [];

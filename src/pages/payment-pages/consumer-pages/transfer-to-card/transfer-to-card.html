@@ -24,7 +24,7 @@
             interface="popover"
           >
             <ion-option *ngFor="let Card of cards" [value]="Card">{{
-              Card.pan
+              Card.cardNumber
             }}</ion-option>
           </ion-select>
         </ion-item>
@@ -71,11 +71,5 @@
         {{ "Submit" | translate }}
       </button>
     </form>
-    <!--
-      <ion-item color="">HELP</ion-item>
-      <iframe width="100%" height="200px" [src]="trustedVideoUrl" frameborder="0" allowfullscreen>
-          <ion-spinner class="spineer" name="crescent" ></ion-spinner>
-      </iframe>
-    -->
   </div>
 </ion-content>

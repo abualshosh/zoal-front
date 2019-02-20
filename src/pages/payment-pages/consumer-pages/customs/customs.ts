@@ -6,17 +6,12 @@ import {
   ModalController
 } from "ionic-angular";
 import * as moment from "moment";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
 import { AlertProvider } from "../../../../providers/alert/alert";
-import { StorageProvider } from "../../../../providers/storage/storage";
+import { StorageProvider, Item } from "../../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -28,7 +23,7 @@ export class CustomsPage {
   profile: any;
   public title: any;
   private todo: FormGroup;
-  public cards: Card[] = [];
+  public cards: Item[] = [];
   public payee: any[] = [];
   submitAttempt: boolean = false;
   validCard: boolean = false;
@@ -38,14 +33,12 @@ export class CustomsPage {
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
     public storageProvider: StorageProvider,
-
-    public storage: Storage,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
-    this.storage.get("cards").then(val => {
+    this.storageProvider.getCards().then(val => {
       this.cards = val;
       if (this.cards) {
         if (this.cards.length <= 0) {
@@ -155,7 +148,7 @@ export class CustomsPage {
         dat.authenticationType = "10";
         dat.pan = "";
       } else {
-        dat.pan = dat.Card.pan;
+        dat.pan = dat.Card.cardNumber;
         dat.expDate = dat.Card.expDate;
         dat.authenticationType = "00";
         dat.entityId = "";

@@ -5,10 +5,8 @@ import {
   NavParams,
   ModalController
 } from "ionic-angular";
-import { Storage } from "@ionic/storage";
-import { Card } from "../../../models/cards";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { StorageProvider } from "../../../providers/storage/storage";
+import { StorageProvider, Item } from "../../../providers/storage/storage";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
 
 @IonicPage()
@@ -17,7 +15,7 @@ import { PhotoViewer } from "@ionic-native/photo-viewer";
   templateUrl: "qr-generator.html"
 })
 export class QrGeneratorPage {
-  public cards: Card[] = [];
+  public cards: Item[] = [];
   public wallets = [];
   private todo: FormGroup;
   isGmpp: boolean;
@@ -26,7 +24,6 @@ export class QrGeneratorPage {
 
   constructor(
     private formBuilder: FormBuilder,
-    public storage: Storage,
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public storageProvider: StorageProvider,
@@ -46,12 +43,12 @@ export class QrGeneratorPage {
   checkIsGmpp() {
     this.isGmpp = this.navParams.get("isGmpp");
     if (this.isGmpp) {
-      this.storageProvider.getItems().then(wallets => {
+      this.storageProvider.getWallets().then(wallets => {
         this.wallets = wallets;
         this.isCardWalletAvailable("wallet");
       });
     } else {
-      this.storage.get("cards").then(cards => {
+      this.storageProvider.getCards().then(cards => {
         this.cards = cards;
         this.isCardWalletAvailable("card");
       });
@@ -84,7 +81,7 @@ export class QrGeneratorPage {
 
   onChange() {
     if (!this.isGmpp) {
-      this.panQr = this.todo.value.Card.pan;
+      this.panQr = this.todo.value.Card.cardNumber;
     } else {
       this.walletQr = this.todo.value.wallet;
     }

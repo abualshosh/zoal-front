@@ -6,16 +6,11 @@ import {
   ModalController
 } from "ionic-angular";
 import * as moment from "moment";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
-import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
@@ -27,8 +22,8 @@ export class MohePage {
   profile: any;
   showWallet: boolean = false;
   private todo: FormGroup;
-  public cards: Card[] = [];
-  public wallets: Wallet[] = [];
+  public cards: Item[] = [];
+  public wallets: Item[] = [];
   public payee: any[] = [];
   public isArab = false;
   validCard: boolean = false;
@@ -61,10 +56,8 @@ export class MohePage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
-    public storage: Storage,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navParams: NavParams
@@ -121,7 +114,7 @@ export class MohePage {
   checkIsGmpp() {
     this.isGmpp = this.navParams.get("isGmpp");
     if (this.isGmpp) {
-      this.storageProvider.getItems().then(wallets => {
+      this.storageProvider.getWallets().then(wallets => {
         this.wallets = wallets;
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
@@ -129,7 +122,7 @@ export class MohePage {
         this.isCardWalletAvailable("wallet");
       });
     } else {
-      this.storage.get("cards").then(cards => {
+      this.storageProvider.getCards().then(cards => {
         this.cards = cards;
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
@@ -234,7 +227,7 @@ export class MohePage {
         dat.authenticationType = "10";
         dat.pan = "";
       } else {
-        dat.pan = dat.Card.pan;
+        dat.pan = dat.Card.cardNumber;
         dat.expDate = dat.Card.expDate;
         dat.authenticationType = "00";
         dat.entityId = "";

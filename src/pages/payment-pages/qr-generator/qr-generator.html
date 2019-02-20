@@ -22,8 +22,8 @@
             interface="action-sheet"
             formControlName="Card"
           >
-            <ion-option *ngFor="let Card of cards" [value]="Card">
-              {{ Card.pan }}
+            <ion-option *ngFor="let card of cards" [value]="card">
+              {{ card.name }}
             </ion-option>
           </ion-select>
         </ion-item>
@@ -40,8 +40,11 @@
             interface="action-sheet"
             formControlName="wallet"
           >
-            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
-              {{ wallet.number }}
+            <ion-option
+              *ngFor="let wallet of wallets"
+              [value]="wallet.walletNumber"
+            >
+              {{ wallet.name }}
             </ion-option>
           </ion-select>
         </ion-item>

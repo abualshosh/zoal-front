@@ -23,8 +23,8 @@
             formControlName="Card"
             interface="popover"
           >
-            <ion-option *ngFor="let Card of cards" [value]="Card">
-              {{ Card.pan }}
+            <ion-option *ngFor="let card of cards" [value]="card">
+              {{ card.name }}
             </ion-option>
           </ion-select>
         </ion-item>

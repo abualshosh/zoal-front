@@ -1,15 +1,12 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, ModalController } from "ionic-angular";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
-import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
+import { Storage } from "@ionic/storage";
 
 @IonicPage()
 @Component({
@@ -18,10 +15,9 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 })
 export class GmppLinkAccountPage {
   // consumerIdentifier: any;
-  private bal: any;
   private todo: FormGroup;
   private complate: FormGroup;
-  public wallets: Wallet[];
+  public wallets: Item[];
   public compleate: any = "FALSE";
   public submitAttempt: boolean = false;
 
@@ -32,19 +28,16 @@ export class GmppLinkAccountPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
-
-    public storage: Storage,
     public alertProvider: AlertProvider,
+    public storage: Storage,
     public storageProvider: StorageProvider,
     public modalCtrl: ModalController
   ) {
-    
     //  this.compleate='TRUE';
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
 
-    this.storageProvider.getItems().then(wallets => {
+    this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
         this.noWalletAvailable();
@@ -108,8 +101,6 @@ export class GmppLinkAccountPage {
     modal.present();
   }
 
-  
-
   Cancle() {
     this.storage.set("LINKACCOUNT", "FALSE");
     this.storage.set("LINKUUID", null);
@@ -130,13 +121,10 @@ export class GmppLinkAccountPage {
       );
       dat.consumerIdentifier = dat.walletNumber;
 
-      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "gmpp/linkAccount").then(
         data => {
-          this.bal = data;
-          
           if (data != null && data.responseCode == 930) {
             this.storage.set("LINKACCOUNT", "TRUE");
             this.storage.set("LINKUUID", dat.UUID);
@@ -185,14 +173,11 @@ export class GmppLinkAccountPage {
               );
               dat.consumerIdentifier = this.todo.controls["walletNumber"].value;
               //console.log(this.complate.value)
-              
 
               this.GetServicesProvider.load(
                 this.complate.value,
                 "gmpp/completeLinkAccount"
               ).then(data => {
-                this.bal = data;
-                
                 if (data != null && data.responseCode == 1) {
                   loader.dismiss();
                   var datas = [{ tital: "Status", desc: data.responseMessage }];

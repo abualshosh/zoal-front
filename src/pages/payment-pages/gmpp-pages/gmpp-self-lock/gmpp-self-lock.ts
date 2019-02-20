@@ -1,14 +1,10 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, ModalController } from "ionic-angular";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
-import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
@@ -19,7 +15,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 export class GmppSelfLockPage {
   // consumerIdentifier: any;
   private todo: FormGroup;
-  public wallets: Wallet[];
+  public wallets: Item[];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
 
@@ -27,9 +23,6 @@ export class GmppSelfLockPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
-
-    public storage: Storage,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
     public navCtrl: NavController,
@@ -37,10 +30,9 @@ export class GmppSelfLockPage {
   ) {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
-    
     this.GetServicesProvider = GetServicesProviderg;
 
-    this.storageProvider.getItems().then(wallets => {
+    this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
         this.noWalletAvailable();
@@ -69,8 +61,6 @@ export class GmppSelfLockPage {
     });
   }
 
-  
-
   noWalletAvailable() {
     this.navCtrl.pop();
     let modal = this.modalCtrl.create(
@@ -93,12 +83,11 @@ export class GmppSelfLockPage {
         dat.UUID + dat.consumerPIN
       );
       dat.consumerIdentifier = dat.walletNumber;
-      
+
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "gmpp/lockAccount").then(
         data => {
-          
           if (data != null && data.responseCode == 1) {
             loader.dismiss();
             var datas = [{ tital: "Status", desc: data.responseMessage }];

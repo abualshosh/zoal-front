@@ -8,16 +8,13 @@ import {
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
 import * as moment from "moment";
 import {
   BarcodeScanner,
   BarcodeScannerOptions
 } from "@ionic-native/barcode-scanner";
-import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
@@ -29,7 +26,7 @@ export class GmppTranToWalletPage {
   options: BarcodeScannerOptions;
   // consumerIdentifier: any;
   private todo: FormGroup;
-  public wallets: Wallet[];
+  public wallets: Item[];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
 
@@ -39,7 +36,6 @@ export class GmppTranToWalletPage {
     private navParams: NavParams,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    public storage: Storage,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
     public navCtrl: NavController,
@@ -49,7 +45,7 @@ export class GmppTranToWalletPage {
 
     this.GetServicesProvider = GetServicesProviderg;
 
-    this.storageProvider.getItems().then(wallets => {
+    this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
         this.noWalletAvailable();

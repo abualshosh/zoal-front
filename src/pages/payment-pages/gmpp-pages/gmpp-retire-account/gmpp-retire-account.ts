@@ -1,14 +1,11 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, ModalController } from "ionic-angular";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
 import { Storage } from "@ionic/storage";
-import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
@@ -20,7 +17,7 @@ export class GmppRetireAccountPage {
   // consumerIdentifier: any;
   private todo: FormGroup;
   private complate: FormGroup;
-  public wallets: Wallet[];
+  public wallets: Item[];
   submitAttempt: boolean = false;
   public compleate: any = "FALSE";
   public GetServicesProvider: GetServicesProvider;
@@ -30,8 +27,6 @@ export class GmppRetireAccountPage {
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public navCtrl: NavController,
-    
-
     public storage: Storage,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
@@ -41,12 +36,11 @@ export class GmppRetireAccountPage {
     //   this.consumerIdentifier = val;
     // });
 
-    
     //  this.compleate='TRUE';
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
 
-    this.storageProvider.getItems().then(wallets => {
+    this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
         this.noWalletAvailable();
@@ -111,8 +105,6 @@ export class GmppRetireAccountPage {
     modal.present();
   }
 
-  
-
   Cancle() {
     this.storage.set("RetireACCOUNT", "FALSE");
     this.storage.set("RUUID", null);
@@ -132,12 +124,10 @@ export class GmppRetireAccountPage {
       );
       dat.consumerIdentifier = dat.walletNumber;
 
-      
       dat.isConsumer = "true";
 
       this.GetServicesProvider.load(this.todo.value, "Retirewallet").then(
         data => {
-          
           if (data != null && data.responseCode == 1) {
             this.storage.set("RetireACCOUNT", "TRUE");
             this.storage.set("RUUID", dat.UUID);
@@ -185,13 +175,11 @@ export class GmppRetireAccountPage {
           );
           dat.consumerIdentifier = this.todo.controls["walletNumber"].value;
           //console.log(dat.originalTranUUID)
-          
 
           this.GetServicesProvider.load(
             this.complate.value,
             "ComplateRetirewallet"
           ).then(data => {
-            
             if (data != null && data.responseCode == 1) {
               loader.dismiss();
               var datas = [{ tital: "Status", desc: data.responseMessage }];

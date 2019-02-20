@@ -6,16 +6,11 @@ import {
   ModalController
 } from "ionic-angular";
 import * as moment from "moment";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
-import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
@@ -28,8 +23,8 @@ export class SpecialPaymentPage {
   profile: any;
   submitAttempt: boolean = false;
   private todo: FormGroup;
-  public cards: Card[] = [];
-  public wallets: Wallet[] = [];
+  public cards: Item[] = [];
+  public wallets: Item[] = [];
   public payee: any[] = [];
   validCard: boolean = false;
   isGmpp: boolean;
@@ -38,10 +33,8 @@ export class SpecialPaymentPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
-    public storage: Storage,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navParams: NavParams
@@ -81,7 +74,7 @@ export class SpecialPaymentPage {
   checkIsGmpp() {
     this.isGmpp = this.navParams.get("isGmpp");
     if (this.isGmpp) {
-      this.storageProvider.getItems().then(wallets => {
+      this.storageProvider.getWallets().then(wallets => {
         this.wallets = wallets;
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
@@ -89,7 +82,7 @@ export class SpecialPaymentPage {
         this.isCardWalletAvailable("wallet");
       });
     } else {
-      this.storage.get("cards").then(cards => {
+      this.storageProvider.getCards().then(cards => {
         this.cards = cards;
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
@@ -173,7 +166,7 @@ export class SpecialPaymentPage {
         dat.pan = "";
       } else {
         dat.isMobilePayment = false;
-        dat.cardNumber = dat.Card.pan;
+        dat.cardNumber = dat.Card.cardNumber;
         dat.expDate = dat.Card.expDate;
       }
 

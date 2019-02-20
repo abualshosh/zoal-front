@@ -5,16 +5,12 @@ import {
   NavParams,
   ModalController
 } from "ionic-angular";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
 import { AlertProvider } from "../../../../providers/alert/alert";
+import { StorageProvider, Item } from "../../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -23,7 +19,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 })
 export class CustomsInquiryPage {
   private todo: FormGroup;
-  public cards: Card[] = [];
+  public cards: Item[] = [];
   public payee: any[] = [];
   public title: any;
 
@@ -33,14 +29,13 @@ export class CustomsInquiryPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
-
     public navCtrl: NavController,
-    public storage: Storage,
+    public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.storage.get("cards").then(val => {
+    this.storageProvider.getCards().then(val => {
       this.cards = val;
       if (!this.cards || this.cards.length <= 0) {
         this.noCardAvailable();
@@ -97,7 +92,7 @@ export class CustomsInquiryPage {
       dat.paymentInfo =
         "BANKCODE=" + dat.BANKCODE + "/DECLARANTCODE=" + dat.DECLARANTCODE;
       dat.payeeId = "0010030003";
-      dat.PAN = dat.Card.pan;
+      dat.PAN = dat.Card.cardNumber;
       dat.expDate = dat.Card.expDate;
 
       this.GetServicesProvider.load(dat, "consumer/getBill").then(data => {

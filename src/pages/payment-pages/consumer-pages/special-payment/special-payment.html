@@ -9,7 +9,6 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        
         <div
           *ngIf="
             !todo.controls.entityId.valid &&
@@ -30,8 +29,11 @@
             formControlName="entityId"
             interface="popover"
           >
-            <ion-option *ngFor="let wallet of wallets" [value]="wallet.number">
-              {{ wallet.number }}
+            <ion-option
+              *ngFor="let wallet of wallets"
+              [value]="wallet.walletNumber"
+            >
+              {{ wallet.name }}
             </ion-option>
           </ion-select>
         </ion-item>
@@ -56,24 +58,10 @@
             interface="popover"
           >
             <ion-option *ngFor="let Card of cards" [value]="Card">{{
-              Card.pan
+              Card.cardNumber
             }}</ion-option>
           </ion-select>
         </ion-item>
-
-        <!--
-          <div *ngIf="!todo.controls.PHONENUMBER.valid && submitAttempt">
-            <p>{{ "validvoucherNumberError" | translate }}</p>
-          </div>
-          <ion-item>
-            <ion-label floating>{{ "PhoneNumber" | translate }} </ion-label>
-            <ion-input
-              type="number"
-              formControlName="PHONENUMBER"
-              required
-            ></ion-input>
-          </ion-item>
-        -->
 
         <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
           <p>{{ "validamountError" | translate }}</p>

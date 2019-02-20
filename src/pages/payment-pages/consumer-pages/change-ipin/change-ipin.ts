@@ -1,15 +1,11 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, ModalController } from "ionic-angular";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
-import { Card } from "../../../../models/cards";
 import { AlertProvider } from "../../../../providers/alert/alert";
+import { StorageProvider, Item } from "../../../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -18,7 +14,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 })
 export class ChangeIpinPage {
   private todo: FormGroup;
-  public cards: Card[] = [];
+  public cards: Item[] = [];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
 
@@ -26,13 +22,12 @@ export class ChangeIpinPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-
-    public storage: Storage,
+    public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navCtrl: NavController
   ) {
-    this.storage.get("cards").then(val => {
+    this.storageProvider.getCards().then(val => {
       this.cards = val;
       if (!this.cards || this.cards.length <= 0) {
         this.noCardAvailable();
@@ -95,7 +90,7 @@ export class ChangeIpinPage {
         dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
         dat.newIPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.newIPIN);
         dat.authenticationType = "00";
-        dat.pan = dat.Card.pan;
+        dat.pan = dat.Card.cardNumber;
         dat.expDate = dat.Card.expDate;
         dat.ConnewIPIN = "";
 

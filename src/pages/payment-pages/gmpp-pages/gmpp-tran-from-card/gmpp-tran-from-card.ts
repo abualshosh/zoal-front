@@ -1,15 +1,11 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, ModalController } from "ionic-angular";
-
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
-
 import * as uuid from "uuid";
-
-import { Storage } from "@ionic/storage";
 import * as moment from "moment";
-import { Wallet, StorageProvider } from "../../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 
 @IonicPage()
@@ -20,7 +16,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 export class GmppTranFromCardPage {
   // consumerIdentifier: any;
   private todo: FormGroup;
-  public wallets: Wallet[];
+  public wallets: Item[];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
 
@@ -28,9 +24,6 @@ export class GmppTranFromCardPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
-    
-
-    public storage: Storage,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
     public navCtrl: NavController,
@@ -40,7 +33,7 @@ export class GmppTranFromCardPage {
 
     this.GetServicesProvider = GetServicesProviderg;
 
-    this.storageProvider.getItems().then(wallets => {
+    this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
         this.noWalletAvailable();
@@ -90,8 +83,6 @@ export class GmppTranFromCardPage {
     modal.present();
   }
 
-  
-
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
@@ -105,7 +96,7 @@ export class GmppTranFromCardPage {
       );
       dat.ipin = this.GetServicesProvider.encryptGmpp(dat.UUID + dat.ipin);
       dat.consumerIdentifier = dat.walletNumber;
-      
+
       dat.isConsumer = "true";
       var date = new Date(dat.expDate);
       var mon = "" + (date.getMonth() + 1);
@@ -121,7 +112,6 @@ export class GmppTranFromCardPage {
         this.todo.value,
         "gmpp/transferAccountToWallet"
       ).then(data => {
-        
         if (data != null && data.responseCode == 1) {
           loader.dismiss();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(

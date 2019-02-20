@@ -9,9 +9,8 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 
 import * as uuid from "uuid";
 import { GetServicesProvider } from "../../providers/get-services/get-services";
-import { Card } from "../../models/cards";
-import { Storage } from "@ionic/storage";
 import { AlertProvider } from "../../providers/alert/alert";
+import { Item, StorageProvider } from "../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -21,7 +20,7 @@ import { AlertProvider } from "../../providers/alert/alert";
 export class GenerateIpinPage {
   private generateIpinForm: FormGroup;
   private completeForm: FormGroup;
-  public cards: Card[] = [];
+  public cards: Item[] = [];
   public isComplete: boolean = false;
   public submitAttempt: boolean = false;
   pan: any;
@@ -33,10 +32,10 @@ export class GenerateIpinPage {
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public getServicesProvider: GetServicesProvider,
-    public storage: Storage,
+    public storageProvider: StorageProvider,
     public alertProvider: AlertProvider
   ) {
-    this.storage.get("cards").then(cards => {
+    this.storageProvider.getCards().then(cards => {
       this.cards = cards;
     });
 
@@ -95,9 +94,9 @@ export class GenerateIpinPage {
 
       let requestData = this.generateIpinForm.value;
       requestData.UUID = uuid.v4();
-      requestData.pan = requestData.card.pan;
+      requestData.pan = requestData.card.cardNumber;
       requestData.expDate = requestData.card.expDate;
-      this.pan = requestData.card.pan;
+      this.pan = requestData.card.cardNumber;
       this.expDate = requestData.card.expDate;
 
       this.getServicesProvider

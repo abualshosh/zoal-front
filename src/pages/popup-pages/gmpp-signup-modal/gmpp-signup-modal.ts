@@ -10,7 +10,7 @@ import { GetServicesProvider } from "../../../providers/get-services/get-service
 import * as uuid from "uuid";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Api } from "../../../providers/providers";
-import { Wallet, StorageProvider } from "../../../providers/storage/storage";
+import { Item, StorageProvider } from "../../../providers/storage/storage";
 import { AlertProvider } from "../../../providers/alert/alert";
 @IonicPage()
 @Component({
@@ -20,7 +20,7 @@ import { AlertProvider } from "../../../providers/alert/alert";
 export class GmppSignupModalPage {
   profile: any;
   private todo: FormGroup;
-  public wallets: Wallet[];
+  public wallets: Item[];
   submitAttempt: boolean = false;
 
   constructor(
@@ -34,7 +34,7 @@ export class GmppSignupModalPage {
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
-    this.storageProvider.getItems().then(wallets => {
+    this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
         this.noWalletAvailable();
@@ -82,8 +82,8 @@ export class GmppSignupModalPage {
 
         if (data.responseCode == 1) {
           this.storageProvider.getProfile().subscribe(val => {
-      this.profile = val;
-    });
+            this.profile = val;
+          });
           this.profile.phoneNumber = "249" + localStorage.getItem("username");
           this.api.put("/profiles", this.profile).subscribe(
             (res: any) => {

@@ -43,7 +43,20 @@
       <div>{{ "charityServices" | translate }}</div>
     </div>
 
-    <div class="grid-item" (click)="openPage('SpecialPaymentPage')">
+    <div
+      *ngIf="isGmpp"
+      class="grid-item"
+      (click)="openPage('GmppTranToWalletPage')"
+    >
+      <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
+      <div>{{ "giftsServices" | translate }}</div>
+    </div>
+
+    <div
+      *ngIf="!isGmpp"
+      class="grid-item"
+      (click)="openPage('TransferToCardPage')"
+    >
       <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
       <div>{{ "giftsServices" | translate }}</div>
     </div>

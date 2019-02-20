@@ -29,6 +29,7 @@ $colors: (
   // secondary: #e64a19,
     secondary: #ef5725,
   custom-red: #ed2124,
+  deep-red: #b71820,
   danger: #b71c1c,
   light: #ffffff,
   dark: #222,
@@ -70,3 +71,13 @@ $spinner-md-crescent-color: #0277bd;
 
 @import "roboto";
 @import "noto-sans";
+
+@font-face {
+  font-family: "Lemonada";
+  src: url("../assets/fonts/Lemonada-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+$font-family-md-base: "Lemonada";
+$font-family-ios-base: "Lemonada";

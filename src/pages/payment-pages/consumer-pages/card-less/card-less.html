@@ -22,8 +22,8 @@
             interface="popover"
             formControlName="Card"
           >
-            <ion-option *ngFor="let Card of cards" [value]="Card"
-              >{{ Card.cardNumber }}
+            <ion-option *ngFor="let card of cards" [value]="card"
+              >{{ card.name }}
             </ion-option>
           </ion-select>
         </ion-item>

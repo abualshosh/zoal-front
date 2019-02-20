@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>{{ pageTitle | translate }}</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span ion-text showWhen="ios">{{ "cancel" | translate }}</span>
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="con">
+    <form [formGroup]="form" (ngSubmit)="submitForm()">
+      <div *ngIf="key == 'wallets'">
+        <div *ngIf="!form.controls.walletNumber.valid && submitAttempt">
+          <p>{{ "validWalletError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "wallet" | translate }}</ion-label>
+          <ion-input formControlName="walletNumber"></ion-input>
+        </ion-item>
+      </div>
+
+      <div *ngIf="key == 'cards'">
+        <div *ngIf="!form.controls.cardNumber.valid && submitAttempt">
+          <p>{{ "validCardPANError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "CardPAN" | translate }}</ion-label>
+          <ion-input formControlName="cardNumber"></ion-input>
+        </ion-item>
+        <div *ngIf="!form.controls.expDate.valid && submitAttempt">
+          <p>{{ "validExpDateError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "ExpDate" | translate }}</ion-label>
+          <ion-datetime
+            type="Date"
+            displayFormat="MM YYYY"
+            pickerFormat="MM YYYY"
+            max="2050-12-31"
+            formControlName="expDate"
+            doneText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            required
+          ></ion-datetime>
+        </ion-item>
+      </div>
+
+      <div *ngIf="key == 'favorites'">
+        <ion-item>
+          <ion-label stacked> {{ "favoriteText" | translate }}</ion-label>
+          <ion-input formControlName="favoriteText"></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-item>
+        <ion-label stacked> {{ "name" | translate }}</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+
+      <button ion-button class="subbutn" type="submit">
+        {{ "Submit" | translate }}
+      </button>
+    </form>
+  </div>
+</ion-content>

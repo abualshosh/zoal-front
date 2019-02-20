@@ -19,6 +19,12 @@ export class MyApp {
 
   pages: any[] = [
     {
+      title: "favoritesDetailPage",
+      component: "CardWalletFavoriteDetailPage",
+      icon: "star",
+      params: { type: "favorites" }
+    },
+    {
       title: "aboutUsPage",
       component: "AboutUsPage",
       icon: "custom-about"
@@ -38,8 +44,9 @@ export class MyApp {
     },
     {
       title: "gmppWalletDetailPage",
-      component: "GmppWalletDetailPage",
-      icon: "custom-wallet"
+      component: "CardWalletFavoriteDetailPage",
+      icon: "custom-wallet",
+      params: { type: "wallets" }
     },
     {
       title: "gmppBalancePage",
@@ -66,8 +73,9 @@ export class MyApp {
     },
     {
       title: "cardDetailPage",
-      component: "CardDetailPage",
-      icon: "custom-card"
+      component: "CardWalletFavoriteDetailPage",
+      icon: "custom-card",
+      params: { type: "cards" }
     },
     {
       title: "getBalancePage",
@@ -215,7 +223,7 @@ export class MyApp {
   }
 
   openPage(page) {
-    this.nav.push(page.component);
+    this.nav.push(page.component, page.params);
   }
 
   openProfile() {

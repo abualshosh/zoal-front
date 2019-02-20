@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>{{ pageTitle | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <h2 text-center *ngIf="!items">{{ "noItems" | translate }}</h2>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of items">
+      <ion-item *ngIf="type == 'wallets'">
+        <h2>{{ item.name }}</h2>
+        <h4>{{ item.walletNumber }}</h4>
+      </ion-item>
+
+      <ion-item *ngIf="type == 'cards'">
+        <h2>{{ item.name }}</h2>
+        <h4>{{ item.cardNumber }}</h4>
+        <ion-note item-end>{{ item.expDate }}</ion-note>
+      </ion-item>
+
+      <ion-item *ngIf="type == 'favorites'">
+        <h2>{{ item.name }}</h2>
+        <h4>{{ item.favoriteText }}</h4>
+      </ion-item>
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteItem(item)">
+          <ion-icon name="trash"></ion-icon>
+          {{ "delete" | translate }}
+        </button>
+        <button ion-button color="secondary" (click)="updateItem(item)">
+          <ion-icon name="build"></ion-icon>
+          {{ "edit" | translate }}
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab end bottom>
+    <button ion-fab color="primary" (click)="addItem()">
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

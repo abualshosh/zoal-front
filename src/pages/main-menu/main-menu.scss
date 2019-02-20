@@ -1,25 +1,29 @@
 page-main-menu {
-  .card-title ion-icon {
-    margin-top: 20%;
-  }
-
-  .card-title {
-    position: absolute;
-    text-align: center;
-    font-size: 3em;
-    width: 100%;
+  .grid-con {
     height: 100%;
-    // font-weight: bold;
-    // background-color: map-get($colors, bar);
-    border: 2px solid map-get($colors, bar);
-    color: map-get($colors, secondary);
+    padding: 5px;
+    display: grid;
+    justify-content: stretch;
+    justify-items: stretch;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    grid-gap: 4px 4px;
+    background: map-get($colors, bar);
   }
 
-  .card-subtitle {
-    font-size: 1.2em;
-    position: absolute;
-    top: 70%;
+  .grid-item {
     width: 100%;
+    display: grid;
+    font-size: 1.2em;
     color: map-get($colors, secondary);
+    background: white;
+    text-align: center;
+  }
+
+  .grid-icon {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    font-size: 2.5em;
   }
 }

@@ -39,7 +39,6 @@ export class WelcomePage {
     public storage: Storage
   ) {
     this.checkDirection();
-    this.storage.get("lang").then(lang => (this.language = lang));
 
     this.menuCtrl.enable(false, "sideMenu");
 
@@ -67,6 +66,7 @@ export class WelcomePage {
       } else if (lang === "en" && this.platform.dir() === "rtl") {
         this.platform.setDir("ltr", true);
       }
+      this.language = lang;
     });
   }
 

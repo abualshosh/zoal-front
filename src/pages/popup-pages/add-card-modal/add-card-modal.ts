@@ -23,7 +23,7 @@ export class AddCardModalPage {
   }
 
   addCard() {
-    this.navCtrl.push("CardDetailPage");
+    this.navCtrl.push("CardWalletFavoriteDetailPage", { type: "cards" });
     this.viewCtrl.dismiss();
   }
 

@@ -19,7 +19,7 @@ export class WalkthroughModalPage {
   ) {}
 
   addWallet() {
-    this.navCtrl.push("GmppWalletDetailPage");
+    this.navCtrl.push("CardWalletFavoriteDetailPage", { type: "wallets" });
     this.viewCtrl.dismiss();
   }
 

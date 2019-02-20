@@ -44,12 +44,10 @@ export class CustomsPage {
         if (this.cards.length <= 0) {
           this.showWallet = true;
           this.todo.controls["mobilewallet"].setValue(true);
-          this.noCardAvailable();
         }
       } else {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
-        this.noCardAvailable();
       }
     });
 
@@ -85,14 +83,23 @@ export class CustomsPage {
     this.todo.controls["mobilewallet"].setValue(false);
   }
 
-  noCardAvailable() {
-    this.navCtrl.pop();
-    let modal = this.modalCtrl.create(
-      "AddCardModalPage",
-      {},
-      { cssClass: "inset-modals" }
-    );
-    modal.present();
+  ionViewDidEnter() {
+    this.storageProvider.getCards().then(val => {
+      this.cards = val;
+      this.isCardAvailable();
+    });
+  }
+
+  isCardAvailable() {
+    if (!this.cards || this.cards.length <= 0) {
+      this.navCtrl.pop();
+      let modal = this.modalCtrl.create(
+        "AddCardModalPage",
+        {},
+        { cssClass: "inset-modals" }
+      );
+      modal.present();
+    }
   }
 
   clearInput() {

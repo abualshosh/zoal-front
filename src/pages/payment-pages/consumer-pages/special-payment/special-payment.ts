@@ -67,7 +67,7 @@ export class SpecialPaymentPage {
     this.todo.controls["mobilewallet"].setValue(false);
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.checkIsGmpp();
   }
 

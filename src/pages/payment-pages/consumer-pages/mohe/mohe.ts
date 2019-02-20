@@ -107,7 +107,7 @@ export class MohePage {
     this.checkType(event);
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.checkIsGmpp();
   }
 

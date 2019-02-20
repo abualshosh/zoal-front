@@ -71,7 +71,7 @@ export class ElectricityServicesPage {
     this.todo.controls["mobilewallet"].setValue(false);
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.checkIsGmpp();
   }
 

@@ -28,13 +28,6 @@ export class CardLessPage {
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
-      if (!this.cards || this.cards.length <= 0) {
-        this.noCardAvailable();
-      }
-    });
-
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
       Card: ["", Validators.required],
@@ -63,14 +56,23 @@ export class CardLessPage {
     });
   }
 
-  noCardAvailable() {
-    this.navCtrl.pop();
-    let modal = this.modalCtrl.create(
-      "AddCardModalPage",
-      {},
-      { cssClass: "inset-modals" }
-    );
-    modal.present();
+  ionViewDidEnter() {
+    this.storageProvider.getCards().then(val => {
+      this.cards = val;
+      this.isCardAvailable();
+    });
+  }
+
+  isCardAvailable() {
+    if (!this.cards || this.cards.length <= 0) {
+      this.navCtrl.pop();
+      let modal = this.modalCtrl.create(
+        "AddCardModalPage",
+        {},
+        { cssClass: "inset-modals" }
+      );
+      modal.present();
+    }
   }
 
   logForm() {

@@ -36,7 +36,7 @@ export class QrGeneratorPage {
     });
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.checkIsGmpp();
   }
 

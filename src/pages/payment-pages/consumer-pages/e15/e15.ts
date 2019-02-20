@@ -77,7 +77,7 @@ export class E15Page {
     this.todo.controls["mobilewallet"].setValue(false);
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.checkIsGmpp();
   }
 

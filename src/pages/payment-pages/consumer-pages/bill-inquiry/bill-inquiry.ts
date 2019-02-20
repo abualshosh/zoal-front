@@ -37,13 +37,6 @@ export class BillInquiryPage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
-      if (!this.cards || this.cards.length <= 0) {
-        this.noCardAvailable();
-      }
-    });
-
     this.title = this.navParams.get("name");
 
     this.todo = this.formBuilder.group({
@@ -71,14 +64,23 @@ export class BillInquiryPage {
     });
   }
 
-  noCardAvailable() {
-    this.navCtrl.pop();
-    let modal = this.modalCtrl.create(
-      "AddCardModalPage",
-      {},
-      { cssClass: "inset-modals" }
-    );
-    modal.present();
+  ionViewDidEnter() {
+    this.storageProvider.getCards().then(val => {
+      this.cards = val;
+      this.isCardAvailable();
+    });
+  }
+
+  isCardAvailable() {
+    if (!this.cards || this.cards.length <= 0) {
+      this.navCtrl.pop();
+      let modal = this.modalCtrl.create(
+        "AddCardModalPage",
+        {},
+        { cssClass: "inset-modals" }
+      );
+      modal.present();
+    }
   }
 
   logForm() {

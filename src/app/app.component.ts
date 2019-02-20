@@ -204,17 +204,6 @@ export class MyApp {
     });
   }
 
-  toggleNotifications() {
-    this.api.put("profiles", this.profile).subscribe(
-      (res: any) => {
-        localStorage.setItem("profile", JSON.stringify(this.profile));
-      },
-      err => {
-        console.error("ERROR", err);
-      }
-    );
-  }
-
   logOut() {
     localStorage.clear();
     this.storage.clear();

@@ -1,9 +1,4 @@
 <ion-menu id="sideMenu" [content]="content">
-  <ion-header transparent no-border>
-    <ion-toolbar color="secondary">
-      <ion-title text-center>{{ "sideMenu" | translate }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <ion-content padding class="side-menu">
     <div text-center>
       <ion-avatar class="avatar" (click)="openProfile()">
@@ -33,16 +28,6 @@
             >{{ language.language | translate }}
           </ion-option>
         </ion-select>
-      </ion-item>
-      <ion-item *ngIf="profile">
-        <ion-toggle
-          [(ngModel)]="profile.accepteTransfer"
-          (ngModelChange)="toggleNotifications()"
-        ></ion-toggle>
-        <ion-label class="label">
-          {{ "AccepteTransfer" | translate }}
-        </ion-label>
-        <ion-icon name="custom-transfer" item-start></ion-icon>
       </ion-item>
     </ion-list>
 

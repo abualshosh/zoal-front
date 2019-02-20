@@ -6,7 +6,7 @@ import {
   ViewController
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { Item } from "../../providers/storage/storage";
+import { Item, StorageProvider } from "../../providers/storage/storage";
 
 @IonicPage()
 @Component({
@@ -25,6 +25,7 @@ export class ItemCreatePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public storageProvider: StorageProvider,
     private formBuilder: FormBuilder
   ) {
     this.item = navParams.get("item");
@@ -113,8 +114,10 @@ export class ItemCreatePage {
 
       this.newItem.name = this.form.controls["name"].value;
 
-      this.submitAttempt = false;
-      this.viewCtrl.dismiss(this.newItem);
+      this.storageProvider.addItem(this.newItem, this.key).then(item => {
+        this.submitAttempt = false;
+        this.viewCtrl.dismiss();
+      });
     }
   }
 
@@ -138,8 +141,10 @@ export class ItemCreatePage {
 
       this.item.name = this.form.controls["name"].value;
 
-      this.submitAttempt = false;
-      this.viewCtrl.dismiss(this.item);
+      this.storageProvider.updateItem(this.item, this.key).then(item => {
+        this.submitAttempt = false;
+        this.viewCtrl.dismiss();
+      });
     }
   }
 

@@ -54,11 +54,7 @@ export class CardWalletFavoriteDetailPage {
     );
     modal.present();
     modal.onDidDismiss(item => {
-      if (item) {
-        this.storageProvider.addItem(item, this.type).then(item => {
-          this.loadItems();
-        });
-      }
+      this.loadItems();
     });
   }
 
@@ -72,11 +68,7 @@ export class CardWalletFavoriteDetailPage {
     );
     modal.present();
     modal.onDidDismiss(item => {
-      if (item) {
-        this.storageProvider.updateItem(item, this.type).then(item => {
-          this.loadItems();
-        });
-      }
+      this.loadItems();
     });
   }
 

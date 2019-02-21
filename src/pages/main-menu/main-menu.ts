@@ -40,12 +40,6 @@ export class MainMenuPage {
       icon: "briefcase",
       var: ""
     },
-    {
-      title: "customsInquiryPage",
-      component: "CustomsInquiryPage",
-      icon: "briefcase",
-      var: ""
-    },
     { title: "e15Services", component: "E15Page", icon: "document", var: "" },
     {
       title: "Higher Education",

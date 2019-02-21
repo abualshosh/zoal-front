@@ -1,6 +1,12 @@
 <ion-header>
   <ion-navbar color="secondary">
     <ion-title>{{ "contactUsPage" | translate }}</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span ion-text showWhen="ios">{{ "cancel" | translate }}</span>
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -24,7 +30,7 @@
         <ion-item>
           <ion-label stacked> {{ "contactMessage" | translate }} </ion-label>
           <ion-textarea
-            rows="5"
+            rows="3"
             formControlName="message"
             required
           ></ion-textarea>

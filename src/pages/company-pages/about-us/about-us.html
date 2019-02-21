@@ -28,7 +28,7 @@
       <ion-col>
         <button
           ion-button
-          large
+          full
           (click)="openLink('https://www.facebook.com/nexttechnologysudan/')"
         >
           <ion-icon name="logo-facebook" item-start></ion-icon>
@@ -37,7 +37,7 @@
       <ion-col>
         <button
           ion-button
-          large
+          full
           (click)="
             openLink('https://www.linkedin.com/company/next-technology-co-ltd')
           "
@@ -46,8 +46,15 @@
         </button>
       </ion-col>
       <ion-col>
-        <button ion-button large (click)="openLink('http://www.znextech.com')">
+        <button ion-button full (click)="openLink('http://www.znextech.com')">
           <ion-icon name="at" item-start></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button full (click)="openContactUs()">
+          {{ "contactUsPage" | translate }}
         </button>
       </ion-col>
     </ion-row>

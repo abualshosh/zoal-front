@@ -4,7 +4,8 @@ import {
   NavController,
   NavParams,
   LoadingController,
-  ModalController
+  ModalController,
+  ViewController
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { GetServicesProvider } from "../../../providers/providers";
@@ -29,6 +30,7 @@ export class ContactUsPage {
     public serviceProvider: GetServicesProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
+    public viewCtrl: ViewController,
     public storageProvider: StorageProvider,
     public navParams: NavParams
   ) {
@@ -86,5 +88,9 @@ export class ContactUsPage {
         }
       );
     }
+  }
+
+  cancel() {
+    this.viewCtrl.dismiss();
   }
 }

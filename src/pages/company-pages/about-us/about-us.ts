@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  ModalController
+} from "ionic-angular";
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 
 @IonicPage()
@@ -11,6 +16,7 @@ export class AboutUsPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public modalCtrl: ModalController,
     private iab: InAppBrowser
   ) {}
 
@@ -18,5 +24,16 @@ export class AboutUsPage {
 
   openLink(link) {
     const browser = this.iab.create(link, "_system");
+  }
+
+  openContactUs() {
+    let modal = this.modalCtrl.create(
+      "ContactUsPage",
+      {},
+      {
+        cssClass: "inset-modal-box"
+      }
+    );
+    modal.present();
   }
 }

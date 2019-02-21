@@ -28,11 +28,6 @@ export class MyApp {
       title: "aboutUsPage",
       component: "AboutUsPage",
       icon: "custom-about"
-    },
-    {
-      title: "contactUsPage",
-      component: "ContactUsPage",
-      icon: "custom-mail"
     }
   ];
 

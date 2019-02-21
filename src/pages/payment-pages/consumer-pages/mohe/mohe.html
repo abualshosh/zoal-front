@@ -5,7 +5,7 @@
     <ion-title>{{ "HighEdu" | translate }}</ion-title>
   </ion-navbar>
   <ion-segment
-    color="dark"
+    color="secondary"
     (ionChange)="checkType($event)"
     [(ngModel)]="type"
     class=""
@@ -23,7 +23,6 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        
         <div
           *ngIf="
             !todo.controls.entityId.valid &&

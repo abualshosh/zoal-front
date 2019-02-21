@@ -19,14 +19,13 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
   templateUrl: "customs.html"
 })
 export class CustomsPage {
-  showWallet: boolean = false;
   profile: any;
   public title: any;
+  public type = "customsPayment";
   private todo: FormGroup;
   public cards: Item[] = [];
   public payee: any[] = [];
   submitAttempt: boolean = false;
-  validCard: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,35 +37,12 @@ export class CustomsPage {
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
-      if (this.cards) {
-        if (this.cards.length <= 0) {
-          this.showWallet = true;
-          this.todo.controls["mobilewallet"].setValue(true);
-        }
-      } else {
-        this.showWallet = true;
-        this.todo.controls["mobilewallet"].setValue(true);
-      }
-    });
-
     this.title = "customsServices";
 
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],
       Payee: [""],
-      entityId: [
-        "",
-        Validators.compose([
-          // Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249][0-9]*")
-        ])
-      ],
-      mobilewallet: [""],
       IPIN: [
         "",
         Validators.compose([
@@ -80,7 +56,6 @@ export class CustomsPage {
       DECLARANTCODE: ["", Validators.required],
       Amount: ["", Validators.required]
     });
-    this.todo.controls["mobilewallet"].setValue(false);
   }
 
   ionViewDidEnter() {
@@ -88,6 +63,14 @@ export class CustomsPage {
       this.cards = val;
       this.isCardAvailable();
     });
+  }
+
+  checkType(_event) {
+    if (this.type === "customsPayment") {
+      this.todo.controls["Amount"].enable();
+    } else {
+      this.todo.controls["Amount"].disable();
+    }
   }
 
   isCardAvailable() {
@@ -105,97 +88,78 @@ export class CustomsPage {
   clearInput() {
     this.todo.controls["pan"].reset();
     this.todo.controls["Card"].reset();
-    this.todo.controls["entityId"].reset();
     this.todo.controls["Payee"].reset();
     this.todo.controls["IPIN"].reset();
     this.todo.controls["BANKCODE"].reset();
     this.todo.controls["DECLARANTCODE"].reset();
     this.todo.controls["Amount"].reset();
-    if (this.cards) {
-      if (this.cards.length <= 0) {
-        this.showWallet = true;
-        this.todo.controls["mobilewallet"].setValue(true);
-      }
-    } else {
-      this.showWallet = true;
-      this.todo.controls["mobilewallet"].setValue(true);
-    }
-  }
-
-  onSelectChange(selectedValue: any) {
-    var dat = this.todo.value;
-    if (dat.Card && !dat.mobilewallet) {
-      this.validCard = true;
-    }
   }
 
   logForm() {
     var dat = this.todo.value;
-    if (dat.Card && !dat.mobilewallet) {
-      this.validCard = true;
-    }
     this.submitAttempt = true;
     if (this.todo.valid) {
-      if (!dat.mobilewallet && !this.validCard) {
-        return;
-      }
       let loader = this.loadingCtrl.create();
       loader.present();
       dat = this.todo.value;
 
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-      dat.tranCurrency = "SDG";
 
+      dat.tranCurrency = "SDG";
       dat.tranAmount = dat.Amount;
 
-      if (dat.mobilewallet) {
-        dat.entityType = "Mobile Wallet";
+      dat.PAN = dat.Card.cardNumber;
+      dat.expDate = dat.Card.expDate;
 
-        dat.authenticationType = "10";
-        dat.pan = "";
-      } else {
-        dat.pan = dat.Card.cardNumber;
-        dat.expDate = dat.Card.expDate;
-        dat.authenticationType = "00";
-        dat.entityId = "";
-      }
-
+      dat.authenticationType = "00";
       dat.fromAccountType = "00";
       dat.toAccountType = "00";
 
       dat.paymentInfo =
         "BANKCODE=" + dat.BANKCODE + "/DECLARANTCODE=" + dat.DECLARANTCODE;
-      dat.payeeId = "Custom Service";
 
-      this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
+      let endpoint: string;
+      if (this.type == "customsPayment") {
+        endpoint = "consumer/payment";
+        dat.payeeId = "Custom Service";
+      } else {
+        endpoint = "consumer/getBill";
+        dat.payeeId = "0010030003";
+      }
+
+      this.GetServicesProvider.load(dat, endpoint).then(data => {
         if (data != null && data.responseCode == 0) {
           loader.dismiss();
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
 
-          var datas;
+          let main = [];
+          let mainData = {};
+          let datas = {};
 
-          datas = {
-            acqTranFee: data.acqTranFee,
-            issuerTranFee: data.issuerTranFee,
-            tranAmount: data.tranAmount,
-            tranCurrency: data.tranCurrency,
-            date: datetime
-          };
+          if (this.type == "customsPayment") {
+            let datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+              "DD/MM/YYYY  hh:mm:ss"
+            );
+            datas = {
+              acqTranFee: data.acqTranFee,
+              issuerTranFee: data.issuerTranFee,
+              tranAmount: data.tranAmount,
+              tranCurrency: data.tranCurrency,
+              date: datetime
+            };
 
-          var main = [];
-          var mainData = {
-            customsServices: data.tranAmount
-          };
-          main.push(mainData);
-          var dat = [];
-          if (data.PAN) {
-            dat.push({ Card: data.PAN });
+            mainData = {
+              customsServices: data.tranAmount
+            };
           } else {
-            dat.push({ WalletNumber: data.entityId });
+            mainData = {
+              customsInquiryPage: data.billInfo.Amount
+            };
           }
+          main.push(mainData);
+
+          let dat = [];
+          dat.push({ Card: data.PAN });
 
           if (Object.keys(data.billInfo).length > 0) {
             dat.push(data.billInfo);

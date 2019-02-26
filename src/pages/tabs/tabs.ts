@@ -71,6 +71,7 @@ export class TabsPage {
 
     this.storageProvider.getProfile().subscribe(val => {
       this.profile = val;
+      events.publish("profile:updated", "");
     });
 
     events.subscribe("profile:updated", () => {

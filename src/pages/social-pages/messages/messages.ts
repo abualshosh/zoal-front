@@ -5,6 +5,7 @@ import { Api, User } from "../../../providers/providers";
 import { Events } from "ionic-angular";
 import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
 import { StompService } from "ng2-stomp-service";
+import { StorageProvider } from "../../../providers/storage/storage";
 @IonicPage()
 @Component({
   selector: "page-messages",
@@ -46,6 +47,7 @@ export class MessagesPage {
       this.scrollToBottom();
     }
   };
+
   constructor(
     public stomp: StompService,
     public sqlite: SQLite,
@@ -53,24 +55,29 @@ export class MessagesPage {
     public users: User,
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
+    public storageProvider: StorageProvider,
     public api: Api,
     navParams: NavParams
   ) {
-    this.profile = JSON.parse(localStorage.getItem("profile"));
+    this.storageProvider.getProfile().subscribe(val => {
+      this.profile = val;
+      this.user = {
+        _id: localStorage.getItem("username"),
+        fullname: this.profile.fullName,
+        pic: this.api.url + "/profileimage/" + localStorage.getItem("username"),
+        username: localStorage.getItem("username")
+      };
+    });
+
     this.chatUser = navParams.get("otherUser");
-    this.user = {
-      _id: localStorage.getItem("username"),
-      fullname: this.profile.fullname,
-      pic: this.api.url + "/profileimage/" + localStorage.getItem("username"),
-      username: localStorage.getItem("username")
-    };
+    this.messages = navParams.get("msg");
+
     this.toUser = {
       _id: navParams.get("otherUser"),
       pic: this.api.url + "/profileimage/" + navParams.get("otherUser"),
       username: navParams.get("otherUser"),
       fullname: navParams.get("otherUserFullname")
     };
-    this.messages = navParams.get("msg");
 
     this.messageForm = formBuilder.group({
       message: new FormControl("")
@@ -80,9 +87,7 @@ export class MessagesPage {
     this.stomp.subscribe("/user/queue/status", this.response);
     this.events.subscribe("message", this.mySubscribedHandler);
   }
-  public response = data => {
-    //console.log(data)
-  };
+  public response = data => {};
 
   ionViewWillLeave() {
     this.events.unsubscribe("message", this.mySubscribedHandler);
@@ -90,19 +95,14 @@ export class MessagesPage {
 
   send(message) {
     if (message && message !== "") {
-      // this.messageService.sendMessage(chatId, message);
-      var sender = this.user._id;
-      var recipient = this.toUser._id;
-      var message = message;
-      var msgDate = new Date();
-      //  stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
+      let msgDate = new Date();
       this.users.stomp.send("/app/message", {
-        sender: sender,
-        recipient: recipient,
+        sender: this.user._id,
+        fullname: this.toUser.fullname,
+        recipient: this.toUser._id,
         message: message,
-        msgDate: msgDate
+        msgDate: new Date()
       });
-      //  this..send('destionation',{"data":"data"});
       const messageData = {
         toId: this.toUser._id,
         _id: 6,
@@ -130,7 +130,7 @@ export class MessagesPage {
       ) values (?,?,?,?,?)`,
             [
               this.toUser.username,
-              this.user._id,
+              this.toUser.username,
               this.toUser.fullname,
               message,
               msgDate

@@ -6,12 +6,14 @@ import { Events } from "ionic-angular";
 
 @IonicPage()
 @Component({
+  selector: "page-chats",
   templateUrl: "chats.html"
 })
 export class ChatsPage {
   public messageForm: any;
   chats = [];
   messages: any = [];
+
   constructor(
     public modalCtrl: ModalController,
     public events: Events,
@@ -20,10 +22,10 @@ export class ChatsPage {
     public navCtrl: NavController
   ) {
     this.chats.push({
-      imageUrl: this.api.url + "/profileimage/" + "249922190200",
+      imageUrl: this.api.url + "/profileimage/" + "249920680519",
       title: "249922190200",
       fullname: "Awab",
-      lastMessage: "s",
+      lastMessage: "sisisi",
       timestamp: ""
     });
 
@@ -144,7 +146,7 @@ export class ChatsPage {
             }
             this.navCtrl.push("MessagesPage", {
               otherUser: chat.title,
-              otherUserFullname: chat.fullname,
+              // otherUserFullname: chat.fullName,
               msg: this.messages
             });
           },
@@ -156,7 +158,7 @@ export class ChatsPage {
       .catch(e =>
         this.navCtrl.push("MessagesPage", {
           otherUser: chat.title,
-          otherUserFullname: chat.fullname,
+          // otherUserFullname: chat.fullName,
           msg: this.messages
         })
       );

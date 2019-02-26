@@ -1,5 +1,6 @@
 <ion-header>
   <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
     <ion-title> {{ "chat" | translate }} </ion-title>
   </ion-navbar>
 </ion-header>
@@ -10,7 +11,6 @@
       <h2>{{ chat.fullname }}</h2>
       <p>{{ chat.lastMessage }}</p>
       <h6 item-end>{{ chat.timestamp | date: "dd/MM/yyyy" }}</h6>
-      <!-- <ion-note item-end><ion-badge item-end>1</ion-badge></ion-note> -->
     </ion-item>
   </ion-list>
 

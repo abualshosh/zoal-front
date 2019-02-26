@@ -13,7 +13,7 @@ import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
 import { Settings } from "../providers/providers";
-import { User, UserProvider } from "../providers/providers";
+import { User } from "../providers/providers";
 import { Api } from "../providers/providers";
 import { GetServicesProvider } from "../providers/providers";
 import { MyApp } from "./app.component";
@@ -33,7 +33,8 @@ import { NativePageTransitions } from "@ionic-native/native-page-transitions";
 import { CardIO } from "@ionic-native/card-io";
 import { StorageProvider } from "../providers/storage/storage";
 import { InAppBrowser } from "@ionic-native/in-app-browser";
-import { AlertProvider } from '../providers/alert/alert';
+import { AlertProvider } from "../providers/alert/alert";
+import { SocialSharing } from "@ionic-native/social-sharing";
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -95,7 +96,6 @@ export function provideSettings(storage: Storage) {
     SQLite,
     NativePageTransitions,
     StompService,
-    UserProvider,
     FCM,
     NgxQRCodeModule,
     InAppBrowser,
@@ -109,7 +109,8 @@ export function provideSettings(storage: Storage) {
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     StorageProvider,
-    AlertProvider
+    AlertProvider,
+    SocialSharing
   ]
 })
 export class AppModule {}

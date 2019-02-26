@@ -31,10 +31,14 @@
       <ion-item class="no-padding">
         <ion-col text-wrap> {{ itm.key | translate }} : </ion-col>
         <ion-col dir="ltr" item-end> {{ itm.value }} </ion-col>
+        {{ compileShareMsg(itm.key | translate, itm.value) }}
       </ion-item>
     </ion-row>
   </ion-grid>
 
+  <button class="subbutn" ion-button (click)="share()" color="secondary">
+    {{ "share" | translate }}
+  </button>
   <button class="subbutn" ion-button (click)="dismiss()" color="secondary">
     {{ "close" | translate }}
   </button>

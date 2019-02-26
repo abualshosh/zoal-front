@@ -6,6 +6,7 @@ import {
   NavParams
 } from "ionic-angular";
 import { TranslateService } from "@ngx-translate/core";
+import { SocialSharing } from "@ionic-native/social-sharing";
 
 @IonicPage()
 @Component({
@@ -15,11 +16,13 @@ import { TranslateService } from "@ngx-translate/core";
 export class TransactionDetailPage {
   public items: any[] = [];
   public main: any[] = [];
+  msg: string = "";
 
   constructor(
     public viewCtrl: ViewController,
     public navCtrl: NavController,
     public translateService: TranslateService,
+    private socialSharing: SocialSharing,
     public navParams: NavParams
   ) {
     this.items = this.navParams.get("data");
@@ -45,7 +48,15 @@ export class TransactionDetailPage {
     }
   }
 
-  ionViewDidLoad() {}
+  share() {
+    // this.msg = this.compileMsg();
+    alert(this.msg);
+    // this.socialSharing.share(this.msg, null, null, null);
+  }
+
+  compileShareMsg(key, value) {
+    this.msg = this.msg + key + " : " + value + "\n";
+  }
 
   dismiss() {
     this.viewCtrl.dismiss();

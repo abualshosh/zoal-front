@@ -9,7 +9,6 @@ import {
 import { Contacts } from "@ionic-native/contacts";
 import { Api } from "../../../providers/providers";
 import { AlertProvider } from "../../../providers/alert/alert";
-import { ChatProvider } from "../../../providers/chat/chat";
 import { StorageProvider } from "../../../providers/storage/storage";
 
 @IonicPage()
@@ -29,7 +28,6 @@ export class ContactsPage {
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public alertProvider: AlertProvider,
-    private chatService: ChatProvider,
     public storageProvider: StorageProvider,
     public events: Events,
     public navParams: NavParams
@@ -132,21 +130,6 @@ export class ContactsPage {
   openProfile(item: any) {
     this.navCtrl.push("ProfilePage", {
       item: item
-    });
-  }
-
-  openConversation(toUser) {
-    const con = {
-      user: this.profile,
-      toUser: toUser
-    };
-
-    this.chatService.createConversation(con).subscribe(res => {
-      this.events.publish("conversation:created", con, Date.now());
-
-      this.navCtrl.push("ChatPage", {
-        con: res
-      });
     });
   }
 }

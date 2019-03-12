@@ -4,7 +4,8 @@ import {
   IonicPage,
   ModalController,
   NavController,
-  LoadingController
+  LoadingController,
+  Events
 } from "ionic-angular";
 import { GetServicesProvider } from "../../../providers/get-services/get-services";
 import * as uuid from "uuid";
@@ -24,6 +25,7 @@ export class GmppSignupModalPage {
   submitAttempt: boolean = false;
 
   constructor(
+    public events: Events,
     public loadingCtrl: LoadingController,
     public api: Api,
     private formBuilder: FormBuilder,
@@ -34,12 +36,7 @@ export class GmppSignupModalPage {
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
-    this.storageProvider.getWallets().then(wallets => {
-      this.wallets = wallets;
-      if (!this.wallets || this.wallets.length <= 0) {
-        this.noWalletAvailable();
-      }
-    });
+    
 
     this.todo = this.formBuilder.group({
       walletNumber: [
@@ -51,6 +48,27 @@ export class GmppSignupModalPage {
           Validators.pattern("[249].[0-9]*")
         ])
       ]
+    });
+  }
+
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadWallets();
+  }
+
+  loadWallets() {
+    this.storageProvider.getWallets().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadWallets();
     });
   }
 
@@ -73,7 +91,7 @@ export class GmppSignupModalPage {
     // };
     if (this.todo.valid) {
       dat.UUID = uuid.v4();
-      dat.consumerIdentifier = dat.walletNumber;
+      dat.consumerIdentifier = this.wallets[0].walletNumber;
       let loader = this.loadingCtrl.create();
       loader.present();
 

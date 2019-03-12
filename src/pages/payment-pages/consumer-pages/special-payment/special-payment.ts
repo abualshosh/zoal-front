@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
@@ -30,6 +31,7 @@ export class SpecialPaymentPage {
   isGmpp: boolean;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
@@ -43,15 +45,7 @@ export class SpecialPaymentPage {
       pan: [""],
       Card: ["", Validators.required],
       MerchantId: [""],
-      entityId: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249][0-9]*")
-        ])
-      ],
+      entityId: [""],
       mobilewallet: [""],
       IPIN: [
         "",
@@ -67,8 +61,16 @@ export class SpecialPaymentPage {
     this.todo.controls["mobilewallet"].setValue(false);
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
     this.checkIsGmpp();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.clearInput();
+      this.checkIsGmpp();
+    });
   }
 
   checkIsGmpp() {
@@ -162,7 +164,7 @@ export class SpecialPaymentPage {
       dat.id = dat.MerchantId;
       if (dat.mobilewallet) {
         dat.isMobilePayment = true;
-        dat.phoneNumber = dat.entityId;
+        dat.phoneNumber = this.wallets[0].walletNumber;
         dat.pan = "";
       } else {
         dat.isMobilePayment = false;

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController } from "ionic-angular";
+import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
@@ -19,6 +19,7 @@ export class ChangeIpinPage {
   public GetServicesProvider: GetServicesProvider;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
@@ -60,7 +61,19 @@ export class ChangeIpinPage {
     });
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadData();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadData();
+    });
+  }
+
+  loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
       this.isCardAvailable();

@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
@@ -31,6 +32,7 @@ export class TransferToCardPage {
   public GetServicesProvider: GetServicesProvider;
 
   constructor(
+    public events: Events,
     private barcodeScanner: BarcodeScanner,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
@@ -71,7 +73,19 @@ export class TransferToCardPage {
     }
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadData();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadData();
+    });
+  }
+
+  loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
       this.isCardAvailable();

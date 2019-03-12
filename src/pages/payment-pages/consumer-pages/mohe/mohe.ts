@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
@@ -53,6 +54,7 @@ export class MohePage {
   isGmpp: boolean;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
@@ -68,15 +70,7 @@ export class MohePage {
       pan: [""],
       Card: ["", Validators.required],
       Payee: [""],
-      entityId: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249][0-9]*")
-        ])
-      ],
+      entityId: [""],
       CourseID: ["", Validators.required],
       FormKind: ["", Validators.required],
       IPIN: [
@@ -107,8 +101,16 @@ export class MohePage {
     this.checkType(event);
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
     this.checkIsGmpp();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.clearInput();
+      this.checkIsGmpp();
+    });
   }
 
   checkIsGmpp() {
@@ -179,8 +181,6 @@ export class MohePage {
     }
   }
 
-  ionViewWillEnter() {}
-
   onSelectChange(selectedValue: any) {
     var dat = this.todo.value;
     if (dat.Card && !dat.mobilewallet) {
@@ -223,7 +223,7 @@ export class MohePage {
       dat.tranAmount = dat.Amount;
       if (dat.mobilewallet) {
         dat.entityType = "Mobile Wallet";
-
+        dat.entityId = this.wallets[0].walletNumber;
         dat.authenticationType = "10";
         dat.pan = "";
       } else {

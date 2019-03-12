@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
@@ -31,6 +32,7 @@ export class GmppTranToWalletPage {
   public GetServicesProvider: GetServicesProvider;
 
   constructor(
+    public events: Events,
     private barcodeScanner: BarcodeScanner,
     private formBuilder: FormBuilder,
     private navParams: NavParams,
@@ -44,13 +46,6 @@ export class GmppTranToWalletPage {
     // this.consumerIdentifier = "249" + localStorage.getItem("username");
 
     this.GetServicesProvider = GetServicesProviderg;
-
-    this.storageProvider.getWallets().then(wallets => {
-      this.wallets = wallets;
-      if (!this.wallets || this.wallets.length <= 0) {
-        this.noWalletAvailable();
-      }
-    });
 
     this.todo = this.formBuilder.group({
       walletNumber: [
@@ -88,6 +83,27 @@ export class GmppTranToWalletPage {
         this.navParams.get("wallet")
       );
     }
+  }
+
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadWallets();
+  }
+
+  loadWallets() {
+    this.storageProvider.getWallets().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadWallets();
+    });
   }
 
   noWalletAvailable() {
@@ -130,7 +146,7 @@ export class GmppTranToWalletPage {
       dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );
-      dat.consumerIdentifier = dat.walletNumber;
+      dat.consumerIdentifier = this.wallets[0].walletNumber;
 
       dat.isConsumer = "true";
 

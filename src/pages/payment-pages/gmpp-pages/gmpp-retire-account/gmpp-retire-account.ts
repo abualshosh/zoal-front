@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController } from "ionic-angular";
+import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
@@ -23,6 +23,7 @@ export class GmppRetireAccountPage {
   public GetServicesProvider: GetServicesProvider;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
@@ -40,12 +41,7 @@ export class GmppRetireAccountPage {
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
 
-    this.storageProvider.getWallets().then(wallets => {
-      this.wallets = wallets;
-      if (!this.wallets || this.wallets.length <= 0) {
-        this.noWalletAvailable();
-      }
-    });
+    
 
     this.todo = this.formBuilder.group({
       walletNumber: [
@@ -95,6 +91,27 @@ export class GmppRetireAccountPage {
     });
   }
 
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadWallets();
+  }
+
+  loadWallets() {
+    this.storageProvider.getWallets().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadWallets();
+    });
+  }
+
   noWalletAvailable() {
     this.navCtrl.pop();
     let modal = this.modalCtrl.create(
@@ -122,7 +139,7 @@ export class GmppRetireAccountPage {
       dat.consumerPIN = this.GetServicesProvider.encryptGmpp(
         dat.UUID + dat.consumerPIN
       );
-      dat.consumerIdentifier = dat.walletNumber;
+      dat.consumerIdentifier = this.wallets[0].walletNumber;
 
       dat.isConsumer = "true";
 
@@ -173,7 +190,7 @@ export class GmppRetireAccountPage {
           dat.consumerOTP = this.GetServicesProvider.encrypt(
             dat.UUID + dat.consumerOTP
           );
-          dat.consumerIdentifier = this.todo.controls["walletNumber"].value;
+          dat.consumerIdentifier = this.wallets[0].walletNumber;
           //console.log(dat.originalTranUUID)
 
           this.GetServicesProvider.load(

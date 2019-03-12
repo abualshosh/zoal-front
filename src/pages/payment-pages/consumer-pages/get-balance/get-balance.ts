@@ -4,7 +4,8 @@ import {
   LoadingController,
   ModalController,
   IonicPage,
-  NavController
+  NavController,
+  Events
 } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
@@ -24,6 +25,7 @@ export class GetBalancePage {
   public GetServicesProvider: GetServicesProvider;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
@@ -48,7 +50,19 @@ export class GetBalancePage {
     });
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadData();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadData();
+    });
+  }
+
+  loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
       this.isCardAvailable();

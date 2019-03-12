@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController } from "ionic-angular";
+import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
@@ -21,6 +21,7 @@ export class GmppTranFromCardPage {
   public GetServicesProvider: GetServicesProvider;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
@@ -33,12 +34,7 @@ export class GmppTranFromCardPage {
 
     this.GetServicesProvider = GetServicesProviderg;
 
-    this.storageProvider.getWallets().then(wallets => {
-      this.wallets = wallets;
-      if (!this.wallets || this.wallets.length <= 0) {
-        this.noWalletAvailable();
-      }
-    });
+    
 
     this.todo = this.formBuilder.group({
       walletNumber: [
@@ -73,6 +69,27 @@ export class GmppTranFromCardPage {
     });
   }
 
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadWallets();
+  }
+
+  loadWallets() {
+    this.storageProvider.getWallets().then(wallets => {
+      this.wallets = wallets;
+      if (!this.wallets || this.wallets.length <= 0) {
+        this.noWalletAvailable();
+      }
+    });
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadWallets();
+    });
+  }
+
   noWalletAvailable() {
     this.navCtrl.pop();
     let modal = this.modalCtrl.create(
@@ -95,7 +112,7 @@ export class GmppTranFromCardPage {
         dat.UUID + dat.consumerPIN
       );
       dat.ipin = this.GetServicesProvider.encryptGmpp(dat.UUID + dat.ipin);
-      dat.consumerIdentifier = dat.walletNumber;
+      dat.consumerIdentifier = this.wallets[0].walletNumber;
 
       dat.isConsumer = "true";
       var date = new Date(dat.expDate);

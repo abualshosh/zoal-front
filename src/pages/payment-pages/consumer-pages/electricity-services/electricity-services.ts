@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
@@ -31,6 +32,7 @@ export class ElectricityServicesPage {
   isGmpp: boolean;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
@@ -45,15 +47,7 @@ export class ElectricityServicesPage {
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],
-      entityId: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249][0-9]*")
-        ])
-      ],
+      entityId: [""],
       Payee: [""],
       mobilewallet: [""],
       IPIN: [
@@ -71,8 +65,16 @@ export class ElectricityServicesPage {
     this.todo.controls["mobilewallet"].setValue(false);
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
     this.checkIsGmpp();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.clearInput();
+      this.checkIsGmpp();
+    });
   }
 
   checkIsGmpp() {
@@ -168,7 +170,7 @@ export class ElectricityServicesPage {
       dat.tranAmount = dat.Amount;
       if (dat.mobilewallet) {
         dat.entityType = "Mobile Wallet";
-
+        dat.entityId = this.wallets[0].walletNumber;
         dat.authenticationType = "10";
         dat.pan = "";
       } else {

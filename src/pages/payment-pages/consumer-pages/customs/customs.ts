@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
@@ -28,6 +29,7 @@ export class CustomsPage {
   submitAttempt: boolean = false;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
@@ -58,7 +60,19 @@ export class CustomsPage {
     });
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
+    this.loadData();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.todo.reset();
+      this.loadData();
+    });
+  }
+
+  loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
       this.isCardAvailable();

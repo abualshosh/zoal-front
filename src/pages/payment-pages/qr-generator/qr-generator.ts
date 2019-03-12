@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { StorageProvider, Item } from "../../../providers/storage/storage";
@@ -23,6 +24,7 @@ export class QrGeneratorPage {
   walletQr = null;
 
   constructor(
+    public events: Events,
     private formBuilder: FormBuilder,
     public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -36,8 +38,16 @@ export class QrGeneratorPage {
     });
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.subscribeToDataChanges();
     this.checkIsGmpp();
+  }
+
+  subscribeToDataChanges() {
+    this.events.subscribe("data:updated", () => {
+      this.clearInput();
+      this.checkIsGmpp();
+    });
   }
 
   checkIsGmpp() {
@@ -77,6 +87,11 @@ export class QrGeneratorPage {
         modal.present();
       }
     }
+  }
+
+  clearInput() {
+    this.todo.controls["Card"].reset();
+    this.todo.controls["wallet"].reset();
   }
 
   onChange() {

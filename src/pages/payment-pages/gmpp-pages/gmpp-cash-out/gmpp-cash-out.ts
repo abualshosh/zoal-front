@@ -70,7 +70,7 @@ export class GmppCashOutPage {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
-        this.noWalletAvailable();
+        
       }
     });
   }
@@ -82,15 +82,7 @@ export class GmppCashOutPage {
     });
   }
 
-  noWalletAvailable() {
-    this.navCtrl.pop();
-    let modal = this.modalCtrl.create(
-      "WalkthroughModalPage",
-      {},
-      { cssClass: "inset-modals" }
-    );
-    modal.present();
-  }
+  
 
   CASHOUT(e) {
     this.todo.controls["cashOutAll"].setValue(

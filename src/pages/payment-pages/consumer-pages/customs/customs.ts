@@ -75,7 +75,7 @@ export class CustomsPage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      this.isCardAvailable();
+      
     });
   }
 
@@ -87,17 +87,7 @@ export class CustomsPage {
     }
   }
 
-  isCardAvailable() {
-    if (!this.cards || this.cards.length <= 0) {
-      this.navCtrl.pop();
-      let modal = this.modalCtrl.create(
-        "AddCardModalPage",
-        {},
-        { cssClass: "inset-modals" }
-      );
-      modal.present();
-    }
-  }
+  
 
   clearInput() {
     this.todo.controls["pan"].reset();

@@ -65,21 +65,11 @@ export class GetBalancePage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      this.isCardAvailable();
+      
     });
   }
 
-  isCardAvailable() {
-    if (!this.cards || this.cards.length <= 0) {
-      this.navCtrl.pop();
-      let modal = this.modalCtrl.create(
-        "AddCardModalPage",
-        {},
-        { cssClass: "inset-modals" }
-      );
-      modal.present();
-    }
-  }
+  
 
   logForm() {
     this.submitAttempt = true;

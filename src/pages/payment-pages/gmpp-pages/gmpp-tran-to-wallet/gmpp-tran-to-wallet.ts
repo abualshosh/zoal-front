@@ -94,7 +94,7 @@ export class GmppTranToWalletPage {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
-        this.noWalletAvailable();
+        
       }
     });
   }
@@ -106,15 +106,7 @@ export class GmppTranToWalletPage {
     });
   }
 
-  noWalletAvailable() {
-    this.navCtrl.pop();
-    let modal = this.modalCtrl.create(
-      "WalkthroughModalPage",
-      {},
-      { cssClass: "inset-modals" }
-    );
-    modal.present();
-  }
+  
 
   scan() {
     this.options = {

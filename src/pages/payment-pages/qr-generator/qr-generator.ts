@@ -55,39 +55,17 @@ export class QrGeneratorPage {
     if (this.isGmpp) {
       this.storageProvider.getWallets().then(wallets => {
         this.wallets = wallets;
-        this.isCardWalletAvailable("wallet");
+        
       });
     } else {
       this.storageProvider.getCards().then(cards => {
         this.cards = cards;
-        this.isCardWalletAvailable("card");
+        
       });
     }
   }
 
-  isCardWalletAvailable(choice: string) {
-    if (choice === "card") {
-      if (!this.cards || this.cards.length <= 0) {
-        this.navCtrl.pop();
-        let modal = this.modalCtrl.create(
-          "AddCardModalPage",
-          {},
-          { cssClass: "inset-modals" }
-        );
-        modal.present();
-      }
-    } else {
-      if (!this.wallets || this.wallets.length <= 0) {
-        this.navCtrl.pop();
-        let modal = this.modalCtrl.create(
-          "WalkthroughModalPage",
-          {},
-          { cssClass: "inset-modals" }
-        );
-        modal.present();
-      }
-    }
-  }
+  
 
   clearInput() {
     this.todo.controls["Card"].reset();

@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ViewController
+  ViewController,
+  Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Item, StorageProvider } from "../../providers/storage/storage";
@@ -23,6 +24,7 @@ export class ItemCreatePage {
 
   constructor(
     public navCtrl: NavController,
+    public events: Events,
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public storageProvider: StorageProvider,
@@ -116,6 +118,7 @@ export class ItemCreatePage {
 
       this.storageProvider.addItem(this.newItem, this.key).then(item => {
         this.submitAttempt = false;
+        this.events.publish("data:updated", "");
         this.viewCtrl.dismiss();
       });
     }
@@ -143,6 +146,7 @@ export class ItemCreatePage {
 
       this.storageProvider.updateItem(this.item, this.key).then(item => {
         this.submitAttempt = false;
+        this.events.publish("data:updated", "");
         this.viewCtrl.dismiss();
       });
     }

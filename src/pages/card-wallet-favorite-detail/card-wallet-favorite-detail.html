@@ -26,7 +26,7 @@
       </ion-item>
 
       <ion-item-options side="right">
-        <button ion-button color="danger" (click)="deleteItem(item)">
+        <button *ngIf="checkIfDeleteable()" ion-button color="danger" (click)="deleteItem(item)">
           <ion-icon name="trash"></ion-icon>
           {{ "delete" | translate }}
         </button>
@@ -38,9 +38,9 @@
     </ion-item-sliding>
   </ion-list>
 
-  <ion-fab end bottom>
+  <ion-fab *ngIf="type !== 'wallets'" end bottom>
     <button ion-fab color="primary" (click)="addItem()">
-      <ion-icon name="create"></ion-icon>
+      <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
 </ion-content>

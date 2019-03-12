@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController
+  ModalController,
+  Events
 } from "ionic-angular";
 import { StorageProvider } from "../../providers/storage/storage";
 
@@ -14,11 +15,12 @@ import { StorageProvider } from "../../providers/storage/storage";
 })
 export class CardWalletFavoriteDetailPage {
   type: string;
-  items: any;
+  items = [];
   pageTitle: string;
 
   constructor(
     public navCtrl: NavController,
+    public events: Events,
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public storageProvider: StorageProvider
@@ -42,6 +44,15 @@ export class CardWalletFavoriteDetailPage {
     this.storageProvider.getItemss(this.type).then(items => {
       this.items = items;
     });
+  }
+
+  checkIfDeleteable(): boolean {
+    if (this.type == "favorites") {
+      return true;
+    } else if (this.items.length == 1) {
+      return false;
+    }
+    return true;
   }
 
   addItem() {
@@ -74,6 +85,7 @@ export class CardWalletFavoriteDetailPage {
 
   deleteItem(item) {
     this.storageProvider.deleteItem(item.id, this.type).then(() => {
+      this.events.publish("data:updated", "");
       this.loadItems();
     });
   }

@@ -8,34 +8,7 @@
 <ion-content no-padding class="masters">
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
-      <div
-        *ngIf="
-          !todo.controls.entityId.valid &&
-          todo.controls.mobilewallet.value &&
-          submitAttempt
-        "
-      >
-        <p>{{ "validWalletError" | translate }}</p>
-      </div>
-      <ion-item *ngIf="todo.controls.mobilewallet.value">
-        <ion-label stacked>{{ "WalletNumber" | translate }}</ion-label>
-        <ion-select
-          okText="{{ 'Submit' | translate }}"
-          cancelText="{{ 'close' | translate }}"
-          style="padding-left:5%;"
-          no-padding
-          interface="action-sheet"
-          formControlName="entityId"
-          interface="popover"
-        >
-          <ion-option
-            *ngFor="let wallet of wallets"
-            [value]="wallet.walletNumber"
-          >
-            {{ wallet.name }}
-          </ion-option>
-        </ion-select>
-      </ion-item>
+      
 
       <div
         *ngIf="!validCard && submitAttempt && !todo.controls.mobilewallet.value"

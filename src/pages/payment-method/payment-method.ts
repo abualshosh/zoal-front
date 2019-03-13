@@ -36,7 +36,7 @@ export class PaymentMethodPage {
     });
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.events.publish("isGmpp", "neither");
     this.loadCardsWallets();
   }

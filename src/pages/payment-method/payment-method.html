@@ -6,26 +6,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid style="height:100%;">
-    <ion-row style="height:100%;">
-      <ion-col style="height:100%;">
-        <div style=" position: relative; height:100%; text-align: center;">
-          <button class="card-title" (click)="openConsumerPage()">
-            <ion-icon name="custom-card"></ion-icon>
-          </button>
-          <h4 class="card-subtitle">{{ "consumerPayment" | translate }}</h4>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row style="height:100%;">
-      <ion-col style="height:100%;">
-        <div style=" position: relative; height:100%; text-align: center;">
-          <button class="card-title" (click)="openGmppPage()">
-            <ion-icon name="custom-wallet"></ion-icon>
-          </button>
-          <h4 class="card-subtitle">{{ "gmppPayment" | translate }}</h4>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="grid-con">
+    <div class="grid-item" (click)="openConsumerPage()">
+      <ion-icon class="grid-icon" name="custom-card"></ion-icon>
+      <div>{{ "consumerPayment" | translate }}</div>
+    </div>
+    <div class="grid-item" (click)="openGmppPage()">
+      <ion-icon class="grid-icon" name="custom-wallet"></ion-icon>
+      <div>{{ "gmppPayment" | translate }}</div>
+    </div>
+  </div>
 </ion-content>

@@ -1,21 +1,41 @@
 page-payment-method {
-  .card-title {
-    position: relative;
-    text-align: center;
-    font-size: 8vh;
-    width: 30vh;
-    height: 30vh;
-    border-radius: 50%;
+  .grid-con {
+    height: 100%;
+    padding: 3em;
+    display: grid;
+    justify-content: stretch;
+    justify-items: stretch;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 50%;
+    row-gap: 1em;
+    background: map-get($colors, bar);
+  }
+
+  .grid-item {
+    display: grid;
+    width: 33vh;
+    height: 33vh;
     background: linear-gradient(
       to right,
       map-get($colors, custom-red) 5%,
       map-get($colors, secondary)
     );
+    font-size: 1.2em;
     color: map-get($colors, bar);
+    text-align: center;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+    -webkit-box-shadow: 15px 18px 80px -16px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 15px 18px 80px -16px rgba(0, 0, 0, 0.75);
+    box-shadow: 15px 18px 80px -16px rgba(0, 0, 0, 0.75);
   }
 
-  .card-subtitle {
-    // font-size: 0.4em;
-    color: map-get($colors, secondary);
+  .grid-icon {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25%;
+    font-size: 3.5em;
   }
 }

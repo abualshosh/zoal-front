@@ -47,9 +47,7 @@ export class ProfileEditPage {
     public camera: Camera,
     public alertProvider: AlertProvider
   ) {
-    this.storageProvider.getProfile().subscribe(val => {
-      this.user = val;
-    });
+    this.user = navParams.get("user");
 
     translateService
       .get(["ChoseImage", "camera", "gallery"])
@@ -62,17 +60,17 @@ export class ProfileEditPage {
     this.userForm = this.formBuilder.group({
       profilePic: [""],
       fullname: [
-        null,
+        navParams.get("user") ? this.user.fullName : null,
         Validators.compose([Validators.minLength(3), Validators.maxLength(20)])
       ],
       email: [
-        null,
+        navParams.get("user") ? this.user.email : null,
         Validators.compose([
           Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
         ])
       ],
       bio: [
-        null,
+        navParams.get("user") ? this.user.bio : null,
         Validators.compose([
           Validators.minLength(10),
           Validators.maxLength(200)
@@ -208,7 +206,7 @@ export class ProfileEditPage {
         formData.append("image", this.img);
 
         this.userProvider.updateProfilePic(formData).subscribe(res => {
-          alert(res);
+          // alert(res);
         });
       }
 

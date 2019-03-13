@@ -37,6 +37,6 @@ export class ProfilePage {
   }
 
   editProfile() {
-    this.navCtrl.push("ProfileEditPage");
+    this.navCtrl.push("ProfileEditPage", { user: this.user });
   }
 }

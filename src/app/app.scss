@@ -101,6 +101,7 @@
     ion-item {
       background-color: transparent;
       color: map-get($colors, bar);
+      font-size: 1em;
     }
     ion-select {
       color: map-get($colors, bar);

@@ -20,6 +20,10 @@ page-profile {
     -moz-box-shadow: 0px 0px 55px -16px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 55px -16px rgba(0, 0, 0, 0.75);
     position: relative !important;
+    border-radius: 5%;
+    .item {
+      background-color: white;
+    }
   }
 
   .profile-description {

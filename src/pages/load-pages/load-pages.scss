@@ -6,13 +6,13 @@ page-load-pages {
   .grid-con {
     display: grid;
     justify-content: stretch;
-    grid-template-columns: auto auto;
+    grid-template-columns: 50% 50%;
     grid-template-rows: auto auto;
   }
 
   .load-grid {
     display: grid;
-    font-size: 1em;
+    font-size: 0.8em;
     color: map-get($colors, secondary);
     border: 2px solid map-get($colors, bar);
   }

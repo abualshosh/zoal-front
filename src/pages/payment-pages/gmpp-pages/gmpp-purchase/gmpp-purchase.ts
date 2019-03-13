@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  ModalController,
+  Events
+} from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
@@ -19,6 +24,7 @@ export class GmppPurchasePage {
   public wallets: Item[];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -34,8 +40,6 @@ export class GmppPurchasePage {
 
     this.GetServicesProvider = GetServicesProviderg;
 
-    
-
     this.todo = this.formBuilder.group({
       walletNumber: [
         "",
@@ -46,7 +50,10 @@ export class GmppPurchasePage {
           Validators.pattern("[249].[0-9]*")
         ])
       ],
-      destinationIdentifier: ["", Validators.required],
+      destinationIdentifier: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+      ],
       transactionAmount: ["", Validators.required],
       consumerPIN: [
         "",
@@ -68,9 +75,10 @@ export class GmppPurchasePage {
   loadWallets() {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
-      if (!this.wallets || this.wallets.length <= 0) {
-        
-      }
+    });
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
     });
   }
 
@@ -81,7 +89,17 @@ export class GmppPurchasePage {
     });
   }
 
-  
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["destinationIdentifier"].setValue(fav);
+        if (!this.todo.controls["destinationIdentifier"].valid) {
+          this.alertProvider.showToast("validSellerIDError");
+          this.todo.controls["destinationIdentifier"].reset();
+        }
+      });
+    }
+  }
 
   logForm() {
     this.submitAttempt = true;

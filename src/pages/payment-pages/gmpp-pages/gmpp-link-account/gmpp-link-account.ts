@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  ModalController,
+  Events
+} from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
@@ -22,6 +27,7 @@ export class GmppLinkAccountPage {
   public submitAttempt: boolean = false;
 
   public GetServicesProvider: GetServicesProvider;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -38,8 +44,6 @@ export class GmppLinkAccountPage {
     //console.log(this.compleate);
     this.GetServicesProvider = GetServicesProviderg;
 
-    
-
     this.todo = this.formBuilder.group({
       walletNumber: [
         "",
@@ -55,6 +59,7 @@ export class GmppLinkAccountPage {
         Validators.compose([
           Validators.required,
           Validators.minLength(16),
+          Validators.maxLength(19),
           Validators.pattern("[0-9]*")
         ])
       ],
@@ -95,9 +100,10 @@ export class GmppLinkAccountPage {
   loadWallets() {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
-      if (!this.wallets || this.wallets.length <= 0) {
-        
-      }
+    });
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
     });
   }
 
@@ -108,7 +114,17 @@ export class GmppLinkAccountPage {
     });
   }
 
-  
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["primaryAccountNumber"].setValue(fav);
+        if (!this.todo.controls["primaryAccountNumber"].valid) {
+          this.alertProvider.showToast("validCardPANError");
+          this.todo.controls["primaryAccountNumber"].reset();
+        }
+      });
+    }
+  }
 
   Cancle() {
     this.storage.set("LINKACCOUNT", "FALSE");

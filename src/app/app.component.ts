@@ -21,7 +21,7 @@ export class MyApp {
     {
       title: "favoriteDetailPage",
       component: "CardWalletFavoriteDetailPage",
-      icon: "star",
+      icon: "heart",
       params: { type: "favorites" }
     },
     {

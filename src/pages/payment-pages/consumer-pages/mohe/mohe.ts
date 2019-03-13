@@ -52,6 +52,7 @@ export class MohePage {
 
   public type: any = "mohe";
   isGmpp: boolean;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -82,7 +83,10 @@ export class MohePage {
           Validators.pattern("[0-9]*")
         ])
       ],
-      SETNUMBER: ["", Validators.required],
+      SETNUMBER: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+      ],
       STUCNAME: ["", Validators.required],
       STUCPHONE: [
         "",
@@ -121,7 +125,6 @@ export class MohePage {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
         this.todo.controls["Card"].disable();
-        
       });
     } else {
       this.storageProvider.getCards().then(cards => {
@@ -129,12 +132,33 @@ export class MohePage {
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
         this.todo.controls["entityId"].disable();
-        
+      });
+    }
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
+    });
+  }
+
+  showFavorites(type) {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        if (type === "seatnumber") {
+          this.todo.controls["SETNUMBER"].setValue(fav);
+          if (!this.todo.controls["SETNUMBER"].valid) {
+            this.alertProvider.showToast("validSETNUMBERError");
+            this.todo.controls["SETNUMBER"].reset();
+          }
+        } else {
+          this.todo.controls["STUCPHONE"].setValue(fav);
+          if (!this.todo.controls["STUCPHONE"].valid) {
+            this.alertProvider.showToast("validvoucherNumberError");
+            this.todo.controls["STUCPHONE"].reset();
+          }
+        }
       });
     }
   }
-
-  
 
   clearInput() {
     this.todo.controls["pan"].reset();

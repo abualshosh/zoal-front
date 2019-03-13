@@ -18,6 +18,7 @@ export class CardLessPage {
   public cards: Item[] = [];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -72,11 +73,24 @@ export class CardLessPage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      
+    });
+    
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
     });
   }
 
-  
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["voucherNumber"].setValue(fav);
+        if (!this.todo.controls["voucherNumber"].valid) {
+          this.alertProvider.showToast("validvoucherNumberError");
+          this.todo.controls["voucherNumber"].reset();
+        }
+      });
+    }
+  }
 
   logForm() {
     this.submitAttempt = true;

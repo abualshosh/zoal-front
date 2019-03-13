@@ -113,6 +113,11 @@
       color: map-get($colors, bar);
     }
   }
+
+  .show-fav-button {
+    font-size: 1em;
+  }
+  
   .masters {
     margin-top: 1%;
   }

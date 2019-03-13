@@ -29,6 +29,7 @@ export class E15Page {
   public payee: any[] = [];
   validCard: boolean = false;
   isGmpp: boolean;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -56,7 +57,10 @@ export class E15Page {
           Validators.pattern("[0-9]*")
         ])
       ],
-      INVOICENUMBER: ["", Validators.required],
+      INVOICENUMBER: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+      ],
       PHONENUMBER: [
         "",
         Validators.compose([
@@ -91,7 +95,6 @@ export class E15Page {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
         this.todo.controls["Card"].disable();
-        
       });
     } else {
       this.storageProvider.getCards().then(cards => {
@@ -99,12 +102,33 @@ export class E15Page {
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
         this.todo.controls["entityId"].disable();
-        
+      });
+    }
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
+    });
+  }
+
+  showFavorites(type) {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        if (type === "invoice") {
+          this.todo.controls["INVOICENUMBER"].setValue(fav);
+          if (!this.todo.controls["INVOICENUMBER"].valid) {
+            this.alertProvider.showToast("validINVOICENUMBERError");
+            this.todo.controls["INVOICENUMBER"].reset();
+          }
+        } else {
+          this.todo.controls["PHONENUMBER"].setValue(fav);
+          if (!this.todo.controls["PHONENUMBER"].valid) {
+            this.alertProvider.showToast("validvoucherNumberError");
+            this.todo.controls["PHONENUMBER"].reset();
+          }
+        }
       });
     }
   }
-
-  
 
   clearInput() {
     this.todo.controls["pan"].reset();

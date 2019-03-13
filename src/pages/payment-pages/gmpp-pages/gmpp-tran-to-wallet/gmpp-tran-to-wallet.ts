@@ -30,6 +30,7 @@ export class GmppTranToWalletPage {
   public wallets: Item[];
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -93,9 +94,10 @@ export class GmppTranToWalletPage {
   loadWallets() {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
-      if (!this.wallets || this.wallets.length <= 0) {
-        
-      }
+    });
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
     });
   }
 
@@ -106,7 +108,17 @@ export class GmppTranToWalletPage {
     });
   }
 
-  
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["destinationIdentifier"].setValue(fav);
+        if (!this.todo.controls["destinationIdentifier"].valid) {
+          this.alertProvider.showToast("validWalletError");
+          this.todo.controls["destinationIdentifier"].reset();
+        }
+      });
+    }
+  }
 
   scan() {
     this.options = {

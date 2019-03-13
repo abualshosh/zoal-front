@@ -10,12 +10,11 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        
         <div
           *ngIf="!todo.controls.destinationIdentifier.valid && submitAttempt"
           item-end
         >
-          <p>{{ "validvoucherNumberError" | translate }}</p>
+          <p>{{ "validWalletError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>
@@ -26,6 +25,17 @@
             formControlName="destinationIdentifier"
             required
           ></ion-input>
+          <button
+            class="show-fav-button"
+            color="secondary"
+            clear
+            item-end
+            ion-button
+            type="button"
+            (click)="showFavorites()"
+          >
+            <ion-icon name="heart"></ion-icon>
+          </button>
           <button ion-button item-end (click)="scan()">
             <ion-icon name="custom-barcode"></ion-icon>
           </button>

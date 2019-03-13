@@ -9,7 +9,6 @@
   <div class="con" [ngSwitch]="compleate">
     <form [formGroup]="todo" (ngSubmit)="logForm()" *ngSwitchCase="'FALSE'">
       <ion-list>
-        
         <div *ngIf="!todo.controls.primaryAccountNumber.valid && submitAttempt">
           <p>{{ "validCardPANError" | translate }}</p>
         </div>
@@ -21,6 +20,17 @@
             required
           >
           </ion-input>
+          <button
+            class="show-fav-button"
+            color="secondary"
+            clear
+            item-end
+            ion-button
+            type="button"
+            (click)="showFavorites()"
+          >
+            <ion-icon name="heart"></ion-icon>
+          </button>
         </ion-item>
 
         <div *ngIf="!todo.controls.consumerPIN.valid && submitAttempt">

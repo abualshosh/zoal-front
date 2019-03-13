@@ -27,6 +27,7 @@ export class CustomsPage {
   public cards: Item[] = [];
   public payee: any[] = [];
   submitAttempt: boolean = false;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -54,8 +55,14 @@ export class CustomsPage {
           Validators.pattern("[0-9]*")
         ])
       ],
-      BANKCODE: ["", Validators.required],
-      DECLARANTCODE: ["", Validators.required],
+      BANKCODE: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+      ],
+      DECLARANTCODE: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+      ],
       Amount: ["", Validators.required]
     });
   }
@@ -75,7 +82,10 @@ export class CustomsPage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      
+    });
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
     });
   }
 
@@ -87,7 +97,25 @@ export class CustomsPage {
     }
   }
 
-  
+  showFavorites(type) {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        if (type === "bank") {
+          this.todo.controls["BANKCODE"].setValue(fav);
+          if (!this.todo.controls["BANKCODE"].valid) {
+            this.alertProvider.showToast("validBANKCODEError");
+            this.todo.controls["BANKCODE"].reset();
+          }
+        } else {
+          this.todo.controls["DECLARANTCODE"].setValue(fav);
+          if (!this.todo.controls["DECLARANTCODE"].valid) {
+            this.alertProvider.showToast("validDECLARANTCODEError");
+            this.todo.controls["DECLARANTCODE"].reset();
+          }
+        }
+      });
+    }
+  }
 
   clearInput() {
     this.todo.controls["pan"].reset();

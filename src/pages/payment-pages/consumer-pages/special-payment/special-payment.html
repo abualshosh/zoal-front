@@ -8,8 +8,6 @@
 <ion-content no-padding class="masters">
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
-      
-
       <div
         *ngIf="!validCard && submitAttempt && !todo.controls.mobilewallet.value"
       >
@@ -43,6 +41,17 @@
           formControlName="MerchantId"
           required
         ></ion-input>
+        <button
+          class="show-fav-button"
+          color="secondary"
+          clear
+          item-end
+          ion-button
+          type="button"
+          (click)="showFavorites()"
+        >
+          <ion-icon name="heart"></ion-icon>
+        </button>
       </ion-item>
 
       <div *ngIf="!todo.controls.Amount.valid && submitAttempt">

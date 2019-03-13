@@ -44,6 +44,7 @@ export class MobileCreditPage {
   ];
   submitAttempt: boolean = false;
   isGmpp: boolean;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -134,9 +135,23 @@ export class MobileCreditPage {
         
       });
     }
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
+    });
   }
 
-  
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["MPHONE"].setValue(fav);
+        if (!this.todo.controls["MPHONE"].valid) {
+          this.alertProvider.showToast("validvoucherNumberError");
+          this.todo.controls["MPHONE"].reset();
+        }
+      });
+    }
+  }
 
   clearInput() {
     this.todo.controls["pan"].reset();

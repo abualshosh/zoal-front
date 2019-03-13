@@ -30,6 +30,7 @@ export class ElectricityServicesPage {
   submitAttempt: boolean = false;
   validCard: boolean = false;
   isGmpp: boolean;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -59,7 +60,10 @@ export class ElectricityServicesPage {
           Validators.pattern("[0-9]*")
         ])
       ],
-      METER: ["", Validators.required],
+      METER: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+      ],
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
@@ -85,7 +89,6 @@ export class ElectricityServicesPage {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
         this.todo.controls["Card"].disable();
-        
       });
     } else {
       this.storageProvider.getCards().then(cards => {
@@ -93,12 +96,25 @@ export class ElectricityServicesPage {
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
         this.todo.controls["entityId"].disable();
-        
+      });
+    }
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
+    });
+  }
+
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["METER"].setValue(fav);
+        if (!this.todo.controls["METER"].valid) {
+          this.alertProvider.showToast("validMETERError");
+          this.todo.controls["METER"].reset();
+        }
       });
     }
   }
-
-  
 
   clearInput() {
     this.todo.controls["pan"].reset();

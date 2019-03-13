@@ -29,6 +29,7 @@ export class SpecialPaymentPage {
   public payee: any[] = [];
   validCard: boolean = false;
   isGmpp: boolean;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -44,7 +45,10 @@ export class SpecialPaymentPage {
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],
-      MerchantId: [""],
+      MerchantId: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+      ],
       entityId: [""],
       mobilewallet: [""],
       IPIN: [
@@ -81,7 +85,6 @@ export class SpecialPaymentPage {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
         this.todo.controls["Card"].disable();
-        
       });
     } else {
       this.storageProvider.getCards().then(cards => {
@@ -89,12 +92,25 @@ export class SpecialPaymentPage {
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
         this.todo.controls["entityId"].disable();
-        
+      });
+    }
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
+    });
+  }
+
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["MerchantId"].setValue(fav);
+        if (!this.todo.controls["MerchantId"].valid) {
+          this.alertProvider.showToast("validMerchantIdError");
+          this.todo.controls["MerchantId"].reset();
+        }
       });
     }
   }
-
-  
 
   clearInput() {
     this.todo.controls["pan"].reset();

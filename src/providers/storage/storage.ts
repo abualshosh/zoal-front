@@ -24,6 +24,8 @@ const WALLETS_KEY = "wallets";
 
 const CARDS_KEY = "cards";
 
+const FAVORITES_KEY = "favorites"
+
 const PROFILE_KEY = "profile";
 
 @Injectable()
@@ -44,6 +46,10 @@ export class StorageProvider {
 
   getCards(): Promise<Item[]> {
     return this.storage.get(CARDS_KEY);
+  }
+
+  getFavorites(): Promise<Item[]> {
+    return this.storage.get(FAVORITES_KEY);
   }
 
   // CREATE

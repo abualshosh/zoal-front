@@ -23,7 +23,6 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        
         <div
           *ngIf="
             !validCard && submitAttempt && !todo.controls.mobilewallet.value
@@ -79,9 +78,9 @@
             interface="action-sheet"
             formControlName="FormKind"
           >
-            <ion-option *ngFor="let FormKind of FormKinds" [value]="FormKind">{{
-              FormKind.title | translate
-            }}</ion-option>
+            <ion-option *ngFor="let FormKind of FormKinds" [value]="FormKind">
+              {{ FormKind.title | translate }}
+            </ion-option>
           </ion-select>
         </ion-item>
         <div [ngSwitch]="type">
@@ -92,6 +91,17 @@
             <ion-item>
               <ion-label stacked>{{ "SETNUMBER" | translate }}</ion-label>
               <ion-input type="number" formControlName="SETNUMBER"></ion-input>
+              <button
+                class="show-fav-button"
+                color="secondary"
+                clear
+                item-end
+                ion-button
+                type="button"
+                (click)="showFavorites('seatnumber')"
+              >
+                <ion-icon name="heart"></ion-icon>
+              </button>
             </ion-item>
           </div>
           <div *ngSwitchCase="'moheArab'">
@@ -108,6 +118,17 @@
             <ion-item>
               <ion-label stacked>{{ "STUCPHONE" | translate }}</ion-label>
               <ion-input type="number" formControlName="STUCPHONE"></ion-input>
+              <button
+                class="show-fav-button"
+                color="secondary"
+                clear
+                item-end
+                ion-button
+                type="button"
+                (click)="showFavorites('number')"
+              >
+                <ion-icon name="heart"></ion-icon>
+              </button>
             </ion-item>
           </div>
         </div>

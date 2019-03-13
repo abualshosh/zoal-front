@@ -30,6 +30,7 @@ export class TransferToCardPage {
   submitAttempt: boolean = false;
 
   public GetServicesProvider: GetServicesProvider;
+  favorites: Item[];
 
   constructor(
     public events: Events,
@@ -60,6 +61,7 @@ export class TransferToCardPage {
         Validators.compose([
           Validators.required,
           Validators.minLength(16),
+          Validators.maxLength(19),
           Validators.pattern("[0-9]*")
         ])
       ],
@@ -88,11 +90,24 @@ export class TransferToCardPage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      
+    });
+
+    this.storageProvider.getFavorites().then(favorites => {
+      this.favorites = favorites;
     });
   }
 
-  
+  showFavorites() {
+    if (this.favorites) {
+      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
+        this.todo.controls["ToCard"].setValue(fav);
+        if (!this.todo.controls["ToCard"].valid) {
+          this.alertProvider.showToast("validTocardError");
+          this.todo.controls["ToCard"].reset();
+        }
+      });
+    }
+  }
 
   scan() {
     this.options = {

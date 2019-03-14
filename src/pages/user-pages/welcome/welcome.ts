@@ -18,12 +18,6 @@ import { GetServicesProvider } from "../../../providers/providers";
   templateUrl: "welcome.html"
 })
 export class WelcomePage {
-  language: any;
-  languages: any[] = [
-    { language: "English", Code: "en" },
-    { language: "عربي", Code: "ar" }
-  ];
-
   isVideo: boolean = false;
   trustedVideoUrl: SafeResourceUrl;
 
@@ -51,8 +45,8 @@ export class WelcomePage {
     });
   }
 
-  ChangeLang() {
-    this.storage.set("lang", this.language).then(lang => {
+  changeLang(langchoice) {
+    this.storage.set("lang", langchoice).then(lang => {
       this.translate.setDefaultLang(lang);
       this.translate.use(lang);
       this.checkDirection();
@@ -66,7 +60,6 @@ export class WelcomePage {
       } else if (lang === "en" && this.platform.dir() === "rtl") {
         this.platform.setDir("ltr", true);
       }
-      this.language = lang;
     });
   }
 

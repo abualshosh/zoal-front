@@ -12,25 +12,29 @@
       </ion-avatar>
       <h5>{{ profile?.fullName }}</h5>
       <h6 dir="ltr">+249 {{ profile?.userName }}</h6>
-    </div>
-    <ion-list>
-      <ion-item>
-        <ion-icon name="custom-language" item-start></ion-icon>
-        <ion-label>{{ "AppLanguage" | translate }}</ion-label>
-        <ion-select
-          okText="{{ 'Submit' | translate }}"
-          cancelText="{{ 'close' | translate }}"
-          style="padding-left:5%;"
-          [(ngModel)]="language"
-          (ngModelChange)="changeLang()"
+      <ion-item no-lines text-center>
+        <button
+          class="lang-button"
+          outline
+          color="bar"
+          ion-button
+          round
+          (click)="changeLang('ar')"
         >
-          <ion-option *ngFor="let language of languages" [value]="language.Code"
-            >{{ language.language | translate }}
-          </ion-option>
-        </ion-select>
+          {{ "ar" | translate }}
+        </button>
+        <button
+          class="lang-button"
+          outline
+          color="bar"
+          ion-button
+          round
+          (click)="changeLang('en')"
+        >
+          {{ "en" | translate }}
+        </button>
       </ion-item>
-    </ion-list>
-
+    </div>
     <ion-list>
       <ion-item
         menuClose

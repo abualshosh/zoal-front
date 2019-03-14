@@ -117,14 +117,21 @@
   .show-fav-button {
     font-size: 1em;
   }
-  
+  .lang-button {
+    width: 3em;
+    color: white;
+  }
   .masters {
     margin-top: 1%;
   }
   .subbutn {
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    justify-content: stretch;
+    justify-items: stretch;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
   }
   .mask-text {
     -webkit-text-security: disc;

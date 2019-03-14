@@ -101,13 +101,8 @@ export class MyApp {
 
   sideMenuPages: any = [];
 
-  language: any;
   profile: any;
 
-  languages: any[] = [
-    { language: "English", Code: "en" },
-    { language: "Arabic", Code: "ar" }
-  ];
   isRtl: boolean;
 
   constructor(
@@ -171,7 +166,6 @@ export class MyApp {
           this.checkDirection();
         });
       }
-      this.language = this.translate.getDefaultLang();
     });
 
     this.translate.get(["BACK_BUTTON_TEXT"]).subscribe(values => {
@@ -201,8 +195,8 @@ export class MyApp {
     });
   }
 
-  changeLang() {
-    this.storage.set("lang", this.language).then(lang => {
+  changeLang(langchoice) {
+    this.storage.set("lang", langchoice).then(lang => {
       this.translate.setDefaultLang(lang);
       this.translate.use(lang);
       this.checkDirection();

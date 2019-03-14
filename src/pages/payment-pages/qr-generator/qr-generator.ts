@@ -33,8 +33,7 @@ export class QrGeneratorPage {
     public navParams: NavParams
   ) {
     this.todo = this.formBuilder.group({
-      Card: ["", Validators.required],
-      wallet: ["", Validators.required]
+      Card: ["", Validators.required]
     });
   }
 
@@ -45,7 +44,6 @@ export class QrGeneratorPage {
 
   subscribeToDataChanges() {
     this.events.subscribe("data:updated", () => {
-      this.clearInput();
       this.checkIsGmpp();
     });
   }
@@ -55,28 +53,20 @@ export class QrGeneratorPage {
     if (this.isGmpp) {
       this.storageProvider.getWallets().then(wallets => {
         this.wallets = wallets;
-        
+        this.walletQr = this.wallets[0].walletNumber;
       });
     } else {
       this.storageProvider.getCards().then(cards => {
         this.cards = cards;
-        
+        this.todo.controls["Card"].setValue(cards[0]);
+        this.panQr = cards[0].cardNumber;
       });
     }
-  }
-
-  
-
-  clearInput() {
-    this.todo.controls["Card"].reset();
-    this.todo.controls["wallet"].reset();
   }
 
   onChange() {
     if (!this.isGmpp) {
       this.panQr = this.todo.value.Card.cardNumber;
-    } else {
-      this.walletQr = this.todo.value.wallet;
     }
   }
 

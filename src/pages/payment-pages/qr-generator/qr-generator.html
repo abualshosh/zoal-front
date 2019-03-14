@@ -9,9 +9,6 @@
   <form [formGroup]="todo">
     <ion-list>
       <ion-card>
-        <ion-item *ngIf="!createdCode && !isGmpp">
-          <h2>{{ "QRmessage" | translate }}</h2>
-        </ion-item>
         <ion-item *ngIf="!isGmpp">
           <ion-label floating>{{ "Card" | translate }}</ion-label>
           <ion-select
@@ -19,32 +16,11 @@
             cancelText="{{ 'close' | translate }}"
             style="padding-left:5%;"
             (ionChange)="onChange()"
-            interface="action-sheet"
+            interface="popover"
             formControlName="Card"
           >
             <ion-option *ngFor="let card of cards" [value]="card">
               {{ card.name }}
-            </ion-option>
-          </ion-select>
-        </ion-item>
-        <ion-item *ngIf="!createdCode && isGmpp">
-          <h2>{{ "qrMessageWallet" | translate }}</h2>
-        </ion-item>
-        <ion-item *ngIf="isGmpp">
-          <ion-label floating>{{ "wallet" | translate }}</ion-label>
-          <ion-select
-            okText="{{ 'Submit' | translate }}"
-            cancelText="{{ 'close' | translate }}"
-            style="padding-left:5%;"
-            (ionChange)="onChange()"
-            interface="action-sheet"
-            formControlName="wallet"
-          >
-            <ion-option
-              *ngFor="let wallet of wallets"
-              [value]="wallet.walletNumber"
-            >
-              {{ wallet.name }}
             </ion-option>
           </ion-select>
         </ion-item>

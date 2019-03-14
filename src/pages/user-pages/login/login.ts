@@ -11,9 +11,10 @@ import { AlertProvider } from "../../../providers/alert/alert";
   templateUrl: "login.html"
 })
 export class LoginPage {
-  account: { username: string; password: string } = {
+  account: { username: string; password: string; rememberMe: boolean } = {
     username: "",
-    password: "test"
+    password: "test",
+    rememberMe: true
   };
 
   private login: FormGroup;
@@ -45,6 +46,7 @@ export class LoginPage {
     if (this.login.valid) {
       this.account.username = this.login.controls["PHONENUMBER"].value;
       this.account.password = this.account.username;
+      this.account.rememberMe = true;
 
       let loader = this.loadingCtrl.create();
       loader.present();

@@ -38,7 +38,6 @@
             (ionChange)="onSelectChange($event)"
             style="padding-left:5%;"
             no-padding
-            interface="action-sheet"
             formControlName="Card"
             interface="popover"
           >
@@ -57,7 +56,7 @@
             okText="{{ 'Submit' | translate }}"
             cancelText="{{ 'close' | translate }}"
             style="padding-left:5%;"
-            interface="action-sheet"
+            interface="popover"
             formControlName="CourseID"
           >
             <ion-option *ngFor="let CourseID of CourseIDs" [value]="CourseID">{{
@@ -75,7 +74,7 @@
             okText="{{ 'Submit' | translate }}"
             cancelText="{{ 'close' | translate }}"
             style="padding-left:5%;"
-            interface="action-sheet"
+            interface="popover"
             formControlName="FormKind"
           >
             <ion-option *ngFor="let FormKind of FormKinds" [value]="FormKind">

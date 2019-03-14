@@ -24,7 +24,6 @@
             (ionChange)="onSelectChange($event)"
             style="padding-left:5%;"
             no-padding
-            interface="action-sheet"
             formControlName="Card"
             interface="popover"
           >
@@ -42,7 +41,7 @@
             okText="{{ 'Submit' | translate }}"
             cancelText="{{ 'close' | translate }}"
             style="padding-left:5%;"
-            interface="action-sheet"
+            interface="popover"
             formControlName="payeeId"
           >
             <ion-option *ngFor="let pay of payee" [value]="pay.PayeeId">{{

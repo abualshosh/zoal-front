@@ -19,7 +19,7 @@
         </div>
         <ion-item>
           <ion-label stacked> {{ "wallet" | translate }}</ion-label>
-          <ion-input formControlName="walletNumber"></ion-input>
+          <ion-input type="number" formControlName="walletNumber"></ion-input>
         </ion-item>
       </div>
 
@@ -29,7 +29,7 @@
         </div>
         <ion-item>
           <ion-label stacked> {{ "CardPAN" | translate }}</ion-label>
-          <ion-input formControlName="cardNumber"></ion-input>
+          <ion-input type="number" formControlName="cardNumber"></ion-input>
         </ion-item>
         <div *ngIf="!form.controls.expDate.valid && submitAttempt">
           <p>{{ "validExpDateError" | translate }}</p>

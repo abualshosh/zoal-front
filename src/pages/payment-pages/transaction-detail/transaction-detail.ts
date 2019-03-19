@@ -7,6 +7,7 @@ import {
 } from "ionic-angular";
 import { TranslateService } from "@ngx-translate/core";
 import { SocialSharing } from "@ionic-native/social-sharing";
+import { Screenshot } from "@ionic-native/screenshot";
 
 @IonicPage()
 @Component({
@@ -23,6 +24,7 @@ export class TransactionDetailPage {
     public navCtrl: NavController,
     public translateService: TranslateService,
     private socialSharing: SocialSharing,
+    private screenshot: Screenshot,
     public navParams: NavParams
   ) {
     this.items = this.navParams.get("data");
@@ -49,13 +51,19 @@ export class TransactionDetailPage {
   }
 
   share() {
-    // this.msg = this.compileMsg();
-    alert(this.msg);
-    // this.socialSharing.share(this.msg, null, null, null);
-  }
-
-  compileShareMsg(key, value) {
-    this.msg = this.msg + key + " : " + value + "\n";
+    this.screenshot.URI(80).then(
+      res => {
+        this.socialSharing.share(null, null, res.URI).then(
+          () => {},
+          () => {
+            alert("SocialSharing failed");
+          }
+        );
+      },
+      () => {
+        alert("Screenshot failed");
+      }
+    );
   }
 
   dismiss() {

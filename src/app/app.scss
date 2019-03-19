@@ -169,19 +169,18 @@
     padding-bottom: 1em;
   }
   .con ion-item {
-    padding: 0px;
     ion-label,
     ion-input,
     ion-datetime,
     p {
-      padding-left: 15px;
-      padding-right: 15px;
+      padding-left: 1em;
+      padding-right: 1em;
     }
   }
   .con p {
     color: map-get($colors, danger);
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 1em;
+    padding-right: 1em;
   }
   ion-modal.inset-modal {
     // transparent black background overlay

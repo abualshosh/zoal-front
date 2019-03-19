@@ -140,26 +140,6 @@ export class MohePage {
     });
   }
 
-  showFavorites(type) {
-    if (this.favorites) {
-      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
-        if (type === "seatnumber") {
-          this.todo.controls["SETNUMBER"].setValue(fav);
-          if (!this.todo.controls["SETNUMBER"].valid) {
-            this.alertProvider.showToast("validSETNUMBERError");
-            this.todo.controls["SETNUMBER"].reset();
-          }
-        } else {
-          this.todo.controls["STUCPHONE"].setValue(fav);
-          if (!this.todo.controls["STUCPHONE"].valid) {
-            this.alertProvider.showToast("validvoucherNumberError");
-            this.todo.controls["STUCPHONE"].reset();
-          }
-        }
-      });
-    }
-  }
-
   clearInput() {
     this.todo.controls["pan"].reset();
     this.todo.controls["Card"].reset();

@@ -90,17 +90,6 @@
             <ion-item>
               <ion-label stacked>{{ "SETNUMBER" | translate }}</ion-label>
               <ion-input type="number" formControlName="SETNUMBER"></ion-input>
-              <button
-                class="show-fav-button"
-                color="secondary"
-                clear
-                item-end
-                ion-button
-                type="button"
-                (click)="showFavorites('seatnumber')"
-              >
-                <ion-icon name="heart"></ion-icon>
-              </button>
             </ion-item>
           </div>
           <div *ngSwitchCase="'moheArab'">
@@ -117,17 +106,6 @@
             <ion-item>
               <ion-label stacked>{{ "STUCPHONE" | translate }}</ion-label>
               <ion-input type="number" formControlName="STUCPHONE"></ion-input>
-              <button
-                class="show-fav-button"
-                color="secondary"
-                clear
-                item-end
-                ion-button
-                type="button"
-                (click)="showFavorites('number')"
-              >
-                <ion-icon name="heart"></ion-icon>
-              </button>
             </ion-item>
           </div>
         </div>

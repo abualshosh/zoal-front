@@ -110,26 +110,6 @@ export class E15Page {
     });
   }
 
-  showFavorites(type) {
-    if (this.favorites) {
-      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
-        if (type === "invoice") {
-          this.todo.controls["INVOICENUMBER"].setValue(fav);
-          if (!this.todo.controls["INVOICENUMBER"].valid) {
-            this.alertProvider.showToast("validINVOICENUMBERError");
-            this.todo.controls["INVOICENUMBER"].reset();
-          }
-        } else {
-          this.todo.controls["PHONENUMBER"].setValue(fav);
-          if (!this.todo.controls["PHONENUMBER"].valid) {
-            this.alertProvider.showToast("validvoucherNumberError");
-            this.todo.controls["PHONENUMBER"].reset();
-          }
-        }
-      });
-    }
-  }
-
   clearInput() {
     this.todo.controls["pan"].reset();
     this.todo.controls["Card"].reset();

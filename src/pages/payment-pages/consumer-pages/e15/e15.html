@@ -42,17 +42,6 @@
             formControlName="INVOICENUMBER"
             required
           ></ion-input>
-          <button
-            class="show-fav-button"
-            color="secondary"
-            clear
-            item-end
-            ion-button
-            type="button"
-            (click)="showFavorites('invoice')"
-          >
-            <ion-icon name="heart"></ion-icon>
-          </button>
         </ion-item>
 
         <div *ngIf="!todo.controls.PHONENUMBER.valid && submitAttempt">
@@ -66,17 +55,6 @@
             formControlName="PHONENUMBER"
             required
           ></ion-input>
-          <button
-            class="show-fav-button"
-            color="secondary"
-            clear
-            item-end
-            ion-button
-            type="button"
-            (click)="showFavorites('number')"
-          >
-            <ion-icon name="heart"></ion-icon>
-          </button>
         </ion-item>
 
         <div *ngIf="!todo.controls.Amount.valid && submitAttempt">

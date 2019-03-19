@@ -50,17 +50,6 @@
           formControlName="BANKCODE"
           required
         ></ion-input>
-        <button
-          class="show-fav-button"
-          color="secondary"
-          clear
-          item-end
-          ion-button
-          type="button"
-          (click)="showFavorites('bank')"
-        >
-          <ion-icon name="heart"></ion-icon>
-        </button>
       </ion-item>
 
       <div *ngIf="!todo.controls.DECLARANTCODE.valid && submitAttempt">
@@ -73,17 +62,6 @@
           formControlName="DECLARANTCODE"
           required
         ></ion-input>
-        <button
-          class="show-fav-button"
-          color="secondary"
-          clear
-          item-end
-          ion-button
-          type="button"
-          (click)="showFavorites('declarant')"
-        >
-          <ion-icon name="heart"></ion-icon>
-        </button>
       </ion-item>
 
       <div *ngIf="type == 'customsPayment'">

@@ -97,26 +97,6 @@ export class CustomsPage {
     }
   }
 
-  showFavorites(type) {
-    if (this.favorites) {
-      this.alertProvider.showRadio(this.favorites, "favorites").then(fav => {
-        if (type === "bank") {
-          this.todo.controls["BANKCODE"].setValue(fav);
-          if (!this.todo.controls["BANKCODE"].valid) {
-            this.alertProvider.showToast("validBANKCODEError");
-            this.todo.controls["BANKCODE"].reset();
-          }
-        } else {
-          this.todo.controls["DECLARANTCODE"].setValue(fav);
-          if (!this.todo.controls["DECLARANTCODE"].valid) {
-            this.alertProvider.showToast("validDECLARANTCODEError");
-            this.todo.controls["DECLARANTCODE"].reset();
-          }
-        }
-      });
-    }
-  }
-
   clearInput() {
     this.todo.controls["pan"].reset();
     this.todo.controls["Card"].reset();

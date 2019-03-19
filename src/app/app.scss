@@ -89,6 +89,33 @@
     &[class*="custom-mail"] {
       mask-image: url(../assets/icon/sidemenu/contact.svg);
     }
+    &[class*="custom-mobile-topup"] {
+      mask-image: url(../assets/icon/loadmenu/topup.svg);
+    }
+    &[class*="custom-mobile-bill"] {
+      mask-image: url(../assets/icon/loadmenu/mobileBill.svg);
+    }
+    &[class*="custom-customs"] {
+      mask-image: url(../assets/icon/loadmenu/customs.svg);
+    }
+    &[class*="custom-tocard"] {
+      mask-image: url(../assets/icon/loadmenu/cardToCard.svg);
+    }
+    &[class*="custom-cardless"] {
+      mask-image: url(../assets/icon/loadmenu/cardless.svg);
+    }
+    &[class*="custom-purchase"] {
+      mask-image: url(../assets/icon/loadmenu/purchase.svg);
+    }
+    &[class*="custom-cashout"] {
+      mask-image: url(../assets/icon/loadmenu/cash.svg);
+    }
+    &[class*="custom-towallet"] {
+      mask-image: url(../assets/icon/loadmenu/mobileToMobile.svg);
+    }
+    &[class*="custom-wallettocard"] {
+      mask-image: url(../assets/icon/loadmenu/mobileToCard.svg);
+    }
   }
 
   .side-menu {

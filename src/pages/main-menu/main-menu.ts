@@ -22,13 +22,13 @@ export class MainMenuPage {
     {
       title: "mobileCredit",
       component: "MobileCreditPage",
-      icon: "phone-portrait",
+      icon: "custom-mobile-topup",
       var: "mobileCredit"
     },
     {
       title: "mobileBillPayment",
       component: "MobileCreditPage",
-      icon: "phone-landscape",
+      icon: "custom-mobile-bill",
       var: "mobileBillPayment"
     }
   ];
@@ -37,10 +37,15 @@ export class MainMenuPage {
     {
       title: "customsServices",
       component: "CustomsPage",
-      icon: "briefcase",
+      icon: "custom-customs",
       var: ""
     },
-    { title: "e15Services", component: "E15Page", icon: "document", var: "" },
+    {
+      title: "e15Services",
+      component: "E15Page",
+      icon: "custom-customs",
+      var: ""
+    },
     {
       title: "Higher Education",
       component: "MohePage",
@@ -50,7 +55,12 @@ export class MainMenuPage {
   ];
 
   gmppGovermentPages: any[] = [
-    { title: "e15Services", component: "E15Page", icon: "document", var: "" },
+    {
+      title: "e15Services",
+      component: "E15Page",
+      icon: "custom-customs",
+      var: ""
+    },
     {
       title: "Higher Education",
       component: "MohePage",
@@ -63,36 +73,46 @@ export class MainMenuPage {
     {
       title: "transferToCard",
       component: "TransferToCardPage",
-      icon: "swap",
+      icon: "custom-tocard",
       var: ""
     },
-    { title: "cardLess", component: "CardLessPage", icon: "print", var: "" }
+    {
+      title: "cardLess",
+      component: "CardLessPage",
+      icon: "custom-cardless",
+      var: ""
+    }
   ];
 
   gmppTransferPages: any[] = [
     {
       title: "gmppPurchasePage",
       component: "GmppPurchasePage",
-      icon: "pricetag",
+      icon: "custom-purchase",
       var: ""
     },
-    { title: "cashOut", component: "GmppCashOutPage", icon: "cash", var: "" },
+    {
+      title: "cashOut",
+      component: "GmppCashOutPage",
+      icon: "custom-cashout",
+      var: ""
+    },
     {
       title: "gmppTranToWallet",
       component: "GmppTranToWalletPage",
-      icon: "swap",
+      icon: "custom-towallet",
       var: ""
     },
     {
       title: "gmppTranToCard",
       component: "GmppTranToCardPage",
-      icon: "swap",
+      icon: "custom-wallettocard",
       var: ""
     },
     {
       title: "gmppTranFromCardPage",
       component: "GmppTranFromCardPage",
-      icon: "swap",
+      icon: "custom-wallettocard",
       var: ""
     }
   ];

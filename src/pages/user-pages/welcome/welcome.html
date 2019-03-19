@@ -15,11 +15,17 @@
     <div class="splash-intro">
       ZoalPay
       <div padding>
-        <button ion-button block (click)="login()" class="signup">
+        <button ion-button round (click)="login()" class="round-button">
           {{ "login" | translate }}
         </button>
 
-        <button ion-button block (click)="signup()" class="login">
+        <button
+          ion-button
+          outline
+          round
+          (click)="signup()"
+          class="round-button"
+        >
           {{ "createaccount" | translate }}
         </button>
       </div>

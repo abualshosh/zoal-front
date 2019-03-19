@@ -13,16 +13,14 @@ page-payment-method {
 
   .grid-item {
     display: grid;
-    width: 33vh;
-    height: 33vh;
+    width: 34vh;
+    height: 34vh;
     background: linear-gradient(
       to right,
       map-get($colors, custom-red) 5%,
       map-get($colors, secondary)
     );
-    font-size: 1.2em;
     color: map-get($colors, bar);
-    text-align: center;
     border-radius: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -33,9 +31,14 @@ page-payment-method {
   }
 
   .grid-icon {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 25%;
-    font-size: 3.5em;
+    font-size: 3em;
+  }
+
+  .grid-item-content {
+    font-size: 1.2em;
+    color: map-get($colors, bar);
+    text-align: center;
+    padding: 2%;
+    margin: auto;
   }
 }

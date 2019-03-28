@@ -65,10 +65,10 @@
           <ion-input type="number" formControlName="otp" required> </ion-input>
         </ion-item>
         <div *ngIf="!completeForm.controls.ipin.valid && submitAttempt">
-          <p>{{ "validIpinError" | translate }}</p>
+          <p>{{ "validnewipinError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label stacked>{{ "ipin" | translate }}</ion-label>
+          <ion-label stacked>{{ "NEWIPIN" | translate }}</ion-label>
           <ion-input type="number" formControlName="ipin" required> </ion-input>
         </ion-item>
       </ion-list>

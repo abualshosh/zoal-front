@@ -37,6 +37,16 @@ export class GetServicesProvider {
     return encrypted;
   }
 
+  encryptIpin(msg: any) {
+    var encrypt = new JSEncrypt.JSEncrypt();
+
+    encrypt.setPublicKey(localStorage.getItem("ipinkey"));
+
+    var encrypted = encrypt.encrypt(msg);
+
+    return encrypted;
+  }
+
   load(postparams: any, path: string): Promise<any> {
     return new Promise(resolve => {
       let seq = this.api.post(path, postparams).share();

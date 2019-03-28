@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  LoadingController
+  LoadingController,
+  ModalController
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 
@@ -11,6 +12,7 @@ import * as uuid from "uuid";
 import { GetServicesProvider } from "../../providers/get-services/get-services";
 import { AlertProvider } from "../../providers/alert/alert";
 import { Item, StorageProvider } from "../../providers/storage/storage";
+import * as moment from "moment";
 
 @IonicPage()
 @Component({
@@ -29,6 +31,7 @@ export class GenerateIpinPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public modalCtrl: ModalController,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public getServicesProvider: GetServicesProvider,
@@ -44,7 +47,6 @@ export class GenerateIpinPage {
       phoneNumber: [
         "",
         Validators.compose([
-          Validators.required,
           Validators.minLength(12),
           Validators.maxLength(12),
           Validators.pattern("249[0-9]*")
@@ -103,11 +105,9 @@ export class GenerateIpinPage {
         .load(requestData, "IpinGeneration/generateIpin")
         .then(
           res => {
-            if (res !== null && res.responseCode === 100) {
+            if (res != null && res.responseCode == 100) {
               loader.dismiss();
-
               this.isComplete = true;
-              this.clearInput("generateIpinForm");
               this.submitAttempt = false;
             } else {
               loader.dismiss();
@@ -135,18 +135,50 @@ export class GenerateIpinPage {
       loader.present();
 
       let requestData = this.completeForm.value;
+      requestData.UUID = uuid.v4();
       requestData.pan = this.pan;
       requestData.expDate = this.expDate;
+      requestData.ipin = this.getServicesProvider.encryptIpin(
+        requestData.UUID + requestData.ipin
+      );
+      requestData.otp = this.getServicesProvider.encryptIpin(
+        requestData.UUID + requestData.otp
+      );
 
       this.getServicesProvider
         .load(requestData, "IpinGeneration/generateIpinCompletion")
         .then(
           res => {
-            if (res !== null && res.responseCode === 100) {
+            if (res != null && res.responseCode == 100) {
               loader.dismiss();
 
+              let datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
+                "DD/MM/YYYY  hh:mm:ss"
+              );
+
+              let resFields = {
+                phoneNumber: res.phoneNumber,
+                date: datetime
+              };
+
+              let main = [];
+              let dat = [];
+
+              let mainData = {
+                generateIpinPage: res.pan
+              };
+              main.push(mainData);
+
+              dat.push({ Card: res.pan });
+              dat.push(resFields);
+              let modal = this.modalCtrl.create(
+                "TransactionDetailPage",
+                { data: dat, main: main },
+                { cssClass: "inset-modal" }
+              );
+              modal.present();
+
               this.isComplete = false;
-              this.clearInput("completeForm");
               this.submitAttempt = false;
             } else {
               loader.dismiss();

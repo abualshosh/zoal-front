@@ -32,6 +32,7 @@ export class User {
           this.storageProvider.setProfile(res.profile);
           localStorage.setItem("Gkey", res.gmppKey);
           localStorage.setItem("Ckey", res.consumerKey);
+          localStorage.setItem("ipinkey", res.ipinKey);
         }
       },
       err => {

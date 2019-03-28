@@ -10,29 +10,33 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="tran-receipt" no-padding>
-  <div class="watermark"></div>
+<ion-content no-padding>
+  <div class="container">
+    <div class="watermark"></div>
 
-  <div *ngFor="let item of (main | keys)">
-    <div text-center *ngFor="let itm of (item.value | keys)">
-      <ion-item class="trans" no-lines text-center>
-        {{ "successfulTransaction" | translate }}
-        <div>{{ itm.key | translate }}</div>
-        <div *ngIf="itm.value">{{ itm.value }} {{ "SDG" | translate }}</div>
-      </ion-item>
+    <div *ngFor="let item of (main | keys)">
+      <div text-center *ngFor="let itm of (item.value | keys)">
+        <ion-item class="trans" no-lines text-center>
+          {{ "successfulTransaction" | translate }}
+          <div>{{ itm.key | translate }}</div>
+          <div *ngIf="itm.value">{{ itm.value }} {{ "SDG" | translate }}</div>
+        </ion-item>
+      </div>
+    </div>
+
+    <div *ngFor="let item of (items | keys)">
+      <div *ngFor="let itm of (item.value | keys)">
+        <ion-item class="trans" no-lines>
+          <ion-col text-wrap>{{ itm.key | translate }}</ion-col>
+          <ion-col dir="ltr" item-end>{{ itm.value }}</ion-col>
+        </ion-item>
+      </div>
     </div>
   </div>
 
-  <div *ngFor="let item of (items | keys)">
-    <div *ngFor="let itm of (item.value | keys)">
-      <ion-item class="trans" no-lines>
-        <ion-col text-wrap>{{ itm.key | translate }}</ion-col>
-        <ion-col dir="ltr" item-end>{{ itm.value }}</ion-col>
-      </ion-item>
-    </div>
-  </div>
-
-  <button class="subbutn" ion-button (click)="share()" color="secondary">
-    {{ "share" | translate }}
-  </button>
+  <ion-fab end bottom>
+    <button ion-fab color="primary" (click)="share()">
+      <ion-icon name="share"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

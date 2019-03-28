@@ -1,4 +1,11 @@
 page-transaction-detail {
+  .container {
+    width: 100%;
+    min-height: 100%;
+    position: absolute;
+    z-index: 1;
+  }
+
   .watermark {
     background: url("../../../assets/imgs/logo.png");
     background-repeat: no-repeat;
@@ -6,15 +13,9 @@ page-transaction-detail {
     background-position: center;
     background-size: 28vh;
     opacity: 0.5;
-    height: auto;
-    left: 0;
-    margin: 0;
-    min-height: 100%;
-    min-width: 674px;
-    padding: 0;
-    position: fixed;
-    top: 0;
+    height: 100%;
     width: 100%;
+    position: absolute;
     z-index: -1;
   }
 

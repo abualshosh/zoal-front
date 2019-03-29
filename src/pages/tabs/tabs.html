@@ -2,7 +2,6 @@
   <ion-tab
     tabsHideOnSubPages="true"
     [root]="tab1Root"
-    tabTitle="{{ 'feeds' | translate }}"
     tabIcon="custom-home"
   ></ion-tab>
 
@@ -12,7 +11,6 @@
     (click)="tab4BadgeCount = 0"
     tabBadge="{{ tab4BadgeCount > 0 ? tab4BadgeCount : null }}"
     tabBadgeStyle="danger"
-    tabTitle="{{ 'chat' | translate }}"
     tabIcon="custom-chatbubbles"
   ></ion-tab>
 
@@ -26,14 +24,12 @@
   <ion-tab
     tabsHideOnSubPages="true"
     [root]="tab2Root"
-    tabTitle="{{ 'contacts' | translate }}"
     tabIcon="custom-contacts"
   ></ion-tab>
 
   <ion-tab
     tabsHideOnSubPages="true"
     [root]="tab3Root"
-    tabTitle="{{ 'profile' | translate }}"
     tabIcon="custom-person"
   ></ion-tab>
 

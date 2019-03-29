@@ -1,33 +1,25 @@
 page-payment-method {
   .grid-con {
     height: 100%;
-    padding: 3em;
+    padding: 5%;
     display: grid;
     justify-content: stretch;
     justify-items: stretch;
     grid-template-columns: 1fr;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 1fr 1fr;
     row-gap: 1em;
-    background: map-get($colors, bar);
+    background: white;
   }
 
   .grid-item {
     display: grid;
-    width: 34vh;
-    height: 34vh;
-    background: linear-gradient(
-      to right,
-      map-get($colors, custom-red) 5%,
-      map-get($colors, secondary)
-    );
-    color: map-get($colors, bar);
+    width: 32vh;
+    height: 32vh;
+    color: map-get($colors, secondary);
     border-radius: 50%;
-    margin-left: auto;
-    margin-right: auto;
-
-    -webkit-box-shadow: 15px 18px 80px -16px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 15px 18px 80px -16px rgba(0, 0, 0, 0.75);
-    box-shadow: 15px 18px 80px -16px rgba(0, 0, 0, 0.75);
+    border: 1.5px solid map-get($colors, secondary);
+    margin: auto;
+    padding: 5%;
   }
 
   .grid-icon {
@@ -36,9 +28,8 @@ page-payment-method {
 
   .grid-item-content {
     font-size: 1.2em;
-    color: map-get($colors, bar);
+    color: map-get($colors, secondary);
     text-align: center;
-    padding: 2%;
     margin: auto;
   }
 }

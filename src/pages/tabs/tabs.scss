@@ -17,24 +17,4 @@ page-tabs {
     min-width: 0 !important;
     height: 32px;
   }
-
-  .tabs-md .tab-button[aria-selected="true"] {
-    color: map-get($colors, bar);
-    background: map-get($colors, secondary);
-    border-top-left-radius: 30%;
-    border-top-right-radius: 30%;
-    .tab-button-icon {
-      color: map-get($colors, bar);
-    }
-  }
-
-  .tabs-ios .tab-button[aria-selected="true"] {
-    color: map-get($colors, bar);
-    background: map-get($colors, secondary);
-    border-top-left-radius: 30%;
-    border-top-right-radius: 30%;
-    .tab-button-icon {
-      color: map-get($colors, bar);
-    }
-  }
 }

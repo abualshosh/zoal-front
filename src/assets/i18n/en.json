@@ -57,7 +57,7 @@
   "ar": "ع",
   "en": "en",
   "successfulTransaction": "Successful Transaction",
-  "ipinMissmatch": "PIN Missmatch",
+  "ipinGenerationSuccess": "IPIN Generation Successful",
   "HOME": "Home",
   "scanQr": "Scan & Pay",
   "transactionServices": "Transaction Services",

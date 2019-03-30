@@ -57,7 +57,7 @@
   "ar": "ع",
   "en": "en",
   "successfulTransaction": "معاملة ناجحه",
-  "ipinMissmatch": "الرقم السري غير متطابق",
+  "ipinGenerationSuccess": "تم انشاء الرقم السري بنجاح",
   "HOME": "الرئيسيه",
   "MerchantId": "رقم المرجع",
   "specialPaymentServices": "الدفعية الخاصه",

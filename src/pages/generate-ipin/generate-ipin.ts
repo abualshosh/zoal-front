@@ -12,7 +12,6 @@ import * as uuid from "uuid";
 import { GetServicesProvider } from "../../providers/get-services/get-services";
 import { AlertProvider } from "../../providers/alert/alert";
 import { Item, StorageProvider } from "../../providers/storage/storage";
-import * as moment from "moment";
 
 @IonicPage()
 @Component({
@@ -150,36 +149,9 @@ export class GenerateIpinPage {
         .then(
           res => {
             if (res != null && res.responseCode == 100) {
-              loader.dismiss();
-
-              let datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
-                "DD/MM/YYYY  hh:mm:ss"
-              );
-
-              let resFields = {
-                phoneNumber: res.phoneNumber,
-                date: datetime
-              };
-
-              let main = [];
-              let dat = [];
-
-              let mainData = {
-                generateIpinPage: res.pan
-              };
-              main.push(mainData);
-
-              dat.push({ Card: res.pan });
-              dat.push(resFields);
-              let modal = this.modalCtrl.create(
-                "TransactionDetailPage",
-                { data: dat, main: main },
-                { cssClass: "inset-modal" }
-              );
-              modal.present();
-
               this.isComplete = false;
               this.submitAttempt = false;
+              this.alertProvider.showToast("ipinGenerationSuccess");
             } else {
               loader.dismiss();
               this.alertProvider.showAlert(res);

@@ -69,7 +69,13 @@
         </div>
         <ion-item>
           <ion-label stacked>{{ "NEWIPIN" | translate }}</ion-label>
-          <ion-input type="number" formControlName="ipin" required> </ion-input>
+          <ion-input
+            class="mask-text"
+            type="number"
+            formControlName="ipin"
+            required
+          >
+          </ion-input>
         </ion-item>
       </ion-list>
 

@@ -34,9 +34,9 @@ export class SignupPage {
         "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(9),
-          Validators.pattern("[0-9]*")
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("0[0-9]*")
         ])
       ]
     });
@@ -49,9 +49,16 @@ export class SignupPage {
       let loader = this.loadingCtrl.create();
       loader.present();
 
-      this.account.password = this.signup.controls["PHONENUMBER"].value;
       this.account.login = this.signup.controls["PHONENUMBER"].value;
-      this.account.username = this.signup.controls["PHONENUMBER"].value;
+      this.account.login = this.account.login.substring(
+        1,
+        this.account.login.length
+      );
+
+      this.account.password = this.account.login;
+      this.account.username = this.account.login;
+
+      console.log(this.account);
 
       this.user.login(this.account).subscribe(
         resp => {

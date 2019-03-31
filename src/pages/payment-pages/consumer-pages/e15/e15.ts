@@ -67,7 +67,7 @@ export class E15Page {
           Validators.required,
           Validators.minLength(10),
           Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.pattern("0[0-9]*")
         ])
       ],
       Amount: ["", Validators.required]

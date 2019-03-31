@@ -46,9 +46,9 @@ export class GenerateIpinPage {
       phoneNumber: [
         "",
         Validators.compose([
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("249[0-9]*")
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("0[0-9]*")
         ])
       ]
     });
@@ -95,6 +95,9 @@ export class GenerateIpinPage {
 
       let requestData = this.generateIpinForm.value;
       requestData.UUID = uuid.v4();
+      requestData.phoneNumber =
+        "249" +
+        requestData.phoneNumber.substring(1, requestData.phoneNumber.length);
       requestData.pan = requestData.card.cardNumber;
       requestData.expDate = requestData.card.expDate;
       this.pan = requestData.card.cardNumber;

@@ -60,7 +60,7 @@ export class BillInquiryPage {
           Validators.required,
           Validators.minLength(10),
           Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.pattern("0[0-9]*")
         ])
       ]
     });
@@ -81,11 +81,8 @@ export class BillInquiryPage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      
     });
   }
-
-  
 
   logForm() {
     this.submitAttempt = true;

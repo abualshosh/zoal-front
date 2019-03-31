@@ -14,8 +14,8 @@
         <div *ngIf="!login.controls.PHONENUMBER.valid && submitAttempt">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
-        <ion-item dir="ltr">
-          <ion-label fixed>+249</ion-label>
+        <ion-item>
+          <ion-label floating>{{ "PhoneNumber" | translate }} </ion-label>
           <ion-input
             type="number"
             formControlName="PHONENUMBER"
@@ -23,8 +23,8 @@
           ></ion-input>
         </ion-item>
 
-        <div padding>
-          <button ion-button color="primary" block>
+        <div text-center padding>
+          <button ion-button round color="primary" class="round-button">
             {{ "login" | translate }}
           </button>
         </div>

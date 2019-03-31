@@ -38,9 +38,9 @@ export class ItemCreatePage {
         navParams.get("item") ? this.item.walletNumber : "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("249[0-9]*")
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("0[0-9]*")
         ])
       ],
       cardNumber: [
@@ -100,7 +100,12 @@ export class ItemCreatePage {
       this.newItem = new Item(Date.now());
 
       if (this.key == "wallets") {
-        this.newItem.walletNumber = this.form.controls["walletNumber"].value;
+        this.newItem.walletNumber =
+          "249" +
+          this.form.controls["walletNumber"].value.substring(
+            1,
+            this.form.controls["walletNumber"].value.length
+          );
       }
 
       if (this.key == "cards") {

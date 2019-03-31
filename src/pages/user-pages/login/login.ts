@@ -33,9 +33,9 @@ export class LoginPage {
         "",
         Validators.compose([
           Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(9),
-          Validators.pattern("[0-9]*")
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern("0[0-9]*")
         ])
       ]
     });
@@ -43,13 +43,19 @@ export class LoginPage {
 
   doLogin() {
     this.submitAttempt = true;
-    if (this.login.valid) {
-      this.account.username = this.login.controls["PHONENUMBER"].value;
-      this.account.password = this.account.username;
-      this.account.rememberMe = true;
 
+    if (this.login.valid) {
       let loader = this.loadingCtrl.create();
       loader.present();
+
+      this.account.username = this.login.controls["PHONENUMBER"].value;
+      this.account.username = this.account.username.substring(
+        1,
+        this.account.username.length
+      );
+
+      this.account.password = this.account.username;
+      this.account.rememberMe = true;
 
       this.user.login(this.account).subscribe(
         resp => {

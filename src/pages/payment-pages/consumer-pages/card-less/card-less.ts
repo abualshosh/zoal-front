@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  ModalController,
+  Events
+} from "ionic-angular";
 import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
@@ -48,7 +53,7 @@ export class CardLessPage {
           Validators.required,
           Validators.minLength(10),
           Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.pattern("0[0-9]*")
         ])
       ],
       Amount: [
@@ -74,7 +79,7 @@ export class CardLessPage {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
     });
-    
+
     this.storageProvider.getFavorites().then(favorites => {
       this.favorites = favorites;
     });
@@ -105,7 +110,6 @@ export class CardLessPage {
       dat.tranCurrency = "SDG";
 
       dat.tranAmount = dat.Amount;
-      dat.toCard = dat.ToCard;
       dat.authenticationType = "00";
       dat.fromAccountType = "00";
       dat.toAccountType = "00";

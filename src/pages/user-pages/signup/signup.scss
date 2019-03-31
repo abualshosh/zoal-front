@@ -2,6 +2,7 @@ page-signup {
   .form {
     padding-top: 10%;
   }
+
   .splash-intro {
     font-size: 16px;
     // font-weight: bold;
@@ -11,11 +12,16 @@ page-signup {
     padding-bottom: 0px;
     margin-top: 3%;
   }
+
   .splash-info {
     padding-top: 0px;
     position: relative;
     z-index: 1;
     margin-top: 8%;
     text-align: center;
+  }
+
+  .round-button {
+    width: 28vh;
   }
 }

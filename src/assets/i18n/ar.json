@@ -83,7 +83,7 @@
   "IPIN": "الرقم السري",
   "cardLess": "ارسال حوالة",
   "validNameError": "الاسم غير صالح",
-  "validvoucherNumberError": " رقم هاتف غير صحيح ",
+  "validvoucherNumberError": "رقم هاتف غير صحيح (0XXXXXXXXX)",
   "validamountError": "  المبلغ غير صالح",
   "validipinError": "الرقم السري غير صحيح",
   "transferToCard": "التحويل الى بطاقة",

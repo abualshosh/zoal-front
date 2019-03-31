@@ -96,7 +96,7 @@ export class MobileCreditPage {
           Validators.required,
           Validators.minLength(10),
           Validators.maxLength(10),
-          Validators.pattern("[0-9]*")
+          Validators.pattern("0[0-9]*")
         ])
       ],
       Amount: ["", Validators.required]
@@ -124,7 +124,6 @@ export class MobileCreditPage {
         this.showWallet = true;
         this.todo.controls["mobilewallet"].setValue(true);
         this.todo.controls["Card"].disable();
-        
       });
     } else {
       this.storageProvider.getCards().then(cards => {
@@ -132,7 +131,6 @@ export class MobileCreditPage {
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
         this.todo.controls["entityId"].disable();
-        
       });
     }
 

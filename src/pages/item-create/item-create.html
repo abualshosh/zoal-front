@@ -15,7 +15,7 @@
     <form [formGroup]="form" (ngSubmit)="submitForm()">
       <div *ngIf="key == 'wallets'">
         <div *ngIf="!form.controls.walletNumber.valid && submitAttempt">
-          <p>{{ "validWalletError" | translate }}</p>
+          <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked> {{ "wallet" | translate }}</ion-label>

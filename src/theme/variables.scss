@@ -46,6 +46,11 @@ $colors: (
 // Material Design only Sass variables can go here
 $spinner-md-crescent-color: #0277bd;
 
+$loading-ios-background: transparent;
+$loading-md-background: $loading-ios-background;
+$loading-wp-background: $loading-ios-background;
+$loading-md-box-shadow: none;
+
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here

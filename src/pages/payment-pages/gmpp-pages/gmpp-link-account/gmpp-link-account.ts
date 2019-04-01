@@ -45,15 +45,6 @@ export class GmppLinkAccountPage {
     this.GetServicesProvider = GetServicesProviderg;
 
     this.todo = this.formBuilder.group({
-      walletNumber: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249].[0-9]*")
-        ])
-      ],
       primaryAccountNumber: [
         "",
         Validators.compose([

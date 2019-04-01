@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  ModalController,
+  Events
+} from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
@@ -34,18 +39,7 @@ export class GmppChangePinPage {
 
     this.GetServicesProvider = GetServicesProviderg;
 
-    
-
     this.todo = this.formBuilder.group({
-      walletNumber: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249].[0-9]*")
-        ])
-      ],
       oldPIN: ["", Validators.required],
       newPIN: ["", Validators.required],
       connewPIN: ["", Validators.required]
@@ -61,7 +55,6 @@ export class GmppChangePinPage {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
-        
       }
     });
   }
@@ -72,8 +65,6 @@ export class GmppChangePinPage {
       this.loadWallets();
     });
   }
-
-  
 
   logForm() {
     this.submitAttempt = true;

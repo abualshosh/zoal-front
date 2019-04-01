@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  ModalController,
+  Events
+} from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
@@ -34,18 +39,7 @@ export class GmppTranToCardPage {
 
     this.GetServicesProvider = GetServicesProviderg;
 
-    
-
     this.todo = this.formBuilder.group({
-      walletNumber: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12),
-          Validators.pattern("[249].[0-9]*")
-        ])
-      ],
       transactionAmount: ["", Validators.required],
       consumerPIN: ["", Validators.required]
     });
@@ -60,7 +54,6 @@ export class GmppTranToCardPage {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
       if (!this.wallets || this.wallets.length <= 0) {
-        
       }
     });
   }
@@ -71,8 +64,6 @@ export class GmppTranToCardPage {
       this.loadWallets();
     });
   }
-
-  
 
   logForm() {
     this.submitAttempt = true;

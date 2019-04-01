@@ -55,29 +55,20 @@ export class LoginPage {
       this.account.password = this.account.username;
       this.account.rememberMe = true;
 
-      this.user.login(this.account).subscribe(
-        resp => {
-          this.user.sendOtp({ login: this.account.username }).subscribe(
-            (res: any) => {
-              if (res.success) {
-                this.alertProvider.hideLoading();
-                this.submitAttempt = false;
-                this.navCtrl.push("VlidateOtpPage", {
-                  username: this.account.username,
-                  OtpType: "login"
-                });
-              } else {
-                this.alertProvider.hideLoading();
-                this.submitAttempt = false;
-                this.alertProvider.showAlert("failedToSendOTP", true);
-              }
-            },
-            err => {
-              this.alertProvider.hideLoading();
-              this.submitAttempt = false;
-              this.alertProvider.showAlert("failedToSendOTP", true);
-            }
-          );
+      this.user.sendOtpLogin({ login: this.account.username }).subscribe(
+        (res: any) => {
+          if (res.success) {
+            this.alertProvider.hideLoading();
+            this.submitAttempt = false;
+            this.navCtrl.push("VlidateOtpPage", {
+              username: this.account.username,
+              OtpType: "login"
+            });
+          } else {
+            this.alertProvider.hideLoading();
+            this.submitAttempt = false;
+            this.alertProvider.showAlert("failedToSendOTP", true);
+          }
         },
         err => {
           this.alertProvider.hideLoading();

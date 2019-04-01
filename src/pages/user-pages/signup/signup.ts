@@ -56,36 +56,25 @@ export class SignupPage {
       this.account.password = this.account.login;
       this.account.username = this.account.login;
 
-      console.log(this.account);
-
-      this.user.login(this.account).subscribe(
-        resp => {
-          this.alertProvider.hideLoading();
-          this.alertProvider.showAlert("failedToSignup", true);
+      this.user.sendOtpSignup(this.account).subscribe(
+        (res: any) => {
+          if (res.success == true) {
+            this.alertProvider.hideLoading();
+            this.navCtrl.push("VlidateOtpPage", {
+              username: this.account.username,
+              OtpType: "signup"
+            });
+          } else {
+            this.alertProvider.hideLoading();
+            this.alertProvider.showAlert("failedToSendOTP", true);
+            this.submitAttempt = false;
+          }
           this.submitAttempt = false;
         },
         err => {
-          this.user.sendOtp(this.account).subscribe(
-            (res: any) => {
-              if (res.success == true) {
-                this.alertProvider.hideLoading();
-                this.navCtrl.push("VlidateOtpPage", {
-                  username: this.account.username,
-                  OtpType: "signup"
-                });
-              } else {
-                this.alertProvider.hideLoading();
-                this.alertProvider.showAlert("failedToSendOTP", true);
-                this.submitAttempt = false;
-              }
-              this.submitAttempt = false;
-            },
-            err => {
-              this.alertProvider.hideLoading();
-              this.alertProvider.showAlert("failedToSendOTP", true);
-              this.submitAttempt = false;
-            }
-          );
+          this.alertProvider.hideLoading();
+          this.alertProvider.showAlert("failedToSignup", true);
+          this.submitAttempt = false;
         }
       );
     }

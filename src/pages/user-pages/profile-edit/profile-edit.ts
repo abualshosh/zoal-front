@@ -3,7 +3,6 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  LoadingController,
   ActionSheetController,
   Events
 } from "ionic-angular";
@@ -23,7 +22,7 @@ import { StorageProvider } from "../../../providers/storage/storage";
 export class ProfileEditPage {
   @ViewChild("fileInput") fileInput;
 
-  user: any = {};
+  profile: any = {};
   private userForm: FormGroup;
   type: number;
   img: Blob;
@@ -32,12 +31,12 @@ export class ProfileEditPage {
   choseImage: string;
   cameraTitle: string;
   gallery: string;
+  fileType: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public actionSheetCtrl: ActionSheetController,
     public userProvider: User,
     public translateService: TranslateService,
@@ -47,7 +46,7 @@ export class ProfileEditPage {
     public camera: Camera,
     public alertProvider: AlertProvider
   ) {
-    this.user = navParams.get("user");
+    this.profile = navParams.get("user");
 
     translateService
       .get(["ChoseImage", "camera", "gallery"])
@@ -59,18 +58,26 @@ export class ProfileEditPage {
 
     this.userForm = this.formBuilder.group({
       profilePic: [""],
-      fullname: [
-        navParams.get("user") ? this.user.fullName : null,
-        Validators.compose([Validators.minLength(3), Validators.maxLength(20)])
+      firstName: [
+        navParams.get("user") ? this.profile.firstName : null,
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50)
+        ])
+      ],
+      lastName: [
+        navParams.get("user") ? this.profile.lastName : null,
+        Validators.compose([Validators.minLength(3), Validators.maxLength(50)])
       ],
       email: [
-        navParams.get("user") ? this.user.email : null,
+        navParams.get("user") ? this.profile.email : null,
         Validators.compose([
           Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
         ])
       ],
       bio: [
-        navParams.get("user") ? this.user.bio : null,
+        navParams.get("user") ? this.profile.bio : null,
         Validators.compose([
           Validators.minLength(10),
           Validators.maxLength(200)
@@ -79,8 +86,6 @@ export class ProfileEditPage {
       file: [""]
     });
   }
-
-  ionViewDidLoad() {}
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -132,7 +137,10 @@ export class ProfileEditPage {
   private uploadPhoto(imageFileUri: any): void {
     this.file
       .resolveLocalFilesystemUrl(imageFileUri)
-      .then(entry => (<FileEntry>entry).file(file => this.readFile(file)))
+      .then(entry => (<FileEntry>entry).file(file => {
+        this.readFile(file)
+        this.fileType = file.type
+      }))
       .catch(err => console.log(err));
   }
 
@@ -162,67 +170,45 @@ export class ProfileEditPage {
   postData() {
     this.submitAttempt = true;
     if (this.userForm.valid) {
-      if (
-        !this.userForm.controls["profilePic"].value &&
-        !this.userForm.controls["fullname"].value &&
-        !this.userForm.controls["email"].value &&
-        !this.userForm.controls["bio"].value
-      ) {
-        this.submitAttempt = false;
-        return;
-      }
+      this.alertProvider.showLoading();
 
-      let loader = this.loadingCtrl.create();
-      loader.present();
-
-      if (this.userForm.controls["fullname"].value) {
-        this.user.fullName = this.userForm.controls["fullname"].value;
-      }
-
-      if (this.userForm.controls["email"].value) {
-        this.user.email = this.userForm.controls["email"].value;
-      }
-
-      if (this.userForm.controls["bio"].value) {
-        this.user.bio = this.userForm.controls["bio"].value;
-      }
+      this.profile = {
+        id: localStorage.getItem("profileId"),
+        login: localStorage.getItem("username"),
+        firstName: this.userForm.controls["firstName"].value,
+        lastName: this.userForm.controls["lastName"].value,
+        email: this.userForm.controls["email"].value,
+        bio: this.userForm.controls["bio"].value
+      };
 
       if (this.img) {
-        const formData = new FormData();
-        formData.append(
-          "user",
-          new Blob(
-            [
-              JSON.stringify({
-                login: this.user.userName
-              })
-            ],
-            {
-              type: "application/json"
-            }
-          )
-        );
+        let imgData = {
+          image: this.img,
+          imageContentType: this.fileType
+        }
 
-        formData.append("image", this.img);
-
-        this.userProvider.updateProfilePic(formData).subscribe(res => {
-          // alert(res);
-        });
+        this.userProvider.changeProfilePicture(imgData).subscribe(res => {});
       }
 
-      this.userProvider.updateProfile(this.user).subscribe(
+      this.userProvider.updateProfile(this.profile).subscribe(
         res => {
-          this.user = res;
+          this.profile = res;
           this.storageProvider.setProfile(res).then(() => {
             this.events.publish("profile:updated", "");
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.submitAttempt = false;
-            this.navCtrl.pop();
+
+            if (!this.navParams.get("user")) {
+              localStorage.setItem("logdin", "true");
+              this.navCtrl.setRoot("TabsPage");
+            } else {
+              this.navCtrl.pop();
+            }
           });
         },
         err => {
           this.alertProvider.showAlert(err);
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.submitAttempt = false;
         }
       );

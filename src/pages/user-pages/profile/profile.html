@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="secondary">
-    <ion-title text-center>{{ user?.fullName }}</ion-title>
+    <ion-title text-center>{{ user?.firstName }} {{ user?.lastName }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -15,7 +15,7 @@
     </img-loader>
   </div>
   <div class="main-content" text-wrap text-center>
-    <h3>{{ user?.fullName }}</h3>
+    <h3>{{ user?.firstName }} {{ user?.lastName }}</h3>
     <h6>{{ user?.bio }}</h6>
     <hr />
     <ion-list no-lines>
@@ -27,7 +27,7 @@
       <ion-item class="item">
         <ion-icon item-start name="call" color="primary"></ion-icon>
         <p>{{ "phone" | translate }}</p>
-        <p>249-{{ user?.userName }}</p>
+        <p>249-{{ user?.login }}</p>
       </ion-item>
     </ion-list>
   </div>

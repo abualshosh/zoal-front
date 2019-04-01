@@ -36,12 +36,20 @@
         </div>
       </div>
       <ion-list>
-        <div *ngIf="!userForm.controls.fullname.valid && submitAttempt">
-          <p>{{ "validFullnameError" | translate }}</p>
+        <div *ngIf="!userForm.controls.firstName.valid && submitAttempt">
+          <p>{{ "validFirstNameError" | translate }}</p>
         </div>
         <ion-item>
-          <ion-label stacked> {{ "name" | translate }} </ion-label>
-          <ion-input type="text" formControlName="fullname"></ion-input>
+          <ion-label stacked> {{ "firstName" | translate }} </ion-label>
+          <ion-input type="text" formControlName="firstName"></ion-input>
+        </ion-item>
+
+        <div *ngIf="!userForm.controls.lastName.valid && submitAttempt">
+          <p>{{ "validLastNameError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked> {{ "lastName" | translate }} </ion-label>
+          <ion-input type="text" formControlName="lastName"></ion-input>
         </ion-item>
 
         <div *ngIf="!userForm.controls.email.valid && submitAttempt">

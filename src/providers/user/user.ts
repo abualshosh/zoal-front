@@ -21,14 +21,23 @@ export class User {
     public stomp: StompService
   ) {}
 
-  login(accountInfo: any) {
-    let seq = this.api.post("authenticate", accountInfo).share();
+  sendOtpLogin(accountInfo: any) {
+    return this.api.post("send-otp/login", accountInfo);
+  }
+
+  sendOtpSignup(accountInfo: any) {
+    return this.api.post("send-otp/signup", accountInfo);
+  }
+
+  validateOtp(accountInfo: any) {
+    let seq = this.api.post("validate-otp", accountInfo).share();
 
     seq.subscribe(
       (res: any) => {
         if (res.id_token) {
           localStorage.setItem("id_token", res.id_token);
-          localStorage.setItem("username", accountInfo.username);
+          localStorage.setItem("username", res.profile.login);
+          localStorage.setItem("profileId", res.profile.id);
           this.storageProvider.setProfile(res.profile);
           localStorage.setItem("Gkey", res.gmppKey);
           localStorage.setItem("Ckey", res.consumerKey);
@@ -43,23 +52,11 @@ export class User {
     return seq;
   }
 
-  sendOtp(accountInfo: any) {
-    let seq = this.api.post("sendSms", accountInfo).share();
-
-    return seq;
-  }
-
-  validateOtp(accountInfo: any) {
-    let seq = this.api.post("validSms", accountInfo).share();
-
-    return seq;
-  }
-
   updateProfile(data: any) {
     return this.api.put("profiles", data);
   }
 
-  updateProfilePic(data) {
-    return this.api.put("profiles-pic", data);
+  changeProfilePicture(data) {
+    return this.api.post("profile-images", data);
   }
 }

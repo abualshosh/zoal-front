@@ -3,7 +3,6 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  LoadingController,
   ModalController,
   ViewController
 } from "ionic-angular";
@@ -26,7 +25,6 @@ export class ContactUsPage {
   constructor(
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public serviceProvider: GetServicesProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
@@ -61,8 +59,7 @@ export class ContactUsPage {
     this.submitAttempt = true;
 
     if (this.contactForm.valid) {
-      let loader = this.loadingCtrl.create({});
-      loader.present();
+      this.alertProvider.showLoading();
 
       let request = this.contactForm.value;
       request.userName = this.profile.userName;
@@ -70,18 +67,13 @@ export class ContactUsPage {
 
       this.serviceProvider.load(request, "consumer/user-messages").then(
         res => {
-          loader.dismiss();
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: [], main: [{ contactUsPage: "" }] },
-            { cssClass: "inset-modals" }
-          );
-          modal.present();
+          this.alertProvider.hideLoading();
+          this.alertProvider.showToast("companyContactSuccess");
           this.contactForm.reset();
           this.submitAttempt = false;
         },
         err => {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.contactForm.reset();
           this.alertProvider.showAlert(err);
           this.submitAttempt = false;

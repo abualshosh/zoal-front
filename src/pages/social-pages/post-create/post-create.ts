@@ -6,8 +6,7 @@ import {
   IonicPage,
   NavController,
   ViewController,
-  NavParams,
-  LoadingController
+  NavParams
 } from "ionic-angular";
 import { HttpClient } from "@angular/common/http";
 import { File, FileEntry } from "@ionic-native/file";
@@ -45,7 +44,6 @@ export class PostCreatePage {
     private http: HttpClient,
     public translateService: TranslateService,
     public navCtrl: NavController,
-    public loadingCtrl: LoadingController,
     public alertProvider: AlertProvider,
     public viewCtrl: ViewController,
     formBuilder: FormBuilder,
@@ -168,8 +166,7 @@ export class PostCreatePage {
   postData(Data: any) {
     const formData = new FormData();
 
-    let loader = this.loadingCtrl.create();
-    loader.present();
+    this.alertProvider.showLoading();
 
     formData.append(
       "posts",
@@ -193,11 +190,11 @@ export class PostCreatePage {
 
     this.api.post("posts", formData).subscribe(
       resp => {
-        loader.dismiss();
+        this.alertProvider.hideLoading();
         this.navCtrl.pop();
       },
       err => {
-        loader.dismiss();
+        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       }
     );

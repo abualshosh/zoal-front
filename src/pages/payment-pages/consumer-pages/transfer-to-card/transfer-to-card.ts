@@ -7,7 +7,6 @@ import {
   Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import {
@@ -37,7 +36,6 @@ export class TransferToCardPage {
     private barcodeScanner: BarcodeScanner,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
@@ -126,8 +124,8 @@ export class TransferToCardPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.todo.value;
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
@@ -147,7 +145,7 @@ export class TransferToCardPage {
         "consumer/doCardTransfer"
       ).then(data => {
         if (data != null && data.responseCode == 0) {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           var datas;
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
             "DD/MM/YYYY  hh:mm:ss"
@@ -178,7 +176,7 @@ export class TransferToCardPage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;

@@ -4,7 +4,6 @@ import {
   NavController,
   NavParams,
   AlertController,
-  LoadingController,
   Events
 } from "ionic-angular";
 import { Api } from "../../../providers/providers";
@@ -30,22 +29,21 @@ export class FeedsPage {
     public alertCtrl: AlertController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
-    public loadingCtrl: LoadingController,
     public events: Events,
     public api: Api
   ) {
-    let loading = this.loadingCtrl.create();
-    loading.present();
+    this.alertProvider.showLoading();
+
     this.api.get("Fposts", "?page=0&size=5", null).subscribe(
       (res: any) => {
         if (res) {
           this.last = res.last;
           this.posts = res.content;
-          loading.dismiss();
+          this.alertProvider.hideLoading();
         }
       },
       err => {
-        loading.dismiss();
+        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       }
     );

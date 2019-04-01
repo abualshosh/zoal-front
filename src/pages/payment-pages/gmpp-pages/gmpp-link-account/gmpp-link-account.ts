@@ -6,7 +6,6 @@ import {
   Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
@@ -33,7 +32,6 @@ export class GmppLinkAccountPage {
     public events: Events,
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public alertProvider: AlertProvider,
     public storage: Storage,
@@ -127,8 +125,8 @@ export class GmppLinkAccountPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -145,7 +143,7 @@ export class GmppLinkAccountPage {
             this.storage.set("LINKACCOUNT", "TRUE");
             this.storage.set("LINKUUID", dat.UUID);
             this.storage.set("primaryAccountNumber", dat.primaryAccountNumber);
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.submitAttempt = false;
 
             // this.ionViewDidLoad();
@@ -159,7 +157,7 @@ export class GmppLinkAccountPage {
 
             // this.navCtrl.push(this.navCtrl.getActive().component);
           } else {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(data);
             this.submitAttempt = false;
           }
@@ -171,8 +169,8 @@ export class GmppLinkAccountPage {
   ComplateForm() {
     this.submitAttempt = true;
     if (this.complate.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.complate.value;
 
       this.storage.get("LINKUUID").then(val => {
@@ -195,7 +193,7 @@ export class GmppLinkAccountPage {
                 "gmpp/completeLinkAccount"
               ).then(data => {
                 if (data != null && data.responseCode == 1) {
-                  loader.dismiss();
+                  this.alertProvider.hideLoading();
                   var datas = [{ tital: "Status", desc: data.responseMessage }];
                   let modal = this.modalCtrl.create(
                     "GmppReceiptPage",
@@ -208,7 +206,7 @@ export class GmppLinkAccountPage {
                   this.navCtrl.pop();
                 } else {
                   this.submitAttempt = false;
-                  loader.dismiss();
+                  this.alertProvider.hideLoading();
                   this.alertProvider.showAlert(data);
                 }
               });

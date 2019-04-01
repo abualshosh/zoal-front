@@ -58,6 +58,7 @@
   "en": "en",
   "successfulTransaction": "Successful Transaction",
   "ipinGenerationSuccess": "IPIN Generation Successful",
+  "companyContactSuccess": "Message sent successfully",
   "HOME": "Home",
   "scanQr": "Scan & Pay",
   "transactionServices": "Transaction Services",

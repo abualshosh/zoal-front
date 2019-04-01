@@ -8,7 +8,6 @@ import {
 } from "ionic-angular";
 import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
@@ -34,7 +33,6 @@ export class E15Page {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
     public navCtrl: NavController,
     public alertProvider: AlertProvider,
@@ -147,8 +145,7 @@ export class E15Page {
       if (!dat.mobilewallet && !this.validCard) {
         return;
       }
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
       dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -181,7 +178,7 @@ export class E15Page {
 
       this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
         if (data != null && data.responseCode == 0) {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
             "DD/MM/YYYY  hh:mm:ss"
           );
@@ -221,7 +218,7 @@ export class E15Page {
           this.clearInput();
           this.submitAttempt = false;
         } else {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.clearInput();
 

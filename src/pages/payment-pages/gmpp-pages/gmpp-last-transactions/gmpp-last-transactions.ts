@@ -6,7 +6,6 @@ import {
   Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
@@ -28,7 +27,6 @@ export class GmppLastTransactionsPage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
@@ -75,8 +73,8 @@ export class GmppLastTransactionsPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -94,7 +92,7 @@ export class GmppLastTransactionsPage {
         this.submitAttempt = false;
 
         if (data != null && data.responseCode == 1) {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           var datas = [
             { tital: "Status", desc: data.responseMessage },
             { tital: "available Balance", desc: data.availableBalance },
@@ -110,7 +108,7 @@ export class GmppLastTransactionsPage {
           // this.submitAttempt=false;
         } else {
           this.submitAttempt = false;
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           //  this.submitAttempt=false;

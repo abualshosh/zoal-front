@@ -6,7 +6,6 @@ import {
   Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import * as moment from "moment";
@@ -29,7 +28,6 @@ export class GmppCashOutPage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
@@ -89,8 +87,8 @@ export class GmppCashOutPage {
     }
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -106,7 +104,7 @@ export class GmppCashOutPage {
         "gmpp/doCashOutWithTan"
       ).then(data => {
         if (data != null && data.responseCode == 1) {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
             "DD/MM/YYYY  hh:mm:ss"
           );
@@ -138,7 +136,7 @@ export class GmppCashOutPage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;

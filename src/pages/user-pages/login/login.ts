@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { IonicPage, NavController, LoadingController } from "ionic-angular";
+import { IonicPage, NavController } from "ionic-angular";
 import { User } from "../../../providers/providers";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertProvider } from "../../../providers/alert/alert";
@@ -23,7 +23,6 @@ export class LoginPage {
   constructor(
     public navCtrl: NavController,
     public user: User,
-    public loadingCtrl: LoadingController,
     public alertProvider: AlertProvider,
     private formBuilder: FormBuilder,
     public translateService: TranslateService
@@ -45,8 +44,7 @@ export class LoginPage {
     this.submitAttempt = true;
 
     if (this.login.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
 
       this.account.username = this.login.controls["PHONENUMBER"].value;
       this.account.username = this.account.username.substring(
@@ -62,27 +60,27 @@ export class LoginPage {
           this.user.sendOtp({ login: this.account.username }).subscribe(
             (res: any) => {
               if (res.success) {
-                loader.dismiss();
+                this.alertProvider.hideLoading();
                 this.submitAttempt = false;
                 this.navCtrl.push("VlidateOtpPage", {
                   username: this.account.username,
                   OtpType: "login"
                 });
               } else {
-                loader.dismiss();
+                this.alertProvider.hideLoading();
                 this.submitAttempt = false;
                 this.alertProvider.showAlert("failedToSendOTP", true);
               }
             },
             err => {
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.submitAttempt = false;
               this.alertProvider.showAlert("failedToSendOTP", true);
             }
           );
         },
         err => {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.submitAttempt = false;
           this.alertProvider.showAlert("failedToLogin", true);
         }

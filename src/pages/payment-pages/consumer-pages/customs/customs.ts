@@ -8,7 +8,6 @@ import {
 } from "ionic-angular";
 import * as moment from "moment";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { AlertProvider } from "../../../../providers/alert/alert";
@@ -32,7 +31,6 @@ export class CustomsPage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
@@ -111,8 +109,8 @@ export class CustomsPage {
     var dat = this.todo.value;
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -142,7 +140,7 @@ export class CustomsPage {
 
       this.GetServicesProvider.load(dat, endpoint).then(data => {
         if (data != null && data.responseCode == 0) {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
 
           let main = [];
           let mainData = {};
@@ -187,7 +185,7 @@ export class CustomsPage {
           this.clearInput();
           this.submitAttempt = false;
         } else {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.clearInput();
 

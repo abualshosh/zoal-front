@@ -1,11 +1,5 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  LoadingController,
-  Events
-} from "ionic-angular";
+import { IonicPage, NavController, NavParams, Events } from "ionic-angular";
 import { Contacts } from "@ionic-native/contacts";
 import { Api } from "../../../providers/providers";
 import { AlertProvider } from "../../../providers/alert/alert";
@@ -25,7 +19,6 @@ export class ContactsPage {
   constructor(
     public api: Api,
     private contacts: Contacts,
-    public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
@@ -62,8 +55,7 @@ export class ContactsPage {
   }
 
   uploadContacts() {
-    let loader = this.loadingCtrl.create();
-    loader.present();
+    this.alertProvider.showLoading();
 
     var opts = {
       multiple: true,
@@ -105,22 +97,22 @@ export class ContactsPage {
                 "connections",
                 JSON.stringify(this.connections)
               );
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.upcontacts = [];
             } else {
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.upcontacts = [];
             }
           },
           err => {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.upcontacts = [];
             this.alertProvider.showAlert("failedToUploadContacts", true);
           }
         );
       },
       error => {
-        loader.dismiss();
+        this.alertProvider.hideLoading();
         this.upcontacts = [];
         this.alertProvider.showAlert("failedToReadContacts", true);
       }

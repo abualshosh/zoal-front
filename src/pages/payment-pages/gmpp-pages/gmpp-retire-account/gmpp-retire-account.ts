@@ -6,7 +6,6 @@ import {
   Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Storage } from "@ionic/storage";
@@ -30,7 +29,6 @@ export class GmppRetireAccountPage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public navCtrl: NavController,
     public storage: Storage,
@@ -114,8 +112,8 @@ export class GmppRetireAccountPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -132,7 +130,7 @@ export class GmppRetireAccountPage {
             this.storage.set("RetireACCOUNT", "TRUE");
             this.storage.set("RUUID", dat.UUID);
             //   this.storage.set("primaryAccountNumber",dat.primaryAccountNumber);
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.compleate = "TRUE";
             var datas = [
               { tital: "Status", desc: data.responseMessage },
@@ -147,7 +145,7 @@ export class GmppRetireAccountPage {
             this.submitAttempt = false;
           } else {
             this.submitAttempt = false;
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(data);
           }
         }
@@ -158,8 +156,8 @@ export class GmppRetireAccountPage {
   ComplateForm() {
     this.submitAttempt = true;
     if (this.complate.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.complate.value;
 
       this.storage.get("RUUID").then(val => {
@@ -181,7 +179,7 @@ export class GmppRetireAccountPage {
             "ComplateRetirewallet"
           ).then(data => {
             if (data != null && data.responseCode == 1) {
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               var datas = [{ tital: "Status", desc: data.responseMessage }];
               let modal = this.modalCtrl.create(
                 "GmppReceiptPage",
@@ -193,7 +191,7 @@ export class GmppRetireAccountPage {
               this.Cancle();
             } else {
               this.submitAttempt = false;
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.alertProvider.showAlert(data);
             }
           });

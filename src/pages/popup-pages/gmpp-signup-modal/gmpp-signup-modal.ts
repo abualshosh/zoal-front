@@ -4,7 +4,6 @@ import {
   IonicPage,
   ModalController,
   NavController,
-  LoadingController,
   Events
 } from "ionic-angular";
 import { GetServicesProvider } from "../../../providers/get-services/get-services";
@@ -25,7 +24,6 @@ export class GmppSignupModalPage {
 
   constructor(
     public events: Events,
-    public loadingCtrl: LoadingController,
     public api: Api,
     private formBuilder: FormBuilder,
     public navCtrl: NavController,
@@ -61,11 +59,10 @@ export class GmppSignupModalPage {
       UUID: uuid.v4(),
       consumerIdentifier: this.wallets[0].walletNumber
     };
-    let loader = this.loadingCtrl.create();
-    loader.present();
+    this.alertProvider.showLoading();
 
     this.GetServicesProvider.load(dat, "gmpp/registerConsumer").then(data => {
-      loader.dismiss();
+      this.alertProvider.hideLoading();
 
       if (data.responseCode == 1) {
         this.storageProvider.getProfile().subscribe(val => {

@@ -6,8 +6,7 @@ import {
   IonicPage,
   NavController,
   ViewController,
-  NavParams,
-  LoadingController
+  NavParams
 } from "ionic-angular";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { File, FileEntry } from "@ionic-native/file";
@@ -45,7 +44,6 @@ export class ProfileCreatePage {
     public viewCtrl: ViewController,
     formBuilder: FormBuilder,
     public camera: Camera,
-    public loadingCtrl: LoadingController,
     public translateService: TranslateService,
     public alertProvider: AlertProvider
   ) {
@@ -67,8 +65,6 @@ export class ProfileCreatePage {
       this.isReadyToSave = this.form.valid;
     });
   }
-
-  ionViewDidLoad() {}
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -157,8 +153,8 @@ export class ProfileCreatePage {
   postData(Data: any) {
     const formData = new FormData();
 
-    let loader = this.loadingCtrl.create();
-    loader.present();
+    this.alertProvider.showLoading();
+
     formData.append(
       "user",
       new Blob(
@@ -187,17 +183,17 @@ export class ProfileCreatePage {
         this.user.login(account).subscribe(
           resp => {
             localStorage.setItem("logdin", "true");
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.navCtrl.setRoot("TabsPage");
           },
           err => {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(err);
           }
         );
       },
       err => {
-        loader.dismiss();
+        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       }
     );

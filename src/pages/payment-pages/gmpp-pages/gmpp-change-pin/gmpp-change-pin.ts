@@ -6,7 +6,6 @@ import {
   Events
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
@@ -28,7 +27,6 @@ export class GmppChangePinPage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
@@ -69,8 +67,8 @@ export class GmppChangePinPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.todo.value;
       if (dat.connewPIN == dat.newPIN) {
         dat.UUID = uuid.v4();
@@ -87,7 +85,7 @@ export class GmppChangePinPage {
         this.GetServicesProvider.load(this.todo.value, "gmpp/changePIN").then(
           data => {
             if (data != null && data.responseCode == 1) {
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               var datas = [{ tital: "Status", desc: data.responseMessage }];
               let modal = this.modalCtrl.create(
                 "GmppReceiptPage",
@@ -98,7 +96,7 @@ export class GmppChangePinPage {
               this.submitAttempt = false;
             } else {
               this.submitAttempt = false;
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.alertProvider.showAlert(data);
               this.todo.reset();
             }
@@ -106,7 +104,7 @@ export class GmppChangePinPage {
         );
       } else {
         this.submitAttempt = false;
-        loader.dismiss();
+        this.alertProvider.hideLoading();
         var data = { responseMessage: "" };
         data.responseMessage = "PIN Miss Match";
         this.alertProvider.showAlert(data);

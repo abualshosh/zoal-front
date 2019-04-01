@@ -1,10 +1,5 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  LoadingController
-} from "ionic-angular";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { User } from "../../../providers/providers";
 import { MainPage } from "../../pages";
 import { TranslateService } from "@ngx-translate/core";
@@ -27,7 +22,6 @@ export class VlidateOtpPage {
     public user: User,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public loadingCtrl: LoadingController,
     public alertProvider: AlertProvider,
     public translateService: TranslateService
   ) {
@@ -36,34 +30,31 @@ export class VlidateOtpPage {
   }
 
   validateOtp() {
-    let loader = this.loadingCtrl.create();
-    loader.present();
+    this.alertProvider.showLoading();
 
     this.user.validateOtp(this.account).subscribe(
       (res: any) => {
         if (res) {
           if (this.otpType === "login") {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             localStorage.setItem("logdin", "true");
             this.navCtrl.setRoot(MainPage);
           } else {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.navCtrl.setRoot("ProfileCreatePage", {
               username: this.account.login
             });
           }
         } else {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert("OTP_ERROR", true);
         }
       },
       err => {
         console.error("ERROR", err);
-        loader.dismiss();
+        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       }
     );
   }
-
-  ionViewDidLoad() {}
 }

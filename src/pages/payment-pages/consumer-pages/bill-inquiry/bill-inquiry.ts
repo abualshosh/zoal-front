@@ -8,7 +8,6 @@ import {
 } from "ionic-angular";
 
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 
 import * as uuid from "uuid";
@@ -31,7 +30,6 @@ export class BillInquiryPage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProvider: GetServicesProvider,
     public navCtrl: NavController,
     public alertProvider: AlertProvider,
@@ -87,8 +85,8 @@ export class BillInquiryPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
+
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -108,7 +106,7 @@ export class BillInquiryPage {
 
       this.GetServicesProvider.load(dat, "Billquiry").then(data => {
         if (data != null && data.responseCode == 0) {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           var dat = [];
 
           dat.push(data.billInfo);
@@ -121,7 +119,7 @@ export class BillInquiryPage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;

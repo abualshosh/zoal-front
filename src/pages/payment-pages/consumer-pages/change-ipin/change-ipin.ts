@@ -1,7 +1,11 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, ModalController, Events } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  ModalController,
+  Events
+} from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { LoadingController } from "ionic-angular";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { AlertProvider } from "../../../../providers/alert/alert";
@@ -21,7 +25,6 @@ export class ChangeIpinPage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
@@ -76,18 +79,14 @@ export class ChangeIpinPage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      
     });
   }
-
-  
 
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
+      this.alertProvider.showLoading();
 
-      loader.present();
       var dat = this.todo.value;
 
       if (dat.ConnewIPIN == dat.newIPIN) {
@@ -101,7 +100,7 @@ export class ChangeIpinPage {
 
         this.GetServicesProvider.load(dat, "consumer/ChangeIPIN").then(data => {
           if (data != null && data.responseCode == 0) {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             let modal = this.modalCtrl.create(
               "TransactionDetailPage",
               { data: [], main: [{ changeIpinPage: "" }] },
@@ -111,14 +110,14 @@ export class ChangeIpinPage {
             this.todo.reset();
             this.submitAttempt = false;
           } else {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(data);
             this.todo.reset();
             this.submitAttempt = false;
           }
         });
       } else {
-        loader.dismiss();
+        this.alertProvider.hideLoading();
         var data = { responseMessage: "IPIN Missmatch" };
         this.alertProvider.showAlert(data);
       }

@@ -3,7 +3,6 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  LoadingController,
   ModalController
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
@@ -32,7 +31,6 @@ export class GenerateIpinPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public getServicesProvider: GetServicesProvider,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider
@@ -90,8 +88,7 @@ export class GenerateIpinPage {
   submit() {
     this.submitAttempt = true;
     if (this.generateIpinForm.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
 
       let requestData = this.generateIpinForm.value;
       requestData.UUID = uuid.v4();
@@ -108,11 +105,11 @@ export class GenerateIpinPage {
         .then(
           res => {
             if (res != null && res.responseCode == 100) {
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.isComplete = true;
               this.submitAttempt = false;
             } else {
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.alertProvider.showAlert(res);
               this.isComplete = false;
               this.clearInput("generateIpinForm");
@@ -120,7 +117,7 @@ export class GenerateIpinPage {
             }
           },
           err => {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(err);
             this.isComplete = false;
             this.clearInput("generateIpinForm");
@@ -133,8 +130,7 @@ export class GenerateIpinPage {
   submitCompletion() {
     this.submitAttempt = true;
     if (this.completeForm.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
 
       let requestData = this.completeForm.value;
       requestData.UUID = uuid.v4();
@@ -156,14 +152,14 @@ export class GenerateIpinPage {
               this.submitAttempt = false;
               this.alertProvider.showToast("ipinGenerationSuccess");
             } else {
-              loader.dismiss();
+              this.alertProvider.hideLoading();
               this.alertProvider.showAlert(res);
               this.clearInput("completeForm");
               this.submitAttempt = false;
             }
           },
           err => {
-            loader.dismiss();
+            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(err);
             this.clearInput("completeForm");
             this.submitAttempt = false;

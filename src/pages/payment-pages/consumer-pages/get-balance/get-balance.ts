@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import {
-  LoadingController,
   ModalController,
   IonicPage,
   NavController,
@@ -27,7 +26,6 @@ export class GetBalancePage {
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public GetServicesProviderg: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
@@ -65,17 +63,13 @@ export class GetBalancePage {
   loadData() {
     this.storageProvider.getCards().then(val => {
       this.cards = val;
-      
     });
   }
-
-  
 
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      let loader = this.loadingCtrl.create();
-      loader.present();
+      this.alertProvider.showLoading();
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -90,7 +84,7 @@ export class GetBalancePage {
 
       this.GetServicesProvider.load(dat, "consumer/getBalance").then(data => {
         if (data != null && data.responseCode == 0) {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           var main = [];
           var mainData = {
             balance: data.balance.available
@@ -116,7 +110,7 @@ export class GetBalancePage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          loader.dismiss();
+          this.alertProvider.hideLoading();
           if (data.responseCode != null) {
             this.alertProvider.showAlert(data);
           } else {

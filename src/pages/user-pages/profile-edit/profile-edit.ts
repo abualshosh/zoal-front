@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import {
   IonicPage,
   NavController,
@@ -20,10 +20,8 @@ import { StorageProvider } from "../../../providers/storage/storage";
   templateUrl: "profile-edit.html"
 })
 export class ProfileEditPage {
-  @ViewChild("fileInput") fileInput;
-
-  profile: any = {};
   private userForm: FormGroup;
+  profile: any = {};
   type: number;
   img: Blob;
   submitAttempt: boolean = false;
@@ -32,6 +30,7 @@ export class ProfileEditPage {
   cameraTitle: string;
   gallery: string;
   fileType: string;
+  imagePath: any;
 
   constructor(
     public navCtrl: NavController,
@@ -57,7 +56,7 @@ export class ProfileEditPage {
       });
 
     this.userForm = this.formBuilder.group({
-      profilePic: [""],
+      image: [""],
       firstName: [
         navParams.get("user") ? this.profile.firstName : null,
         Validators.compose([
@@ -87,23 +86,20 @@ export class ProfileEditPage {
     });
   }
 
-  presentActionSheet() {
+  selectImage() {
     let actionSheet = this.actionSheetCtrl.create({
       title: this.choseImage,
       buttons: [
         {
           text: this.cameraTitle,
-
           handler: () => {
-            this.type = 1;
-            this.getPicture();
+            this.getPicture(1);
           }
         },
         {
           text: this.gallery,
           handler: () => {
-            this.type = 0;
-            this.getPicture();
+            this.getPicture(0);
           }
         }
       ]
@@ -112,36 +108,36 @@ export class ProfileEditPage {
     actionSheet.present();
   }
 
-  getPicture() {
-    if (Camera["installed"]()) {
-      this.camera
-        .getPicture({
-          destinationType: this.camera.DestinationType.FILE_URI,
-          mediaType: this.camera.MediaType.PICTURE,
-          sourceType: this.type
-        })
-        .then(
-          data => {
-            this.userForm.patchValue({ profilePic: data });
-            this.uploadPhoto(data);
-          },
-          err => {
-            alert("Unable to take photo");
-          }
-        );
-    } else {
-      this.fileInput.nativeElement.click();
-    }
+  getPicture(type: number) {
+    this.camera
+      .getPicture({
+        destinationType: this.camera.DestinationType.FILE_URI,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: type
+      })
+      .then(
+        imagePath => {
+          // this.userForm.patchValue({ image: data });
+          // this.userForm.controls["image"].setValue(imagePath);
+          this.imagePath = imagePath;
+          alert(this.imagePath);
+          this.loadPhoto(imagePath);
+        },
+        err => {
+          alert("Unable to take photo");
+        }
+      );
   }
 
-  private uploadPhoto(imageFileUri: any): void {
-    this.file
-      .resolveLocalFilesystemUrl(imageFileUri)
-      .then(entry => (<FileEntry>entry).file(file => {
-        this.readFile(file)
-        this.fileType = file.type
-      }))
-      .catch(err => console.log(err));
+  private loadPhoto(imageFileUri: any): void {
+    this.file.resolveLocalFilesystemUrl(imageFileUri).then(
+      entry => {
+        (<FileEntry>entry).file(file => this.readFile(file));
+      },
+      err => {
+        this.alertProvider.showAlert("failedToLoadImage");
+      }
+    );
   }
 
   private readFile(file: any) {
@@ -151,20 +147,6 @@ export class ProfileEditPage {
       this.img = imgBlob;
     };
     reader.readAsArrayBuffer(file);
-  }
-
-  processWebImage(event) {
-    let reader = new FileReader();
-    reader.onload = readerEvent => {
-      let imageData = (readerEvent.target as any).result;
-
-      this.userForm.patchValue({ profilePic: imageData });
-    };
-    reader.readAsDataURL(event.target.file);
-  }
-
-  getProfileImageStyle() {
-    return "url(" + this.userForm.controls["profilePic"].value + ")";
   }
 
   postData() {
@@ -185,7 +167,7 @@ export class ProfileEditPage {
         let imgData = {
           image: this.img,
           imageContentType: this.fileType
-        }
+        };
 
         this.userProvider.changeProfilePicture(imgData).subscribe(res => {});
       }

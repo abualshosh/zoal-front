@@ -7,32 +7,14 @@
 <ion-content>
   <div class="con">
     <form [formGroup]="userForm" (ngSubmit)="postData()">
-      <input
-        type="file"
-        #fileInput
-        style="visibility: hidden; height: 0px"
-        formControlName="file"
-        name="file"
-        (change)="processWebImage($event)"
-      />
-      <div class="profile-image-wrapper" (click)="presentActionSheet()">
-        <div
-          class="profile-image-placeholder"
-          *ngIf="!this.userForm.controls.profilePic.value"
-        >
+      <div class="profile-image-wrapper" (click)="selectImage()">
+        <div class="profile-image-placeholder" *ngIf="!imagePath">
           <ion-icon name="add"></ion-icon>
           <div>{{ "ChoseImage" | translate }}</div>
         </div>
 
-        <div
-          class="profile-image"
-          [style.backgroundImage]="getProfileImageStyle()"
-          *ngIf="this.userForm.controls.profilePic.value"
-        >
-          <img-loader
-            class="profile-image"
-            [src]="this.userForm.controls.profilePic.value"
-          ></img-loader>
+        <div class="profile-image" *ngIf="imagePath">
+          <img class="profile-image" [src]="imagePath" />
         </div>
       </div>
       <ion-list>

@@ -150,6 +150,7 @@ export class GenerateIpinPage {
             if (res != null && res.responseCode == 100) {
               this.isComplete = false;
               this.submitAttempt = false;
+              this.alertProvider.hideLoading();
               this.alertProvider.showToast("ipinGenerationSuccess");
             } else {
               this.alertProvider.hideLoading();

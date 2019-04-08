@@ -78,19 +78,19 @@ $loading-md-box-shadow: none;
 @import "noto-sans";
 
 @font-face {
-  font-family: "Lemonada";
-  src: url("../assets/fonts/Lemonada-Regular.ttf") format("truetype");
+  font-family: "Tajawal";
+  src: url("../assets/fonts/Tajawal-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
-$font-family-md-base: "Lemonada";
-$font-family-ios-base: "Lemonada";
+$font-family-md-base: "Tajawal";
+$font-family-ios-base: "Tajawal";
 
-// $font-size-base: 1em;
+$font-size-base: 1.8em;
 
-$tabs-ios-tab-font-size: 0.7em;
-$tabs-md-tab-font-size: 0.7em;
+// $tabs-ios-tab-font-size: 0.7em;
+// $tabs-md-tab-font-size: 0.7em;
 
-$toolbar-ios-title-font-size: 1.1em;
-$toolbar-md-title-font-size: 1.1em;
+// $toolbar-ios-title-font-size: 1.1em;
+// $toolbar-md-title-font-size: 1.1em;

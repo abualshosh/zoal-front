@@ -1,6 +1,6 @@
 <ion-header color="secondary">
   <ion-navbar color="secondary">
-    <ion-title>{{ post.profile.fullName }}</ion-title>
+    <ion-title>{{ "postDetail" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -9,57 +9,67 @@
     *ngIf="post.haveImage"
     class="item-profile"
     text-center
-    #profilePic
     [style.background-image]="
-      'url(' + this.api.url + '/postimage/' + post.id + ' )'
+      'url(' + this.api.url + '/post-images/' + post.id + ' )'
     "
   ></div>
 
   <ion-item no-lines>
-    <ion-avatar item-start (click)="openOtherProfile('ProfilePage', post)">
-      <img [src]="this.api.url + '/profileimage/' + post.profile.userName" />
+    <ion-avatar item-start (click)="openProfile(post.profile)">
+      <img-loader
+        fallbackAsPlaceholde="true"
+        fallback="assets/img/userPlaceholder.png"
+        [src]="this.api.url + '/profile-images/' + post.profile.id"
+        useImg
+      >
+      </img-loader>
     </ion-avatar>
-    <h2 class="sticky">{{ post.profile.fullName }}</h2>
-    <p>{{ post.postDate | date: "dd/MM/yyyy hh:mm" }}</p>
+    <h2>{{ post.profile.firstName }} {{ post.profile.lastName }}</h2>
+    <p>{{ post.date | date: "dd/MM/yyyy hh:mm" }}</p>
     <div>
       <button ion-button clear small icon-left (click)="like(post)">
         <ion-icon name="thumbs-up"></ion-icon>
-        {{ post.posttolikes.length }}
+        {{ likes?.length }}
       </button>
       <button ion-button clear small icon-left>
         <ion-icon name="text"></ion-icon>
-        {{ post.posttocomments.length }}
+        {{ comments?.length }}
       </button>
     </div>
   </ion-item>
 
   <hr />
   <ion-item no-lines padding>
-    <h2 text-wrap>{{ post.postTxt }}</h2>
+    <h2 text-wrap>{{ post.content }}</h2>
   </ion-item>
   <hr />
 
   <ion-list>
-    <ion-item *ngFor="let comments of post.posttocomments">
-      <ion-avatar item-start (click)="openOtherProfile('ProfilePage', post)">
-        <img
-          [src]="this.api.url + '/profileimage/' + comments.profile.userName"
-        />
+    <ion-item *ngFor="let comment of comments">
+      <ion-avatar item-start (click)="openProfile(comment.profile)">
+        <img-loader
+          fallbackAsPlaceholde="true"
+          fallback="assets/img/userPlaceholder.png"
+          [src]="this.api.url + '/profile-images/' + comment.profile.id"
+          useImg
+        >
+        </img-loader>
       </ion-avatar>
-      <h6 class="sticky">{{ comments.profile.fullName }}</h6>
-      <ion-note class="comment-date" item-end>
-        {{ comments.commentDate | date: "dd/MM/yyyy hh:mm" }}
+      <p>{{ comment.profile.firstName }} {{ comment.profile.lastName }}</p>
+      <p text-wrap class="comment-text">{{ comment.content }}</p>
+      <ion-note item-end>
+        {{ comment.date | relativeTime }}
       </ion-note>
-      <p class="comment-text">{{ comments.commentTxt }}</p>
     </ion-item>
   </ion-list>
 </ion-content>
 
 <ion-footer>
   <form [formGroup]="messageForm" (submit)="send()" novalidate>
-    <ion-item>
+    <ion-item dir="ltr">
       <ion-input
         required
+        text-center
         formControlName="message"
         placeholder="{{ 'addComment' | translate }}"
       ></ion-input>

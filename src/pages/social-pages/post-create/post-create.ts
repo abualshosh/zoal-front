@@ -8,7 +8,6 @@ import {
   ViewController,
   NavParams
 } from "ionic-angular";
-import { HttpClient } from "@angular/common/http";
 import { File, FileEntry } from "@ionic-native/file";
 import { Api } from "../../../providers/providers";
 import { User } from "../../../providers/providers";
@@ -24,16 +23,13 @@ export class PostCreatePage {
   @ViewChild("fileInput") fileInput;
 
   isReadyToSave: boolean;
-
-  item: any;
   img: any;
   form: FormGroup;
-  type: any;
-  username: any;
-
   choseImage: string;
   cameraTitle: string;
   gallery: string;
+  imagePath: any;
+  fileType: string;
 
   constructor(
     public user: User,
@@ -41,7 +37,6 @@ export class PostCreatePage {
     public api: Api,
     public actionSheetCtrl: ActionSheetController,
     private file: File,
-    private http: HttpClient,
     public translateService: TranslateService,
     public navCtrl: NavController,
     public alertProvider: AlertProvider,
@@ -58,13 +53,11 @@ export class PostCreatePage {
       });
 
     this.form = formBuilder.group({
-      profilePic: [""],
-      name: ["", Validators.required],
+      image: [""],
+      content: ["", Validators.required],
       about: [""],
       file: [""]
     });
-
-    this.username = this.navParams.get("username");
 
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
@@ -78,25 +71,20 @@ export class PostCreatePage {
       this.myInput.nativeElement.scrollHeight + "px";
   }
 
-  ionViewDidLoad() {}
-
-  presentActionSheet() {
+  selectImage() {
     let actionSheet = this.actionSheetCtrl.create({
       title: this.choseImage,
       buttons: [
         {
           text: this.cameraTitle,
-
           handler: () => {
-            this.type = 1;
-            this.getPicture();
+            this.getPicture(1);
           }
         },
         {
           text: this.gallery,
           handler: () => {
-            this.type = 0;
-            this.getPicture();
+            this.getPicture(0);
           }
         }
       ]
@@ -105,32 +93,37 @@ export class PostCreatePage {
     actionSheet.present();
   }
 
-  getPicture() {
-    if (Camera["installed"]()) {
-      this.camera
-        .getPicture({
-          destinationType: this.camera.DestinationType.FILE_URI,
-          sourceType: this.type
-        })
-        .then(
-          data => {
-            this.form.patchValue({ profilePic: data });
-            this.uploadPhoto(data);
-          },
-          err => {
-            alert("Unable to take photo");
-          }
-        );
-    } else {
-      this.fileInput.nativeElement.click();
-    }
+  getPicture(type: number) {
+    this.camera
+      .getPicture({
+        destinationType: this.camera.DestinationType.FILE_URI,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: type
+      })
+      .then(
+        imagePath => {
+          this.imagePath = imagePath;
+          alert(this.imagePath);
+          this.loadPhoto(imagePath);
+        },
+        err => {
+          alert("Unable to take photo");
+        }
+      );
   }
 
-  private uploadPhoto(imageFileUri: any): void {
-    this.file
-      .resolveLocalFilesystemUrl(imageFileUri)
-      .then(entry => (<FileEntry>entry).file(file => this.readFile(file)))
-      .catch(err => console.log(err));
+  private loadPhoto(imageFileUri: any): void {
+    this.file.resolveLocalFilesystemUrl(imageFileUri).then(
+      entry => {
+        (<FileEntry>entry).file(file => {
+          this.fileType = file.type;
+          this.readFile(file);
+        });
+      },
+      err => {
+        this.alertProvider.showAlert("failedToLoadImage");
+      }
+    );
   }
 
   private readFile(file: any) {
@@ -142,60 +135,46 @@ export class PostCreatePage {
     reader.readAsArrayBuffer(file);
   }
 
-  processWebImage(event) {
-    let reader = new FileReader();
-    reader.onload = readerEvent => {
-      let imageData = (readerEvent.target as any).result;
-
-      this.form.patchValue({ profilePic: imageData });
-    };
-    reader.readAsDataURL(event.target.file);
-  }
-
-  getProfileImageStyle() {
-    return "url(" + this.form.controls["profilePic"].value + ")";
-  }
-
   done() {
-    this.postData(this.img);
+    this.postData();
     if (!this.form.valid) {
       return;
     }
   }
 
-  postData(Data: any) {
-    const formData = new FormData();
-
+  postData() {
     this.alertProvider.showLoading();
 
-    formData.append(
-      "posts",
-      new Blob(
-        [
-          JSON.stringify({
-            postTxt: this.form.controls["name"].value
-          })
-        ],
-        {
-          type: "application/json"
-        }
-      )
-    );
+    let post = {
+      content: this.form.controls["content"].value,
+      date: new Date()
+    };
 
-    if (Data) {
-      formData.append("image", Data);
-    } else {
-      formData.append("image", new Blob([], { type: "NO" }));
-    }
-
-    this.api.post("posts", formData).subscribe(
+    this.api.post("posts", post).subscribe(
       resp => {
+        if (this.img) {
+          let imgData = [
+            {
+              image: this.img,
+              imageContentType: this.fileType,
+              post: post
+            }
+          ];
+          this.api.post("post-images", imgData).subscribe(
+            res => {},
+            err => {
+              this.alertProvider.hideLoading();
+              this.alertProvider.showToast("failedToPostImage");
+            }
+          );
+        }
+
         this.alertProvider.hideLoading();
         this.navCtrl.pop();
       },
       err => {
         this.alertProvider.hideLoading();
-        this.alertProvider.showAlert(err);
+        this.alertProvider.showToast("failedToPost");
       }
     );
   }

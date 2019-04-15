@@ -3,8 +3,7 @@ import {
   IonicPage,
   NavController,
   MenuController,
-  Platform,
-  LoadingController
+  Platform
 } from "ionic-angular";
 import { SQLite } from "@ionic-native/sqlite";
 import { TranslateService } from "@ngx-translate/core";
@@ -27,7 +26,6 @@ export class WelcomePage {
     public navCtrl: NavController,
     public menuCtrl: MenuController,
     public platform: Platform,
-    public loadingCtrl: LoadingController,
     private domSanitizer: DomSanitizer,
     public serviceProvider: GetServicesProvider,
     public storage: Storage

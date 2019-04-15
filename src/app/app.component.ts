@@ -205,7 +205,6 @@ export class MyApp {
 
   logOut() {
     localStorage.clear();
-    this.storage.clear();
     this.menuCtrl.close("sideMenu");
     this.app.getRootNav().setRoot("WelcomePage");
   }

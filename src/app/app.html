@@ -4,14 +4,13 @@
       <ion-avatar class="avatar" (click)="openProfile()">
         <img-loader
           fallbackAsPlaceholde="true"
-          fallback="assets/img/userPlaceholder.png"
-          [src]="this.api.url + '/profileimage/' + profile?.userName"
+          [src]="this.api.url + '/profile-images/' + profile?.id"
           useImg
         >
         </img-loader>
       </ion-avatar>
-      <h5>{{ profile?.fullName }}</h5>
-      <h6 dir="ltr">+249 {{ profile?.userName }}</h6>
+      <h5>{{ profile?.firstName }} {{ profile?.lastName }}</h5>
+      <h6 dir="ltr">+249 {{ profile?.login }}</h6>
       <ion-item no-lines text-center>
         <button
           class="lang-button"

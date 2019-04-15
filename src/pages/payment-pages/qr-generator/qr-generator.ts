@@ -8,7 +8,7 @@ import {
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { StorageProvider, Item } from "../../../providers/storage/storage";
-import { PhotoViewer } from "@ionic-native/photo-viewer";
+import { SocialSharing } from "@ionic-native/social-sharing";
 
 @IonicPage()
 @Component({
@@ -29,7 +29,7 @@ export class QrGeneratorPage {
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public storageProvider: StorageProvider,
-    private photoViewer: PhotoViewer,
+    private socialSharing: SocialSharing,
     public navParams: NavParams
   ) {
     this.todo = this.formBuilder.group({
@@ -70,13 +70,14 @@ export class QrGeneratorPage {
     }
   }
 
-  showQrCode(): void {
+  share() {
     const canvas = document.querySelector("canvas") as HTMLCanvasElement;
     const imageData = canvas.toDataURL("image/jpeg").toString();
-    this.viewImage(imageData);
-  }
-
-  viewImage(img: any) {
-    this.photoViewer.show(img, "", { share: true });
+    this.socialSharing.share(null, null, imageData).then(
+      () => {},
+      () => {
+        alert("SocialSharing failed");
+      }
+    );
   }
 }

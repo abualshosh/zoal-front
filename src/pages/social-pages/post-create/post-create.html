@@ -11,43 +11,28 @@
         <textarea
           #myInput
           id="myInput"
-          rows="3"
+          rows="5"
           maxLength="500"
           (keyup)="resize()"
-          formControlName="name"
+          formControlName="content"
         ></textarea>
       </ion-item>
-      <input
-        type="file"
-        #fileInput
-        style="visibility: hidden; height: 0px"
-        formControlName="file"
-        name="file"
-        (change)="processWebImage($event)"
-      />
       <div class="profile-image-wrapper">
         <div
           padding
           class="profile-image-placeholder"
-          *ngIf="!this.form.controls.profilePic.value"
+          *ngIf="!this.form.controls.image.value"
         >
-          <!-- <button ion-button icon-start color="secondary">
+          <button ion-button round color="primary" (click)="selectImage()">
             <ion-icon name="attach"></ion-icon>
-            {{ "addimage" | translate }}
-          </button> -->
-          <ion-fab end bottom>
-            <button ion-fab color="primary" (click)="presentActionSheet()">
-              <ion-icon name="attach"></ion-icon>
-            </button>
-          </ion-fab>
+          </button>
         </div>
         <div
           class="profile-image"
-          [style.backgroundImage]="getProfileImageStyle()"
-          *ngIf="this.form.controls.profilePic.value"
+          *ngIf="this.form.controls.image.value"
         >
           <img-loader
-            [src]="this.form.controls.profilePic.value"
+            [src]="this.form.controls.image.value"
             width="100%"
             height="120px"
           ></img-loader>
@@ -56,10 +41,11 @@
       <div padding>
         <button
           ion-button
+          class="subbutn"
           color="primary"
           (click)="done()"
           [disabled]="!isReadyToSave"
-          block
+          round
         >
           {{ "Submit" | translate }}
         </button>

@@ -25,6 +25,11 @@ export class MyApp {
       params: { type: "favorites" }
     },
     {
+      title: "transactionHistoryPage",
+      component: "TransactionHistoryPage",
+      icon: "clock"
+    },
+    {
       title: "aboutUsPage",
       component: "AboutUsPage",
       icon: "custom-about"
@@ -54,11 +59,6 @@ export class MyApp {
       icon: "calculator"
     },
     {
-      title: "gmppLastTransactionsPage",
-      component: "GmppLastTransactionsPage",
-      icon: "clock"
-    },
-    {
       title: "gmppResendTanPage",
       component: "GmppResendTanPage",
       icon: "refresh"
@@ -86,11 +86,6 @@ export class MyApp {
       title: "getBalancePage",
       component: "GetBalancePage",
       icon: "calculator"
-    },
-    {
-      title: "transactionHistoryPage",
-      component: "TransactionHistoryPage",
-      icon: "clock"
     },
     {
       title: "changeIpinPage",

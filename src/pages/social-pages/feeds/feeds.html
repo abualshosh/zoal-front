@@ -4,80 +4,70 @@
     <ion-title>{{ "feeds" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content no-padding style="background-color: #f0f0f0;">
-  <h2 text-center *ngIf="posts.length == 0">{{ "noPosts" | translate }}</h2>
+<ion-content no-padding>
+  <p text-center *ngIf="posts.length == 0">{{ "noPosts" | translate }}</p>
   <ion-refresher (ionRefresh)="doRefresh($event)" color="primary">
     <ion-refresher-content color="primary"></ion-refresher-content>
   </ion-refresher>
   <div id="posts" *ngIf="posts.length >= 0">
-    <ion-card *ngFor="let post of posts" no-padding>
-      <ion-item class="itemDev">
-        <ion-avatar item-start (click)="openOtherProfile('ProfilePage', post)">
+    <ion-card class="post" *ngFor="let post of posts" no-padding>
+      <ion-item (click)="openProfile(post)">
+        <ion-avatar item-start>
           <img-loader
             fallbackAsPlaceholde="true"
             fallback="assets/img/userPlaceholder.png"
-            [src]="this.api.url + '/profileimage/' + post.profile.userName"
+            [src]="this.api.url + '/profile-images/' + post.profile.id"
             useImg
           >
           </img-loader>
         </ion-avatar>
-        <h2 class="sticky">{{ post.profile.fullName }}</h2>
-        <p>{{ post.postDate | date: "dd/MM/yyyy hh:mm" }}</p>
+        <h2>{{ post.profile.firstName }} {{ post.profile.lastName }}</h2>
+        <ion-note>{{ post.date | relativeTime }}</ion-note>
       </ion-item>
-      <ion-card-content (click)="openPost('PostDetailPage', post)">
-        <h2 text-wrap>{{ post.postTxt }}</h2>
+      <hr />
+      <ion-card-content (click)="openPost(post)">
+        <p>{{ post.content }}</p>
       </ion-card-content>
 
       <img-loader
-        *ngIf="post.haveImage"
-        [src]="this.api.url + '/postimage/' + post.id"
+        *ngIf="post.image"
+        [src]="this.api.url + '/post-images/' + post.id"
         (click)="viewImage(post)"
         useImg
       >
       </img-loader>
+      <hr />
       <ion-row>
-        <ion-col>
+        <ion-col text-center>
           <button
             ion-button
-            color="purple"
             clear
-            small
-            icon-left
             (click)="like(post)"
           >
             <ion-icon name="thumbs-up"></ion-icon>
-            {{ post.posttolikes.length }} {{ "Likes" | translate }}
           </button>
         </ion-col>
-        <ion-col>
+        <ion-col text-center>
           <button
             ion-button
-            color="purple"
             clear
-            small
-            icon-left
-            (click)="openPost('PostDetailPage', post)"
+            (click)="openPost(post)"
           >
             <ion-icon name="text"></ion-icon>
-            {{ post.posttocomments.length }} {{ "comments" | translate }}
           </button>
         </ion-col>
-        <ion-col align-self-center text-center> <p></p> </ion-col>
+        <!-- <ion-col align-self-center text-center> <p></p> </ion-col> -->
       </ion-row>
     </ion-card>
   </div>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="!this.last">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data..."
+      loadingText=""
     ></ion-infinite-scroll-content>
   </ion-infinite-scroll>
   <ion-fab end bottom>
-    <button
-      ion-fab
-      color="primary"
-      (click)="openOtherProfile('PostCreatePage', '')"
-    >
+    <button ion-fab color="primary" (click)="createPost()">
       <ion-icon name="create"></ion-icon>
     </button>
   </ion-fab>

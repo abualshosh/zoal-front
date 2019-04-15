@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Content } from "ionic-angular";
 import { Api } from "../../../providers/providers";
 import { FormControl, FormBuilder } from "@angular/forms";
 import { StorageProvider } from "../../../providers/storage/storage";
+import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -11,6 +12,8 @@ import { StorageProvider } from "../../../providers/storage/storage";
 })
 export class PostDetailPage {
   post: any;
+  likes: any;
+  comments: any;
   commentTxt: any;
   public messageForm: any;
   @ViewChild(Content) contents: Content;
@@ -20,6 +23,7 @@ export class PostDetailPage {
     public navCtrl: NavController,
     navParams: NavParams,
     public storageProvider: StorageProvider,
+    public alertProvider: AlertProvider,
     public api: Api
   ) {
     this.post = navParams.get("item");
@@ -28,6 +32,14 @@ export class PostDetailPage {
     });
 
     this.commentTxt = this.messageForm.controls["message"];
+
+    this.api.get("post-likes/" + this.post.id).subscribe(res => {
+      this.likes = res;
+    });
+
+    this.api.get("post-comments/" + this.post.id).subscribe(res => {
+      this.comments = res;
+    });
   }
 
   scrollToBottom() {
@@ -38,58 +50,48 @@ export class PostDetailPage {
     }, 500);
   }
 
-  openOtherProfile(page: any, post: any) {
-    this.navCtrl.push(page, { item: post.profile });
+  openProfile(profile: any) {
+    this.navCtrl.push("ProfilePage", { item: profile });
   }
 
   like(post: any) {
-    this.storageProvider.getProfile().subscribe(val => {
-      let profileData = val;
-
-      this.api
-        .post(
-          "likesDTO",
-          { profile: profileData.id, posts: post.id },
-          { observe: "response" }
-        )
-        .subscribe(
-          (res: any) => {
-            if (res.status === 201) {
-              post.posttolikes.push(res);
-            } else if (res.status === 202) {
-              post.posttolikes.pop(res);
-            }
-          },
-          err => {
-            console.error("ERROR", err);
-          }
-        );
-    });
+    let request = {
+      profileId: localStorage.getItem("profileId"),
+      postId: post.id
+    };
+    this.api.post("post-likes", request).subscribe(
+      (res: any) => {
+        if (res) {
+          this.likes.push(res);
+        } else {
+          this.likes.pop();
+        }
+      },
+      err => {
+        this.alertProvider.showToast("failedToLike");
+      }
+    );
   }
 
   send() {
     if (this.commentTxt.value) {
-      this.storageProvider.getProfile().subscribe(val => {
-        let profileData = val;
-
-        this.api
-          .post("comments", {
-            profile: profileData.id,
-            posttocomment: this.post.id,
-            commentTxt: this.commentTxt.value
-          })
-          .subscribe(
-            (res: any) => {
-              this.post.posttocomments.push(res);
-              this.scrollToBottom();
-              this.commentTxt.reset();
-            },
-            err => {
-              console.error("ERROR", err);
-              this.commentTxt.reset();
-            }
-          );
-      });
+      this.api
+        .post("post-comments", {
+          profile: { id: localStorage.getItem("profileId") },
+          post: { id: this.post.id },
+          content: this.commentTxt.value
+        })
+        .subscribe(
+          (res: any) => {
+            this.comments.push(res);
+            this.scrollToBottom();
+            this.commentTxt.reset();
+          },
+          err => {
+            console.error("ERROR", err);
+            this.commentTxt.reset();
+          }
+        );
     }
   }
 }

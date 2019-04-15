@@ -31,40 +31,31 @@ export class FeedsPage {
     public alertProvider: AlertProvider,
     public events: Events,
     public api: Api
-  ) {
-    this.alertProvider.showLoading();
+  ) {}
 
-    this.api.get("Fposts", "?page=0&size=5", null).subscribe(
+  ionViewWillEnter() {
+    this.loadPosts();
+    this.events.subscribe("profile:updated", () => {
+      this.loadPosts();
+    });
+  }
+
+  loadPosts() {
+    this.api.get("contacts-posts", "?page=0&size=5", null).subscribe(
       (res: any) => {
         if (res) {
           this.last = res.last;
           this.posts = res.content;
-          this.alertProvider.hideLoading();
         }
       },
       err => {
-        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       }
     );
-
-    events.subscribe("profile:updated", () => {
-      this.api.get("Fposts", "?page=0&size=5", null).subscribe(
-        (res: any) => {
-          if (res) {
-            this.last = res.last;
-            this.posts = res.content;
-          }
-        },
-        err => {
-          this.alertProvider.showAlert(err);
-        }
-      );
-    });
   }
 
   doRefresh(refresher) {
-    this.api.get("Fposts", "?page=0&size=5", null).subscribe(
+    this.api.get("contacts-posts", "?page=0&size=5", null).subscribe(
       (res: any) => {
         if (res) {
           this.last = res.last;
@@ -83,61 +74,59 @@ export class FeedsPage {
   }
 
   like(post: any) {
-    this.storageProvider.getProfile().subscribe(val => {
-      let profileData = val;
-
-      this.api
-        .post(
-          "likesDTO",
-          { profile: profileData.id, posts: post.id },
-          { observe: "response" }
-        )
-        .subscribe(
-          (res: any) => {
-            if (res.status === 201) {
-              post.posttolikes.push(res);
-            } else if (res.status === 202) {
-              post.posttolikes.pop(res);
-            }
-          },
-          err => {
-            this.alertProvider.showToast("failedToLike");
-          }
-        );
-    });
+    let request = {
+      profileId: localStorage.getItem("profileId"),
+      postId: post.id
+    };
+    this.api.post("post-likes", request).subscribe(
+      (res: any) => {
+        if (res) {
+          post.likes.push(res);
+        } else {
+          post.likes.pop(res);
+        }
+      },
+      err => {
+        this.alertProvider.showToast("failedToLike");
+      }
+    );
   }
 
-  openOtherProfile(page: any, post: any) {
-    this.navCtrl.push(page, { item: post.profile });
+  openProfile(post: any) {
+    this.navCtrl.push("ProfilePage", { item: post.profile });
   }
 
-  openPost(page: any, post: any) {
-    this.navCtrl.push(page, { item: post });
+  openPost(post: any) {
+    this.navCtrl.push("PostDetailPage", { item: post });
+  }
+
+  createPost() {
+    this.navCtrl.push("PostCreatePage");
   }
 
   viewImage(post: any) {
     this.photoViewer.show(
       this.api.url + "/postimage/" + post.id,
-      post.postTxt,
+      post.content,
       { share: true }
     );
   }
 
   doInfinite(infiniteScroll) {
     this.page = this.page + 1;
-    this.api.get("Fposts", "?page=" + this.page + "&size=5", null).subscribe(
-      (res: any) => {
-        if (res) {
-          this.last = res.last;
-          for (let i = 0; i < res.content.length; i++) {
-            this.posts.push(res.content[i]);
+    this.api
+      .get("contacts-posts", "?page=" + this.page + "&size=5", null)
+      .subscribe(
+        (res: any) => {
+          if (res) {
+            this.last = res.last;
+            for (let i = 0; i < res.content.length; i++) {
+              this.posts.push(res.content[i]);
+            }
+            infiniteScroll.complete();
           }
-          infiniteScroll.complete();
-        }
-      },
-      err => {}
-    );
+        },
+        err => {}
+      );
   }
-
-  ionViewDidLoad() {}
 }

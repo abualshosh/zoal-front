@@ -34,8 +34,11 @@
     <ion-item *ngIf="walletQr">
       <ngx-qrcode qrc-element-type="canvas" [qrc-value]="walletQr"></ngx-qrcode>
     </ion-item>
-    <button ion-button full (click)="showQrCode()">
-      {{ "viewQrCode" | translate }}
-    </button>
   </ion-card>
+
+  <ion-fab end bottom>
+    <button ion-fab color="primary" (click)="share()">
+      <ion-icon name="share"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

@@ -18,6 +18,8 @@ export class TransactionDetailPage {
   public items: any[] = [];
   public main: any[] = [];
   msg: string = "";
+  isHistory: any;
+  isSuccess: any;
 
   constructor(
     public viewCtrl: ViewController,
@@ -29,6 +31,9 @@ export class TransactionDetailPage {
   ) {
     this.items = this.navParams.get("data");
     this.main = this.navParams.get("main");
+
+    this.isHistory = this.navParams.get("isHistory");
+    this.isSuccess = this.navParams.get("isSuccess");
 
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].tranCurrency) {

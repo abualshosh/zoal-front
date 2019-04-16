@@ -24,9 +24,11 @@ const WALLETS_KEY = "wallets";
 
 const CARDS_KEY = "cards";
 
-const FAVORITES_KEY = "favorites"
+const FAVORITES_KEY = "favorites";
 
 const PROFILE_KEY = "profile";
+
+const TRANSACTIONS_KEY = "profile";
 
 @Injectable()
 export class StorageProvider {
@@ -38,6 +40,14 @@ export class StorageProvider {
 
   getProfile(): Observable<any> {
     return Observable.fromPromise(this.storage.get(PROFILE_KEY));
+  }
+
+  setTransactions(transactions): Promise<any> {
+    return this.storage.set(TRANSACTIONS_KEY, transactions);
+  }
+
+  getTransactions(): Observable<any> {
+    return Observable.fromPromise(this.storage.get(TRANSACTIONS_KEY));
   }
 
   getWallets(): Promise<Item[]> {

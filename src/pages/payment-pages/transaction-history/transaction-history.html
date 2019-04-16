@@ -9,22 +9,28 @@
     <ion-refresher-content color="primary"></ion-refresher-content>
   </ion-refresher>
   <ion-list>
-    <button ion-item *ngFor="let hist of history" (click)="itemSelected(hist)">
-      {{ hist.transactionType | translate }}
+    <button
+      ion-item
+      *ngFor="let tran of transactions"
+      (click)="openTransaction(tran)"
+    >
+      {{ tran.type | translate }}
+      <p>{{ tran.tranAmount }}</p>
+      <p>{{ tran.responseMessage }}</p>
       <ion-note>
-        <h6>{{ hist.transactionDate | translate }}</h6>
+        <h6>{{ tran.tranDateTime | ebsTranDateTime }}</h6>
       </ion-note>
       <ion-icon
         item-end
         name="checkmark-circle"
         color="green"
-        *ngIf="hist.status === 'Approved'"
+        *ngIf="tran.responseStatus === 'Approved'"
       ></ion-icon>
       <ion-icon
         item-end
-        name="remove-circle"
+        name="close-circle"
         color="danger"
-        *ngIf="hist.status !== 'Approved'"
+        *ngIf="tran.responseStatus !== 'Approved'"
       ></ion-icon>
     </button>
   </ion-list>

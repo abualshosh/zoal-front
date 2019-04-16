@@ -7,6 +7,9 @@ import {
   Content
 } from "ionic-angular";
 import { Api } from "../../../providers/providers";
+import { StorageProvider } from "../../../providers/storage/storage";
+import { AlertProvider } from "../../../providers/alert/alert";
+import * as moment from "moment";
 
 @IonicPage()
 @Component({
@@ -18,7 +21,7 @@ export class TransactionHistoryPage {
   showSearchbar: boolean = false;
   size: any;
   page: any = 0;
-  history = [];
+  transactions = [];
 
   @ViewChild("content") content: Content;
 
@@ -26,24 +29,32 @@ export class TransactionHistoryPage {
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
+    public storageProvider: StorageProvider,
+    public alertProvider: AlertProvider,
     public api: Api
   ) {
-    this.api.get("consumer/historiesmobile", "?page=0&size=15", null).subscribe(
+    this.api.get("profile-transactions", "?page=0&size=15", null).subscribe(
       (res: any) => {
         this.last = res.last;
-        this.history = res.content;
+        this.transactions = res.content;
+        this.storageProvider.setTransactions(res).then(res => {});
       },
       err => {
-        console.error("ERROR", err);
+        this.alertProvider.showToast("errorMessage");
+        this.storageProvider.getTransactions().subscribe(res => {
+          this.last = res.last;
+          this.transactions = res.content;
+        });
       }
     );
   }
 
   doRefresh(refresher) {
-    this.api.get("consumer/historiesmobile", "?page=0&size=15", null).subscribe(
+    this.api.get("profile-transactions", "?page=0&size=15", null).subscribe(
       (res: any) => {
         this.last = res.last;
-        this.history = res.content;
+        this.transactions = res.content;
+        this.storageProvider.setTransactions(res).then(res => {});
         refresher.complete();
       },
       err => {
@@ -53,100 +64,86 @@ export class TransactionHistoryPage {
     );
   }
 
-  itemSelected(transaction) {
-    var data = transaction.detailes;
-
-    data = JSON.parse(data.substr(data.indexOf("response    ") + 12));
-    var datas;
-    if (data.balance) {
-      datas = {
-        destinationIdentifier: data.destinationIdentifier,
-        toCard: data.toCard,
-        tan: data.tan,
-        fee: data.fee,
-        transactionAmount: data.transactionAmount,
-        totalAmount: data.totalAmount,
-        acqTranFee: data.acqTranFee,
-        issuerTranFee: data.issuerTranFee,
-        tranAmount: data.tranAmount,
-        tranCurrency: data.tranCurrency,
-        transactionId: data.transactionId,
-        date: transaction.transactionDate
-      };
+  openTransaction(transaction) {
+    let isSuccess;
+    if (transaction.responseStatus === "Approved") {
+      isSuccess = true;
     } else {
-      datas = {
-        destinationIdentifier: data.destinationIdentifier,
-        toCard: data.toCard,
-        tan: data.tan,
-        fee: data.fee,
-        transactionAmount: data.transactionAmount,
-        totalAmount: data.totalAmount,
-        acqTranFee: data.acqTranFee,
-        issuerTranFee: data.issuerTranFee,
-        tranAmount: data.tranAmount,
-        tranCurrency: data.tranCurrency,
-        transactionId: data.transactionId,
-        date: transaction.transactionDate
-      };
+      isSuccess = false;
     }
 
-    var dat = [];
-    if (data.PAN) {
-      dat.push({ Card: data.PAN });
-    } else {
-      data.entityId
-        ? dat.push({ WalletNumber: data.entityId })
-        : dat.push({ WalletNumber: data.consumerIdentifier });
-    }
+    let response;
+    if (transaction.ebsResponse) {
+      response = JSON.parse(transaction.ebsResponse);
 
-    if (data.billInfo) {
-      if (Object.keys(data.billInfo).length > 0) {
-        if (data.billInfo.accountNo) {
-          data.billInfo.accountNo = null;
-        }
-        if (data.billInfo.opertorMessage) {
-          data.billInfo.opertorMessage = null;
-        }
+      let data = [];
 
-        dat.push(data.billInfo);
+      let mainData = {
+        transactionType: transaction.type
+      };
+
+      let bodyData = {
+        Card: response.PAN,
+        WalletNumber: response.entityId
+          ? response.entityId
+          : response.consumerIdentifier,
+        tranAmount: response.tranAmount,
+        balance: response.balance ? response.balance.available : null,
+        tranCurrency: response.tranCurrency,
+
+        date: moment(response.tranDateTime, "DDMMyyHhmmss").format(
+          "DD/MM/YYYY  hh:mm:ss"
+        ),
+
+        toCard: response.toCard,
+        serviceInfo: response.serviceInfo,
+        acqTranFee: response.acqTranFee,
+        issuerTranFee: response.issuerTranFee,
+        voucherCode: response.voucherCode,
+
+        destinationIdentifier: response.destinationIdentifier,
+        availableBalance: response.availableBalance,
+        reservedBalance: response.reservedBalance,
+        tan: response.tan,
+        fee: response.fee,
+        externalFee: response.externalFee,
+        transactionAmount: response.transactionAmount,
+        totalAmount: response.totalAmount,
+        transactionId: response.transactionId
+      };
+
+      data.push(bodyData);
+
+      if (response.billInfo) {
+        if (Object.keys(response.billInfo).length > 0) {
+          data.push(response.billInfo);
+        }
       }
+
+      let modal = this.modalCtrl.create(
+        "TransactionDetailPage",
+        {
+          data: data,
+          main: [mainData],
+          isHistory: true,
+          isSuccess: isSuccess
+        },
+        { cssClass: "inset-modal" }
+      );
+      modal.present();
+    } else {
     }
-
-    var voucher = {
-      //   "voucherNumber":data.voucherNumber
-      //  ,
-      voucherCode: data.voucherCode
-    };
-    var main = [];
-    var mainData = {};
-
-    mainData[transaction.transactionType] = data.totalAmount
-      ? data.totalAmount
-      : data.tranAmount;
-    if (!mainData[transaction.transactionType]) {
-      mainData[transaction.transactionType] = data.transactionAmount;
-    }
-    main.push(mainData);
-    dat.push(voucher);
-    dat.push(datas);
-
-    let modal = this.modalCtrl.create(
-      "TransactionDetailPage",
-      { data: dat, main: main },
-      { cssClass: "inset-modal" }
-    );
-    modal.present();
   }
 
   doInfinite(infiniteScroll) {
     this.page = this.page + 1;
     this.api
-      .get("consumer/historiesmobile", "?page=" + this.page + "&size=15", null)
+      .get("profile-transactions", "?page=" + this.page + "&size=15", null)
       .subscribe(
         (res: any) => {
           this.last = res.last;
           for (let i = 0; i < res.content.length; i++) {
-            this.history.push(res.content[i]);
+            this.transactions.push(res.content[i]);
           }
           infiniteScroll.complete();
         },

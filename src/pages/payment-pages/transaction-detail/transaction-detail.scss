@@ -11,8 +11,8 @@ page-transaction-detail {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    background-size: 28vh;
-    opacity: 0.5;
+    background-size: 20vh;
+    opacity: 0.2;
     height: 100%;
     width: 100%;
     position: absolute;
@@ -21,6 +21,19 @@ page-transaction-detail {
 
   .trans {
     background-color: transparent;
-    font-size: 0.9em;
+  }
+
+  .receipt-header {
+    margin: 5%;
+    padding: 2%;
+    text-align: center;
+    .tran-amount {
+      font-size: 2em;
+    }
+  }
+
+  .receipt-body {
+    margin: 5%;
+    padding: 2%;
   }
 }

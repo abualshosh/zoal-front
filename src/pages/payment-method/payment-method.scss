@@ -6,7 +6,7 @@ page-payment-method {
     justify-content: stretch;
     justify-items: stretch;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto auto;
     row-gap: 1em;
     background: white;
   }

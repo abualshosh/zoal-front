@@ -135,7 +135,7 @@ export class CustomsPage {
         dat.payeeId = "Custom Service";
       } else {
         endpoint = "consumer/getBill";
-        dat.payeeId = "0010030003";
+        dat.payeeId = "Custom Service";
       }
 
       this.GetServicesProvider.load(dat, endpoint).then(data => {

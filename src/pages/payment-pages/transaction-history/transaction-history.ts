@@ -64,9 +64,14 @@ export class TransactionHistoryPage {
     );
   }
 
+  parseTranType(type: string): string {
+    let result: string = type.replace(/Consumer: |Gmpp: |IPINGeneration: /, "");
+    return result.replace(/payment - |billInquiry - /, "");
+  }
+
   openTransaction(transaction) {
     let isSuccess;
-    if (transaction.responseStatus === "Approved") {
+    if (transaction.responseStatus === "Successful") {
       isSuccess = true;
     } else {
       isSuccess = false;
@@ -79,27 +84,26 @@ export class TransactionHistoryPage {
       let data = [];
 
       let mainData = {
-        transactionType: transaction.type
+        transactionType: this.parseTranType(transaction.type),
+        tranAmount: transaction.tranAmount ? transaction.tranAmount : null
       };
 
       let bodyData = {
-        Card: response.PAN,
-        WalletNumber: response.entityId
-          ? response.entityId
-          : response.consumerIdentifier,
-        tranAmount: response.tranAmount,
-        balance: response.balance ? response.balance.available : null,
-        tranCurrency: response.tranCurrency,
-
         date: moment(response.tranDateTime, "DDMMyyHhmmss").format(
           "DD/MM/YYYY  hh:mm:ss"
         ),
-
+        Card: response.PAN,
         toCard: response.toCard,
+        WalletNumber: response.entityId
+          ? response.entityId
+          : response.consumerIdentifier,
+        voucherCode: response.voucherCode,
+        balance: response.balance ? response.balance.available : null,
+
         serviceInfo: response.serviceInfo,
         acqTranFee: response.acqTranFee,
         issuerTranFee: response.issuerTranFee,
-        voucherCode: response.voucherCode,
+        dynamicFees: response.dynamicFees,
 
         destinationIdentifier: response.destinationIdentifier,
         availableBalance: response.availableBalance,
@@ -124,7 +128,7 @@ export class TransactionHistoryPage {
         "TransactionDetailPage",
         {
           data: data,
-          main: [mainData],
+          main: mainData,
           isHistory: true,
           isSuccess: isSuccess
         },

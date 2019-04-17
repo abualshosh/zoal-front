@@ -101,7 +101,7 @@ export class GenerateIpinPage {
       this.expDate = requestData.card.expDate;
 
       this.getServicesProvider
-        .load(requestData, "IpinGeneration/generateIpin")
+        .load(requestData, "ipinGeneration/generateIpin")
         .then(
           res => {
             if (res != null && res.responseCode == 100) {
@@ -144,7 +144,7 @@ export class GenerateIpinPage {
       );
 
       this.getServicesProvider
-        .load(requestData, "IpinGeneration/generateIpinCompletion")
+        .load(requestData, "ipinGeneration/generateIpinCompletion")
         .then(
           res => {
             if (res != null && res.responseCode == 100) {

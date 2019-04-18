@@ -33,11 +33,13 @@ export class TransactionHistoryPage {
     public alertProvider: AlertProvider,
     public api: Api
   ) {
+    this.alertProvider.showLoading();
     this.api.get("profile-transactions", "?page=0&size=15", null).subscribe(
       (res: any) => {
         this.last = res.last;
         this.transactions = res.content;
         this.storageProvider.setTransactions(res).then(res => {});
+        this.alertProvider.hideLoading();
       },
       err => {
         this.alertProvider.showToast("errorMessage");
@@ -45,6 +47,7 @@ export class TransactionHistoryPage {
           this.last = res.last;
           this.transactions = res.content;
         });
+        this.alertProvider.hideLoading();
       }
     );
   }

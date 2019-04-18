@@ -77,17 +77,17 @@ $loading-md-box-shadow: none;
 @import "roboto";
 @import "noto-sans";
 
-@font-face {
-  font-family: "Tajawal";
-  src: url("../assets/fonts/Tajawal-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
+// @font-face {
+//   font-family: "Tajawal";
+//   src: url("../assets/fonts/Tajawal-Regular.ttf") format("truetype");
+//   font-weight: normal;
+//   font-style: normal;
+// }
 
-$font-family-md-base: "Tajawal";
-$font-family-ios-base: "Tajawal";
+// $font-family-md-base: "Tajawal";
+// $font-family-ios-base: "Tajawal";
 
-$font-size-base: 1.8em;
+// $font-size-base: 1.8em;
 
 // $tabs-ios-tab-font-size: 0.7em;
 // $tabs-md-tab-font-size: 0.7em;

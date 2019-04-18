@@ -7,17 +7,17 @@
 
 <ion-content>
   <ion-searchbar
-    (ionInput)="getItems($event)"
+    (ionInput)="searchContacts($event)"
     placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
   ></ion-searchbar>
   <ion-list>
-    <ion-item *ngFor="let item of connections">
-      <ion-avatar item-start (click)="openProfile(item)">
-        <img [src]="this.api.url + '/profileimage/' + item.userName" />
+    <ion-item *ngFor="let contact of contacts">
+      <ion-avatar item-start (click)="openProfile(contact)">
+        <img [src]="this.api.url + '/profile-images/' + contact.userName" />
       </ion-avatar>
-      <div (click)="openConversation(item)">
-        <h2>{{ item.fullName }}</h2>
-        <p>249-{{ item.userName }}</p>
+      <div (click)="openConversation(contact)">
+        <h2>{{ contact.fullName }}</h2>
+        <p>249-{{ contact.userName }}</p>
       </div>
     </ion-item>
   </ion-list>

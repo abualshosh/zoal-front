@@ -13,7 +13,7 @@ import { StorageProvider } from "../../../providers/storage/storage";
 export class ContactsPage {
   connections: any = [];
   username: any;
-  upcontacts: any = [];
+  contactsToUpload: any = [];
   profile: any;
 
   constructor(
@@ -26,7 +26,7 @@ export class ContactsPage {
     public navParams: NavParams
   ) {
     this.username = localStorage.getItem("username");
-    this.connections = JSON.parse(localStorage.getItem("connections"));
+    this.connections = localStorage.getItem("connections");
 
     this.storageProvider.getProfile().subscribe(val => {
       this.profile = val;
@@ -37,10 +37,10 @@ export class ContactsPage {
     this.uploadContacts();
   }
 
-  getItems(ev) {
+  searchContacts(ev) {
     let val = ev.target.value;
     if (!val || !val.trim()) {
-      this.connections = JSON.parse(localStorage.getItem("connections"));
+      this.connections = localStorage.getItem("connections");
       return;
     }
     if (this.connections) {
@@ -75,45 +75,37 @@ export class ContactsPage {
               .trim()
               .replace(/^(\+249|00249|249|0)/g, "");
             if (contacts[i].phoneNumbers[j].value) {
-              this.upcontacts.push({
-                login: contacts[i].phoneNumbers[j].value
+              this.contactsToUpload.push({
+                contactName: contacts[i].name,
+                phoneNumber: contacts[i].phoneNumbers[j].value
               });
             }
           }
         }
 
-        this.api.post("connections", this.upcontacts).subscribe(
+        this.api.post("profile-contacts", this.contactsToUpload).subscribe(
           (res: any) => {
             if (res) {
               this.connections = [];
-              for (let i = 0; i < res.length; i++) {
-                if (res[i].profileOne.userName != this.username) {
-                  this.connections.push(res[i].profileOne);
-                } else if (res[i].profileTow.userName != this.username) {
-                  this.connections.push(res[i].profileTow);
-                }
-              }
-              localStorage.setItem(
-                "connections",
-                JSON.stringify(this.connections)
-              );
+              this.connections = res;
+              localStorage.setItem("connections", this.connections);
+              this.contactsToUpload = [];
               this.alertProvider.hideLoading();
-              this.upcontacts = [];
             } else {
+              this.contactsToUpload = [];
               this.alertProvider.hideLoading();
-              this.upcontacts = [];
             }
           },
           err => {
+            this.contactsToUpload = [];
             this.alertProvider.hideLoading();
-            this.upcontacts = [];
             this.alertProvider.showAlert("failedToUploadContacts", true);
           }
         );
       },
       error => {
+        this.contactsToUpload = [];
         this.alertProvider.hideLoading();
-        this.upcontacts = [];
         this.alertProvider.showAlert("failedToReadContacts", true);
       }
     );

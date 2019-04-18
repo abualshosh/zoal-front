@@ -67,7 +67,11 @@ export class ProfileEditPage {
       ],
       lastName: [
         navParams.get("user") ? this.profile.lastName : null,
-        Validators.compose([Validators.minLength(3), Validators.maxLength(50)])
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50)
+        ])
       ],
       email: [
         navParams.get("user") ? this.profile.email : null,

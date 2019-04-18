@@ -4,6 +4,7 @@ import { Contacts } from "@ionic-native/contacts";
 import { Api } from "../../../providers/providers";
 import { AlertProvider } from "../../../providers/alert/alert";
 import { StorageProvider } from "../../../providers/storage/storage";
+import * as lodash from "lodash";
 
 @IonicPage()
 @Component({
@@ -12,9 +13,7 @@ import { StorageProvider } from "../../../providers/storage/storage";
 })
 export class ContactsPage {
   connections: any = [];
-  username: any;
   contactsToUpload: any = [];
-  profile: any;
 
   constructor(
     public api: Api,
@@ -24,69 +23,68 @@ export class ContactsPage {
     public storageProvider: StorageProvider,
     public events: Events,
     public navParams: NavParams
-  ) {
-    this.username = localStorage.getItem("username");
-    this.connections = localStorage.getItem("connections");
-
-    this.storageProvider.getProfile().subscribe(val => {
-      this.profile = val;
-    });
-  }
+  ) {}
 
   ionViewDidLoad() {
-    this.uploadContacts();
+    this.loadContacts();
   }
 
-  searchContacts(ev) {
-    let val = ev.target.value;
-    if (!val || !val.trim()) {
-      this.connections = localStorage.getItem("connections");
-      return;
-    }
-    if (this.connections) {
-      this.connections = this.connections.filter(v => {
-        if (v.fullName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
-          return true;
+  loadContacts() {
+    this.alertProvider.showLoading();
+    this.api
+      .get("profile-contacts/" + localStorage.getItem("profileId"))
+      .subscribe(
+        (res: any) => {
+          if (res) {
+            this.connections = res;
+            localStorage.setItem("connections", this.connections);
+            this.alertProvider.hideLoading();
+          } else {
+            this.alertProvider.hideLoading();
+          }
+        },
+        err => {
+          this.alertProvider.hideLoading();
+          this.alertProvider.showToast("errorMessage");
         }
-
-        return false;
-      });
-    }
+      );
   }
 
   uploadContacts() {
     this.alertProvider.showLoading();
 
-    var opts = {
+    const opts = {
       multiple: true,
       hasPhoneNumber: true
     };
 
     this.contacts.find(["*"], opts).then(
       contacts => {
-        for (let i = 0; i < contacts.length; i++) {
-          for (let j = 0; j < contacts[i].phoneNumbers.length; j++) {
-            let cont = contacts[i].phoneNumbers[j].value;
-            contacts[i].phoneNumbers[j].value = cont
+        contacts.forEach(contact => {
+          contact.phoneNumbers.forEach(number => {
+            let cont = number.value
               .replace(/ /g, "")
               .replace(")", "")
               .replace("(", "")
-              .replace("-", "")
+              .replace(/-/g, "")
               .trim()
               .replace(/^(\+249|00249|249|0)/g, "");
-            if (contacts[i].phoneNumbers[j].value) {
+            if (cont) {
               this.contactsToUpload.push({
-                contactName: contacts[i].name,
-                phoneNumber: contacts[i].phoneNumbers[j].value
+                phoneNumber: cont
               });
             }
-          }
-        }
+          });
+        });
+
+        this.contactsToUpload = lodash.uniqWith(
+          this.contactsToUpload,
+          lodash.isEqual
+        );
 
         this.api.post("profile-contacts", this.contactsToUpload).subscribe(
           (res: any) => {
             if (res) {
-              this.connections = [];
               this.connections = res;
               localStorage.setItem("connections", this.connections);
               this.contactsToUpload = [];

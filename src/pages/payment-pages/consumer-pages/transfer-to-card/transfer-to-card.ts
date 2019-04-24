@@ -153,9 +153,7 @@ export class TransferToCardPage {
           datas = {
             Card: data.PAN,
             toCard: data.toCard,
-            acqTranFee: data.acqTranFee,
-            issuerTranFee: data.issuerTranFee,
-            tranAmount: data.tranAmount,
+            fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
             date: datetime
           };
 

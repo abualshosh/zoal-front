@@ -227,10 +227,7 @@ export class MobileCreditPage {
 
           datas = {
             PhoneNumber: dats.MPHONE,
-            acqTranFee: data.acqTranFee,
-            issuerTranFee: data.issuerTranFee,
-            tranAmount: data.tranAmount,
-            tranCurrency: data.tranCurrency,
+            fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
             date: datetime
           };
 

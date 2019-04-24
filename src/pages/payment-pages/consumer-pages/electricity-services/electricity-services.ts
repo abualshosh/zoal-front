@@ -190,10 +190,7 @@ export class ElectricityServicesPage {
             token = data.billInfo.token;
           }
           datas = {
-            acqTranFee: data.acqTranFee,
-            issuerTranFee: data.issuerTranFee,
-            tranAmount: data.tranAmount,
-            tranCurrency: data.tranCurrency,
+            fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
             date: datetime
           };
 
@@ -213,6 +210,7 @@ export class ElectricityServicesPage {
             data.billInfo.opertorMessage = null;
             data.billInfo.accountNo = null;
             data.billInfo.token = null;
+            data.billInfo.netAmount = null;
             dat.push(data.billInfo);
           }
           dat.push(datas);

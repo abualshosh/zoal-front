@@ -126,10 +126,7 @@ export class CardLessPage {
           );
           datas = {
             Card: data.PAN,
-            acqTranFee: data.acqTranFee,
-            issuerTranFee: data.issuerTranFee,
-            tranAmount: data.tranAmount,
-            tranCurrency: data.tranCurrency,
+            fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
             date: datetime
           };
 

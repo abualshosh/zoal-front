@@ -97,7 +97,6 @@ export class GetBalancePage {
           );
           datas = {
             Card: data.PAN,
-            balance: data.balance.available,
             date: datetime
           };
           dat.push(datas);

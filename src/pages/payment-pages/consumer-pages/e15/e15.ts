@@ -186,10 +186,7 @@ export class E15Page {
           var datas;
 
           datas = {
-            acqTranFee: data.acqTranFee,
-            issuerTranFee: data.issuerTranFee,
-            tranAmount: data.tranAmount,
-            tranCurrency: data.tranCurrency,
+            fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
             date: datetime
           };
 
@@ -206,6 +203,9 @@ export class E15Page {
           }
 
           if (Object.keys(data.billInfo).length > 0) {
+            data.billInfo.UnitName = null;
+            data.billInfo.ServiceName = null;
+            data.billInfo.TotalAmount = null;
             dat.push(data.billInfo);
           }
           dat.push(datas);

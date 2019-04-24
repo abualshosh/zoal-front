@@ -91,6 +91,11 @@ export class TransactionHistoryPage {
         tranAmount: transaction.tranAmount ? transaction.tranAmount : null
       };
 
+      let balance = null;
+      if (transaction.type == "Consumer: balanceInquiry") {
+        balance = response.balance.available;
+      }
+
       let bodyData = {
         date: moment(response.tranDateTime, "DDMMyyHhmmss").format(
           "DD/MM/YYYY  hh:mm:ss"
@@ -101,12 +106,12 @@ export class TransactionHistoryPage {
           ? response.entityId
           : response.consumerIdentifier,
         voucherCode: response.voucherCode,
-        balance: response.balance ? response.balance.available : null,
+
+        balance: balance,
 
         serviceInfo: response.serviceInfo,
-        acqTranFee: response.acqTranFee,
-        issuerTranFee: response.issuerTranFee,
-        dynamicFees: response.dynamicFees,
+        fees:
+          response.acqTranFee + response.issuerTranFee + response.dynamicFees,
 
         destinationIdentifier: response.destinationIdentifier,
         availableBalance: response.availableBalance,
@@ -123,6 +128,25 @@ export class TransactionHistoryPage {
 
       if (response.billInfo) {
         if (Object.keys(response.billInfo).length > 0) {
+          // Customs unneeded fields
+          response.billInfo.Status = null;
+          response.billInfo.ReceiptDate = null;
+          response.billInfo.ReceiptSerial = null;
+          response.billInfo.RegistrationSerial = null;
+          response.billInfo.RegistrationSerial = null;
+          response.billInfo.ProcStatus = null;
+          response.billInfo.ProcError = null;
+
+          //E15 unneeded fields
+          response.billInfo.UnitName = null;
+          response.billInfo.ServiceName = null;
+          response.billInfo.TotalAmount = null;
+
+          //NEC unneeded fields
+          response.billInfo.opertorMessage = null;
+          response.billInfo.accountNo = null;
+          response.billInfo.netAmount = null;
+
           data.push(response.billInfo);
         }
       }

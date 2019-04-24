@@ -151,10 +151,7 @@ export class CustomsPage {
               "DD/MM/YYYY  hh:mm:ss"
             );
             datas = {
-              acqTranFee: data.acqTranFee,
-              issuerTranFee: data.issuerTranFee,
-              tranAmount: data.tranAmount,
-              tranCurrency: data.tranCurrency,
+              fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
               date: datetime
             };
 
@@ -172,6 +169,13 @@ export class CustomsPage {
           dat.push({ Card: data.PAN });
 
           if (Object.keys(data.billInfo).length > 0) {
+            data.billInfo.Status = null;
+            data.billInfo.ReceiptDate = null;
+            data.billInfo.ReceiptSerial = null;
+            data.billInfo.RegistrationSerial = null;
+            data.billInfo.RegistrationSerial = null;
+            data.billInfo.ProcStatus = null;
+            data.billInfo.ProcError = null;
             dat.push(data.billInfo);
           }
 

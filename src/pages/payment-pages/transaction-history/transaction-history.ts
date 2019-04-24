@@ -69,7 +69,7 @@ export class TransactionHistoryPage {
 
   parseTranType(type: string): string {
     let result: string = type.replace(/Consumer: |Gmpp: |IPINGeneration: /, "");
-    return result.replace(/payment - |billInquiry - /, "");
+    return result.replace(/payment - |billInquiry - |specialPayment - /, "");
   }
 
   openTransaction(transaction) {

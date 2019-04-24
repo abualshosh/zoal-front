@@ -35,22 +35,18 @@
       </div>
       <ion-item>
         <ion-label stacked>{{ "MerchantId" | translate }}</ion-label>
-        <ion-input
-          type="number"
+        <ion-select
+          okText="{{ 'Submit' | translate }}"
+          cancelText="{{ 'close' | translate }}"
+          style="padding-left:5%;"
+          no-padding
           formControlName="MerchantId"
-          required
-        ></ion-input>
-        <button
-          class="show-fav-button"
-          color="secondary"
-          clear
-          item-end
-          ion-button
-          type="button"
-          (click)="showFavorites()"
+          interface="popover"
         >
-          <ion-icon name="heart"></ion-icon>
-        </button>
+          <ion-option *ngFor="let merchant of merchants" [value]="merchant">
+            {{ merchant.merchantName }}
+          </ion-option>
+        </ion-select>
       </ion-item>
 
       <div *ngIf="!todo.controls.Amount.valid && submitAttempt">

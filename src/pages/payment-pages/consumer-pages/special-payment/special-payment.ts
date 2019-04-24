@@ -12,6 +12,7 @@ import { GetServicesProvider } from "../../../../providers/get-services/get-serv
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
+import { Api } from "../../../../providers/api/api";
 
 @IonicPage()
 @Component({
@@ -29,24 +30,23 @@ export class SpecialPaymentPage {
   validCard: boolean = false;
   isGmpp: boolean;
   favorites: Item[];
+  merchants: any;
 
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProvider: GetServicesProvider,
+    public servicesProvider: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
+    public api: Api,
     public navParams: NavParams
   ) {
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],
-      MerchantId: [
-        "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
-      ],
+      MerchantId: ["", Validators.required],
       entityId: [""],
       mobilewallet: [""],
       IPIN: [
@@ -61,6 +61,9 @@ export class SpecialPaymentPage {
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
+    this.api.get("merchants").subscribe(res => {
+      this.merchants = res;
+    });
   }
 
   ionViewWillEnter() {
@@ -149,23 +152,26 @@ export class SpecialPaymentPage {
 
       dat = this.todo.value;
 
-      dat.uUID = uuid.v4();
-      dat.iPIN = this.GetServicesProvider.encrypt(dat.uUID + dat.IPIN);
-      dat.IPIN = "";
-      dat.amount = dat.Amount;
-      dat.id = dat.MerchantId;
+      dat.UUID = uuid.v4();
+      dat.IPIN = this.servicesProvider.encrypt(dat.UUID + dat.IPIN);
+      dat.tranAmount = dat.Amount;
+      dat.serviceProviderId = dat.MerchantId.serviceProviderId;
+      dat.serviceInfo = dat.MerchantId.merchantName;
+      dat.dynamicFees = dat.MerchantId.dynamicFees;
       if (dat.mobilewallet) {
-        dat.isMobilePayment = true;
-        dat.phoneNumber = this.wallets[0].walletNumber;
+        dat.entityType = "Mobile Wallet";
+        dat.entityId = this.wallets[0].walletNumber;
+        dat.authenticationType = "10";
         dat.pan = "";
       } else {
-        dat.isMobilePayment = false;
-        dat.cardNumber = dat.Card.cardNumber;
+        dat.pan = dat.Card.cardNumber;
         dat.expDate = dat.Card.expDate;
+        dat.authenticationType = "00";
+        dat.entityId = "";
       }
 
-      this.GetServicesProvider.load(dat, "specialPayment").then(data => {
-        if (data != null && data.responseCode == 0) {
+      this.servicesProvider.load(dat, "consumer/specialPayment").then(data => {
+        if (data != null && data.responseStatus === "Successful") {
           this.alertProvider.hideLoading();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
             "DD/MM/YYYY  hh:mm:ss"
@@ -174,17 +180,14 @@ export class SpecialPaymentPage {
           var datas;
 
           datas = {
-            acqTranFee: data.acqTranFee,
-            issuerTranFee: data.issuerTranFee,
-            tranAmount: data.tranAmount,
             serviceInfo: data.serviceInfo,
-            tranCurrency: data.tranCurrency,
+            fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
             date: datetime
           };
 
           var main = [];
           var mainData = {
-            specialPaymentServices: data.tranAmount
+            "": data.tranAmount
           };
           main.push(mainData);
           var dat = [];

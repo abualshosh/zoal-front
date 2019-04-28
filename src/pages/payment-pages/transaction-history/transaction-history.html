@@ -8,6 +8,20 @@
   <ion-refresher (ionRefresh)="doRefresh($event)" color="primary">
     <ion-refresher-content color="primary"></ion-refresher-content>
   </ion-refresher>
+  <ion-item>
+    <ion-label> {{ "filterByDate" | translate }}</ion-label>
+    <ion-datetime
+      type="Date"
+      displayFormat="YYYY MM DD"
+      pickerFormat="YYYY MM DD"
+      max="2050-12-31"
+      [(ngModel)]="dateFilter"
+      (ngModelChange)="filterByDate()"
+      doneText="{{ 'Submit' | translate }}"
+      cancelText="{{ 'close' | translate }}"
+      required
+    ></ion-datetime>
+  </ion-item>
   <ion-list>
     <button
       ion-item
@@ -36,10 +50,12 @@
       ></ion-icon>
     </button>
   </ion-list>
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="!this.last">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="..."
-    ></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <div *ngIf="!this.dateFilter">
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="!this.last">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="..."
+      ></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>

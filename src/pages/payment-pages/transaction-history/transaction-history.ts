@@ -24,6 +24,7 @@ export class TransactionHistoryPage {
   transactions = [];
 
   @ViewChild("content") content: Content;
+  dateFilter: any;
 
   constructor(
     public navCtrl: NavController,
@@ -58,13 +59,40 @@ export class TransactionHistoryPage {
         this.last = res.last;
         this.transactions = res.content;
         this.storageProvider.setTransactions(res).then(res => {});
+        this.dateFilter = null;
         refresher.complete();
       },
       err => {
         console.error("ERROR", err);
+        this.dateFilter = null;
         refresher.complete();
       }
     );
+  }
+
+  filterByDate() {
+    this.alertProvider.showLoading();
+    this.api.get("all-profile-transactions").subscribe(
+      (res: any) => {
+        this.filterTransactions(res);
+        this.alertProvider.hideLoading();
+      },
+      err => {
+        this.storageProvider.getTransactions().subscribe(res => {
+          this.filterTransactions(res.content);
+        });
+        this.alertProvider.hideLoading();
+        this.alertProvider.showToast("errorMessage");
+      }
+    );
+  }
+
+  filterTransactions(transactions) {
+    this.dateFilter = moment(this.dateFilter, "YYYY-MM-DD").format("DDMMYY");
+    this.transactions = transactions.filter(val => {
+      let tranDate = moment(val.tranDateTime, "DDMMyyHhmmss").format("DDMMYY");
+      return tranDate == this.dateFilter;
+    });
   }
 
   parseTranType(type: string): string {

@@ -8,13 +8,21 @@
   <div class="con">
     <form [formGroup]="userForm" (ngSubmit)="postData()">
       <div class="profile-image-wrapper" (click)="selectImage()">
-        <div class="profile-image-placeholder" *ngIf="!imagePath">
+        <div class="profile-image-placeholder" *ngIf="!profileImage?.image">
           <ion-icon name="add"></ion-icon>
           <div>{{ "ChoseImage" | translate }}</div>
         </div>
 
-        <div class="profile-image" *ngIf="imagePath">
-          <img class="profile-image" [src]="imagePath" />
+        <div class="profile-image" *ngIf="profileImage?.image">
+          <img
+            class="profile-image"
+            [src]="
+              'data:' +
+              profileImage.imageContentType +
+              ';base64,' +
+              profileImage.image
+            "
+          />
         </div>
       </div>
       <ion-list>

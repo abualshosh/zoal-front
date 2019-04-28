@@ -52,11 +52,15 @@ export class User {
     return seq;
   }
 
+  getProfile(id) {
+    return this.api.get("profiles/" + id);
+  }
+
   updateProfile(data: any) {
     return this.api.put("profiles", data);
   }
 
   changeProfilePicture(data) {
-    return this.api.post("profile-images", data);
+    return this.api.post("mobile-profile-images", data);
   }
 }

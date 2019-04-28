@@ -3,11 +3,9 @@
     <div text-center>
       <ion-avatar class="avatar" (click)="openProfile()">
         <img-loader
-          fallbackAsPlaceholde="true"
-          [src]="this.api.url + '/profile-images/' + profile?.id"
+          [src]="this.api.url + '/mobile-profile-images/' + profile?.id"
           useImg
-        >
-        </img-loader>
+        ></img-loader>
       </ion-avatar>
       <h5>{{ profile?.firstName }} {{ profile?.lastName }}</h5>
       <h6 dir="ltr">+249 {{ profile?.login }}</h6>

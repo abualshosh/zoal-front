@@ -14,12 +14,9 @@
       <ion-item (click)="openProfile(post)">
         <ion-avatar item-start>
           <img-loader
-            fallbackAsPlaceholde="true"
-            fallback="assets/img/userPlaceholder.png"
-            [src]="this.api.url + '/profile-images/' + post.profile.id"
+            [src]="this.api.url + '/mobile-profile-images/' + post.profile.id"
             useImg
-          >
-          </img-loader>
+          ></img-loader>
         </ion-avatar>
         <h2>{{ post.profile.firstName }} {{ post.profile.lastName }}</h2>
         <ion-note>{{ post.date | relativeTime }}</ion-note>
@@ -29,35 +26,7 @@
         <p>{{ post.content }}</p>
       </ion-card-content>
 
-      <img-loader
-        *ngIf="post.image"
-        [src]="this.api.url + '/post-images/' + post.id"
-        (click)="viewImage(post)"
-        useImg
-      >
-      </img-loader>
-      <hr />
-      <ion-row>
-        <ion-col text-center>
-          <button
-            ion-button
-            clear
-            (click)="like(post)"
-          >
-            <ion-icon name="thumbs-up"></ion-icon>
-          </button>
-        </ion-col>
-        <ion-col text-center>
-          <button
-            ion-button
-            clear
-            (click)="openPost(post)"
-          >
-            <ion-icon name="text"></ion-icon>
-          </button>
-        </ion-col>
-        <!-- <ion-col align-self-center text-center> <p></p> </ion-col> -->
-      </ion-row>
+      <img [src]="this.api.url + '/mobile-post-images/' + post.id" alt="" />
     </ion-card>
   </div>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="!this.last">

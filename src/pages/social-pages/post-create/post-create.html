@@ -17,27 +17,41 @@
           formControlName="content"
         ></textarea>
       </ion-item>
-      <div class="profile-image-wrapper">
-        <div
-          padding
-          class="profile-image-placeholder"
-          *ngIf="!this.form.controls.image.value"
-        >
-          <button ion-button round color="primary" (click)="selectImage()">
-            <ion-icon name="attach"></ion-icon>
+
+      <ion-item>
+        <div>
+          <img
+            *ngIf="postImage?.image"
+            [src]="
+              'data:' +
+              postImage.imageContentType +
+              ';base64,' +
+              postImage.image
+            "
+            (click)="viewImage(post)"
+            useImg
+          />
+
+          <input
+            type="file"
+            #fileInput
+            style="display: none"
+            (change)="setFileData($event, postImage, 'image', true)"
+            accept="image/*"
+          />
+          <button
+            *ngIf="!postImage?.image"
+            (click)="getPicture()"
+            ion-button
+            full
+          >
+            <ion-icon name="add-circle">
+              {{ "ChoseImage" | translate }}
+            </ion-icon>
           </button>
         </div>
-        <div
-          class="profile-image"
-          *ngIf="this.form.controls.image.value"
-        >
-          <img-loader
-            [src]="this.form.controls.image.value"
-            width="100%"
-            height="120px"
-          ></img-loader>
-        </div>
-      </div>
+      </ion-item>
+
       <div padding>
         <button
           ion-button

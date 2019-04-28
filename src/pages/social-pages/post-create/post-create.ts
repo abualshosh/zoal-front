@@ -2,16 +2,12 @@ import { Component, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Camera } from "@ionic-native/camera";
 import {
-  ActionSheetController,
   IonicPage,
   NavController,
   ViewController,
   NavParams
 } from "ionic-angular";
-import { File, FileEntry } from "@ionic-native/file";
 import { Api } from "../../../providers/providers";
-import { User } from "../../../providers/providers";
-import { TranslateService } from "@ngx-translate/core";
 import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
@@ -23,45 +19,41 @@ export class PostCreatePage {
   @ViewChild("fileInput") fileInput;
 
   isReadyToSave: boolean;
-  img: any;
   form: FormGroup;
-  choseImage: string;
-  cameraTitle: string;
-  gallery: string;
-  imagePath: any;
-  fileType: string;
+
+  postImage: { image: any; imageContentType: any };
+  cameraOptions: any;
 
   constructor(
-    public user: User,
     public navParams: NavParams,
     public api: Api,
-    public actionSheetCtrl: ActionSheetController,
-    private file: File,
-    public translateService: TranslateService,
     public navCtrl: NavController,
     public alertProvider: AlertProvider,
     public viewCtrl: ViewController,
     formBuilder: FormBuilder,
     public camera: Camera
   ) {
-    translateService
-      .get(["ChoseImage", "camera", "gallery"])
-      .subscribe(values => {
-        this.choseImage = values["ChoseImage"];
-        this.cameraTitle = values["camera"];
-        this.gallery = values["gallery"];
-      });
+    this.postImage = { image: null, imageContentType: null };
 
     this.form = formBuilder.group({
-      image: [""],
-      content: ["", Validators.required],
-      about: [""],
-      file: [""]
+      content: ["", Validators.required]
     });
 
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
     });
+
+    this.cameraOptions = {
+      quality: 100,
+      targetWidth: 900,
+      targetHeight: 600,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      saveToPhotoAlbum: false,
+      allowEdit: true,
+      sourceType: 0
+    };
   }
 
   @ViewChild("myInput") myInput: ElementRef;
@@ -71,75 +63,27 @@ export class PostCreatePage {
       this.myInput.nativeElement.scrollHeight + "px";
   }
 
-  selectImage() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: this.choseImage,
-      buttons: [
-        {
-          text: this.cameraTitle,
-          handler: () => {
-            this.getPicture(1);
-          }
-        },
-        {
-          text: this.gallery,
-          handler: () => {
-            this.getPicture(0);
-          }
-        }
-      ]
-    });
-
-    actionSheet.present();
-  }
-
-  getPicture(type: number) {
-    this.camera
-      .getPicture({
-        destinationType: this.camera.DestinationType.FILE_URI,
-        mediaType: this.camera.MediaType.PICTURE,
-        sourceType: type
-      })
-      .then(
-        imagePath => {
-          this.imagePath = imagePath;
-          alert(this.imagePath);
-          this.loadPhoto(imagePath);
+  getPicture() {
+    if (Camera["installed"]()) {
+      this.camera.getPicture(this.cameraOptions).then(
+        data => {
+          this.postImage.image = data;
+          this.postImage.imageContentType = "image/jpeg";
         },
         err => {
           alert("Unable to take photo");
         }
       );
-  }
-
-  private loadPhoto(imageFileUri: any): void {
-    this.file.resolveLocalFilesystemUrl(imageFileUri).then(
-      entry => {
-        (<FileEntry>entry).file(file => {
-          this.fileType = file.type;
-          this.readFile(file);
-        });
-      },
-      err => {
-        this.alertProvider.showAlert("failedToLoadImage");
-      }
-    );
-  }
-
-  private readFile(file: any) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const imgBlob = new Blob([reader.result], { type: file.type });
-      this.img = imgBlob;
-    };
-    reader.readAsArrayBuffer(file);
+    } else {
+      this.fileInput.nativeElement.click();
+    }
   }
 
   done() {
-    this.postData();
     if (!this.form.valid) {
       return;
     }
+    this.postData();
   }
 
   postData() {
@@ -150,32 +94,37 @@ export class PostCreatePage {
       date: new Date()
     };
 
-    this.api.post("posts", post).subscribe(
-      resp => {
-        if (this.img) {
-          let imgData = [
-            {
-              image: this.img,
-              imageContentType: this.fileType,
-              post: post
-            }
-          ];
-          this.api.post("post-images", imgData).subscribe(
-            res => {},
-            err => {
-              this.alertProvider.hideLoading();
-              this.alertProvider.showToast("failedToPostImage");
-            }
-          );
-        }
+    this.api
+      .post("posts", post)
+      .map((res: any) => {
+        return res;
+      })
+      .subscribe(
+        res => {
+          if (this.postImage.image) {
+            let imgData = {
+              image: this.postImage.image,
+              imageContentType: this.postImage.imageContentType,
+              post: { id: res.id }
+            };
 
-        this.alertProvider.hideLoading();
-        this.navCtrl.pop();
-      },
-      err => {
-        this.alertProvider.hideLoading();
-        this.alertProvider.showToast("failedToPost");
-      }
-    );
+            this.api.post("mobile-post-images", imgData).subscribe(
+              res => {},
+              err => {
+                this.api.delete("posts/" + res.id).subscribe(() => {});
+                this.alertProvider.hideLoading();
+                this.alertProvider.showToast("failedToPostImage");
+              }
+            );
+          }
+
+          this.alertProvider.hideLoading();
+          this.navCtrl.pop();
+        },
+        err => {
+          this.alertProvider.hideLoading();
+          this.alertProvider.showToast("failedToPost");
+        }
+      );
   }
 }

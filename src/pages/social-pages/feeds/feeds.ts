@@ -7,7 +7,6 @@ import {
   Events
 } from "ionic-angular";
 import { Api } from "../../../providers/providers";
-import { PhotoViewer } from "@ionic-native/photo-viewer";
 import { StorageProvider } from "../../../providers/storage/storage";
 import { AlertProvider } from "../../../providers/alert/alert";
 
@@ -23,7 +22,6 @@ export class FeedsPage {
   posts = [];
 
   constructor(
-    private photoViewer: PhotoViewer,
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
@@ -102,14 +100,6 @@ export class FeedsPage {
 
   createPost() {
     this.navCtrl.push("PostCreatePage");
-  }
-
-  viewImage(post: any) {
-    this.photoViewer.show(
-      this.api.url + "/postimage/" + post.id,
-      post.content,
-      { share: true }
-    );
   }
 
   doInfinite(infiniteScroll) {

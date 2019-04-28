@@ -5,21 +5,10 @@
 </ion-header>
 
 <ion-content no-padding>
-  <div
-    *ngIf="post.haveImage"
-    class="item-profile"
-    text-center
-    [style.background-image]="
-      'url(' + this.api.url + '/post-images/' + post.id + ' )'
-    "
-  ></div>
-
   <ion-item no-lines>
     <ion-avatar item-start (click)="openProfile(post.profile)">
       <img-loader
-        fallbackAsPlaceholde="true"
-        fallback="assets/img/userPlaceholder.png"
-        [src]="this.api.url + '/profile-images/' + post.profile.id"
+        [src]="this.api.url + '/mobile-profile-images/' + post.profile.id"
         useImg
       >
       </img-loader>
@@ -39,6 +28,12 @@
   </ion-item>
 
   <hr />
+  <img
+    class="item-profile"
+    text-center
+    [src]="this.api.url + '/mobile-post-images/' + post.id"
+    alt=""
+  />
   <ion-item no-lines padding>
     <h2 text-wrap>{{ post.content }}</h2>
   </ion-item>
@@ -48,9 +43,7 @@
     <ion-item *ngFor="let comment of comments">
       <ion-avatar item-start (click)="openProfile(comment.profile)">
         <img-loader
-          fallbackAsPlaceholde="true"
-          fallback="assets/img/userPlaceholder.png"
-          [src]="this.api.url + '/profile-images/' + comment.profile.id"
+          [src]="this.api.url + '/mobile-profile-images/' + comment.profile.id"
           useImg
         >
         </img-loader>

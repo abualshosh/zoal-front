@@ -7,6 +7,7 @@ import {
 } from "ionic-angular";
 import { Events } from "ionic-angular";
 import { Item, StorageProvider } from "../../providers/storage/storage";
+import { User } from "../../providers/user/user";
 
 @IonicPage()
 @Component({
@@ -23,16 +24,12 @@ export class PaymentMethodPage {
     public navParams: NavParams,
     public events: Events,
     public modalCtrl: ModalController,
-    public storageProvider: StorageProvider
+    public storageProvider: StorageProvider,
+    public userProvider: User
   ) {
-    this.storageProvider.getProfile().subscribe(val => {
-      this.profile = val;
-    });
-
+    this.getProfile();
     events.subscribe("profile:updated", () => {
-      this.storageProvider.getProfile().subscribe(val => {
-        this.profile = val;
-      });
+      this.getProfile();
     });
   }
 
@@ -48,6 +45,19 @@ export class PaymentMethodPage {
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
     });
+  }
+
+  getProfile() {
+    this.userProvider.getProfile(localStorage.getItem("profileId")).subscribe(
+      profile => {
+        this.profile = profile;
+      },
+      err => {
+        this.storageProvider.getProfile().subscribe(val => {
+          this.profile = val;
+        });
+      }
+    );
   }
 
   openConsumerPage() {

@@ -117,8 +117,6 @@ export class MainMenuPage {
     }
   ];
 
-  profile: any;
-
   scanData: {};
   qrOptions: BarcodeScannerOptions;
   isGmpp: boolean = false;
@@ -131,10 +129,6 @@ export class MainMenuPage {
     public storageProvider: StorageProvider,
     public navParams: NavParams
   ) {
-    this.storageProvider.getProfile().subscribe(val => {
-      this.profile = val;
-    });
-
     this.isGmpp = this.navParams.get("isGmpp");
   }
 

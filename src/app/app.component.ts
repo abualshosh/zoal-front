@@ -3,7 +3,7 @@ import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
 import { TranslateService } from "@ngx-translate/core";
 import { Config, Nav, Platform, App, MenuController } from "ionic-angular";
-import { Api } from "../providers/providers";
+import { Api, User } from "../providers/providers";
 import { ImageLoaderConfig } from "ionic-image-loader";
 import { Storage } from "@ionic/storage";
 import { Events } from "ionic-angular";
@@ -112,6 +112,7 @@ export class MyApp {
     private statusBar: StatusBar,
     public menuCtrl: MenuController,
     public storageProvider: StorageProvider,
+    public userProvider: User,
     private splashScreen: SplashScreen
   ) {
     if (localStorage.getItem("logdin") == "true") {
@@ -120,14 +121,9 @@ export class MyApp {
 
     this.subscribeToPaymentMethodChange();
 
-    this.storageProvider.getProfile().subscribe(val => {
-      this.profile = val;
-    });
-
+    this.getProfile();
     events.subscribe("profile:updated", () => {
-      this.storageProvider.getProfile().subscribe(val => {
-        this.profile = val;
-      });
+      this.getProfile();
     });
 
     platform.ready().then(() => {
@@ -166,6 +162,19 @@ export class MyApp {
     this.translate.get(["BACK_BUTTON_TEXT"]).subscribe(values => {
       this.config.set("ios", "backButtonText", values.BACK_BUTTON_TEXT);
     });
+  }
+
+  getProfile() {
+    this.userProvider.getProfile(localStorage.getItem("profileId")).subscribe(
+      profile => {
+        this.profile = profile;
+      },
+      err => {
+        this.storageProvider.getProfile().subscribe(val => {
+          this.profile = val;
+        });
+      }
+    );
   }
 
   subscribeToPaymentMethodChange() {

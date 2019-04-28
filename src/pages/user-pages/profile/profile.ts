@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, Events } from "ionic-angular";
-import { Api } from "../../../providers/providers";
+import { Api, User } from "../../../providers/providers";
 import { StorageProvider } from "../../../providers/storage/storage";
 
 @IonicPage()
@@ -17,6 +17,7 @@ export class ProfilePage {
     public navParams: NavParams,
     public events: Events,
     public storageProvider: StorageProvider,
+    public userProvider: User,
     public api: Api
   ) {
     if (this.navParams.get("item")) {
@@ -24,16 +25,25 @@ export class ProfilePage {
       this.user = this.navParams.get("item");
     } else {
       this.isPassed = false;
-      this.storageProvider.getProfile().subscribe(val => {
-        this.user = val;
-      });
+      this.getProfile();
     }
 
     events.subscribe("profile:updated", () => {
-      this.storageProvider.getProfile().subscribe(val => {
-        this.user = val;
-      });
+      this.getProfile();
     });
+  }
+
+  getProfile() {
+    this.userProvider.getProfile(localStorage.getItem("profileId")).subscribe(
+      profile => {
+        this.user = profile;
+      },
+      err => {
+        this.storageProvider.getProfile().subscribe(val => {
+          this.user = val;
+        });
+      }
+    );
   }
 
   editProfile() {

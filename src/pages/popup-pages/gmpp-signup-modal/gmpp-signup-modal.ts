@@ -8,7 +8,6 @@ import {
 } from "ionic-angular";
 import { GetServicesProvider } from "../../../providers/get-services/get-services";
 import * as uuid from "uuid";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Api } from "../../../providers/providers";
 import { Item, StorageProvider } from "../../../providers/storage/storage";
 import { AlertProvider } from "../../../providers/alert/alert";
@@ -18,14 +17,12 @@ import { AlertProvider } from "../../../providers/alert/alert";
   templateUrl: "gmpp-signup-modal.html"
 })
 export class GmppSignupModalPage {
-  profile: any;
   public wallets: Item[];
   submitAttempt: boolean = false;
 
   constructor(
     public events: Events,
     public api: Api,
-    private formBuilder: FormBuilder,
     public navCtrl: NavController,
     public viewCtrl: ViewController,
     public GetServicesProvider: GetServicesProvider,
@@ -63,30 +60,16 @@ export class GmppSignupModalPage {
 
     this.GetServicesProvider.load(dat, "gmpp/registerConsumer").then(data => {
       this.alertProvider.hideLoading();
-
       if (data.responseCode == 1) {
-        this.storageProvider.getProfile().subscribe(val => {
-          this.profile = val;
-        });
-        this.profile.phoneNumber = "249" + localStorage.getItem("username");
-        this.api.put("/profiles", this.profile).subscribe(
-          (res: any) => {
-            this.submitAttempt = false;
-            localStorage.setItem("profile", JSON.stringify(this.profile));
-            var datas = [{ tital: "Status", desc: data.responseMessage }];
-            let modal = this.modalCtrl.create(
-              "GmppReceiptPage",
-              { data: datas },
-              { cssClass: "inset-modals" }
-            );
-            modal.present();
-            this.viewCtrl.dismiss();
-          },
-          err => {
-            this.submitAttempt = false;
-            //console.log(err);
-          }
+        this.submitAttempt = false;
+        let datas = [{ tital: "Status", desc: data.responseMessage }];
+        let modal = this.modalCtrl.create(
+          "GmppReceiptPage",
+          { data: datas },
+          { cssClass: "inset-modals" }
         );
+        modal.present();
+        this.viewCtrl.dismiss();
       } else {
         this.submitAttempt = false;
         this.alertProvider.showAlert(data);
@@ -95,10 +78,6 @@ export class GmppSignupModalPage {
   }
 
   dismiss() {
-    this.storageProvider.getProfile().subscribe(val => {
-      this.profile = val;
-    });
-    localStorage.setItem("profile", JSON.stringify(this.profile));
     this.viewCtrl.dismiss();
   }
 }

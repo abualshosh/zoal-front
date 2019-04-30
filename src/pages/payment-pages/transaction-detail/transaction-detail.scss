@@ -28,12 +28,18 @@ page-transaction-detail {
     padding: 2%;
     text-align: center;
     .tran-amount {
-      font-size: 2em;
+      font-size: 3em;
+      color: map-get($colors, secondary);
     }
+    border-bottom: 1px solid black;
   }
 
   .receipt-body {
     margin: 5%;
     padding: 2%;
+  }
+
+  .receipt-details {
+    font-size: 1em;
   }
 }

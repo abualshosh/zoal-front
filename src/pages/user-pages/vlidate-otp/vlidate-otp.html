@@ -20,8 +20,14 @@
           ></ion-input>
         </ion-item>
 
-        <div padding>
-          <button ion-button (click)="validateOtp()" color="primary" block>
+        <div text-center padding>
+          <button
+            ion-button
+            round
+            (click)="validateOtp()"
+            color="primary"
+            class="round-button"
+          >
             {{ "Submit" | translate }}
           </button>
         </div>

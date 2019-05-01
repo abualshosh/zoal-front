@@ -39,14 +39,17 @@ export class FeedsPage {
   }
 
   loadPosts() {
+    this.alertProvider.showLoading();
     this.api.get("contacts-posts", "?page=0&size=5", null).subscribe(
       (res: any) => {
+        this.alertProvider.hideLoading();
         if (res) {
           this.last = res.last;
           this.posts = res.content;
         }
       },
       err => {
+        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       }
     );

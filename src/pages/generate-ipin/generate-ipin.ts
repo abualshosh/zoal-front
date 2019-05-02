@@ -152,6 +152,7 @@ export class GenerateIpinPage {
               this.submitAttempt = false;
               this.alertProvider.hideLoading();
               this.alertProvider.showToast("ipinGenerationSuccess");
+              this.navCtrl.pop();
             } else {
               this.alertProvider.hideLoading();
               this.alertProvider.showAlert(res);

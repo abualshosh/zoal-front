@@ -37,15 +37,13 @@ export class ContactsPage {
         (res: any) => {
           if (res) {
             this.connections = res;
-            localStorage.setItem("connections", this.connections);
-            this.alertProvider.hideLoading();
-          } else {
-            this.alertProvider.hideLoading();
           }
         },
         err => {
-          this.alertProvider.hideLoading();
           this.alertProvider.showToast("errorMessage");
+        },
+        () => {
+          this.alertProvider.hideLoading();
         }
       );
   }
@@ -86,24 +84,22 @@ export class ContactsPage {
           (res: any) => {
             if (res) {
               this.connections = res;
-              localStorage.setItem("connections", this.connections);
               this.contactsToUpload = [];
-              this.alertProvider.hideLoading();
             } else {
               this.contactsToUpload = [];
-              this.alertProvider.hideLoading();
             }
           },
           err => {
             this.contactsToUpload = [];
-            this.alertProvider.hideLoading();
             this.alertProvider.showAlert("failedToUploadContacts", true);
+          },
+          () => {
+            this.alertProvider.hideLoading();
           }
         );
       },
       error => {
         this.contactsToUpload = [];
-        this.alertProvider.hideLoading();
         this.alertProvider.showAlert("failedToReadContacts", true);
       }
     );

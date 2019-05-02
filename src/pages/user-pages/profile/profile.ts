@@ -1,7 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { IonicPage, NavController, NavParams, Events } from "ionic-angular";
 import { Api, User } from "../../../providers/providers";
 import { StorageProvider } from "../../../providers/storage/storage";
+import { AlertProvider } from "../../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -18,8 +19,11 @@ export class ProfilePage {
     public events: Events,
     public storageProvider: StorageProvider,
     public userProvider: User,
+    public alertProvider: AlertProvider,
     public api: Api
-  ) {
+  ) {}
+
+  ionViewWillEnter() {
     if (this.navParams.get("item")) {
       this.isPassed = true;
       this.user = this.navParams.get("item");
@@ -27,21 +31,35 @@ export class ProfilePage {
       this.isPassed = false;
       this.getProfile();
     }
-
-    events.subscribe("profile:updated", () => {
-      this.getProfile();
-    });
   }
 
   getProfile() {
+    this.alertProvider.showLoading();
     this.userProvider.getProfile(localStorage.getItem("profileId")).subscribe(
       profile => {
         this.user = profile;
       },
       err => {
-        this.storageProvider.getProfile().subscribe(val => {
-          this.user = val;
-        });
+        this.alertProvider.showToast("errorMessage");
+      },
+      () => {
+        this.alertProvider.hideLoading();
+      }
+    );
+  }
+
+  getProfileByLogin(login) {
+    this.alertProvider.showLoading();
+    this.userProvider.getProfileByLogin(login).subscribe(
+      profile => {
+        this.user = profile;
+      },
+      err => {
+        this.navCtrl.pop();
+        this.alertProvider.showToast("errorMessage");
+      },
+      () => {
+        this.alertProvider.hideLoading();
       }
     );
   }

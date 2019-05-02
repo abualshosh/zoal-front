@@ -9,7 +9,12 @@
 <ion-content parallax-header no-bounce class="bg-modal">
   <div class="header-image">
     <img-loader
-      [src]="this.api.url + '/mobile-profile-images/' + user?.id"
+      [src]="
+        'data:' +
+        user?.image?.imageContentType +
+        ';base64,' +
+        user?.image?.image
+      "
       useImg
     >
     </img-loader>

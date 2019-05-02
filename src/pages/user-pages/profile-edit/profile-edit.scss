@@ -18,11 +18,11 @@ page-profile-edit {
     .profile-image-placeholder {
       display: inline-block;
 
-      background-color: #eee;
+      background-size: cover;
       width: 30vh;
       height: 30vh;
       border-radius: 50%;
-      
+
       font-size: 1em;
 
       ion-icon {

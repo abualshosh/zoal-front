@@ -3,8 +3,7 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  AlertController,
-  Events
+  AlertController
 } from "ionic-angular";
 import { Api } from "../../../providers/providers";
 import { StorageProvider } from "../../../providers/storage/storage";
@@ -27,30 +26,27 @@ export class FeedsPage {
     public alertCtrl: AlertController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
-    public events: Events,
     public api: Api
   ) {}
 
   ionViewWillEnter() {
     this.loadPosts();
-    this.events.subscribe("profile:updated", () => {
-      this.loadPosts();
-    });
   }
 
   loadPosts() {
     this.alertProvider.showLoading();
     this.api.get("contacts-posts", "?page=0&size=5", null).subscribe(
       (res: any) => {
-        this.alertProvider.hideLoading();
         if (res) {
           this.last = res.last;
           this.posts = res.content;
         }
       },
       err => {
-        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
+      },
+      () => {
+        this.alertProvider.hideLoading();
       }
     );
   }

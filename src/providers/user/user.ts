@@ -38,7 +38,6 @@ export class User {
           localStorage.setItem("id_token", res.id_token);
           localStorage.setItem("username", res.profile.login);
           localStorage.setItem("profileId", res.profile.id);
-          this.storageProvider.setProfile(res.profile);
           localStorage.setItem("Gkey", res.gmppKey);
           localStorage.setItem("Ckey", res.consumerKey);
           localStorage.setItem("ipinkey", res.ipinKey);
@@ -54,6 +53,10 @@ export class User {
 
   getProfile(id) {
     return this.api.get("profiles/" + id);
+  }
+
+  getProfileByLogin(login) {
+    return this.api.get("profiles-login/" + login);
   }
 
   updateProfile(data: any) {

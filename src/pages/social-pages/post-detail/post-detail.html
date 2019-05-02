@@ -8,7 +8,12 @@
   <ion-item no-lines>
     <ion-avatar item-start (click)="openProfile(post.profile)">
       <img-loader
-        [src]="this.api.url + '/mobile-profile-images/' + post.profile.id"
+        [src]="
+          'data:' +
+          post.profile.image?.imageContentType +
+          ';base64,' +
+          post.profile.image?.image
+        "
         useImg
       >
       </img-loader>
@@ -28,12 +33,14 @@
   </ion-item>
 
   <hr />
-  <img
+  <img-loader
     class="item-profile"
-    text-center
-    [src]="this.api.url + '/mobile-post-images/' + post.id"
-    alt=""
-  />
+    *ngIf="post.image"
+    [src]="
+      'data:' + post.image.imageContentType + ';base64,' + post.image.image
+    "
+    useImg
+  ></img-loader>
   <ion-item no-lines padding>
     <h2 text-wrap>{{ post.content }}</h2>
   </ion-item>
@@ -43,7 +50,12 @@
     <ion-item *ngFor="let comment of comments">
       <ion-avatar item-start (click)="openProfile(comment.profile)">
         <img-loader
-          [src]="this.api.url + '/mobile-profile-images/' + comment.profile.id"
+          [src]="
+            'data:' +
+            comment.profile.image?.imageContentType +
+            ';base64,' +
+            comment.profile.image?.image
+          "
           useImg
         >
         </img-loader>

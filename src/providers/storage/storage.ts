@@ -34,14 +34,6 @@ const TRANSACTIONS_KEY = "profile";
 export class StorageProvider {
   constructor(private storage: Storage) {}
 
-  setProfile(profile): Promise<any> {
-    return this.storage.set(PROFILE_KEY, profile);
-  }
-
-  getProfile(): Observable<any> {
-    return Observable.fromPromise(this.storage.get(PROFILE_KEY));
-  }
-
   setTransactions(transactions): Promise<any> {
     return this.storage.set(TRANSACTIONS_KEY, transactions);
   }

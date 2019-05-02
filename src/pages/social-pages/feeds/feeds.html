@@ -14,7 +14,12 @@
       <ion-item (click)="openProfile(post)">
         <ion-avatar item-start>
           <img-loader
-            [src]="this.api.url + '/mobile-profile-images/' + post.profile.id"
+            [src]="
+              'data:' +
+              post.profile.image?.imageContentType +
+              ';base64,' +
+              post.profile.image?.image
+            "
             useImg
           ></img-loader>
         </ion-avatar>
@@ -26,7 +31,14 @@
         <p>{{ post.content }}</p>
       </ion-card-content>
 
-      <img [src]="this.api.url + '/mobile-post-images/' + post.id" alt="" />
+      <img-loader
+        *ngIf="post.image"
+        (click)="openPost(post)"
+        [src]="
+          'data:' + post.image.imageContentType + ';base64,' + post.image.image
+        "
+        useImg
+      ></img-loader>
     </ion-card>
   </div>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="!this.last">

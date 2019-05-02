@@ -59,15 +59,15 @@ export class MessagesPage {
     public api: Api,
     navParams: NavParams
   ) {
-    this.storageProvider.getProfile().subscribe(val => {
-      this.profile = val;
-      this.user = {
-        _id: localStorage.getItem("username"),
-        fullname: this.profile.fullName,
-        pic: this.api.url + "/profileimage/" + localStorage.getItem("username"),
-        username: localStorage.getItem("username")
-      };
-    });
+    // this.storageProvider.getProfile().subscribe(val => {
+    //   this.profile = val;
+    //   this.user = {
+    //     _id: localStorage.getItem("username"),
+    //     fullname: this.profile.fullName,
+    //     pic: this.api.url + "/profileimage/" + localStorage.getItem("username"),
+    //     username: localStorage.getItem("username")
+    //   };
+    // });
 
     this.chatUser = navParams.get("otherUser");
     this.messages = navParams.get("msg");

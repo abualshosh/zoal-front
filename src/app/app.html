@@ -3,7 +3,13 @@
     <div text-center>
       <ion-avatar class="avatar" (click)="openProfile()">
         <img-loader
-          [src]="this.api.url + '/mobile-profile-images/' + profile?.id"
+          *ngIf="profile"
+          [src]="
+            'data:' +
+            profile.image?.imageContentType +
+            ';base64,' +
+            profile.image?.image
+          "
           useImg
         ></img-loader>
       </ion-avatar>

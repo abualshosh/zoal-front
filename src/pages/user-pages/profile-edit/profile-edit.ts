@@ -56,6 +56,14 @@ export class ProfileEditPage {
     };
 
     this.userForm = this.formBuilder.group({
+      image: [
+        navParams.get("user")
+          ? "data:" +
+            this.profile.image.imageContentType +
+            ";base64," +
+            this.profile.image.image
+          : null
+      ],
       firstName: [
         navParams.get("user") ? this.profile.firstName : null,
         Validators.compose([
@@ -123,23 +131,22 @@ export class ProfileEditPage {
       this.userProvider.updateProfile(this.profile).subscribe(
         res => {
           this.profile = res;
-          this.storageProvider.setProfile(res).then(() => {
-            this.events.publish("profile:updated", "");
-            this.alertProvider.hideLoading();
-            this.submitAttempt = false;
+          this.events.publish("profile:updated", "");
+          this.submitAttempt = false;
 
-            if (!this.navParams.get("user")) {
-              localStorage.setItem("logdin", "true");
-              this.navCtrl.setRoot("TabsPage");
-            } else {
-              this.navCtrl.pop();
-            }
-          });
+          if (!this.navParams.get("user")) {
+            localStorage.setItem("logdin", "true");
+            this.navCtrl.setRoot("TabsPage");
+          } else {
+            this.navCtrl.pop();
+          }
         },
         err => {
-          this.alertProvider.hideLoading();
           this.submitAttempt = false;
           this.alertProvider.showToast("failedToUpdateProfileInfo");
+        },
+        () => {
+          this.alertProvider.hideLoading();
         }
       );
     }

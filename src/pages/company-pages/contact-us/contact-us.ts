@@ -54,17 +54,18 @@ export class ContactUsPage {
       let request = this.contactForm.value;
       this.api.post("user-messages", request).subscribe(
         res => {
-          this.alertProvider.hideLoading();
           this.alertProvider.showToast("companyContactSuccess");
           this.contactForm.reset();
           this.submitAttempt = false;
           this.cancel();
         },
         err => {
-          this.alertProvider.hideLoading();
           this.contactForm.reset();
           this.alertProvider.showAlert(err);
           this.submitAttempt = false;
+        },
+        () => {
+          this.alertProvider.hideLoading();
         }
       );
     }

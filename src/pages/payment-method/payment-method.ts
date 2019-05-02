@@ -8,6 +8,7 @@ import {
 import { Events } from "ionic-angular";
 import { Item, StorageProvider } from "../../providers/storage/storage";
 import { User } from "../../providers/user/user";
+import { AlertProvider } from "../../providers/alert/alert";
 
 @IonicPage()
 @Component({
@@ -25,10 +26,11 @@ export class PaymentMethodPage {
     public events: Events,
     public modalCtrl: ModalController,
     public storageProvider: StorageProvider,
+    public alertProvider: AlertProvider,
     public userProvider: User
   ) {
     this.getProfile();
-    events.subscribe("profile:updated", () => {
+    this.events.subscribe("profile:updated", () => {
       this.getProfile();
     });
   }
@@ -53,9 +55,7 @@ export class PaymentMethodPage {
         this.profile = profile;
       },
       err => {
-        this.storageProvider.getProfile().subscribe(val => {
-          this.profile = val;
-        });
+        this.alertProvider.showToast("errorMessage");
       }
     );
   }

@@ -129,6 +129,8 @@ export class AlertProvider {
   }
 
   hideLoading() {
-    this.loader.dismiss();
+    if (this.loader) {
+      this.loader.dismiss();
+    }
   }
 }

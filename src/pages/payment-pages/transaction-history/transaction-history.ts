@@ -40,7 +40,6 @@ export class TransactionHistoryPage {
         this.last = res.last;
         this.transactions = res.content;
         this.storageProvider.setTransactions(res).then(res => {});
-        this.alertProvider.hideLoading();
       },
       err => {
         this.alertProvider.showToast("errorMessage");
@@ -48,6 +47,8 @@ export class TransactionHistoryPage {
           this.last = res.last;
           this.transactions = res.content;
         });
+      },
+      () => {
         this.alertProvider.hideLoading();
       }
     );
@@ -75,14 +76,15 @@ export class TransactionHistoryPage {
     this.api.get("all-profile-transactions").subscribe(
       (res: any) => {
         this.filterTransactions(res);
-        this.alertProvider.hideLoading();
       },
       err => {
         this.storageProvider.getTransactions().subscribe(res => {
           this.filterTransactions(res.content);
         });
-        this.alertProvider.hideLoading();
         this.alertProvider.showToast("errorMessage");
+      },
+      () => {
+        this.alertProvider.hideLoading();
       }
     );
   }

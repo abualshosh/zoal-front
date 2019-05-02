@@ -9,6 +9,7 @@ import { Storage } from "@ionic/storage";
 import { Events } from "ionic-angular";
 import { StorageProvider } from "../providers/storage/storage";
 import { HttpHeaders } from "@angular/common/http";
+import { AlertProvider } from "../providers/alert/alert";
 
 @Component({
   templateUrl: "app.html"
@@ -114,6 +115,7 @@ export class MyApp {
     public menuCtrl: MenuController,
     public storageProvider: StorageProvider,
     public userProvider: User,
+    public alertProvider: AlertProvider,
     private splashScreen: SplashScreen
   ) {
     if (localStorage.getItem("logdin") == "true") {
@@ -123,7 +125,7 @@ export class MyApp {
     this.subscribeToPaymentMethodChange();
 
     this.getProfile();
-    events.subscribe("profile:updated", () => {
+    this.events.subscribe("profile:updated", () => {
       this.getProfile();
     });
 
@@ -175,9 +177,7 @@ export class MyApp {
         this.profile = profile;
       },
       err => {
-        this.storageProvider.getProfile().subscribe(val => {
-          this.profile = val;
-        });
+        this.alertProvider.showToast("errorMessage");
       }
     );
   }

@@ -35,18 +35,17 @@ export class VlidateOtpPage {
     this.user.validateOtp(this.account).subscribe(
       (res: any) => {
         if (this.otpType === "login") {
-          this.alertProvider.hideLoading();
           localStorage.setItem("logdin", "true");
           this.navCtrl.setRoot(MainPage);
         } else {
-          this.alertProvider.hideLoading();
           this.navCtrl.setRoot("ProfileEditPage");
         }
       },
       err => {
-        console.error("ERROR", err);
-        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
+      },
+      () => {
+        this.alertProvider.hideLoading();
       }
     );
   }

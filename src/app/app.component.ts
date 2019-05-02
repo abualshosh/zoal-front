@@ -8,6 +8,7 @@ import { ImageLoaderConfig } from "ionic-image-loader";
 import { Storage } from "@ionic/storage";
 import { Events } from "ionic-angular";
 import { StorageProvider } from "../providers/storage/storage";
+import { HttpHeaders } from "@angular/common/http";
 
 @Component({
   templateUrl: "app.html"
@@ -135,13 +136,17 @@ export class MyApp {
       this.initTranslate();
     });
 
-    // enable debug mode to get console logs and stuff
-    imageLoaderConfig.enableDebugMode();
-    // set a fallback url to use by default in case an image is not found
-    imageLoaderConfig.setFallbackUrl("assets/img/userPlaceholder.png");
-    imageLoaderConfig.setImageReturnType("base64");
-    imageLoaderConfig.setSpinnerColor("secondary");
-    imageLoaderConfig.setSpinnerName("bubbles");
+    const headers = new HttpHeaders().set(
+      "Authorization",
+      "Bearer " + localStorage.getItem("id_token")
+    );
+    this.imageLoaderConfig.setHttpHeaders(headers);
+    this.imageLoaderConfig.enableDebugMode();
+    this.imageLoaderConfig.setFallbackUrl("assets/img/userPlaceholder.png");
+    this.imageLoaderConfig.setImageReturnType("base64");
+    this.imageLoaderConfig.setSpinnerColor("secondary");
+    this.imageLoaderConfig.setSpinnerName("bubbles");
+    this.imageLoaderConfig.setBackgroundSize("cover");
   }
 
   initTranslate() {

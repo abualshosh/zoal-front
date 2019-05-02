@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { Camera } from "@ionic-native/camera";
 import {
   IonicPage,
@@ -16,9 +16,6 @@ import { AlertProvider } from "../../../providers/alert/alert";
   templateUrl: "post-create.html"
 })
 export class PostCreatePage {
-  @ViewChild("fileInput") fileInput;
-
-  isReadyToSave: boolean;
   form: FormGroup;
 
   postImage: { image: any; imageContentType: any };
@@ -36,11 +33,7 @@ export class PostCreatePage {
     this.postImage = { image: null, imageContentType: null };
 
     this.form = formBuilder.group({
-      content: ["", Validators.required]
-    });
-
-    this.form.valueChanges.subscribe(v => {
-      this.isReadyToSave = this.form.valid;
+      content: [""]
     });
 
     this.cameraOptions = {
@@ -74,16 +67,13 @@ export class PostCreatePage {
           alert("Unable to take photo");
         }
       );
-    } else {
-      this.fileInput.nativeElement.click();
     }
   }
 
   done() {
-    if (!this.form.valid) {
-      return;
+    if (this.form.controls["content"].value || this.postImage.image) {
+      this.postData();
     }
-    this.postData();
   }
 
   postData() {
@@ -91,40 +81,25 @@ export class PostCreatePage {
 
     let post = {
       content: this.form.controls["content"].value,
+      image: this.postImage.image
+        ? {
+            image: this.postImage.image,
+            imageContentType: this.postImage.imageContentType
+          }
+        : null,
       date: new Date()
     };
 
-    this.api
-      .post("posts", post)
-      .map((res: any) => {
-        return res;
-      })
-      .subscribe(
-        res => {
-          if (this.postImage.image) {
-            let imgData = {
-              image: this.postImage.image,
-              imageContentType: this.postImage.imageContentType,
-              post: { id: res.id }
-            };
-
-            this.api.post("mobile-post-images", imgData).subscribe(
-              res => {},
-              err => {
-                this.api.delete("posts/" + res.id).subscribe(() => {});
-                this.alertProvider.hideLoading();
-                this.alertProvider.showToast("failedToPostImage");
-              }
-            );
-          }
-
-          this.alertProvider.hideLoading();
-          this.navCtrl.pop();
-        },
-        err => {
-          this.alertProvider.hideLoading();
-          this.alertProvider.showToast("failedToPost");
-        }
-      );
+    this.api.post("posts", post).subscribe(
+      res => {
+        this.navCtrl.pop();
+      },
+      err => {
+        this.alertProvider.showToast("failedToPost");
+      },
+      () => {
+        this.alertProvider.hideLoading();
+      }
+    );
   }
 }

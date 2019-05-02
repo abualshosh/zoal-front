@@ -20,7 +20,7 @@
 
       <ion-item>
         <div>
-          <img
+          <img-loader
             *ngIf="postImage?.image"
             [src]="
               'data:' +
@@ -30,15 +30,8 @@
             "
             (click)="viewImage(post)"
             useImg
-          />
+          ></img-loader>
 
-          <input
-            type="file"
-            #fileInput
-            style="display: none"
-            (change)="setFileData($event, postImage, 'image', true)"
-            accept="image/*"
-          />
           <button
             *ngIf="!postImage?.image"
             (click)="getPicture()"
@@ -58,7 +51,6 @@
           class="subbutn"
           color="primary"
           (click)="done()"
-          [disabled]="!isReadyToSave"
           round
         >
           {{ "Submit" | translate }}

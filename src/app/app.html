@@ -2,16 +2,7 @@
   <ion-content padding class="side-menu">
     <div text-center>
       <ion-avatar class="avatar" (click)="openProfile()">
-        <img-loader
-          *ngIf="profile"
-          [src]="
-            'data:' +
-            profile.image?.imageContentType +
-            ';base64,' +
-            profile.image?.image
-          "
-          useImg
-        ></img-loader>
+        <img-loader *ngIf="profile" [src]="getImageSrc()" useImg></img-loader>
       </ion-avatar>
       <h5>{{ profile?.firstName }} {{ profile?.lastName }}</h5>
       <h6 dir="ltr">+249 {{ profile?.login }}</h6>

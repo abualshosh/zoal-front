@@ -94,4 +94,15 @@ export class PostDetailPage {
         );
     }
   }
+
+  getImageSrc(post) {
+    if (post.profile.image) {
+      return (
+        "data:" +
+        post.profile.image.imageContentType +
+        ";base64," +
+        post.profile.image.image
+      );
+    }
+  }
 }

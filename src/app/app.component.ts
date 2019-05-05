@@ -176,9 +176,7 @@ export class MyApp {
       profile => {
         this.profile = profile;
       },
-      err => {
-        this.alertProvider.showToast("errorMessage");
-      }
+      err => {}
     );
   }
 
@@ -225,5 +223,16 @@ export class MyApp {
   openProfile() {
     this.nav.push("ProfilePage");
     this.menuCtrl.close();
+  }
+
+  getImageSrc() {
+    if (this.profile.image) {
+      return (
+        "data:" +
+        this.profile.image.imageContentType +
+        ";base64," +
+        this.profile.image.image
+      );
+    }
   }
 }

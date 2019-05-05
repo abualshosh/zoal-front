@@ -67,4 +67,17 @@ export class ProfilePage {
   editProfile() {
     this.navCtrl.push("ProfileEditPage", { user: this.user });
   }
+
+  getImageSrc() {
+    if (this.user) {
+      if (this.user.image) {
+        return (
+          "data:" +
+          this.user.image.imageContentType +
+          ";base64," +
+          this.user.image.image
+        );
+      }
+    }
+  }
 }

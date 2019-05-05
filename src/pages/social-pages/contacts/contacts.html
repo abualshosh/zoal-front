@@ -9,15 +9,7 @@
   <ion-list>
     <ion-item *ngFor="let contact of connections">
       <ion-avatar item-start (click)="openProfile(contact)">
-        <img-loader
-          [src]="
-            'data:' +
-            contact.image?.imageContentType +
-            ';base64,' +
-            contact.image?.image
-          "
-          useImg
-        ></img-loader>
+        <img-loader [src]="getImageSrc(contact)" useImg></img-loader>
       </ion-avatar>
       <div (click)="openConversation(contact)">
         <h2>{{ contact.firstName }} {{ contact.lastName }}</h2>

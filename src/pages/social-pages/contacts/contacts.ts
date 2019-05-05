@@ -110,4 +110,15 @@ export class ContactsPage {
       item: item
     });
   }
+
+  getImageSrc(contact) {
+    if (contact.image) {
+      return (
+        "data:" +
+        contact.image.imageContentType +
+        ";base64," +
+        contact.image.image
+      );
+    }
+  }
 }

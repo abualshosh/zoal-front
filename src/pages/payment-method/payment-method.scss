@@ -1,24 +1,22 @@
 page-payment-method {
+  .scroll-content {
+    background: white;
+  }
+
   .grid-con {
-    height: 100%;
     padding: 5%;
-    display: grid;
-    justify-content: stretch;
-    justify-items: stretch;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    row-gap: 1em;
     background: white;
   }
 
   .grid-item {
-    display: grid;
     width: 32vh;
     height: 32vh;
     color: map-get($colors, secondary);
     border-radius: 50%;
     border: 1.5px solid map-get($colors, secondary);
     margin: auto;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
     padding: 5%;
   }
 

@@ -54,9 +54,7 @@ export class PaymentMethodPage {
       profile => {
         this.profile = profile;
       },
-      err => {
-        this.alertProvider.showToast("errorMessage");
-      }
+      err => {}
     );
   }
 
@@ -66,9 +64,8 @@ export class PaymentMethodPage {
       duration: 1000
     };
 
-    this.events.publish("isGmpp", "consumer");
-
     if (this.isCardWalletAvailable("card")) {
+      this.events.publish("isGmpp", "consumer");
       this.navCtrl.push("MainMenuPage", {}, animationsOptions);
     } else {
       this.addCardWallet("cards");
@@ -81,9 +78,8 @@ export class PaymentMethodPage {
       duration: 1000
     };
 
-    this.events.publish("isGmpp", "gmpp");
-
     if (this.isCardWalletAvailable("wallet")) {
+      this.events.publish("isGmpp", "gmpp");
       this.navCtrl.push("MainMenuPage", { isGmpp: true }, animationsOptions);
     } else {
       this.addCardWallet("wallets");

@@ -7,17 +7,17 @@
 
 <ion-content>
   <div class="grid-con">
-    <div class="grid-item" (click)="openConsumerPage()">
+    <ion-row class="grid-item" (click)="openConsumerPage()">
       <div class="grid-item-content">
         <ion-icon class="grid-icon" name="custom-card"></ion-icon>
         <div class="grid-item-title">{{ "consumerPayment" | translate }}</div>
       </div>
-    </div>
-    <div class="grid-item" (click)="openGmppPage()">
+    </ion-row>
+    <ion-row class="grid-item" (click)="openGmppPage()">
       <div class="grid-item-content">
         <ion-icon class="grid-icon" name="custom-wallet"></ion-icon>
         <div>{{ "gmppPayment" | translate }}</div>
       </div>
-    </div>
+    </ion-row>
   </div>
 </ion-content>

@@ -113,9 +113,7 @@ export class TabsPage {
       profile => {
         this.profile = profile;
       },
-      err => {
-        this.alertProvider.showToast("errorMessage");
-      }
+      err => {}
     );
   }
 

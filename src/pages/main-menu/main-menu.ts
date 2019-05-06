@@ -188,19 +188,18 @@ export class MainMenuPage {
         }
         this.scanData = barcodeData;
       },
-      err => {
-        console.log("Error occured : " + err);
-      }
+      err => {}
     );
   }
 
-  openPage(page) {
+  openPage(page, title?) {
     if (this.isGmpp) {
       this.navCtrl.push(page, {
-        isGmpp: true
+        isGmpp: true,
+        title: title
       });
     } else {
-      this.navCtrl.push(page);
+      this.navCtrl.push(page, { title: title });
     }
   }
 }

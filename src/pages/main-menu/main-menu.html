@@ -38,7 +38,10 @@
       <div>{{ "transferServices" | translate }}</div>
     </div>
 
-    <div class="grid-item" (click)="openPage('SpecialPaymentPage')">
+    <div
+      class="grid-item"
+      (click)="openPage('SpecialPaymentPage', 'charityServices')"
+    >
       <ion-icon class="grid-icon" name="custom-heart"></ion-icon>
       <div>{{ "charityServices" | translate }}</div>
     </div>
@@ -46,7 +49,7 @@
     <div
       *ngIf="isGmpp"
       class="grid-item"
-      (click)="openPage('GmppTranToWalletPage')"
+      (click)="openPage('GmppTranToWalletPage', 'giftsServices')"
     >
       <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
       <div>{{ "giftsServices" | translate }}</div>
@@ -55,7 +58,7 @@
     <div
       *ngIf="!isGmpp"
       class="grid-item"
-      (click)="openPage('TransferToCardPage')"
+      (click)="openPage('TransferToCardPage', 'giftsServices')"
     >
       <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
       <div>{{ "giftsServices" | translate }}</div>

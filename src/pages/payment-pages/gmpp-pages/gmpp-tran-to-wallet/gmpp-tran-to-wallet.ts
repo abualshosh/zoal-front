@@ -30,6 +30,7 @@ export class GmppTranToWalletPage {
   submitAttempt: boolean = false;
   public GetServicesProvider: GetServicesProvider;
   favorites: Item[];
+  title: string;
 
   constructor(
     public events: Events,
@@ -42,7 +43,9 @@ export class GmppTranToWalletPage {
     public navCtrl: NavController,
     public modalCtrl: ModalController
   ) {
-    // this.consumerIdentifier = "249" + localStorage.getItem("username");
+    this.title = this.navParams.get("title")
+      ? this.navParams.get("title")
+      : "gmppTranToWallet";
 
     this.GetServicesProvider = GetServicesProviderg;
 

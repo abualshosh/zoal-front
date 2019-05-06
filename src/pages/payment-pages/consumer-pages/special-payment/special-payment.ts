@@ -31,6 +31,7 @@ export class SpecialPaymentPage {
   isGmpp: boolean;
   favorites: Item[];
   merchants: any;
+  title: string;
 
   constructor(
     public events: Events,
@@ -43,6 +44,9 @@ export class SpecialPaymentPage {
     public api: Api,
     public navParams: NavParams
   ) {
+    this.title = this.navParams.get("title")
+      ? this.navParams.get("title")
+      : "specialPaymentServices";
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],

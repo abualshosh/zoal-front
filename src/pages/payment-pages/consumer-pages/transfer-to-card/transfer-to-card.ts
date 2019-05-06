@@ -30,6 +30,7 @@ export class TransferToCardPage {
 
   public GetServicesProvider: GetServicesProvider;
   favorites: Item[];
+  title: string;
 
   constructor(
     public events: Events,
@@ -42,6 +43,9 @@ export class TransferToCardPage {
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
+    this.title = this.navParams.get("title")
+      ? this.navParams.get("title")
+      : "transferToCard";
     this.GetServicesProvider = GetServicesProviderg;
     this.todo = this.formBuilder.group({
       Card: ["", Validators.required],

@@ -56,14 +56,7 @@ export class ProfileEditPage {
     };
 
     this.userForm = this.formBuilder.group({
-      image: [
-        navParams.get("user")
-          ? "data:" +
-            this.profile.image.imageContentType +
-            ";base64," +
-            this.profile.image.image
-          : null
-      ],
+      image: [navParams.get("user") ? this.getImageSrc() : null],
       firstName: [
         navParams.get("user") ? this.profile.firstName : null,
         Validators.compose([
@@ -88,10 +81,7 @@ export class ProfileEditPage {
       ],
       bio: [
         navParams.get("user") ? this.profile.bio : null,
-        Validators.compose([
-          Validators.minLength(10),
-          Validators.maxLength(200)
-        ])
+        Validators.compose([Validators.maxLength(200)])
       ]
     });
   }
@@ -148,6 +138,17 @@ export class ProfileEditPage {
         () => {
           this.alertProvider.hideLoading();
         }
+      );
+    }
+  }
+
+  getImageSrc() {
+    if (this.profile.image) {
+      return (
+        "data:" +
+        this.profile.image.imageContentType +
+        ";base64," +
+        this.profile.image.image
       );
     }
   }

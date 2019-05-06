@@ -19,17 +19,20 @@
           <div>{{ "ChoseImage" | translate }}</div>
         </div>
 
-        <div class="profile-image" *ngIf="profileImage?.image">
-          <img-loader
-            class="profile-image"
-            [src]="
-              'data:' +
-              profileImage.imageContentType +
-              ';base64,' +
-              profileImage.image
-            "
-            useImg
-          ></img-loader>
+        <div
+          class="profile-image-placeholder"
+          *ngIf="profileImage?.image"
+          [style.background-image]="
+            'url(' +
+            'data:' +
+            profileImage.imageContentType +
+            ';base64,' +
+            profileImage.image +
+            ')'
+          "
+        >
+          <ion-icon name="add"></ion-icon>
+          <div>{{ "ChoseImage" | translate }}</div>
         </div>
       </div>
       <ion-list>

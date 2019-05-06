@@ -13,7 +13,7 @@
     <ion-card class="post" *ngFor="let post of posts" no-padding>
       <ion-item (click)="openProfile(post)">
         <ion-avatar item-start>
-          <img-loader [src]="getImageSrc(post)" useImg></img-loader>
+          <img-loader [src]="getImageSrc(post)"></img-loader>
         </ion-avatar>
         <h2>{{ post.profile.firstName }} {{ post.profile.lastName }}</h2>
         <ion-note>{{ post.date | relativeTime }}</ion-note>
@@ -29,7 +29,6 @@
         [src]="
           'data:' + post.image.imageContentType + ';base64,' + post.image.image
         "
-        useImg
       ></img-loader>
     </ion-card>
   </div>

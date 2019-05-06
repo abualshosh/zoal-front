@@ -149,6 +149,7 @@ export class MyApp {
     this.imageLoaderConfig.setSpinnerColor("secondary");
     this.imageLoaderConfig.setSpinnerName("bubbles");
     this.imageLoaderConfig.setBackgroundSize("cover");
+    this.imageLoaderConfig.useImageTag(true);
   }
 
   initTranslate() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, Events } from "ionic-angular";
 import { Api, User } from "../../../providers/providers";
 import { StorageProvider } from "../../../providers/storage/storage";

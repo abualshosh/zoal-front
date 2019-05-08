@@ -26,8 +26,6 @@ const CARDS_KEY = "cards";
 
 const FAVORITES_KEY = "favorites";
 
-const PROFILE_KEY = "profile";
-
 const TRANSACTIONS_KEY = "profile";
 
 @Injectable()

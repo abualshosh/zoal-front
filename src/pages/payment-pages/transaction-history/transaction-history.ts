@@ -141,7 +141,9 @@ export class TransactionHistoryPage {
 
         serviceInfo: response.serviceInfo,
         fees:
-          response.acqTranFee + response.issuerTranFee + response.dynamicFees,
+          this.calculateFees(response) !== 0
+            ? this.calculateFees(response)
+            : null,
 
         destinationIdentifier: response.destinationIdentifier,
         availableBalance: response.availableBalance,
@@ -194,6 +196,23 @@ export class TransactionHistoryPage {
       modal.present();
     } else {
     }
+  }
+
+  calculateFees(response) {
+    let fees = 0;
+    if (response.acqTranFee) {
+      fees += response.acqTranFee;
+    }
+
+    if (response.issuerTranFee) {
+      fees += response.issuerTranFee;
+    }
+
+    if (response.dynamicFees) {
+      fees += response.dynamicFees;
+    }
+
+    return fees;
   }
 
   doInfinite(infiniteScroll) {

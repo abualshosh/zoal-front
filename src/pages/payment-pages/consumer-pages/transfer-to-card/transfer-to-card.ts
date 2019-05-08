@@ -157,7 +157,8 @@ export class TransferToCardPage {
           datas = {
             Card: data.PAN,
             toCard: data.toCard,
-            fees: data.acqTranFee + data.issuerTranFee + data.dynamicFees,
+            fees:
+              this.calculateFees(data) !== 0 ? this.calculateFees(data) : null,
             date: datetime
           };
 
@@ -185,5 +186,22 @@ export class TransferToCardPage {
         }
       });
     }
+  }
+
+  calculateFees(response) {
+    let fees = 0;
+    if (response.acqTranFee) {
+      fees += response.acqTranFee;
+    }
+
+    if (response.issuerTranFee) {
+      fees += response.issuerTranFee;
+    }
+
+    if (response.dynamicFees) {
+      fees += response.dynamicFees;
+    }
+
+    return fees;
   }
 }

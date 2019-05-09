@@ -124,7 +124,7 @@ export class TransactionHistoryPage {
       };
 
       let balance = null;
-      if (transaction.type == "Consumer: balanceInquiry") {
+      if (transaction.type == "Consumer: balanceInquiry" && response.balance) {
         balance = response.balance.available;
       }
 

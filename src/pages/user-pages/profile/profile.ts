@@ -40,6 +40,7 @@ export class ProfilePage {
         this.user = profile;
       },
       err => {
+        this.alertProvider.hideLoading();
         this.alertProvider.showToast("errorMessage");
       },
       () => {
@@ -55,6 +56,7 @@ export class ProfilePage {
         this.user = profile;
       },
       err => {
+        this.alertProvider.hideLoading();
         this.navCtrl.pop();
         this.alertProvider.showToast("errorMessage");
       },

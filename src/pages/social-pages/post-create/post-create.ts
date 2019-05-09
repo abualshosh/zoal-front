@@ -95,6 +95,7 @@ export class PostCreatePage {
         this.navCtrl.pop();
       },
       err => {
+        this.alertProvider.hideLoading();
         this.alertProvider.showToast("failedToPost");
       },
       () => {

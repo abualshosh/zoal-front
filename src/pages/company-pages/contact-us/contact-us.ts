@@ -60,6 +60,7 @@ export class ContactUsPage {
           this.cancel();
         },
         err => {
+          this.alertProvider.hideLoading();
           this.contactForm.reset();
           this.alertProvider.showAlert(err);
           this.submitAttempt = false;

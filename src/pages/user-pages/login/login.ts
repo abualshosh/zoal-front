@@ -69,6 +69,7 @@ export class LoginPage {
           }
         },
         err => {
+          this.alertProvider.hideLoading();
           this.submitAttempt = false;
           this.alertProvider.showAlert("failedToLogin", true);
         },

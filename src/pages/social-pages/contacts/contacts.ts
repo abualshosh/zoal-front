@@ -40,6 +40,7 @@ export class ContactsPage {
           }
         },
         err => {
+          this.alertProvider.hideLoading();
           this.alertProvider.showToast("errorMessage");
         },
         () => {
@@ -90,6 +91,7 @@ export class ContactsPage {
             }
           },
           err => {
+            this.alertProvider.hideLoading();
             this.contactsToUpload = [];
             this.alertProvider.showAlert("failedToUploadContacts", true);
           },

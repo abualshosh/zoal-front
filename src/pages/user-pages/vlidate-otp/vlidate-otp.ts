@@ -42,6 +42,7 @@ export class VlidateOtpPage {
         }
       },
       err => {
+        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       },
       () => {

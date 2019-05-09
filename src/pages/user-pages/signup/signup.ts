@@ -70,6 +70,7 @@ export class SignupPage {
           this.submitAttempt = false;
         },
         err => {
+          this.alertProvider.hideLoading();
           this.alertProvider.showAlert("failedToSignup", true);
           this.submitAttempt = false;
         },

@@ -42,6 +42,7 @@ export class TransactionHistoryPage {
         this.storageProvider.setTransactions(res).then(res => {});
       },
       err => {
+        this.alertProvider.hideLoading();
         this.alertProvider.showToast("errorMessage");
         this.storageProvider.getTransactions().subscribe(res => {
           this.last = res.last;
@@ -78,6 +79,7 @@ export class TransactionHistoryPage {
         this.filterTransactions(res);
       },
       err => {
+        this.alertProvider.hideLoading();
         this.storageProvider.getTransactions().subscribe(res => {
           this.filterTransactions(res.content);
         });

@@ -132,6 +132,7 @@ export class ProfileEditPage {
           }
         },
         err => {
+          this.alertProvider.hideLoading();
           this.submitAttempt = false;
           this.alertProvider.showToast("failedToUpdateProfileInfo");
         },

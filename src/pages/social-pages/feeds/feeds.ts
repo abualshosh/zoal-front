@@ -43,6 +43,7 @@ export class FeedsPage {
         }
       },
       err => {
+        this.alertProvider.hideLoading();
         this.alertProvider.showAlert(err);
       },
       () => {

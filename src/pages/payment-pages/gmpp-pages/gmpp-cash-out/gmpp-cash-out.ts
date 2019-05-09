@@ -18,25 +18,19 @@ import { AlertProvider } from "../../../../providers/alert/alert";
   templateUrl: "gmpp-cash-out.html"
 })
 export class GmppCashOutPage {
-  // consumerIdentifier: any;
   private todo: FormGroup;
   public wallets: Item[];
   submitAttempt: boolean = false;
 
-  public GetServicesProvider: GetServicesProvider;
-
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProviderg: GetServicesProvider,
+    public GetServicesProvider: GetServicesProvider,
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
     public navCtrl: NavController,
     public modalCtrl: ModalController
   ) {
-    // this.consumerIdentifier = "249" + localStorage.getItem("username");
-    this.GetServicesProvider = GetServicesProviderg;
-
     this.todo = this.formBuilder.group({
       cashOutAll: [, ""],
       transactionAmount: ["", Validators.required],
@@ -87,8 +81,6 @@ export class GmppCashOutPage {
     }
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -99,12 +91,11 @@ export class GmppCashOutPage {
 
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(
+      this.GetServicesProvider.doTransaction(
         this.todo.value,
         "gmpp/doCashOutWithTan"
-      ).then(data => {
+      ).subscribe(data => {
         if (data != null && data.responseCode == 1) {
-          this.alertProvider.hideLoading();
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
             "DD/MM/YYYY  hh:mm:ss"
           );
@@ -136,7 +127,6 @@ export class GmppCashOutPage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;

@@ -85,8 +85,6 @@ export class BillInquiryPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -104,27 +102,27 @@ export class BillInquiryPage {
       dat.pan = dat.Card.cardNumber;
       dat.expDate = dat.Card.expDate;
 
-      this.GetServicesProvider.load(dat, "Billquiry").then(data => {
-        if (data != null && data.responseCode == 0) {
-          this.alertProvider.hideLoading();
-          var dat = [];
+      this.GetServicesProvider.doTransaction(dat, "Billquiry").subscribe(
+        data => {
+          if (data != null && data.responseCode == 0) {
+            var dat = [];
 
-          dat.push(data.billInfo);
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: dat },
-            { cssClass: "inset-modal" }
-          );
-          modal.present();
-          this.todo.reset();
-          this.submitAttempt = false;
-        } else {
-          this.alertProvider.hideLoading();
-          this.alertProvider.showAlert(data);
-          this.todo.reset();
-          this.submitAttempt = false;
+            dat.push(data.billInfo);
+            let modal = this.modalCtrl.create(
+              "TransactionDetailPage",
+              { data: dat },
+              { cssClass: "inset-modal" }
+            );
+            modal.present();
+            this.todo.reset();
+            this.submitAttempt = false;
+          } else {
+            this.alertProvider.showAlert(data);
+            this.todo.reset();
+            this.submitAttempt = false;
+          }
         }
-      });
+      );
     }
   }
 }

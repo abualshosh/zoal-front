@@ -109,8 +109,6 @@ export class CustomsPage {
     var dat = this.todo.value;
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -138,10 +136,8 @@ export class CustomsPage {
         dat.payeeId = "Custom Service";
       }
 
-      this.GetServicesProvider.load(dat, endpoint).then(data => {
+      this.GetServicesProvider.doTransaction(dat, endpoint).subscribe(data => {
         if (data != null && data.responseCode == 0) {
-          this.alertProvider.hideLoading();
-
           let main = [];
           let mainData = {};
           let datas = {};
@@ -192,7 +188,6 @@ export class CustomsPage {
           this.clearInput();
           this.submitAttempt = false;
         } else {
-          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.clearInput();
 

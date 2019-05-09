@@ -56,10 +56,10 @@ export class GmppSignupModalPage {
       UUID: uuid.v4(),
       consumerIdentifier: this.wallets[0].walletNumber
     };
-    this.alertProvider.showLoading();
-
-    this.GetServicesProvider.load(dat, "gmpp/registerConsumer").then(data => {
-      this.alertProvider.hideLoading();
+    this.GetServicesProvider.doTransaction(
+      dat,
+      "gmpp/registerConsumer"
+    ).subscribe(data => {
       if (data.responseCode == 1) {
         this.submitAttempt = false;
         let datas = [{ tital: "Status", desc: data.responseMessage }];

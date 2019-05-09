@@ -67,8 +67,6 @@ export class GmppChangePinPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
       if (dat.connewPIN == dat.newPIN) {
         dat.UUID = uuid.v4();
@@ -82,29 +80,27 @@ export class GmppChangePinPage {
 
         dat.isConsumer = "true";
         dat.connewPIN = "";
-        this.GetServicesProvider.load(this.todo.value, "gmpp/changePIN").then(
-          data => {
-            if (data != null && data.responseCode == 1) {
-              this.alertProvider.hideLoading();
-              var datas = [{ tital: "Status", desc: data.responseMessage }];
-              let modal = this.modalCtrl.create(
-                "GmppReceiptPage",
-                { data: datas },
-                { cssClass: "inset-modals" }
-              );
-              modal.present();
-              this.submitAttempt = false;
-            } else {
-              this.submitAttempt = false;
-              this.alertProvider.hideLoading();
-              this.alertProvider.showAlert(data);
-              this.todo.reset();
-            }
+        this.GetServicesProvider.doTransaction(
+          this.todo.value,
+          "gmpp/changePIN"
+        ).subscribe(data => {
+          if (data != null && data.responseCode == 1) {
+            var datas = [{ tital: "Status", desc: data.responseMessage }];
+            let modal = this.modalCtrl.create(
+              "GmppReceiptPage",
+              { data: datas },
+              { cssClass: "inset-modals" }
+            );
+            modal.present();
+            this.submitAttempt = false;
+          } else {
+            this.submitAttempt = false;
+            this.alertProvider.showAlert(data);
+            this.todo.reset();
           }
-        );
+        });
       } else {
         this.submitAttempt = false;
-        this.alertProvider.hideLoading();
         var data = { responseMessage: "" };
         data.responseMessage = "PIN Miss Match";
         this.alertProvider.showAlert(data);

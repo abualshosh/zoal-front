@@ -85,8 +85,6 @@ export class ChangeIpinPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       if (dat.ConnewIPIN == dat.newIPIN) {
@@ -98,9 +96,11 @@ export class ChangeIpinPage {
         dat.expDate = dat.Card.expDate;
         dat.ConnewIPIN = "";
 
-        this.GetServicesProvider.load(dat, "consumer/ChangeIPIN").then(data => {
+        this.GetServicesProvider.doTransaction(
+          dat,
+          "consumer/ChangeIPIN"
+        ).subscribe(data => {
           if (data != null && data.responseCode == 0) {
-            this.alertProvider.hideLoading();
             let modal = this.modalCtrl.create(
               "TransactionDetailPage",
               { data: [], main: [{ changeIpinPage: "" }] },
@@ -110,14 +110,12 @@ export class ChangeIpinPage {
             this.todo.reset();
             this.submitAttempt = false;
           } else {
-            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(data);
             this.todo.reset();
             this.submitAttempt = false;
           }
         });
       } else {
-        this.alertProvider.hideLoading();
         var data = { responseMessage: "IPIN Missmatch" };
         this.alertProvider.showAlert(data);
       }

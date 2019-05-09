@@ -150,7 +150,6 @@ export class ElectricityServicesPage {
       if (!dat.mobilewallet && !this.validCard) {
         return;
       }
-      this.alertProvider.showLoading();
 
       dat = this.todo.value;
 
@@ -177,59 +176,61 @@ export class ElectricityServicesPage {
       dat.paymentInfo = "METER=" + dat.METER;
       dat.payeeId = "National Electricity Corp.";
 
-      this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        if (data != null && data.responseCode == 0) {
-          this.alertProvider.hideLoading();
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
-          var datas;
+      this.GetServicesProvider.doTransaction(dat, "consumer/payment").subscribe(
+        data => {
+          if (data != null && data.responseCode == 0) {
+            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+              "DD/MM/YYYY  hh:mm:ss"
+            );
+            var datas;
 
-          let token = null;
-          if (Object.keys(data.billInfo).length > 0) {
-            token = data.billInfo.token;
-          }
-          datas = {
-            fees:
-              this.calculateFees(data) !== 0 ? this.calculateFees(data) : null,
-            date: datetime
-          };
+            let token = null;
+            if (Object.keys(data.billInfo).length > 0) {
+              token = data.billInfo.token;
+            }
+            datas = {
+              fees:
+                this.calculateFees(data) !== 0
+                  ? this.calculateFees(data)
+                  : null,
+              date: datetime
+            };
 
-          var dat = [];
-          if (data.PAN) {
-            dat.push({ token: token, Card: data.PAN });
+            var dat = [];
+            if (data.PAN) {
+              dat.push({ token: token, Card: data.PAN });
+            } else {
+              dat.push({ WalletNumber: data.entityId });
+            }
+            var main = [];
+            var mainData = {
+              electricityServices: data.tranAmount
+            };
+            main.push(mainData);
+
+            if (Object.keys(data.billInfo).length > 0) {
+              data.billInfo.opertorMessage = null;
+              data.billInfo.accountNo = null;
+              data.billInfo.token = null;
+              data.billInfo.netAmount = null;
+              dat.push(data.billInfo);
+            }
+            dat.push(datas);
+            let modal = this.modalCtrl.create(
+              "TransactionDetailPage",
+              { data: dat, main: main },
+              { cssClass: "inset-modal" }
+            );
+            modal.present();
+            this.clearInput();
+            this.submitAttempt = false;
           } else {
-            dat.push({ WalletNumber: data.entityId });
+            this.alertProvider.showAlert(data);
+            this.clearInput();
+            this.submitAttempt = false;
           }
-          var main = [];
-          var mainData = {
-            electricityServices: data.tranAmount
-          };
-          main.push(mainData);
-
-          if (Object.keys(data.billInfo).length > 0) {
-            data.billInfo.opertorMessage = null;
-            data.billInfo.accountNo = null;
-            data.billInfo.token = null;
-            data.billInfo.netAmount = null;
-            dat.push(data.billInfo);
-          }
-          dat.push(datas);
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: dat, main: main },
-            { cssClass: "inset-modal" }
-          );
-          modal.present();
-          this.clearInput();
-          this.submitAttempt = false;
-        } else {
-          this.alertProvider.hideLoading();
-          this.alertProvider.showAlert(data);
-          this.clearInput();
-          this.submitAttempt = false;
         }
-      });
+      );
     }
   }
 

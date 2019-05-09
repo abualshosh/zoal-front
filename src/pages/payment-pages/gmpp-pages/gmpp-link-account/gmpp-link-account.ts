@@ -125,8 +125,6 @@ export class GmppLinkAccountPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -137,40 +135,37 @@ export class GmppLinkAccountPage {
 
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(this.todo.value, "gmpp/linkAccount").then(
-        data => {
-          if (data != null && data.responseCode == 930) {
-            this.storage.set("LINKACCOUNT", "TRUE");
-            this.storage.set("LINKUUID", dat.UUID);
-            this.storage.set("primaryAccountNumber", dat.primaryAccountNumber);
-            this.alertProvider.hideLoading();
-            this.submitAttempt = false;
+      this.GetServicesProvider.doTransaction(
+        this.todo.value,
+        "gmpp/linkAccount"
+      ).subscribe(data => {
+        if (data != null && data.responseCode == 930) {
+          this.storage.set("LINKACCOUNT", "TRUE");
+          this.storage.set("LINKUUID", dat.UUID);
+          this.storage.set("primaryAccountNumber", dat.primaryAccountNumber);
+          this.submitAttempt = false;
 
-            // this.ionViewDidLoad();
-            this.compleate = "TRUE";
-            //     var datas =[
-            //       {"tital":"Status","desc":data.responseMessage},
-            //        {"tital":"SMS","desc":"An SMS will be sent shortly"},
-            //            ];
-            //        let modal = this.modalCtrl.create('GmppReceiptPage', {"data":datas},{ cssClass: 'inset-modal' });
-            //   //   modal.present();
+          // this.ionViewDidLoad();
+          this.compleate = "TRUE";
+          //     var datas =[
+          //       {"tital":"Status","desc":data.responseMessage},
+          //        {"tital":"SMS","desc":"An SMS will be sent shortly"},
+          //            ];
+          //        let modal = this.modalCtrl.create('GmppReceiptPage', {"data":datas},{ cssClass: 'inset-modal' });
+          //   //   modal.present();
 
-            // this.navCtrl.push(this.navCtrl.getActive().component);
-          } else {
-            this.alertProvider.hideLoading();
-            this.alertProvider.showAlert(data);
-            this.submitAttempt = false;
-          }
+          // this.navCtrl.push(this.navCtrl.getActive().component);
+        } else {
+          this.alertProvider.showAlert(data);
+          this.submitAttempt = false;
         }
-      );
+      });
     }
   }
 
   ComplateForm() {
     this.submitAttempt = true;
     if (this.complate.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.complate.value;
 
       this.storage.get("LINKUUID").then(val => {
@@ -188,12 +183,11 @@ export class GmppLinkAccountPage {
               dat.consumerIdentifier = this.wallets[0].walletNumber;
               //console.log(this.complate.value)
 
-              this.GetServicesProvider.load(
+              this.GetServicesProvider.doTransaction(
                 this.complate.value,
                 "gmpp/completeLinkAccount"
-              ).then(data => {
+              ).subscribe(data => {
                 if (data != null && data.responseCode == 1) {
-                  this.alertProvider.hideLoading();
                   var datas = [{ tital: "Status", desc: data.responseMessage }];
                   let modal = this.modalCtrl.create(
                     "GmppReceiptPage",
@@ -206,7 +200,6 @@ export class GmppLinkAccountPage {
                   this.navCtrl.pop();
                 } else {
                   this.submitAttempt = false;
-                  this.alertProvider.hideLoading();
                   this.alertProvider.showAlert(data);
                 }
               });

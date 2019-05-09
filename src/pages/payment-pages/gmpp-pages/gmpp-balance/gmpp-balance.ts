@@ -73,8 +73,6 @@ export class GmppBalancePage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -85,48 +83,47 @@ export class GmppBalancePage {
 
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(this.todo.value, "gmpp/getSVABalance").then(
-        data => {
-          if (data != null && data.responseCode == 1) {
-            this.alertProvider.hideLoading();
-            //  data.availableBalance=0;
-            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-              "DD/MM/YYYY  hh:mm:ss"
-            );
+      this.GetServicesProvider.doTransaction(
+        this.todo.value,
+        "gmpp/getSVABalance"
+      ).subscribe(data => {
+        if (data != null && data.responseCode == 1) {
+          //  data.availableBalance=0;
+          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+            "DD/MM/YYYY  hh:mm:ss"
+          );
 
-            var main = [];
-            var mainData = {
-              "available Balance": data.availableBalance
-            };
-            main.push(mainData);
-            var datas;
-            var dat = [];
+          var main = [];
+          var mainData = {
+            "available Balance": data.availableBalance
+          };
+          main.push(mainData);
+          var datas;
+          var dat = [];
 
-            datas = {
-              WalletNumber: data.consumerIdentifier,
-              "available Balance": data.availableBalance,
-              "reserved Balance": data.reservedBalance,
-              transactionId: data.transactionId,
-              date: datetime
-            };
-            dat.push(datas);
-            let modal = this.modalCtrl.create(
-              "TransactionDetailPage",
-              { data: dat, main: main },
-              { cssClass: "inset-modal" }
-            );
+          datas = {
+            WalletNumber: data.consumerIdentifier,
+            "available Balance": data.availableBalance,
+            "reserved Balance": data.reservedBalance,
+            transactionId: data.transactionId,
+            date: datetime
+          };
+          dat.push(datas);
+          let modal = this.modalCtrl.create(
+            "TransactionDetailPage",
+            { data: dat, main: main },
+            { cssClass: "inset-modal" }
+          );
 
-            modal.present();
-            this.todo.reset();
-            this.submitAttempt = false;
-          } else {
-            this.alertProvider.hideLoading();
-            this.alertProvider.showAlert(data);
-            this.todo.reset();
-            this.submitAttempt = false;
-          }
+          modal.present();
+          this.todo.reset();
+          this.submitAttempt = false;
+        } else {
+          this.alertProvider.showAlert(data);
+          this.todo.reset();
+          this.submitAttempt = false;
         }
-      );
+      });
     }
   }
 }

@@ -3,13 +3,18 @@ import "rxjs/add/operator/map";
 import { Storage } from "@ionic/storage";
 import { Api } from "../api/api";
 import * as JSEncrypt from "jsencrypt";
+import { Observable } from "rxjs/Observable";
+import { AlertProvider } from "../alert/alert";
 
 @Injectable()
 export class GetServicesProvider {
   public module: string = "";
 
-  constructor(public api: Api, public storage: Storage) {
-    //console.log('Hello GetServicesProvider Provider');
+  constructor(
+    public api: Api,
+    public storage: Storage,
+    public alertProvider: AlertProvider
+  ) {
     this.storage.get("module").then(val => {
       if (val != null) {
         this.module = val;
@@ -47,19 +52,17 @@ export class GetServicesProvider {
     return encrypted;
   }
 
-  load(postparams: any, path: string): Promise<any> {
-    return new Promise(resolve => {
-      let seq = this.api.post(path, postparams).share();
+  doTransaction(body: any, path: string): Observable<any> {
+    this.alertProvider.showLoading();
 
-      seq.subscribe(
-        (res: any) => {
-          resolve(res);
-        },
-        err => {
-          resolve(err);
-        }
-      );
-    });
+    let seq = this.api.post(path, body).share();
+    seq.subscribe(
+      res => {},
+      err => this.alertProvider.hideLoading(),
+      () => this.alertProvider.hideLoading()
+    );
+
+    return seq;
   }
 
   getWelcomeVideoUrl() {

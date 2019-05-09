@@ -69,7 +69,6 @@ export class GetBalancePage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -82,9 +81,11 @@ export class GetBalancePage {
       dat.pan = dat.Card.cardNumber;
       dat.expDate = dat.Card.expDate;
 
-      this.GetServicesProvider.load(dat, "consumer/getBalance").then(data => {
+      this.GetServicesProvider.doTransaction(
+        dat,
+        "consumer/getBalance"
+      ).subscribe(data => {
         if (data != null && data.responseCode == 0) {
-          this.alertProvider.hideLoading();
           var main = [];
           var mainData = {
             balance: data.balance.available
@@ -109,7 +110,6 @@ export class GetBalancePage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          this.alertProvider.hideLoading();
           if (data.responseCode != null) {
             this.alertProvider.showAlert(data);
           } else {

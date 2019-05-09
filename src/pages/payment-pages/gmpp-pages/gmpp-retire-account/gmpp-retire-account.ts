@@ -112,8 +112,6 @@ export class GmppRetireAccountPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -124,40 +122,37 @@ export class GmppRetireAccountPage {
 
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(this.todo.value, "Retirewallet").then(
-        data => {
-          if (data != null && data.responseCode == 1) {
-            this.storage.set("RetireACCOUNT", "TRUE");
-            this.storage.set("RUUID", dat.UUID);
-            //   this.storage.set("primaryAccountNumber",dat.primaryAccountNumber);
-            this.alertProvider.hideLoading();
-            this.compleate = "TRUE";
-            var datas = [
-              { tital: "Status", desc: data.responseMessage },
-              { tital: "SMS", desc: "An SMS will be sent shortly" }
-            ];
-            let modal = this.modalCtrl.create(
-              "GmppReceiptPage",
-              { data: datas },
-              { cssClass: "inset-modal" }
-            );
-            modal.present();
-            this.submitAttempt = false;
-          } else {
-            this.submitAttempt = false;
-            this.alertProvider.hideLoading();
-            this.alertProvider.showAlert(data);
-          }
+      this.GetServicesProvider.doTransaction(
+        this.todo.value,
+        "Retirewallet"
+      ).subscribe(data => {
+        if (data != null && data.responseCode == 1) {
+          this.storage.set("RetireACCOUNT", "TRUE");
+          this.storage.set("RUUID", dat.UUID);
+          //   this.storage.set("primaryAccountNumber",dat.primaryAccountNumber);
+          this.compleate = "TRUE";
+          var datas = [
+            { tital: "Status", desc: data.responseMessage },
+            { tital: "SMS", desc: "An SMS will be sent shortly" }
+          ];
+          let modal = this.modalCtrl.create(
+            "GmppReceiptPage",
+            { data: datas },
+            { cssClass: "inset-modal" }
+          );
+          modal.present();
+          this.submitAttempt = false;
+        } else {
+          this.submitAttempt = false;
+          this.alertProvider.showAlert(data);
         }
-      );
+      });
     }
   }
 
   ComplateForm() {
     this.submitAttempt = true;
     if (this.complate.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.complate.value;
 
       this.storage.get("RUUID").then(val => {
@@ -174,12 +169,11 @@ export class GmppRetireAccountPage {
           dat.consumerIdentifier = this.wallets[0].walletNumber;
           //console.log(dat.originalTranUUID)
 
-          this.GetServicesProvider.load(
+          this.GetServicesProvider.doTransaction(
             this.complate.value,
             "ComplateRetirewallet"
-          ).then(data => {
+          ).subscribe(data => {
             if (data != null && data.responseCode == 1) {
-              this.alertProvider.hideLoading();
               var datas = [{ tital: "Status", desc: data.responseMessage }];
               let modal = this.modalCtrl.create(
                 "GmppReceiptPage",
@@ -191,7 +185,6 @@ export class GmppRetireAccountPage {
               this.Cancle();
             } else {
               this.submitAttempt = false;
-              this.alertProvider.hideLoading();
               this.alertProvider.showAlert(data);
             }
           });

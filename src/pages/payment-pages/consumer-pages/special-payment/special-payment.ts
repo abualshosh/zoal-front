@@ -152,8 +152,6 @@ export class SpecialPaymentPage {
       if (!dat.mobilewallet && !this.validCard) {
         return;
       }
-      this.alertProvider.showLoading();
-
       dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -174,51 +172,53 @@ export class SpecialPaymentPage {
         dat.entityId = "";
       }
 
-      this.servicesProvider.load(dat, "consumer/specialPayment").then(data => {
-        if (data != null && data.responseStatus === "Successful") {
-          this.alertProvider.hideLoading();
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
+      this.servicesProvider
+        .doTransaction(dat, "consumer/specialPayment")
+        .subscribe(data => {
+          if (data != null && data.responseStatus === "Successful") {
+            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+              "DD/MM/YYYY  hh:mm:ss"
+            );
 
-          var datas;
+            var datas;
 
-          datas = {
-            serviceInfo: data.serviceInfo,
-            fees:
-              this.calculateFees(data) !== 0 ? this.calculateFees(data) : null,
-            date: datetime
-          };
+            datas = {
+              serviceInfo: data.serviceInfo,
+              fees:
+                this.calculateFees(data) !== 0
+                  ? this.calculateFees(data)
+                  : null,
+              date: datetime
+            };
 
-          var main = [];
-          var mainData = {
-            "": data.tranAmount
-          };
-          main.push(mainData);
-          var dat = [];
-          if (data.PAN) {
-            dat.push({ Card: data.PAN });
+            var main = [];
+            var mainData = {
+              "": data.tranAmount
+            };
+            main.push(mainData);
+            var dat = [];
+            if (data.PAN) {
+              dat.push({ Card: data.PAN });
+            } else {
+              dat.push({ WalletNumber: data.entityId });
+            }
+
+            dat.push(datas);
+            let modal = this.modalCtrl.create(
+              "TransactionDetailPage",
+              { data: dat, main: main },
+              { cssClass: "inset-modal" }
+            );
+            modal.present();
+            this.clearInput();
+            this.submitAttempt = false;
           } else {
-            dat.push({ WalletNumber: data.entityId });
+            this.alertProvider.showAlert(data);
+            this.clearInput();
+
+            this.submitAttempt = false;
           }
-
-          dat.push(datas);
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: dat, main: main },
-            { cssClass: "inset-modal" }
-          );
-          modal.present();
-          this.clearInput();
-          this.submitAttempt = false;
-        } else {
-          this.alertProvider.hideLoading();
-          this.alertProvider.showAlert(data);
-          this.clearInput();
-
-          this.submitAttempt = false;
-        }
-      });
+        });
     }
   }
 

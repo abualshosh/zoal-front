@@ -185,8 +185,6 @@ export class MobileCreditPage {
       if (!dat.mobilewallet && !this.validCard) {
         return;
       }
-      this.alertProvider.showLoading();
-
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
 
@@ -210,55 +208,57 @@ export class MobileCreditPage {
       dat.toAccountType = "00";
       dat.paymentInfo = "MPHONE=" + dat.MPHONE;
 
-      this.GetServicesProvider.load(dat, "consumer/payment").then(data => {
-        if (data != null && data.responseCode == 0) {
-          this.alertProvider.hideLoading();
-          var dats = this.todo.value;
-          var datas;
-          var dat = [];
-          if (data.PAN) {
-            dat.push({ Card: data.PAN });
+      this.GetServicesProvider.doTransaction(dat, "consumer/payment").subscribe(
+        data => {
+          if (data != null && data.responseCode == 0) {
+            var dats = this.todo.value;
+            var datas;
+            var dat = [];
+            if (data.PAN) {
+              dat.push({ Card: data.PAN });
+            } else {
+              dat.push({ WalletNumber: data.entityId });
+            }
+            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+              "DD/MM/YYYY  hh:mm:ss"
+            );
+
+            datas = {
+              PhoneNumber: dats.MPHONE,
+              fees:
+                this.calculateFees(data) !== 0
+                  ? this.calculateFees(data)
+                  : null,
+              date: datetime
+            };
+
+            var main = [];
+            var mainData = {
+              [this.title]: data.tranAmount
+            };
+            main.push(mainData);
+            if (Object.keys(data.billInfo).length > 0) {
+              dat.push(data.billInfo);
+            }
+
+            dat.push(datas);
+
+            let modal = this.modalCtrl.create(
+              "TransactionDetailPage",
+              { data: dat, main: main },
+              { cssClass: "inset-modal" }
+            );
+            modal.present();
+            this.clearInput();
+            this.submitAttempt = false;
           } else {
-            dat.push({ WalletNumber: data.entityId });
+            this.alertProvider.showAlert(data);
+
+            this.submitAttempt = false;
+            this.clearInput();
           }
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
-
-          datas = {
-            PhoneNumber: dats.MPHONE,
-            fees:
-              this.calculateFees(data) !== 0 ? this.calculateFees(data) : null,
-            date: datetime
-          };
-
-          var main = [];
-          var mainData = {
-            [this.title]: data.tranAmount
-          };
-          main.push(mainData);
-          if (Object.keys(data.billInfo).length > 0) {
-            dat.push(data.billInfo);
-          }
-
-          dat.push(datas);
-
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: dat, main: main },
-            { cssClass: "inset-modal" }
-          );
-          modal.present();
-          this.clearInput();
-          this.submitAttempt = false;
-        } else {
-          this.alertProvider.hideLoading();
-          this.alertProvider.showAlert(data);
-
-          this.submitAttempt = false;
-          this.clearInput();
         }
-      });
+      );
     }
   }
 

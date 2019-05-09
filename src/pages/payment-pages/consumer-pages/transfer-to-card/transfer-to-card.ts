@@ -128,8 +128,6 @@ export class TransferToCardPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
       dat.UUID = uuid.v4();
       dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
@@ -144,12 +142,11 @@ export class TransferToCardPage {
       dat.PAN = dat.Card.cardNumber;
       dat.expDate = dat.Card.expDate;
 
-      this.GetServicesProvider.load(
+      this.GetServicesProvider.doTransaction(
         this.todo.value,
         "consumer/doCardTransfer"
-      ).then(data => {
+      ).subscribe(data => {
         if (data != null && data.responseCode == 0) {
-          this.alertProvider.hideLoading();
           var datas;
           var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
             "DD/MM/YYYY  hh:mm:ss"
@@ -179,7 +176,6 @@ export class TransferToCardPage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;

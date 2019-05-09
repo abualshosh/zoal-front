@@ -73,8 +73,6 @@ export class GmppLastTransactionsPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -85,14 +83,13 @@ export class GmppLastTransactionsPage {
 
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(
+      this.GetServicesProvider.doTransaction(
         this.todo.value,
         "gmpp/getLastTransactions"
-      ).then(data => {
+      ).subscribe(data => {
         this.submitAttempt = false;
 
         if (data != null && data.responseCode == 1) {
-          this.alertProvider.hideLoading();
           var datas = [
             { tital: "Status", desc: data.responseMessage },
             { tital: "available Balance", desc: data.availableBalance },
@@ -108,7 +105,6 @@ export class GmppLastTransactionsPage {
           // this.submitAttempt=false;
         } else {
           this.submitAttempt = false;
-          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           //  this.submitAttempt=false;

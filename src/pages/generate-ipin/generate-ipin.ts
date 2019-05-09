@@ -88,8 +88,6 @@ export class GenerateIpinPage {
   submit() {
     this.submitAttempt = true;
     if (this.generateIpinForm.valid) {
-      this.alertProvider.showLoading();
-
       let requestData = this.generateIpinForm.value;
       requestData.UUID = uuid.v4();
       requestData.phoneNumber =
@@ -101,15 +99,13 @@ export class GenerateIpinPage {
       this.expDate = requestData.card.expDate;
 
       this.getServicesProvider
-        .load(requestData, "ipinGeneration/generateIpin")
-        .then(
+        .doTransaction(requestData, "ipinGeneration/generateIpin")
+        .subscribe(
           res => {
             if (res != null && res.responseCode == 100) {
-              this.alertProvider.hideLoading();
               this.isComplete = true;
               this.submitAttempt = false;
             } else {
-              this.alertProvider.hideLoading();
               this.alertProvider.showAlert(res);
               this.isComplete = false;
               this.clearInput("generateIpinForm");
@@ -117,7 +113,6 @@ export class GenerateIpinPage {
             }
           },
           err => {
-            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(err);
             this.isComplete = false;
             this.clearInput("generateIpinForm");
@@ -130,8 +125,6 @@ export class GenerateIpinPage {
   submitCompletion() {
     this.submitAttempt = true;
     if (this.completeForm.valid) {
-      this.alertProvider.showLoading();
-
       let requestData = this.completeForm.value;
       requestData.UUID = uuid.v4();
       requestData.pan = this.pan;
@@ -144,24 +137,21 @@ export class GenerateIpinPage {
       );
 
       this.getServicesProvider
-        .load(requestData, "ipinGeneration/generateIpinCompletion")
-        .then(
+        .doTransaction(requestData, "ipinGeneration/generateIpinCompletion")
+        .subscribe(
           res => {
             if (res != null && res.responseCode == 100) {
               this.isComplete = false;
               this.submitAttempt = false;
-              this.alertProvider.hideLoading();
               this.alertProvider.showToast("ipinGenerationSuccess");
               this.navCtrl.pop();
             } else {
-              this.alertProvider.hideLoading();
               this.alertProvider.showAlert(res);
               this.clearInput("completeForm");
               this.submitAttempt = false;
             }
           },
           err => {
-            this.alertProvider.hideLoading();
             this.alertProvider.showAlert(err);
             this.clearInput("completeForm");
             this.submitAttempt = false;

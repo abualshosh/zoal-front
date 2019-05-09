@@ -93,8 +93,6 @@ export class GmppPurchasePage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -106,46 +104,45 @@ export class GmppPurchasePage {
 
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(this.todo.value, "gmpp/doPurchase").then(
-        data => {
-          if (data != null && data.responseCode == 1) {
-            this.alertProvider.hideLoading();
-            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-              "DD/MM/YYYY  hh:mm:ss"
-            );
+      this.GetServicesProvider.doTransaction(
+        this.todo.value,
+        "gmpp/doPurchase"
+      ).subscribe(data => {
+        if (data != null && data.responseCode == 1) {
+          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+            "DD/MM/YYYY  hh:mm:ss"
+          );
 
-            var datas = {
-              destinationIdentifier: data.destinationIdentifier,
-              fee: data.fee,
-              "Extarnal Fee": data.externalFee,
-              transactionAmount: data.transactionAmount,
-              transactionId: data.transactionId,
-              date: datetime
-            };
-            var dat = [];
-            var main = [];
-            var mainData = {
-              purchase: data.transactionAmount
-            };
-            dat.push({ WalletNumber: data.consumerIdentifier });
-            main.push(mainData);
-            dat.push(datas);
-            let modal = this.modalCtrl.create(
-              "TransactionDetailPage",
-              { data: dat, main: main },
-              { cssClass: "inset-modal" }
-            );
-            modal.present();
-            this.todo.reset();
-            this.submitAttempt = false;
-          } else {
-            this.alertProvider.hideLoading();
-            this.alertProvider.showAlert(data);
-            this.todo.reset();
-            this.submitAttempt = false;
-          }
+          var datas = {
+            destinationIdentifier: data.destinationIdentifier,
+            fee: data.fee,
+            "Extarnal Fee": data.externalFee,
+            transactionAmount: data.transactionAmount,
+            transactionId: data.transactionId,
+            date: datetime
+          };
+          var dat = [];
+          var main = [];
+          var mainData = {
+            purchase: data.transactionAmount
+          };
+          dat.push({ WalletNumber: data.consumerIdentifier });
+          main.push(mainData);
+          dat.push(datas);
+          let modal = this.modalCtrl.create(
+            "TransactionDetailPage",
+            { data: dat, main: main },
+            { cssClass: "inset-modal" }
+          );
+          modal.present();
+          this.todo.reset();
+          this.submitAttempt = false;
+        } else {
+          this.alertProvider.showAlert(data);
+          this.todo.reset();
+          this.submitAttempt = false;
         }
-      );
+      });
     }
   }
 }

@@ -72,8 +72,6 @@ export class GmppSelfUnlockPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -84,27 +82,26 @@ export class GmppSelfUnlockPage {
 
       dat.isConsumer = "true";
 
-      this.GetServicesProvider.load(this.todo.value, "gmpp/unlockAccount").then(
-        data => {
-          if (data != null && data.responseCode == 1) {
-            this.alertProvider.hideLoading();
-            var datas = [{ tital: "Status", desc: data.responseMessage }];
-            let modal = this.modalCtrl.create(
-              "GmppReceiptPage",
-              { data: datas },
-              { cssClass: "inset-modals" }
-            );
-            modal.present();
-            this.todo.reset();
-            this.submitAttempt = false;
-          } else {
-            this.alertProvider.hideLoading();
-            this.alertProvider.showAlert(data);
-            this.todo.reset();
-            this.submitAttempt = false;
-          }
+      this.GetServicesProvider.doTransaction(
+        this.todo.value,
+        "gmpp/unlockAccount"
+      ).subscribe(data => {
+        if (data != null && data.responseCode == 1) {
+          var datas = [{ tital: "Status", desc: data.responseMessage }];
+          let modal = this.modalCtrl.create(
+            "GmppReceiptPage",
+            { data: datas },
+            { cssClass: "inset-modals" }
+          );
+          modal.present();
+          this.todo.reset();
+          this.submitAttempt = false;
+        } else {
+          this.alertProvider.showAlert(data);
+          this.todo.reset();
+          this.submitAttempt = false;
         }
-      );
+      });
     }
   }
 }

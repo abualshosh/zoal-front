@@ -75,8 +75,6 @@ export class GmppResendTanPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      this.alertProvider.showLoading();
-
       var dat = this.todo.value;
 
       dat.UUID = uuid.v4();
@@ -87,9 +85,11 @@ export class GmppResendTanPage {
 
       dat.originatorType = "Consumer";
       dat.tranType = "CASHOUT";
-      this.GetServicesProvider.load(this.todo.value, "ResendTan").then(data => {
+      this.GetServicesProvider.doTransaction(
+        this.todo.value,
+        "ResendTan"
+      ).subscribe(data => {
         if (data != null && data.responseCode == 1) {
-          this.alertProvider.hideLoading();
           var datas = [{ tital: "Status", desc: data.responseMessage }];
           let modal = this.modalCtrl.create(
             "GmppReceiptPage",
@@ -100,7 +100,6 @@ export class GmppResendTanPage {
           this.todo.reset();
           this.submitAttempt = false;
         } else {
-          this.alertProvider.hideLoading();
           this.alertProvider.showAlert(data);
           this.todo.reset();
           this.submitAttempt = false;

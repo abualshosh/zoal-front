@@ -17,7 +17,11 @@ import { User } from "../providers/providers";
 import { Api } from "../providers/providers";
 import { GetServicesProvider } from "../providers/providers";
 import { MyApp } from "./app.component";
-import { AuthService, TokenInterceptor } from "../providers/providers";
+import {
+  AuthService,
+  AuthInterceptor,
+  AuthExpiredInterceptor
+} from "../providers/providers";
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { File } from "@ionic-native/file";
 import { Contacts } from "@ionic-native/contacts";
@@ -103,7 +107,12 @@ export function provideSettings(storage: Storage) {
     GetServicesProvider,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthExpiredInterceptor,
       multi: true
     },
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },

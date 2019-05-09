@@ -4,9 +4,10 @@ import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { Api } from "../api/api";
 import "rxjs/add/operator/map";
-import { Events } from "ionic-angular";
+import { Events, App } from "ionic-angular";
 import { StompService } from "ng2-stomp-service";
 import { StorageProvider } from "../storage/storage";
+import { AlertProvider } from "../alert/alert";
 
 @Injectable()
 export class User {
@@ -18,6 +19,8 @@ export class User {
     public api: Api,
     public storage: Storage,
     public storageProvider: StorageProvider,
+    public app: App,
+    public alertProvider: AlertProvider,
     public stomp: StompService
   ) {}
 
@@ -65,5 +68,11 @@ export class User {
 
   changeProfilePicture(data) {
     return this.api.post("mobile-profile-images", data);
+  }
+
+  logout() {
+    localStorage.clear();
+    this.app.getRootNav().setRoot("WelcomePage");
+    this.alertProvider.hideLoading();
   }
 }

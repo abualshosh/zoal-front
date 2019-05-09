@@ -1,6 +1,12 @@
 <ion-header>
   <ion-navbar color="secondary">
     <ion-title>{{ "addpost" | translate }}</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span ion-text showWhen="ios">{{ "cancel" | translate }}</span>
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -18,7 +24,7 @@
         ></textarea>
       </ion-item>
 
-      <ion-item>
+      <ion-item no-lines>
         <div>
           <img-loader
             *ngIf="postImage?.image"

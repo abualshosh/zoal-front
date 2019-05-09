@@ -92,7 +92,7 @@ export class PostCreatePage {
 
     this.api.post("posts", post).subscribe(
       res => {
-        this.navCtrl.pop();
+        this.viewCtrl.dismiss(true);
       },
       err => {
         this.alertProvider.hideLoading();
@@ -102,5 +102,9 @@ export class PostCreatePage {
         this.alertProvider.hideLoading();
       }
     );
+  }
+
+  cancel() {
+    this.viewCtrl.dismiss();
   }
 }

@@ -3,7 +3,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  AlertController
+  AlertController,
+  ModalController
 } from "ionic-angular";
 import { Api } from "../../../providers/providers";
 import { StorageProvider } from "../../../providers/storage/storage";
@@ -26,10 +27,11 @@ export class FeedsPage {
     public alertCtrl: AlertController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
+    public modalCtrl: ModalController,
     public api: Api
   ) {}
 
-  ionViewWillEnter() {
+  ionViewDidLoad() {
     this.loadPosts();
   }
 
@@ -99,7 +101,19 @@ export class FeedsPage {
   }
 
   createPost() {
-    this.navCtrl.push("PostCreatePage");
+    let modal = this.modalCtrl.create(
+      "PostCreatePage",
+      {},
+      {
+        cssClass: "inset-modal-box"
+      }
+    );
+    modal.present();
+    modal.onDidDismiss(hasNewPost => {
+      if (hasNewPost) {
+        this.loadPosts();
+      }
+    });
   }
 
   doInfinite(infiniteScroll) {

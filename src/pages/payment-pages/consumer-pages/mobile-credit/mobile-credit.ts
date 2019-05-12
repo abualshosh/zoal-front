@@ -238,6 +238,7 @@ export class MobileCreditPage {
             };
             main.push(mainData);
             if (Object.keys(data.billInfo).length > 0) {
+              data.billInfo.subNewBalance = null;
               dat.push(data.billInfo);
             }
 

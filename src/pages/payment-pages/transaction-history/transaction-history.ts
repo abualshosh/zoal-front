@@ -181,6 +181,9 @@ export class TransactionHistoryPage {
           response.billInfo.accountNo = null;
           response.billInfo.netAmount = null;
 
+          //MTN TopUp unneeded fields
+          response.billInfo.subNewBalance = null;
+
           data.push(response.billInfo);
         }
       }

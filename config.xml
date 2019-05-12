@@ -104,4 +104,5 @@
     </plugin>
     <plugin name="com.darktalker.cordova.screenshot" spec="0.1.6" />
     <engine name="android" spec="7.1.4" />
+    <engine name="ios" spec="4.5.5" />
 </widget>

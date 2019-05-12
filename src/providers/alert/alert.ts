@@ -9,6 +9,7 @@ import { Item } from "../storage/storage";
 
 @Injectable()
 export class AlertProvider {
+  commingSoonTitleMessage: string;
   closeTitle: string;
   closeMessage: string;
   errorMessage: string;
@@ -31,6 +32,7 @@ export class AlertProvider {
   getTranslatedStrings() {
     this.translateService
       .get([
+        "commingSoonTitleMessage",
         "closeTitle",
         "closeMessage",
         "errorTitle",
@@ -40,6 +42,7 @@ export class AlertProvider {
         "ok"
       ])
       .subscribe(values => {
+        this.commingSoonTitleMessage = values["commingSoonTitleMessage"];
         this.closeTitle = values["closeTitle"];
         this.closeMessage = values["closeMessage"];
         this.errorTitle = values["errorTitle"];
@@ -155,6 +158,20 @@ export class AlertProvider {
         alert.present();
       });
     }
+  }
+
+  showCommingSoon() {
+    this.getTranslatedStrings();
+    const alert = this.alertCtrl.create({
+      title: this.commingSoonTitleMessage,
+      buttons: [
+        {
+          text: this.okButton,
+          handler: () => {}
+        }
+      ]
+    });
+    alert.present();
   }
 
   showLoading() {

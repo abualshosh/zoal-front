@@ -86,6 +86,10 @@ export class PaymentMethodPage {
     }
   }
 
+  openCommingSoon() {
+    this.alertProvider.showCommingSoon();
+  }
+
   isCardWalletAvailable(choice: string): boolean {
     if (choice === "card") {
       if (!this.cards || this.cards.length <= 0) {

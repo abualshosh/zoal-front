@@ -71,6 +71,7 @@
   "filterByDate": "Filter by date",
   "closeTitle": "Exit",
   "closeMessage": "Do you want to exit?",
+  "commingSoonTitleMessage": "Comming Soon",
   "HOME": "Home",
   "scanQr": "Scan & Pay",
   "transactionServices": "Transaction Services",

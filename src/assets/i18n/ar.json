@@ -69,6 +69,8 @@
   "failedTransaction": "معاملة فاشله",
   "doGenerateIPinRequest": "انشاء الرقم السري",
   "filterByDate": "البحث بالتاريخ",
+  "closeTitle": "الخروج",
+  "closeMessage": "هل تود الخروج؟",
   "HOME": "الرئيسيه",
   "MerchantId": "المرجع",
   "specialPaymentServices": "الدفعية الخاصه",

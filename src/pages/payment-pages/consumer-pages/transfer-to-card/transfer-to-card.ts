@@ -16,6 +16,7 @@ import {
 import * as moment from "moment";
 import { AlertProvider } from "../../../../providers/alert/alert";
 import { StorageProvider, Item } from "../../../../providers/storage/storage";
+import { QrScanProvider } from "../../../../providers/qr-scan/qr-scan";
 
 @IonicPage()
 @Component({
@@ -41,6 +42,7 @@ export class TransferToCardPage {
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
+    public qrScanProvider: QrScanProvider,
     public modalCtrl: ModalController
   ) {
     this.title = this.navParams.get("title")
@@ -117,11 +119,17 @@ export class TransferToCardPage {
     };
     this.barcodeScanner.scan(this.options).then(
       barcodeData => {
+        this.qrScanProvider.isScanning = false;
+        if (barcodeData.cancelled) {
+          this.qrScanProvider.isScanning = true;
+        }
         if (barcodeData.text) {
           this.todo.controls["ToCard"].setValue(barcodeData.text);
         }
       },
-      err => {}
+      err => {
+        this.qrScanProvider.isScanning = false;
+      }
     );
   }
 

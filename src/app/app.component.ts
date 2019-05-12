@@ -10,6 +10,7 @@ import { Events } from "ionic-angular";
 import { StorageProvider } from "../providers/storage/storage";
 import { HttpHeaders } from "@angular/common/http";
 import { AlertProvider } from "../providers/alert/alert";
+import { QrScanProvider } from "../providers/qr-scan/qr-scan";
 
 @Component({
   templateUrl: "app.html"
@@ -116,6 +117,7 @@ export class MyApp {
     public storageProvider: StorageProvider,
     public userProvider: User,
     public alertProvider: AlertProvider,
+    public qrScanProvider: QrScanProvider,
     private splashScreen: SplashScreen
   ) {
     if (localStorage.getItem("logdin") == "true") {
@@ -138,12 +140,33 @@ export class MyApp {
       this.initTranslate();
     });
 
+    this.platform.registerBackButtonAction(() => {
+      let nav = this.app.getActiveNavs()[0];
+
+      if (this.qrScanProvider.isScanning) {
+        this.qrScanProvider.isScanning = false;
+      } else if (nav.canGoBack()) {
+        nav.pop();
+      } else {
+        if (!this.alertProvider.isClose) {
+          this.alertProvider.showCloseAppAlert().then(
+            () => {
+              this.alertProvider.isClose = false;
+              this.platform.exitApp();
+            },
+            () => {
+              this.alertProvider.isClose = false;
+            }
+          );
+        }
+      }
+    });
+
     const headers = new HttpHeaders().set(
       "Authorization",
       "Bearer " + localStorage.getItem("id_token")
     );
     this.imageLoaderConfig.setHttpHeaders(headers);
-    this.imageLoaderConfig.enableDebugMode();
     this.imageLoaderConfig.setFallbackUrl("assets/img/userPlaceholder.png");
     this.imageLoaderConfig.setImageReturnType("base64");
     this.imageLoaderConfig.setSpinnerColor("secondary");

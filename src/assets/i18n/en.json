@@ -69,6 +69,8 @@
   "failedTransaction": "Failed Transaction",
   "doGenerateIPinRequest": "Generate IPIN",
   "filterByDate": "Filter by date",
+  "closeTitle": "Exit",
+  "closeMessage": "Do you want to exit?",
   "HOME": "Home",
   "scanQr": "Scan & Pay",
   "transactionServices": "Transaction Services",

@@ -39,6 +39,7 @@ import { InAppBrowser } from "@ionic-native/in-app-browser";
 import { AlertProvider } from "../providers/alert/alert";
 import { SocialSharing } from "@ionic-native/social-sharing";
 import { Screenshot } from "@ionic-native/screenshot";
+import { QrScanProvider } from '../providers/qr-scan/qr-scan';
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -104,7 +105,8 @@ export function createTranslateLoader(http: HttpClient) {
     StorageProvider,
     AlertProvider,
     SocialSharing,
-    Screenshot
+    Screenshot,
+    QrScanProvider
   ]
 })
 export class AppModule {}

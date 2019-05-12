@@ -16,6 +16,7 @@ import {
 } from "@ionic-native/barcode-scanner";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
+import { QrScanProvider } from "../../../../providers/qr-scan/qr-scan";
 
 @IonicPage()
 @Component({
@@ -41,6 +42,7 @@ export class GmppTranToWalletPage {
     public alertProvider: AlertProvider,
     public storageProvider: StorageProvider,
     public navCtrl: NavController,
+    public qrScanProvider: QrScanProvider,
     public modalCtrl: ModalController
   ) {
     this.title = this.navParams.get("title")
@@ -118,15 +120,18 @@ export class GmppTranToWalletPage {
     };
     this.barcodeScanner.scan(this.options).then(
       barcodeData => {
+        this.qrScanProvider.isScanning = false;
+        if (barcodeData.cancelled) {
+          this.qrScanProvider.isScanning = true;
+        }
         if (barcodeData.text) {
-          // alert(barcodeData.text);
           this.todo.controls["destinationIdentifier"].setValue(
             barcodeData.text
           );
         }
       },
       err => {
-        //console.log("Error occured : " + err);
+        this.qrScanProvider.isScanning = false;
       }
     );
   }

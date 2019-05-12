@@ -9,12 +9,15 @@ import { Item } from "../storage/storage";
 
 @Injectable()
 export class AlertProvider {
+  closeTitle: string;
+  closeMessage: string;
   errorMessage: string;
   errorTitle: string;
   errorButton: string;
   cancelButton: string;
   okButton: string;
   loader: any;
+  public isClose: boolean;
 
   constructor(
     public alertCtrl: AlertController,
@@ -27,8 +30,18 @@ export class AlertProvider {
 
   getTranslatedStrings() {
     this.translateService
-      .get(["errorTitle", "errorMessage", "errorButton", "cancel", "ok"])
+      .get([
+        "closeTitle",
+        "closeMessage",
+        "errorTitle",
+        "errorMessage",
+        "errorButton",
+        "cancel",
+        "ok"
+      ])
       .subscribe(values => {
+        this.closeTitle = values["closeTitle"];
+        this.closeMessage = values["closeMessage"];
         this.errorTitle = values["errorTitle"];
         this.errorMessage = values["errorMessage"];
         this.errorButton = values["errorButton"];
@@ -112,6 +125,36 @@ export class AlertProvider {
 
       alert.present();
     });
+  }
+
+  showCloseAppAlert() {
+    if (!this.isClose) {
+      this.isClose = true;
+      this.getTranslatedStrings();
+
+      return new Promise<any>((resolve, reject) => {
+        const alert = this.alertCtrl.create({
+          title: this.closeTitle,
+          message: this.closeMessage,
+          buttons: [
+            {
+              text: this.cancelButton,
+              handler: () => {
+                reject();
+              }
+            },
+            {
+              text: this.okButton,
+              handler: () => {
+                resolve();
+              }
+            }
+          ],
+          enableBackdropDismiss: false
+        });
+        alert.present();
+      });
+    }
   }
 
   showLoading() {

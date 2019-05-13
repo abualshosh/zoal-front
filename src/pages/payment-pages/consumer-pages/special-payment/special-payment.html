@@ -30,24 +30,26 @@
         </ion-select>
       </ion-item>
 
-      <div *ngIf="!todo.controls.MerchantId.valid && submitAttempt">
-        <p>{{ "validMerchantIdError" | translate }}</p>
+      <div *ngIf="!merchant">
+        <div *ngIf="!todo.controls.MerchantId.valid && submitAttempt">
+          <p>{{ "validMerchantIdError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "MerchantId" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            style="padding-left:5%;"
+            no-padding
+            formControlName="MerchantId"
+            interface="popover"
+          >
+            <ion-option *ngFor="let merchant of charities" [value]="merchant">
+              {{ merchant.merchantName }}
+            </ion-option>
+          </ion-select>
+        </ion-item>
       </div>
-      <ion-item>
-        <ion-label stacked>{{ "MerchantId" | translate }}</ion-label>
-        <ion-select
-          okText="{{ 'Submit' | translate }}"
-          cancelText="{{ 'close' | translate }}"
-          style="padding-left:5%;"
-          no-padding
-          formControlName="MerchantId"
-          interface="popover"
-        >
-          <ion-option *ngFor="let merchant of merchants" [value]="merchant">
-            {{ merchant.merchantName }}
-          </ion-option>
-        </ion-select>
-      </ion-item>
 
       <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
         <p>{{ "validamountError" | translate }}</p>

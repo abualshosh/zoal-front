@@ -30,8 +30,9 @@ export class SpecialPaymentPage {
   validCard: boolean = false;
   isGmpp: boolean;
   favorites: Item[];
-  merchants: any;
+  charities: any;
   title: string;
+  merchant: any;
 
   constructor(
     public events: Events,
@@ -44,9 +45,8 @@ export class SpecialPaymentPage {
     public api: Api,
     public navParams: NavParams
   ) {
-    this.title = this.navParams.get("title")
-      ? this.navParams.get("title")
-      : "specialPaymentServices";
+    this.loadPaymentType();
+
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],
@@ -65,8 +65,25 @@ export class SpecialPaymentPage {
       Amount: ["", Validators.required]
     });
     this.todo.controls["mobilewallet"].setValue(false);
-    this.api.get("merchants").subscribe(res => {
-      this.merchants = res;
+  }
+
+  loadPaymentType() {
+    if (this.navParams.get("title")) {
+      this.title = this.navParams.get("title");
+      this.loadCharities();
+    } else if (this.navParams.get("param")) {
+      this.merchant = this.navParams.get("param");
+      this.title = this.merchant.merchantName;
+    } else {
+      this.title = "specialPaymentServices";
+    }
+  }
+
+  loadCharities() {
+    this.api.get("merchants").subscribe((res: any) => {
+      this.charities = res.filter(merchant => {
+        return merchant.status == "charity";
+      });
     });
   }
 
@@ -143,6 +160,9 @@ export class SpecialPaymentPage {
   }
 
   logForm() {
+    if (this.merchant) {
+      this.todo.controls["MerchantId"].setValue(this.merchant);
+    }
     var dat = this.todo.value;
     if (dat.Card && !dat.mobilewallet) {
       this.validCard = true;
@@ -171,6 +191,8 @@ export class SpecialPaymentPage {
         dat.authenticationType = "00";
         dat.entityId = "";
       }
+
+      console.log(dat);
 
       this.servicesProvider
         .doTransaction(dat, "consumer/specialPayment")

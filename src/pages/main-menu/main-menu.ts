@@ -1,17 +1,11 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  PopoverController
-} from "ionic-angular";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 import {
   BarcodeScannerOptions,
   BarcodeScanner
 } from "@ionic-native/barcode-scanner";
-import { Storage } from "@ionic/storage";
-import { StorageProvider } from "../../providers/storage/storage";
 import { QrScanProvider } from "../../providers/qr-scan/qr-scan";
+import { Api } from "../../providers/api/api";
 
 @IonicPage()
 @Component({
@@ -118,20 +112,38 @@ export class MainMenuPage {
     }
   ];
 
+  merchantPages: {
+    title: string;
+    component: any;
+    icon: any;
+    var: any;
+  }[] = [];
+
   scanData: {};
   qrOptions: BarcodeScannerOptions;
   isGmpp: boolean = false;
 
   constructor(
-    public storage: Storage,
+    public api: Api,
     private barcodeScanner: BarcodeScanner,
-    public popoverCtrl: PopoverController,
     public navCtrl: NavController,
-    public storageProvider: StorageProvider,
     public qrScanProvider: QrScanProvider,
     public navParams: NavParams
   ) {
     this.isGmpp = this.navParams.get("isGmpp");
+
+    this.api.get("merchants").subscribe((res: any) => {
+      res.map(merchant => {
+        if (merchant.status == "biller") {
+          this.merchantPages.push({
+            title: merchant.merchantName,
+            component: "SpecialPaymentPage",
+            icon: "custom-purchase",
+            var: merchant
+          });
+        }
+      });
+    });
   }
 
   openPagesList(list) {
@@ -142,9 +154,9 @@ export class MainMenuPage {
       title = "telecomServices";
     } else if (list == "govermentPages") {
       if (this.isGmpp) {
-        pages = this.gmppGovermentPages;
+        pages = this.gmppGovermentPages.concat(this.merchantPages);
       } else {
-        pages = this.govermentPages;
+        pages = this.govermentPages.concat(this.merchantPages);
       }
 
       title = "govermentServices";

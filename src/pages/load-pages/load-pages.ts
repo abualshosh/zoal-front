@@ -18,10 +18,10 @@ export class LoadPagesPage {
 
   ionViewDidLoad() {}
 
-  openPage(page, name) {
-    if (name) {
+  openPage(page, param) {
+    if (param) {
       this.navCtrl.push(page, {
-        name: name,
+        param: param,
         isGmpp: this.isGmpp
       });
     } else {

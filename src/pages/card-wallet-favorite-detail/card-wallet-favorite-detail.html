@@ -8,7 +8,7 @@
   <h2 text-center *ngIf="!items">{{ "noItems" | translate }}</h2>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of items">
+    <ion-item no-lines *ngFor="let item of items">
       <ion-item *ngIf="type == 'wallets'">
         <h2>{{ item.name }}</h2>
         <h4>{{ item.walletNumber }}</h4>
@@ -17,7 +17,7 @@
       <ion-item *ngIf="type == 'cards'">
         <h2>{{ item.name }}</h2>
         <h4>{{ item.cardNumber }}</h4>
-        <ion-note item-end>{{ item.expDate }}</ion-note>
+        <ion-note>{{ item.expDate }}</ion-note>
       </ion-item>
 
       <ion-item *ngIf="type == 'favorites'">
@@ -25,17 +25,17 @@
         <h4>{{ item.favoriteText }}</h4>
       </ion-item>
 
-      <ion-item-options side="right">
-        <button *ngIf="checkIfDeleteable()" ion-button color="danger" (click)="deleteItem(item)">
+      <div item-end>
+        <button style="width:100%;" *ngIf="checkIfDeleteable()" ion-button color="danger" (click)="deleteItem(item)">
           <ion-icon name="trash"></ion-icon>
           {{ "delete" | translate }}
-        </button>
-        <button ion-button color="secondary" (click)="updateItem(item)">
+        </button> <br>
+        <button style="width:100%;" ion-button color="secondary" (click)="updateItem(item)">
           <ion-icon name="build"></ion-icon>
           {{ "edit" | translate }}
         </button>
-      </ion-item-options>
-    </ion-item-sliding>
+      </div>
+    </ion-item>
   </ion-list>
 
   <ion-fab *ngIf="type !== 'wallets'" end bottom>

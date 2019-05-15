@@ -138,7 +138,7 @@ export class MainMenuPage {
           this.merchantPages.push({
             title: merchant.merchantName,
             component: "SpecialPaymentPage",
-            icon: "custom-purchase",
+            icon: "custom-mobile-bill",
             var: merchant
           });
         }

@@ -60,7 +60,7 @@ export class CardWalletFavoriteDetailPage {
       "ItemCreatePage",
       { key: this.type },
       {
-        cssClass: "inset-modal-box"
+        cssClass: "inset-modal-box item-create-modal"
       }
     );
     modal.present();
@@ -74,7 +74,7 @@ export class CardWalletFavoriteDetailPage {
       "ItemCreatePage",
       { key: this.type, item: item },
       {
-        cssClass: "inset-modal-box"
+        cssClass: "inset-modal-box item-create-modal"
       }
     );
     modal.present();

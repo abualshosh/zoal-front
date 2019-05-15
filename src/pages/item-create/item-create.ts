@@ -8,6 +8,7 @@ import {
 } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Item, StorageProvider } from "../../providers/storage/storage";
+import * as moment from "moment";
 
 @IonicPage()
 @Component({
@@ -53,7 +54,7 @@ export class ItemCreatePage {
         ])
       ],
       expDate: [
-        navParams.get("item") ? this.item.expDate : "",
+        navParams.get("item") ? this.formatFromDate(this.item.expDate) : "",
         Validators.required
       ],
       favoriteText: [
@@ -158,18 +159,11 @@ export class ItemCreatePage {
   }
 
   formatDate(formDate) {
-    let date = new Date(formDate);
-    let month = "" + (date.getMonth() + 1);
-    if (month.length == 1) {
-      month = "0" + month;
-    }
+    return moment(formDate).format("YYMM");
+  }
 
-    return (
-      date
-        .getFullYear()
-        .toString()
-        .substring(2, 4) + month
-    );
+  formatFromDate(expDate) {
+    return moment(expDate, "YYMM").format();
   }
 
   cancel() {

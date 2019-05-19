@@ -109,7 +109,7 @@ export class PaymentMethodPage {
       "ItemCreatePage",
       { key: type },
       {
-        cssClass: "inset-modal-box"
+        cssClass: "inset-modal-box item-create-modal"
       }
     );
     modal.present();

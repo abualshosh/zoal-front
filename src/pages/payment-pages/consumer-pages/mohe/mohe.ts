@@ -27,8 +27,6 @@ export class MohePage {
   public payee: any[] = [];
   public isArab = false;
   validCard: boolean = false;
-
-  public title: any;
   submitAttempt: boolean = false;
   CourseIDs: Array<{ title: string; id: any }> = [
     { title: "Academic", id: "1" },
@@ -63,8 +61,6 @@ export class MohePage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    //this.title=this.navParams.get("name");
-
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],
@@ -233,7 +229,6 @@ export class MohePage {
           "/STUDFORMKIND=" +
           dat.FormKind.id;
       }
-      this.title = dat.payeeId;
 
       this.GetServicesProvider.doTransaction(dat, "consumer/payment").subscribe(
         data => {

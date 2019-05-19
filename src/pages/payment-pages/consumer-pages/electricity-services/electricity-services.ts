@@ -24,7 +24,6 @@ export class ElectricityServicesPage {
   public cards: Item[] = [];
   public wallets: Item[] = [];
   public payee: any[] = [];
-  public title: any;
   showWallet: boolean = false;
   submitAttempt: boolean = false;
   validCard: boolean = false;
@@ -41,8 +40,6 @@ export class ElectricityServicesPage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.title = this.navParams.get("name");
-
     this.todo = this.formBuilder.group({
       pan: [""],
       Card: ["", Validators.required],

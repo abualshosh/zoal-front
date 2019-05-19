@@ -37,7 +37,7 @@ export class BillInquiryPage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.title = this.navParams.get("name");
+    this.title = this.navParams.get("param");
 
     this.todo = this.formBuilder.group({
       pan: [""],

@@ -55,7 +55,7 @@ export class MobileCreditPage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
-    this.title = this.navParams.get("name");
+    this.title = this.navParams.get("param");
     if (this.title === "mobileBillPayment") {
       this.payee = [
         {

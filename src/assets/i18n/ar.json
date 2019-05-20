@@ -68,6 +68,7 @@
   "balanceInquiry": "الاستعلام عن رصيد",
   "failedTransaction": "معاملة فاشله",
   "doGenerateIPinRequest": "انشاء الرقم السري",
+  "doGenerateCompletionIPinRequest": "تكلمة انشاء الرقم السري",
   "filterByDate": "البحث بالتاريخ",
   "closeTitle": "الخروج",
   "closeMessage": "هل تود الخروج؟",

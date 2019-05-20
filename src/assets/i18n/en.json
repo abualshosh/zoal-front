@@ -68,6 +68,7 @@
   "balanceInquiry": "Balance Inquiry",
   "failedTransaction": "Failed Transaction",
   "doGenerateIPinRequest": "Generate IPIN",
+  "doGenerateCompletionIPinRequest": "Generate IPIN Completion",
   "filterByDate": "Filter by date",
   "closeTitle": "Exit",
   "closeMessage": "Do you want to exit?",

@@ -33,13 +33,16 @@ export class WelcomePage {
     this.checkDirection();
 
     this.menuCtrl.enable(false, "sideMenu");
+  }
 
+  ionViewDidEnter() {
     this.serviceProvider.getWelcomeVideoUrl().subscribe(res => {
-      // res[0].url += "?rel=0;&autoplay=1&mute=1";
-      this.trustedVideoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-        res[0].url
-      );
-      this.isVideo = true;
+      if (res[0]) {
+        this.trustedVideoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+          res[0].url
+        );
+        this.isVideo = true;
+      }
     });
   }
 
@@ -67,5 +70,9 @@ export class WelcomePage {
 
   signup() {
     this.navCtrl.push("SignupPage");
+  }
+
+  ionViewWillLeave() {
+    this.isVideo = false;
   }
 }

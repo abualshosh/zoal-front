@@ -8,7 +8,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Camera } from "@ionic-native/camera";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
-import { IonicStorageModule, Storage } from "@ionic/storage";
+import { IonicStorageModule } from "@ionic/storage";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
@@ -21,19 +21,10 @@ import {
   AuthInterceptor,
   AuthExpiredInterceptor
 } from "../providers/providers";
-import { FileTransfer } from "@ionic-native/file-transfer";
-import { File } from "@ionic-native/file";
 import { Contacts } from "@ionic-native/contacts";
 import { SQLite } from "@ionic-native/sqlite";
-import { StompService } from "ng2-stomp-service";
 import { NgxQRCodeModule } from "ngx-qrcode2";
 import { BarcodeScanner } from "@ionic-native/barcode-scanner";
-import { FCM } from "@ionic-native/fcm";
-import { Firebase } from "@ionic-native/firebase";
-import { IonicImageLoader } from "ionic-image-loader";
-import { PhotoViewer } from "@ionic-native/photo-viewer";
-import { NativePageTransitions } from "@ionic-native/native-page-transitions";
-import { CardIO } from "@ionic-native/card-io";
 import { StorageProvider } from "../providers/storage/storage";
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 import { AlertProvider } from "../providers/alert/alert";
@@ -52,7 +43,6 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserModule,
     HttpClientModule,
     NgxQRCodeModule,
-    IonicImageLoader.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -72,21 +62,13 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     Api,
     User,
-    File,
-    PhotoViewer,
     Contacts,
-    CardIO,
     Camera,
-    Firebase,
-    FileTransfer,
     AuthService,
     SplashScreen,
     StatusBar,
     BarcodeScanner,
     SQLite,
-    NativePageTransitions,
-    StompService,
-    FCM,
     NgxQRCodeModule,
     InAppBrowser,
     GetServicesProvider,

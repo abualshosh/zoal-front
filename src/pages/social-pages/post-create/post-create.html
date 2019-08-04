@@ -26,7 +26,7 @@
 
       <ion-item no-lines>
         <div>
-          <img-loader
+          <img
             *ngIf="postImage?.image"
             [src]="
               'data:' +
@@ -35,7 +35,7 @@
               postImage.image
             "
             (click)="viewImage(post)"
-          ></img-loader>
+          />
 
           <button
             *ngIf="!postImage?.image"

@@ -5,7 +5,6 @@ import { Storage } from "@ionic/storage";
 import { Api } from "../api/api";
 import "rxjs/add/operator/map";
 import { Events, App } from "ionic-angular";
-import { StompService } from "ng2-stomp-service";
 import { StorageProvider } from "../storage/storage";
 import { AlertProvider } from "../alert/alert";
 
@@ -20,8 +19,7 @@ export class User {
     public storage: Storage,
     public storageProvider: StorageProvider,
     public app: App,
-    public alertProvider: AlertProvider,
-    public stomp: StompService
+    public alertProvider: AlertProvider
   ) {}
 
   sendOtpLogin(accountInfo: any) {

@@ -4,7 +4,6 @@ import { StatusBar } from "@ionic-native/status-bar";
 import { TranslateService } from "@ngx-translate/core";
 import { Config, Nav, Platform, App, MenuController } from "ionic-angular";
 import { Api, User } from "../providers/providers";
-import { ImageLoaderConfig } from "ionic-image-loader";
 import { Storage } from "@ionic/storage";
 import { Events } from "ionic-angular";
 import { StorageProvider } from "../providers/storage/storage";
@@ -104,7 +103,6 @@ export class MyApp {
   isRtl: boolean;
 
   constructor(
-    private imageLoaderConfig: ImageLoaderConfig,
     private translate: TranslateService,
     public platform: Platform,
     public storage: Storage,
@@ -161,18 +159,6 @@ export class MyApp {
         }
       }
     });
-
-    const headers = new HttpHeaders().set(
-      "Authorization",
-      "Bearer " + localStorage.getItem("id_token")
-    );
-    this.imageLoaderConfig.setHttpHeaders(headers);
-    this.imageLoaderConfig.setFallbackUrl("assets/img/userPlaceholder.png");
-    this.imageLoaderConfig.setImageReturnType("base64");
-    this.imageLoaderConfig.setSpinnerColor("secondary");
-    this.imageLoaderConfig.setSpinnerName("bubbles");
-    this.imageLoaderConfig.setBackgroundSize("cover");
-    this.imageLoaderConfig.useImageTag(true);
   }
 
   initTranslate() {

@@ -7,7 +7,7 @@ import {
   Events
 } from "ionic-angular";
 import * as moment from "moment";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
@@ -23,7 +23,6 @@ export class SpecialPaymentPage {
   showWallet: boolean = false;
   profile: any;
   submitAttempt: boolean = false;
-  private todo: FormGroup;
   public cards: Item[] = [];
   public wallets: Item[] = [];
   public payee: any[] = [];
@@ -34,10 +33,30 @@ export class SpecialPaymentPage {
   title: string;
   merchant: any;
 
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    pan: [""],
+    Card: ["", Validators.required],
+    MerchantId: ["", Validators.required],
+    entityId: [""],
+    mobilewallet: [""],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    Amount: ["", Validators.required]
+  });
+
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public servicesProvider: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
@@ -46,25 +65,11 @@ export class SpecialPaymentPage {
     public navParams: NavParams
   ) {
     this.loadPaymentType();
-
-    this.todo = this.formBuilder.group({
-      pan: [""],
-      Card: ["", Validators.required],
-      MerchantId: ["", Validators.required],
-      entityId: [""],
-      mobilewallet: [""],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      Amount: ["", Validators.required]
-    });
     this.todo.controls["mobilewallet"].setValue(false);
+
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
+    });
   }
 
   loadPaymentType() {
@@ -73,6 +78,7 @@ export class SpecialPaymentPage {
       this.loadCharities();
     } else if (this.navParams.get("param")) {
       this.merchant = this.navParams.get("param");
+      this.todo.controls["MerchantId"].setValue(this.merchant);
       this.title = this.merchant.merchantName;
     } else {
       this.title = "specialPaymentServices";
@@ -160,72 +166,55 @@ export class SpecialPaymentPage {
   }
 
   logForm() {
-    if (this.merchant) {
-      this.todo.controls["MerchantId"].setValue(this.merchant);
-    }
-    var dat = this.todo.value;
-    if (dat.Card && !dat.mobilewallet) {
+    const form = this.todo.value;
+    if (form.Card && !form.mobilewallet) {
       this.validCard = true;
     }
     this.submitAttempt = true;
     if (this.todo.valid) {
-      if (!dat.mobilewallet && !this.validCard) {
+      if (!form.mobilewallet && !this.validCard) {
         return;
       }
-      dat = this.todo.value;
 
-      dat.UUID = uuid.v4();
-      dat.IPIN = this.servicesProvider.encrypt(dat.UUID + dat.IPIN);
-      dat.tranAmount = dat.Amount;
-      dat.serviceProviderId = dat.MerchantId.serviceProviderId;
-      dat.serviceInfo = dat.MerchantId.merchantName;
-      dat.dynamicFees = dat.MerchantId.dynamicFees;
-      if (dat.mobilewallet) {
-        dat.entityType = "Mobile Wallet";
-        dat.entityId = this.wallets[0].walletNumber;
-        dat.authenticationType = "10";
-        dat.pan = "";
-      } else {
-        dat.pan = dat.Card.cardNumber;
-        dat.expDate = dat.Card.expDate;
-        dat.authenticationType = "00";
-        dat.entityId = "";
-      }
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+        tranAmount: form.Amount,
+        serviceProviderId: form.MerchantId.serviceProviderId,
+        serviceInfo: form.MerchantId.merchantName,
+        dynamicFees: form.MerchantId.dynamicFees,
+        tranCurrency: "SDG",
+        pan: form.mobilewallet ? null : form.Card.cardNumber,
+        expDate: form.mobilewallet ? null : form.Card.expDate,
+        authenticationType: form.mobilewallet ? "10" : "00",
+        entityType: form.mobilewallet ? "Mobile Wallet" : null,
+        entityId: form.mobilewallet ? this.wallets[0].walletNumber : null
+      };
 
-      console.log(dat);
-
-      this.servicesProvider
-        .doTransaction(dat, "consumer/specialPayment")
-        .subscribe(data => {
-          if (data != null && data.responseStatus === "Successful") {
-            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+      this.serviceProvider
+        .doTransaction(request, "consumer/specialPayment")
+        .subscribe(res => {
+          if (res != null && res.responseStatus === "Successful") {
+            const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
               "DD/MM/YYYY  hh:mm:ss"
             );
+            const main = [{ "": res.tranAmount }];
+            let dat = [];
 
-            var datas;
-
-            datas = {
-              serviceInfo: data.serviceInfo,
-              fees:
-                this.calculateFees(data) !== 0
-                  ? this.calculateFees(data)
-                  : null,
-              date: datetime
-            };
-
-            var main = [];
-            var mainData = {
-              "": data.tranAmount
-            };
-            main.push(mainData);
-            var dat = [];
-            if (data.PAN) {
-              dat.push({ Card: data.PAN });
+            if (res.PAN) {
+              dat.push({ Card: res.PAN });
             } else {
-              dat.push({ WalletNumber: data.entityId });
+              dat.push({ WalletNumber: res.entityId });
             }
 
-            dat.push(datas);
+            dat.push({
+              serviceInfo: res.serviceInfo,
+              fees:
+                this.calculateFees(res) !== 0 ? this.calculateFees(res) : null,
+              date: datetime
+            });
+
             let modal = this.modalCtrl.create(
               "TransactionDetailPage",
               { data: dat, main: main },
@@ -235,7 +224,7 @@ export class SpecialPaymentPage {
             this.clearInput();
             this.submitAttempt = false;
           } else {
-            this.alertProvider.showAlert(data);
+            this.alertProvider.showAlert(res);
             this.clearInput();
 
             this.submitAttempt = false;

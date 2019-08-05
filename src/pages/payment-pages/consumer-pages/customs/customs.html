@@ -21,7 +21,7 @@
 <ion-content no-padding class="masters">
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
-      <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+      <div [hidden]="todo.controls.Card.valid">
         <p>{{ "validcardError" | translate }}</p>
       </div>
       <ion-item>
@@ -40,7 +40,7 @@
         </ion-select>
       </ion-item>
 
-      <div *ngIf="!todo.controls.BANKCODE.valid && submitAttempt">
+      <div [hidden]="todo.controls.BANKCODE.valid">
         <p>{{ "validBANKCODEError" | translate }}</p>
       </div>
       <ion-item>
@@ -52,7 +52,7 @@
         ></ion-input>
       </ion-item>
 
-      <div *ngIf="!todo.controls.DECLARANTCODE.valid && submitAttempt">
+      <div [hidden]="todo.controls.DECLARANTCODE.valid">
         <p>{{ "validDECLARANTCODEError" | translate }}</p>
       </div>
       <ion-item>
@@ -65,7 +65,7 @@
       </ion-item>
 
       <div *ngIf="type == 'customsPayment'">
-        <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
+        <div [hidden]="todo.controls.Amount.valid">
           <p>{{ "validamountError" | translate }}</p>
         </div>
         <ion-item>
@@ -78,7 +78,7 @@
         </ion-item>
       </div>
 
-      <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+      <div [hidden]="todo.controls.IPIN.valid">
         <p>{{ "validipinError" | translate }}</p>
       </div>
       <ion-item>
@@ -91,9 +91,16 @@
         ></ion-input>
       </ion-item>
 
-      <button class="subbutn" ion-button type="submit" color="secondary">
-        {{ "Submit" | translate }}
-      </button>
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
     </form>
   </div>
 </ion-content>

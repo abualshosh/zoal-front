@@ -7,7 +7,7 @@ import {
   Events
 } from "ionic-angular";
 import * as moment from "moment";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { AlertProvider } from "../../../../providers/alert/alert";
@@ -22,16 +22,41 @@ export class CustomsPage {
   profile: any;
   public title: any;
   public type = "customsPayment";
-  private todo: FormGroup;
   public cards: Item[] = [];
   public payee: any[] = [];
   submitAttempt: boolean = false;
   favorites: Item[];
 
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    pan: [""],
+    Card: ["", Validators.required],
+    Payee: [""],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    BANKCODE: [
+      "",
+      Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+    ],
+    DECLARANTCODE: [
+      "",
+      Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+    ],
+    Amount: ["", Validators.required]
+  });
+
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProvider: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
@@ -40,28 +65,8 @@ export class CustomsPage {
   ) {
     this.title = "customsServices";
 
-    this.todo = this.formBuilder.group({
-      pan: [""],
-      Card: ["", Validators.required],
-      Payee: [""],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      BANKCODE: [
-        "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
-      ],
-      DECLARANTCODE: [
-        "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
-      ],
-      Amount: ["", Validators.required]
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
     });
   }
 
@@ -106,89 +111,85 @@ export class CustomsPage {
   }
 
   logForm() {
-    var dat = this.todo.value;
+    const form = this.todo.value;
     this.submitAttempt = true;
     if (this.todo.valid) {
-      dat = this.todo.value;
-
-      dat.UUID = uuid.v4();
-      dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-
-      dat.tranCurrency = "SDG";
-      dat.tranAmount = dat.Amount;
-
-      dat.PAN = dat.Card.cardNumber;
-      dat.expDate = dat.Card.expDate;
-
-      dat.authenticationType = "00";
-      dat.fromAccountType = "00";
-      dat.toAccountType = "00";
-
-      dat.paymentInfo =
-        "BANKCODE=" + dat.BANKCODE + "/DECLARANTCODE=" + dat.DECLARANTCODE;
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+        tranAmount: form.Amount,
+        tranCurrency: "SDG",
+        PAN: form.Card.cardNumber,
+        expDate: form.Card.expDate,
+        authenticationType: "00",
+        fromAccountType: "00",
+        toAccountType: "00",
+        paymentInfo:
+          "BANKCODE=" + form.BANKCODE + "/DECLARANTCODE=" + form.DECLARANTCODE,
+        payeeId: "Custom Service"
+      };
 
       let endpoint: string;
       if (this.type == "customsPayment") {
         endpoint = "consumer/payment";
-        dat.payeeId = "Custom Service";
       } else {
         endpoint = "consumer/getBill";
-        dat.payeeId = "Custom Service";
       }
 
-      this.GetServicesProvider.doTransaction(dat, endpoint).subscribe(data => {
-        if (data != null && data.responseCode == 0) {
+      this.serviceProvider.doTransaction(request, endpoint).subscribe(res => {
+        if (res != null && res.responseCode == 0) {
           let main = [];
+          let data = [];
           let mainData = {};
           let datas = {};
 
           if (this.type == "customsPayment") {
-            let datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+            const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
               "DD/MM/YYYY  hh:mm:ss"
             );
             datas = {
               fees:
-                this.calculateFees(data) !== 0
-                  ? this.calculateFees(data)
+                this.calculateFees(res) !== 0
+                  ? this.calculateFees(res)
                   : null,
               date: datetime
             };
 
             mainData = {
-              customsServices: data.tranAmount
+              customsServices: res.tranAmount
             };
           } else {
             mainData = {
-              customsInquiryPage: data.billInfo.Amount
+              customsInquiryPage: res.billInfo.Amount
             };
           }
+
           main.push(mainData);
+          data.push({ Card: res.PAN });
 
-          let dat = [];
-          dat.push({ Card: data.PAN });
-
-          if (Object.keys(data.billInfo).length > 0) {
-            data.billInfo.Status = null;
-            data.billInfo.ReceiptDate = null;
-            data.billInfo.ReceiptSerial = null;
-            data.billInfo.RegistrationSerial = null;
-            data.billInfo.RegistrationSerial = null;
-            data.billInfo.ProcStatus = null;
-            data.billInfo.ProcError = null;
-            dat.push(data.billInfo);
+          if (Object.keys(res.billInfo).length > 0) {
+            res.billInfo.Status = null;
+            res.billInfo.ReceiptDate = null;
+            res.billInfo.ReceiptSerial = null;
+            res.billInfo.RegistrationSerial = null;
+            res.billInfo.ProcStatus = null;
+            res.billInfo.ProcError = null;
+            data.push(res.billInfo);
           }
 
-          dat.push(datas);
+          data.push(datas);
+
           let modal = this.modalCtrl.create(
             "TransactionDetailPage",
-            { data: dat, main: main },
+            { data: data, main: main },
             { cssClass: "inset-modal" }
           );
           modal.present();
           this.clearInput();
           this.submitAttempt = false;
         } else {
-          this.alertProvider.showAlert(data);
+          this.alertProvider.showAlert(res);
           this.clearInput();
 
           this.submitAttempt = false;

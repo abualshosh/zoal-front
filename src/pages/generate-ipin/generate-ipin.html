@@ -12,7 +12,7 @@
       *ngIf="!isComplete"
     >
       <ion-list>
-        <div *ngIf="!generateIpinForm.controls.card.valid && submitAttempt">
+        <div [hidden]="generateIpinForm.controls.card.valid">
           <p>{{ "validcardError" | translate }}</p>
         </div>
         <ion-item>
@@ -31,9 +31,7 @@
           </ion-select>
         </ion-item>
 
-        <div
-          *ngIf="!generateIpinForm.controls.phoneNumber.valid && submitAttempt"
-        >
+        <div [hidden]="generateIpinForm.controls.phoneNumber.valid">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
         <ion-item>
@@ -46,9 +44,16 @@
         </ion-item>
       </ion-list>
 
-      <button class="subbutn" ion-button type="submit" color="secondary">
-        {{ "Submit" | translate }}
-      </button>
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave1"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
     </form>
 
     <form
@@ -57,14 +62,14 @@
       *ngIf="isComplete"
     >
       <ion-list>
-        <div *ngIf="!completeForm.controls.otp.valid && submitAttempt">
-          <p>{{ "validOtpError" | translate }}</p>
+        <div [hidden]="completeForm.controls.otp.valid">
+          <p>{{ "enterCode" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>{{ "OTP" | translate }}</ion-label>
           <ion-input type="number" formControlName="otp" required> </ion-input>
         </ion-item>
-        <div *ngIf="!completeForm.controls.ipin.valid && submitAttempt">
+        <div [hidden]="completeForm.controls.ipin.valid">
           <p>{{ "validnewipinError" | translate }}</p>
         </div>
         <ion-item>
@@ -79,9 +84,16 @@
         </ion-item>
       </ion-list>
 
-      <button class="subbutn" ion-button type="submit" color="secondary">
-        {{ "Submit" | translate }}
-      </button>
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave2"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
     </form>
   </div>
 </ion-content>

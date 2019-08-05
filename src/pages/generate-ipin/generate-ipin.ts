@@ -18,20 +18,54 @@ import { Item, StorageProvider } from "../../providers/storage/storage";
   templateUrl: "generate-ipin.html"
 })
 export class GenerateIpinPage {
-  private generateIpinForm: FormGroup;
-  private completeForm: FormGroup;
   public cards: Item[] = [];
   public isComplete: boolean = false;
   public submitAttempt: boolean = false;
   pan: any;
   expDate: any;
 
+  isReadyToSave1: boolean;
+  isReadyToSave2: boolean;
+
+  generateIpinForm = this.formBuilder.group({
+    card: ["", Validators.required],
+    phoneNumber: [
+      "",
+      Validators.compose([
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("0[0-9]*")
+      ])
+    ]
+  });
+
+  completeForm = this.formBuilder.group({
+    otp: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    ipin: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ]
+  });
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private formBuilder: FormBuilder,
-    public getServicesProvider: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider
   ) {
@@ -39,37 +73,12 @@ export class GenerateIpinPage {
       this.cards = cards;
     });
 
-    this.generateIpinForm = this.formBuilder.group({
-      card: ["", Validators.required],
-      phoneNumber: [
-        "",
-        Validators.compose([
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("0[0-9]*")
-        ])
-      ]
+    this.generateIpinForm.valueChanges.subscribe(v => {
+      this.isReadyToSave1 = this.generateIpinForm.valid;
     });
 
-    this.completeForm = this.formBuilder.group({
-      otp: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      ipin: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ]
+    this.completeForm.valueChanges.subscribe(v => {
+      this.isReadyToSave2 = this.completeForm.valid;
     });
   }
 
@@ -88,18 +97,20 @@ export class GenerateIpinPage {
   submit() {
     this.submitAttempt = true;
     if (this.generateIpinForm.valid) {
-      let requestData = this.generateIpinForm.value;
-      requestData.UUID = uuid.v4();
-      requestData.phoneNumber =
-        "249" +
-        requestData.phoneNumber.substring(1, requestData.phoneNumber.length);
-      requestData.pan = requestData.card.cardNumber;
-      requestData.expDate = requestData.card.expDate;
-      this.pan = requestData.card.cardNumber;
-      this.expDate = requestData.card.expDate;
+      const form = this.generateIpinForm.value;
+      const request = {
+        UUID: uuid.v4(),
+        phoneNumber:
+          "249" + form.phoneNumber.substring(1, form.phoneNumber.length),
+        pan: form.card.cardNumber,
+        expDate: form.card.expDate
+      };
 
-      this.getServicesProvider
-        .doTransaction(requestData, "ipinGeneration/generateIpin")
+      this.pan = form.card.cardNumber;
+      this.expDate = form.card.expDate;
+
+      this.serviceProvider
+        .doTransaction(request, "ipinGeneration/generateIpin")
         .subscribe(
           res => {
             if (res != null && res.responseCode == 100) {
@@ -125,19 +136,18 @@ export class GenerateIpinPage {
   submitCompletion() {
     this.submitAttempt = true;
     if (this.completeForm.valid) {
-      let requestData = this.completeForm.value;
-      requestData.UUID = uuid.v4();
-      requestData.pan = this.pan;
-      requestData.expDate = this.expDate;
-      requestData.ipin = this.getServicesProvider.encryptIpin(
-        requestData.UUID + requestData.ipin
-      );
-      requestData.otp = this.getServicesProvider.encryptIpin(
-        requestData.UUID + requestData.otp
-      );
+      const form = this.completeForm.value;
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        pan: this.pan,
+        expDate: this.expDate,
+        ipin: this.serviceProvider.encryptIpin(tranUuid + form.ipin),
+        otp: this.serviceProvider.encryptIpin(tranUuid + form.otp)
+      };
 
-      this.getServicesProvider
-        .doTransaction(requestData, "ipinGeneration/generateIpinCompletion")
+      this.serviceProvider
+        .doTransaction(request, "ipinGeneration/generateIpinCompletion")
         .subscribe(
           res => {
             if (res != null && res.responseCode == 100) {

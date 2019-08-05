@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import {
   ModalController,
   IonicPage,
@@ -18,33 +18,34 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
   templateUrl: "get-balance.html"
 })
 export class GetBalancePage {
-  private todo: FormGroup;
   public cards: Item[] = [];
   submitAttempt: boolean = false;
-  public GetServicesProvider: GetServicesProvider;
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    Card: ["", Validators.required],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ]
+  });
 
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProviderg: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
-    //  user.printuser();
-    this.GetServicesProvider = GetServicesProviderg;
-    this.todo = this.formBuilder.group({
-      Card: ["", Validators.required],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ]
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
     });
   }
 
@@ -69,57 +70,48 @@ export class GetBalancePage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      var dat = this.todo.value;
+      const form = this.todo.value;
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+        tranCurrency: "SDG",
+        authenticationType: "00",
+        fromAccountType: "00",
+        pan: form.Card.cardNumber,
+        expDate: form.Card.expDate
+      };
 
-      dat.UUID = uuid.v4();
-      dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
+      this.serviceProvider
+        .doTransaction(request, "consumer/getBalance")
+        .subscribe(res => {
+          if (res != null && res.responseCode == 0) {
+            const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
+              "DD/MM/YYYY  hh:mm:ss"
+            );
+            const main = [{ balance: res.balance.available }];
+            const data = [{ Card: res.PAN, date: datetime }];
 
-      dat.tranCurrency = "SDG";
+            let modal = this.modalCtrl.create(
+              "TransactionDetailPage",
+              { data: data, main: main },
+              { cssClass: "inset-modal" }
+            );
+            modal.present();
 
-      dat.authenticationType = "00";
-      dat.fromAccountType = "00";
-      dat.pan = dat.Card.cardNumber;
-      dat.expDate = dat.Card.expDate;
-
-      this.GetServicesProvider.doTransaction(
-        dat,
-        "consumer/getBalance"
-      ).subscribe(data => {
-        if (data != null && data.responseCode == 0) {
-          var main = [];
-          var mainData = {
-            balance: data.balance.available
-          };
-          main.push(mainData);
-          var datas;
-          var dat = [];
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
-          datas = {
-            Card: data.PAN,
-            date: datetime
-          };
-          dat.push(datas);
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: dat, main: main },
-            { cssClass: "inset-modal" }
-          );
-          modal.present();
-          this.todo.reset();
-          this.submitAttempt = false;
-        } else {
-          if (data.responseCode != null) {
-            this.alertProvider.showAlert(data);
+            this.todo.reset();
+            this.submitAttempt = false;
           } else {
-            data.responseMessage = "Connection Error";
-            this.alertProvider.showAlert(data);
+            if (res.responseCode != null) {
+              this.alertProvider.showAlert(res);
+            } else {
+              res.responseMessage = "Connection Error";
+              this.alertProvider.showAlert(res);
+            }
+            this.todo.reset();
+            this.submitAttempt = false;
           }
-          this.todo.reset();
-          this.submitAttempt = false;
-        }
-      });
+        });
     }
   }
 }

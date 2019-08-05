@@ -5,7 +5,7 @@ import {
   ModalController,
   Events
 } from "ionic-angular";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { AlertProvider } from "../../../../providers/alert/alert";
@@ -17,50 +17,52 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
   templateUrl: "change-ipin.html"
 })
 export class ChangeIpinPage {
-  private todo: FormGroup;
   public cards: Item[] = [];
   submitAttempt: boolean = false;
-  public GetServicesProvider: GetServicesProvider;
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    Card: ["", Validators.required],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    newIPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    ConnewIPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ]
+  });
 
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProviderg: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navCtrl: NavController
   ) {
-    this.GetServicesProvider = GetServicesProviderg;
-    this.todo = this.formBuilder.group({
-      Card: ["", Validators.required],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      newIPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      ConnewIPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ]
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
     });
   }
 
@@ -85,39 +87,39 @@ export class ChangeIpinPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      var dat = this.todo.value;
+      const form = this.todo.value;
+      if (form.ConnewIPIN === form.newIPIN) {
+        const tranUuid = uuid.v4();
+        const request = {
+          UUID: tranUuid,
+          IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+          newIPIN: this.serviceProvider.encrypt(tranUuid + form.newIPIN),
+          tranCurrency: "SDG",
+          authenticationType: "00",
+          pan: form.Card.cardNumber,
+          expDate: form.Card.expDate
+        };
 
-      if (dat.ConnewIPIN == dat.newIPIN) {
-        dat.UUID = uuid.v4();
-        dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
-        dat.newIPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.newIPIN);
-        dat.authenticationType = "00";
-        dat.pan = dat.Card.cardNumber;
-        dat.expDate = dat.Card.expDate;
-        dat.ConnewIPIN = "";
-
-        this.GetServicesProvider.doTransaction(
-          dat,
-          "consumer/ChangeIPIN"
-        ).subscribe(data => {
-          if (data != null && data.responseCode == 0) {
-            let modal = this.modalCtrl.create(
-              "TransactionDetailPage",
-              { data: [], main: [{ changeIpinPage: "" }] },
-              { cssClass: "inset-modals" }
-            );
-            modal.present();
-            this.todo.reset();
-            this.submitAttempt = false;
-          } else {
-            this.alertProvider.showAlert(data);
-            this.todo.reset();
-            this.submitAttempt = false;
-          }
-        });
+        this.serviceProvider
+          .doTransaction(request, "consumer/ChangeIPIN")
+          .subscribe(res => {
+            if (res != null && res.responseCode == 0) {
+              let modal = this.modalCtrl.create(
+                "TransactionDetailPage",
+                { data: [], main: [{ changeIpinPage: "" }] },
+                { cssClass: "inset-modals" }
+              );
+              modal.present();
+              this.todo.reset();
+              this.submitAttempt = false;
+            } else {
+              this.alertProvider.showAlert(res);
+              this.todo.reset();
+              this.submitAttempt = false;
+            }
+          });
       } else {
-        var data = { responseMessage: "IPIN Missmatch" };
-        this.alertProvider.showAlert(data);
+        this.alertProvider.showToast("validConnewIPINError");
       }
     }
   }

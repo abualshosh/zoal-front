@@ -9,11 +9,7 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        <div
-          *ngIf="
-            !validCard && submitAttempt && !todo.controls.mobilewallet.value
-          "
-        >
+        <div [hidden]="validCard && !todo.controls.mobilewallet.value">
           <p>{{ "validcardError" | translate }}</p>
         </div>
         <ion-item *ngIf="!todo.controls.mobilewallet.value">
@@ -32,7 +28,7 @@
             </ion-option>
           </ion-select>
         </ion-item>
-        <div *ngIf="!todo.controls.INVOICENUMBER.valid && submitAttempt">
+        <div [hidden]="todo.controls.INVOICENUMBER.valid">
           <p>{{ "validINVOICENUMBERError" | translate }}</p>
         </div>
         <ion-item>
@@ -44,7 +40,7 @@
           ></ion-input>
         </ion-item>
 
-        <div *ngIf="!todo.controls.PHONENUMBER.valid && submitAttempt">
+        <div [hidden]="todo.controls.PHONENUMBER.valid">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
 
@@ -57,7 +53,7 @@
           ></ion-input>
         </ion-item>
 
-        <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
+        <div [hidden]="todo.controls.Amount.valid">
           <p>{{ "validamountError" | translate }}</p>
         </div>
         <ion-item>
@@ -69,7 +65,7 @@
           ></ion-input>
         </ion-item>
 
-        <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+        <div [hidden]="todo.controls.IPIN.valid">
           <p *ngIf="todo.controls.mobilewallet.value">
             {{ "validipinError" | translate }}
           </p>
@@ -93,9 +89,16 @@
         </ion-item>
       </ion-list>
 
-      <button class="subbutn" ion-button type="submit" color="secondary">
-        {{ "Submit" | translate }}
-      </button>
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
     </form>
   </div>
 </ion-content>

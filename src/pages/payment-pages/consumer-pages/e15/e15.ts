@@ -7,7 +7,7 @@ import {
   Events
 } from "ionic-angular";
 import * as moment from "moment";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
@@ -22,7 +22,6 @@ export class E15Page {
   showWallet: boolean = false;
   profile: any;
   submitAttempt: boolean = false;
-  private todo: FormGroup;
   public cards: Item[] = [];
   public wallets: Item[];
   public payee: any[] = [];
@@ -30,47 +29,54 @@ export class E15Page {
   isGmpp: boolean;
   favorites: Item[];
 
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    pan: [""],
+    Card: ["", Validators.required],
+    Payee: [""],
+    entityId: [""],
+    mobilewallet: [""],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    INVOICENUMBER: [
+      "",
+      Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+    ],
+    PHONENUMBER: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("0[0-9]*")
+      ])
+    ],
+    Amount: ["", Validators.required]
+  });
+
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProvider: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public navCtrl: NavController,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public storageProvider: StorageProvider,
     public navParams: NavParams
   ) {
-    this.todo = this.formBuilder.group({
-      pan: [""],
-      Card: ["", Validators.required],
-      Payee: [""],
-      entityId: [""],
-      mobilewallet: [""],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      INVOICENUMBER: [
-        "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
-      ],
-      PHONENUMBER: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("0[0-9]*")
-        ])
-      ],
-      Amount: ["", Validators.required]
-    });
     this.todo.controls["mobilewallet"].setValue(false);
+
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
+    });
   }
 
   ionViewWillEnter() {
@@ -136,97 +142,82 @@ export class E15Page {
   }
 
   logForm() {
-    var dat = this.todo.value;
-    if (dat.Card && !dat.mobilewallet) {
+    const form = this.todo.value;
+    if (form.Card && !form.mobilewallet) {
       this.validCard = true;
     }
     this.submitAttempt = true;
     if (this.todo.valid) {
-      if (!dat.mobilewallet && !this.validCard) {
+      if (!form.mobilewallet && !this.validCard) {
         return;
       }
-      dat = this.todo.value;
 
-      dat.UUID = uuid.v4();
-      dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+        tranAmount: form.Amount,
+        tranCurrency: "SDG",
+        pan: form.mobilewallet ? null : form.Card.cardNumber,
+        expDate: form.mobilewallet ? null : form.Card.expDate,
+        authenticationType: form.mobilewallet ? "10" : "00",
+        entityType: form.mobilewallet ? "Mobile Wallet" : null,
+        entityId: form.mobilewallet ? this.wallets[0].walletNumber : null,
+        fromAccountType: "00",
+        toAccountType: "00",
+        paymentInfo:
+          "SERVICEID=6/INVOICENUMBER=" +
+          form.INVOICENUMBER +
+          "/PHONENUMBER=" +
+          form.PHONENUMBER,
+        payeeId: "E15"
+      };
 
-      dat.tranCurrency = "SDG";
-
-      dat.tranAmount = dat.Amount;
-
-      if (dat.mobilewallet) {
-        dat.entityType = "Mobile Wallet";
-        dat.entityId = this.wallets[0].walletNumber;
-        dat.authenticationType = "10";
-        dat.pan = "";
-      } else {
-        dat.pan = dat.Card.cardNumber;
-        dat.expDate = dat.Card.expDate;
-        dat.authenticationType = "00";
-        dat.entityId = "";
-      }
-      dat.fromAccountType = "00";
-      dat.toAccountType = "00";
-
-      dat.paymentInfo =
-        "SERVICEID=6/INVOICENUMBER=" +
-        dat.INVOICENUMBER +
-        "/PHONENUMBER=" +
-        dat.PHONENUMBER;
-      dat.payeeId = "E15";
-
-      this.GetServicesProvider.doTransaction(dat, "consumer/payment").subscribe(
-        data => {
-          if (data != null && data.responseCode == 0) {
-            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+      this.serviceProvider
+        .doTransaction(request, "consumer/payment")
+        .subscribe(res => {
+          if (res != null && res.responseCode == 0) {
+            const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
               "DD/MM/YYYY  hh:mm:ss"
             );
 
-            var datas;
-
-            datas = {
-              fees:
-                this.calculateFees(data) !== 0
-                  ? this.calculateFees(data)
-                  : null,
-              date: datetime
-            };
-
-            var main = [];
-            var mainData = {
-              e15Services: data.tranAmount
-            };
-            main.push(mainData);
-            var dat = [];
-            if (data.PAN) {
-              dat.push({ Card: data.PAN });
+            const main = [{ e15Services: res.tranAmount }];
+            let data = [];
+            
+            if (res.PAN) {
+              data.push({ Card: res.PAN });
             } else {
-              dat.push({ WalletNumber: data.entityId });
+              data.push({ WalletNumber: res.entityId });
             }
 
-            if (Object.keys(data.billInfo).length > 0) {
-              data.billInfo.UnitName = null;
-              data.billInfo.ServiceName = null;
-              data.billInfo.TotalAmount = null;
-              dat.push(data.billInfo);
+            if (Object.keys(res.billInfo).length > 0) {
+              res.billInfo.UnitName = null;
+              res.billInfo.ServiceName = null;
+              res.billInfo.TotalAmount = null;
+              data.push(res.billInfo);
             }
-            dat.push(datas);
+
+            data.push({
+              fees:
+                this.calculateFees(res) !== 0 ? this.calculateFees(res) : null,
+              date: datetime
+            });
+
             let modal = this.modalCtrl.create(
               "TransactionDetailPage",
-              { data: dat, main: main },
+              { data: data, main: main },
               { cssClass: "inset-modal" }
             );
             modal.present();
             this.clearInput();
             this.submitAttempt = false;
           } else {
-            this.alertProvider.showAlert(data);
+            this.alertProvider.showAlert(res);
             this.clearInput();
 
             this.submitAttempt = false;
           }
-        }
-      );
+        });
     }
   }
 

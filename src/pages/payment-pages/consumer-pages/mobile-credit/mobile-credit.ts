@@ -7,7 +7,7 @@ import {
   Events
 } from "ionic-angular";
 import * as moment from "moment";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
@@ -21,7 +21,6 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 export class MobileCreditPage {
   profile: any;
 
-  private todo: FormGroup;
   public cards: Item[] = [];
   public wallets: Item[] = [];
   public title: any;
@@ -45,10 +44,39 @@ export class MobileCreditPage {
   isGmpp: boolean;
   favorites: Item[];
 
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    pan: [""],
+    mobilewallet: [""],
+    Card: ["", Validators.required],
+    entityId: [""],
+    payeeId: ["", Validators.required],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    MPHONE: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("0[0-9]*")
+      ])
+    ],
+    Amount: ["", Validators.required]
+  });
+
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProvider: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
@@ -73,33 +101,11 @@ export class MobileCreditPage {
       ];
     }
 
-    this.todo = this.formBuilder.group({
-      pan: [""],
-      mobilewallet: [""],
-      Card: ["", Validators.required],
-      entityId: [""],
-      payeeId: ["", Validators.required],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      MPHONE: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("0[0-9]*")
-        ])
-      ],
-      Amount: ["", Validators.required]
-    });
     this.todo.controls["mobilewallet"].setValue(false);
+
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
+    });
   }
 
   ionViewWillEnter() {
@@ -176,90 +182,76 @@ export class MobileCreditPage {
   }
 
   logForm() {
-    var dat = this.todo.value;
-    if (dat.Card && !dat.mobilewallet) {
+    const form = this.todo.value;
+    if (form.Card && !form.mobilewallet) {
       this.validCard = true;
     }
     this.submitAttempt = true;
     if (this.todo.valid) {
-      if (!dat.mobilewallet && !this.validCard) {
+      if (!form.mobilewallet && !this.validCard) {
         return;
       }
-      dat.UUID = uuid.v4();
-      dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
 
-      dat.tranCurrency = "SDG";
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+        tranAmount: form.Amount,
+        tranCurrency: "SDG",
+        pan: form.mobilewallet ? null : form.Card.cardNumber,
+        expDate: form.mobilewallet ? null : form.Card.expDate,
+        authenticationType: form.mobilewallet ? "10" : "00",
+        entityType: form.mobilewallet ? "Mobile Wallet" : null,
+        entityId: form.mobilewallet ? this.wallets[0].walletNumber : null,
+        fromAccountType: "00",
+        toAccountType: "00",
+        paymentInfo: "MPHONE=" + form.MPHONE,
+        payeeId: form.payeeId
+      };
 
-      dat.tranAmount = dat.Amount;
-
-      if (dat.mobilewallet) {
-        dat.entityType = "Mobile Wallet";
-        dat.entityId = this.wallets[0].walletNumber;
-        dat.authenticationType = "10";
-        dat.pan = "";
-      } else {
-        dat.pan = dat.Card.cardNumber;
-        dat.expDate = dat.Card.expDate;
-        dat.authenticationType = "00";
-        dat.entityId = "";
-      }
-
-      dat.fromAccountType = "00";
-      dat.toAccountType = "00";
-      dat.paymentInfo = "MPHONE=" + dat.MPHONE;
-
-      this.GetServicesProvider.doTransaction(dat, "consumer/payment").subscribe(
-        data => {
-          if (data != null && data.responseCode == 0) {
-            var dats = this.todo.value;
-            var datas;
-            var dat = [];
-            if (data.PAN) {
-              dat.push({ Card: data.PAN });
-            } else {
-              dat.push({ WalletNumber: data.entityId });
-            }
-            var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
+      this.serviceProvider
+        .doTransaction(request, "consumer/payment")
+        .subscribe(res => {
+          if (res != null && res.responseCode == 0) {
+            const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
               "DD/MM/YYYY  hh:mm:ss"
             );
 
-            datas = {
-              PhoneNumber: dats.MPHONE,
-              fees:
-                this.calculateFees(data) !== 0
-                  ? this.calculateFees(data)
-                  : null,
-              date: datetime
-            };
+            const main = [{ [this.title]: res.tranAmount }];
+            let data = [];
 
-            var main = [];
-            var mainData = {
-              [this.title]: data.tranAmount
-            };
-            main.push(mainData);
-            if (Object.keys(data.billInfo).length > 0) {
-              data.billInfo.subNewBalance = null;
-              dat.push(data.billInfo);
+            if (res.PAN) {
+              data.push({ Card: res.PAN });
+            } else {
+              data.push({ WalletNumber: res.entityId });
             }
 
-            dat.push(datas);
+            if (Object.keys(res.billInfo).length > 0) {
+              data.push(res.billInfo);
+            }
+
+            data.push({
+              PhoneNumber: form.MPHONE,
+              fees:
+                this.calculateFees(res) !== 0 ? this.calculateFees(res) : null,
+              date: datetime
+            });
 
             let modal = this.modalCtrl.create(
               "TransactionDetailPage",
-              { data: dat, main: main },
+              { data: data, main: main },
               { cssClass: "inset-modal" }
             );
             modal.present();
             this.clearInput();
             this.submitAttempt = false;
           } else {
-            this.alertProvider.showAlert(data);
+            this.alertProvider.showAlert(res);
 
             this.submitAttempt = false;
             this.clearInput();
           }
-        }
-      );
+        });
     }
   }
 

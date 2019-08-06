@@ -44,7 +44,7 @@
   "failedToReadContacts": "خطأ في قراءة الارقام",
   "failedToLike": "فشل في الاعجاب",
   "failedToSendOTP": "خطأ في ارسال الرساله",
-  "failedToLogin": "خطأ في التسجيل",
+  "failedToLogin": "خطأ في الدخول",
   "failedToSignup": "خطأ في انشاء الحساب",
   "favoriteDetailPage": "المفضلة",
   "noItems": "خالي",
@@ -404,5 +404,7 @@
   "monthAgo": "قبل شهر",
   "monthsAgo": "اشهر",
   "yearAgo": "قبل سنة",
-  "yearsAgo": "سنين"
+  "yearsAgo": "سنين",
+  "validFirstNameError": "الاسم الاول غير صالح",
+  "validLastNameError": "الاسم الاخير غير صالح"
 }

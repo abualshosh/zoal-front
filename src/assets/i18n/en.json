@@ -391,5 +391,7 @@
   "monthAgo": "a month ago",
   "monthsAgo": "months ago",
   "yearAgo": "a year ago",
-  "yearsAgo": "years ago"
+  "yearsAgo": "years ago",
+  "validFirstNameError": "Invalid First Name",
+  "validLastNameError": "Invalid Last Name"
 }

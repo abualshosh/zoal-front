@@ -22,6 +22,7 @@ export class ItemCreatePage {
   newItem: Item;
   key: any;
   pageTitle: string;
+  isReadyToSave: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -62,6 +63,10 @@ export class ItemCreatePage {
         Validators.required
       ],
       name: [navParams.get("item") ? this.item.name : "", Validators.required]
+    });
+
+    this.form.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.form.valid;
     });
   }
 

@@ -18,6 +18,7 @@ import { Api } from "../../../providers/api/api";
 export class ContactUsPage {
   private contactForm: FormGroup;
   submitAttempt: boolean = false;
+  isReadyToSave: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -37,6 +38,10 @@ export class ContactUsPage {
         "",
         Validators.compose([Validators.required, Validators.maxLength(200)])
       ]
+    });
+
+    this.contactForm.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.contactForm.valid;
     });
   }
 

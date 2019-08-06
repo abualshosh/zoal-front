@@ -15,6 +15,7 @@ export class ProfileEditPage {
   private userForm: FormGroup;
   profile: any = {};
   submitAttempt: boolean = false;
+  isReadyToSave: boolean;
 
   profileImage: { image: any; imageContentType: any };
   cameraOptions: {
@@ -83,6 +84,10 @@ export class ProfileEditPage {
         navParams.get("user") ? this.profile.bio : null,
         Validators.compose([Validators.maxLength(200)])
       ]
+    });
+
+    this.userForm.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.userForm.valid;
     });
   }
 

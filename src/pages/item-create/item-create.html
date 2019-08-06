@@ -14,7 +14,7 @@
   <div class="con">
     <form [formGroup]="form" (ngSubmit)="submitForm()">
       <div *ngIf="key == 'wallets'">
-        <div *ngIf="!form.controls.walletNumber.valid && submitAttempt">
+        <div [hidden]="form.controls.walletNumber.valid">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
         <ion-item>
@@ -24,14 +24,14 @@
       </div>
 
       <div *ngIf="key == 'cards'">
-        <div *ngIf="!form.controls.cardNumber.valid && submitAttempt">
+        <div [hidden]="form.controls.cardNumber.valid">
           <p>{{ "validCardPANError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked> {{ "CardPAN" | translate }}</ion-label>
           <ion-input type="number" formControlName="cardNumber"></ion-input>
         </ion-item>
-        <div *ngIf="!form.controls.expDate.valid && submitAttempt">
+        <div [hidden]="form.controls.expDate.valid">
           <p>{{ "validExpDateError" | translate }}</p>
         </div>
         <ion-item>
@@ -50,7 +50,7 @@
       </div>
 
       <div *ngIf="key == 'favorites'">
-        <div *ngIf="!form.controls.favoriteText.valid && submitAttempt">
+        <div [hidden]="form.controls.favoriteText.valid">
           <p>{{ "validFavoriteTextError" | translate }}</p>
         </div>
         <ion-item>
@@ -59,7 +59,7 @@
         </ion-item>
       </div>
 
-      <div *ngIf="!form.controls.name.valid && submitAttempt">
+      <div [hidden]="form.controls.name.valid">
         <p>{{ "validNameError" | translate }}</p>
       </div>
       <ion-item>
@@ -67,9 +67,16 @@
         <ion-input formControlName="name"></ion-input>
       </ion-item>
 
-      <button ion-button class="subbutn" type="submit">
-        {{ "Submit" | translate }}
-      </button>
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
     </form>
   </div>
 </ion-content>

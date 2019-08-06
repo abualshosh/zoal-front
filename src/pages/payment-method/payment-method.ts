@@ -87,7 +87,7 @@ export class PaymentMethodPage {
   }
 
   openCommingSoon() {
-    this.alertProvider.showCommingSoon();
+    this.alertProvider.showToast("commingSoonTitleMessage");
   }
 
   isCardWalletAvailable(choice: string): boolean {

@@ -6,7 +6,7 @@ import {
   ModalController,
   Events
 } from "ionic-angular";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import {
@@ -25,20 +25,46 @@ import { QrScanProvider } from "../../../../providers/qr-scan/qr-scan";
 })
 export class TransferToCardPage {
   options: BarcodeScannerOptions;
-  private todo: FormGroup;
   public cards: Item[] = [];
   submitAttempt: boolean = false;
 
-  public GetServicesProvider: GetServicesProvider;
   favorites: Item[];
   title: string;
+
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    Card: ["", Validators.required],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    ToCard: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(16),
+        Validators.maxLength(19),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    Amount: [
+      "",
+      Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+    ]
+  });
 
   constructor(
     public events: Events,
     private barcodeScanner: BarcodeScanner,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
-    public GetServicesProviderg: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
@@ -48,35 +74,14 @@ export class TransferToCardPage {
     this.title = this.navParams.get("title")
       ? this.navParams.get("title")
       : "transferToCard";
-    this.GetServicesProvider = GetServicesProviderg;
-    this.todo = this.formBuilder.group({
-      Card: ["", Validators.required],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      ToCard: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(16),
-          Validators.maxLength(19),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      Amount: [
-        "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
-      ]
-    });
+
     if (this.navParams.get("pan")) {
       this.todo.controls["ToCard"].setValue(this.navParams.get("pan"));
     }
+
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
+    });
   }
 
   ionViewWillEnter() {
@@ -136,59 +141,56 @@ export class TransferToCardPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      var dat = this.todo.value;
-      dat.UUID = uuid.v4();
-      dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
+      const form = this.todo.value;
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+        tranCurrency: "SDG",
+        tranAmount: form.Amount,
+        toCard: form.ToCard,
+        authenticationType: "00",
+        fromAccountType: "00",
+        toAccountType: "00",
+        PAN: form.Card.cardNumber,
+        expDate: form.Card.expDate
+      };
 
-      dat.tranCurrency = "SDG";
+      this.serviceProvider
+        .doTransaction(request, "consumer/doCardTransfer")
+        .subscribe(res => {
+          if (res != null && res.responseCode == 0) {
+            const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
+              "DD/MM/YYYY  hh:mm:ss"
+            );
 
-      dat.tranAmount = dat.Amount;
-      dat.toCard = dat.ToCard;
-      dat.authenticationType = "00";
-      dat.fromAccountType = "00";
-      dat.toAccountType = "00";
-      dat.PAN = dat.Card.cardNumber;
-      dat.expDate = dat.Card.expDate;
+            const main = [{ transferToCard: res.tranAmount }];
+            const data = [
+              {
+                Card: res.PAN,
+                toCard: res.toCard,
+                fees:
+                  this.calculateFees(res) !== 0
+                    ? this.calculateFees(res)
+                    : null,
+                date: datetime
+              }
+            ];
 
-      this.GetServicesProvider.doTransaction(
-        this.todo.value,
-        "consumer/doCardTransfer"
-      ).subscribe(data => {
-        if (data != null && data.responseCode == 0) {
-          var datas;
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
-          datas = {
-            Card: data.PAN,
-            toCard: data.toCard,
-            fees:
-              this.calculateFees(data) !== 0 ? this.calculateFees(data) : null,
-            date: datetime
-          };
-
-          var main = [];
-          var mainData = {
-            transferToCard: data.tranAmount
-          };
-          main.push(mainData);
-
-          var dat = [];
-          dat.push(datas);
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: dat, main: main },
-            { cssClass: "inset-modal" }
-          );
-          modal.present();
-          this.todo.reset();
-          this.submitAttempt = false;
-        } else {
-          this.alertProvider.showAlert(data);
-          this.todo.reset();
-          this.submitAttempt = false;
-        }
-      });
+            let modal = this.modalCtrl.create(
+              "TransactionDetailPage",
+              { data: data, main: main },
+              { cssClass: "inset-modal" }
+            );
+            modal.present();
+            this.todo.reset();
+            this.submitAttempt = false;
+          } else {
+            this.alertProvider.showAlert(res);
+            this.todo.reset();
+            this.submitAttempt = false;
+          }
+        });
     }
   }
 

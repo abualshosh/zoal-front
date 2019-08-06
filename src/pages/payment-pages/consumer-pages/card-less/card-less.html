@@ -9,7 +9,7 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        <div *ngIf="!todo.controls.Card.valid && submitAttempt">
+        <div [hidden]="todo.controls.Card.valid">
           <p>{{ "validcardError" | translate }}</p>
         </div>
         <ion-item>
@@ -27,7 +27,7 @@
             </ion-option>
           </ion-select>
         </ion-item>
-        <div *ngIf="!todo.controls.voucherNumber.valid && submitAttempt">
+        <div [hidden]="todo.controls.voucherNumber.valid">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
         <ion-item>
@@ -49,7 +49,7 @@
             <ion-icon name="heart"></ion-icon>
           </button>
         </ion-item>
-        <div *ngIf="!todo.controls.Amount.valid && submitAttempt">
+        <div [hidden]="todo.controls.Amount.valid">
           <p>{{ "validamountError" | translate }}</p>
         </div>
         <ion-item>
@@ -60,7 +60,7 @@
             required
           ></ion-input>
         </ion-item>
-        <div *ngIf="!todo.controls.IPIN.valid && submitAttempt">
+        <div [hidden]="todo.controls.IPIN.valid">
           <p>{{ "validipinError" | translate }}</p>
         </div>
         <ion-item>
@@ -74,9 +74,16 @@
         </ion-item>
       </ion-list>
 
-      <button class="subbutn" ion-button type="submit" color="secondary">
-        {{ "Submit" | translate }}
-      </button>
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
     </form>
   </div>
 </ion-content>

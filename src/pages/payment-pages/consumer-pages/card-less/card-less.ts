@@ -6,7 +6,7 @@ import {
   Events
 } from "ionic-angular";
 import * as moment from "moment";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder } from "@angular/forms";
 import { GetServicesProvider } from "../../../../providers/get-services/get-services";
 import * as uuid from "uuid";
 import { AlertProvider } from "../../../../providers/alert/alert";
@@ -18,46 +18,49 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
   templateUrl: "card-less.html"
 })
 export class CardLessPage {
-  private todo: FormGroup;
   public cards: Item[] = [];
   submitAttempt: boolean = false;
-  public GetServicesProvider: GetServicesProvider;
   favorites: Item[];
+
+  isReadyToSave: boolean;
+
+  todo = this.formBuilder.group({
+    Card: ["", Validators.required],
+    IPIN: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern("[0-9]*")
+      ])
+    ],
+    voucherNumber: [
+      "",
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("0[0-9]*")
+      ])
+    ],
+    Amount: [
+      "",
+      Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
+    ]
+  });
 
   constructor(
     public events: Events,
     private formBuilder: FormBuilder,
-    public GetServicesProviderg: GetServicesProvider,
+    public serviceProvider: GetServicesProvider,
     public navCtrl: NavController,
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController
   ) {
-    this.GetServicesProvider = GetServicesProviderg;
-    this.todo = this.formBuilder.group({
-      Card: ["", Validators.required],
-      IPIN: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(4),
-          Validators.pattern("[0-9]*")
-        ])
-      ],
-      voucherNumber: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern("0[0-9]*")
-        ])
-      ],
-      Amount: [
-        "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
-      ]
+    this.todo.valueChanges.subscribe(v => {
+      this.isReadyToSave = this.todo.valid;
     });
   }
 
@@ -98,65 +101,59 @@ export class CardLessPage {
   logForm() {
     this.submitAttempt = true;
     if (this.todo.valid) {
-      var dat = this.todo.value;
+      const form = this.todo.value;
+      const tranUuid = uuid.v4();
+      const request = {
+        UUID: tranUuid,
+        IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
+        tranCurrency: "SDG",
+        tranAmount: form.Amount,
+        voucherNumber: form.voucherNumber,
+        authenticationType: "00",
+        fromAccountType: "00",
+        toAccountType: "00",
+        PAN: form.Card.cardNumber,
+        expDate: form.Card.expDate
+      };
 
-      dat.UUID = uuid.v4();
-      dat.IPIN = this.GetServicesProvider.encrypt(dat.UUID + dat.IPIN);
+      this.serviceProvider
+        .doTransaction(request, "consumer/generateVoucher")
+        .subscribe(res => {
+          if (res != null && res.responseCode == 0) {
+            const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
+              "DD/MM/YYYY  hh:mm:ss"
+            );
 
-      dat.tranCurrency = "SDG";
+            const main = [{ cardLess: res.tranAmount }];
+            const dat = [
+              {
+                voucherCode: res.voucherCode
+              },
+              {
+                Card: res.PAN,
+                fees:
+                  this.calculateFees(res) !== 0
+                    ? this.calculateFees(res)
+                    : null,
+                date: datetime
+              }
+            ];
 
-      dat.tranAmount = dat.Amount;
-      dat.authenticationType = "00";
-      dat.fromAccountType = "00";
-      dat.toAccountType = "00";
-      dat.pan = dat.Card.cardNumber;
-      dat.expDate = dat.Card.expDate;
+            let modal = this.modalCtrl.create(
+              "TransactionDetailPage",
+              { data: dat, main: main },
+              { cssClass: "inset-modal" }
+            );
 
-      this.GetServicesProvider.doTransaction(
-        this.todo.value,
-        "consumer/generateVoucher"
-      ).subscribe(data => {
-        if (data != null && data.responseCode == 0) {
-          var datas;
-          var datetime = moment(data.tranDateTime, "DDMMyyHhmmss").format(
-            "DD/MM/YYYY  hh:mm:ss"
-          );
-          datas = {
-            Card: data.PAN,
-            fees:
-              this.calculateFees(data) !== 0 ? this.calculateFees(data) : null,
-            date: datetime
-          };
-
-          var main = [];
-          var mainData = {
-            cardLess: data.tranAmount
-          };
-          main.push(mainData);
-          var voucher = {
-            // "voucherNumber":data.voucherNumber
-            // ,
-            voucherCode: data.voucherCode
-          };
-          var dat = [];
-
-          dat.push(voucher);
-          dat.push(datas);
-          let modal = this.modalCtrl.create(
-            "TransactionDetailPage",
-            { data: dat, main: main },
-            { cssClass: "inset-modal" }
-          );
-
-          modal.present();
-          this.todo.reset();
-          this.submitAttempt = false;
-        } else {
-          this.alertProvider.showAlert(data);
-          this.todo.reset();
-          this.submitAttempt = false;
-        }
-      });
+            modal.present();
+            this.todo.reset();
+            this.submitAttempt = false;
+          } else {
+            this.alertProvider.showAlert(res);
+            this.todo.reset();
+            this.submitAttempt = false;
+          }
+        });
     }
   }
 

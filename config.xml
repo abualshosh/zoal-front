@@ -14,7 +14,7 @@
     <preference name="KeepRunning" value="true" />
     <preference name="StatusBarBackgroundColor" value="#ed2124" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="SplashMaintainAspectRatio" value="true" />
@@ -99,6 +99,4 @@
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.1+" />
     </plugin>
     <plugin name="com.darktalker.cordova.screenshot" spec="0.1.6" />
-    <engine name="android" spec="7.1.4" />
-    <engine name="ios" spec="4.5.5" />
 </widget>

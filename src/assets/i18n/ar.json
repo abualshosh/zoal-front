@@ -406,5 +406,6 @@
   "yearAgo": "قبل سنة",
   "yearsAgo": "سنين",
   "validFirstNameError": "الاسم الاول غير صالح",
-  "validLastNameError": "الاسم الاخير غير صالح"
+  "validLastNameError": "الاسم الاخير غير صالح",
+  "ipinChange": "تغير الرقم السري"
 }

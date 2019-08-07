@@ -393,5 +393,6 @@
   "yearAgo": "a year ago",
   "yearsAgo": "years ago",
   "validFirstNameError": "Invalid First Name",
-  "validLastNameError": "Invalid Last Name"
+  "validLastNameError": "Invalid Last Name",
+  "ipinChange": "IPIN Change"
 }

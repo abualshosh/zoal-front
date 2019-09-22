@@ -21,6 +21,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 export class MobileCreditPage {
   profile: any;
 
+  public type = "mobileBillPayment";
   public cards: Item[] = [];
   public wallets: Item[] = [];
   public title: any;
@@ -181,6 +182,16 @@ export class MobileCreditPage {
     }
   }
 
+  checkType(_event) {
+    if (this.type === "mobileBillPayment") {
+      this.todo.controls["Amount"].enable();
+    } else if (this.title === "mobileCredit") {
+      this.todo.controls["Amount"].enable();
+    } else {
+      this.todo.controls["Amount"].disable();
+    }
+  }
+
   logForm() {
     const form = this.todo.value;
     if (form.Card && !form.mobilewallet) {
@@ -198,7 +209,7 @@ export class MobileCreditPage {
         IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
         tranAmount: form.Amount,
         tranCurrency: "SDG",
-        pan: form.mobilewallet ? null : form.Card.cardNumber,
+        PAN: form.mobilewallet ? null : form.Card.cardNumber,
         expDate: form.mobilewallet ? null : form.Card.expDate,
         authenticationType: form.mobilewallet ? "10" : "00",
         entityType: form.mobilewallet ? "Mobile Wallet" : null,
@@ -209,8 +220,17 @@ export class MobileCreditPage {
         payeeId: form.payeeId
       };
 
+      let endpoint: string;
+      if (this.type == "mobileBillPayment") {
+        endpoint = "consumer/payment";
+      } else if (this.title === "mobileCredit") {
+        endpoint = "consumer/payment";
+      } else {
+        endpoint = "consumer/getBill";
+      }
+
       this.serviceProvider
-        .doTransaction(request, "consumer/payment")
+        .doTransaction(request, endpoint)
         .subscribe(res => {
           if (res != null && res.responseCode == 0) {
             const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(

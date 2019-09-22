@@ -3,6 +3,20 @@
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
     <ion-title>{{ title | translate }}</ion-title>
   </ion-navbar>
+  <ion-segment
+    *ngIf="title === 'mobileBillPayment'"
+    color="secondary"
+    (ionChange)="checkType($event)"
+    [(ngModel)]="type"
+    class=""
+  >
+    <ion-segment-button value="mobileBillPayment" class="">
+      {{ "mobileBillPayment" | translate }}
+    </ion-segment-button>
+    <ion-segment-button value="mobileBillPaymentInquiry" class="">
+      {{ "mobileBillPaymentInquiry" | translate }}
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content no-padding class="masters">
@@ -69,17 +83,21 @@
             <ion-icon name="heart"></ion-icon>
           </button>
         </ion-item>
-        <div [hidden]="todo.controls.Amount.valid">
-          <p>{{ "validamountError" | translate }}</p>
+
+        <div *ngIf="type !== 'mobileBillPaymentInquiry'">
+          <div [hidden]="todo.controls.Amount.valid">
+            <p>{{ "validamountError" | translate }}</p>
+          </div>
+          <ion-item>
+            <ion-label stacked>{{ "Amount" | translate }}</ion-label>
+            <ion-input
+              type="number"
+              formControlName="Amount"
+              required
+            ></ion-input>
+          </ion-item>
         </div>
-        <ion-item>
-          <ion-label stacked>{{ "Amount" | translate }}</ion-label>
-          <ion-input
-            type="number"
-            formControlName="Amount"
-            required
-          ></ion-input>
-        </ion-item>
+
         <div [hidden]="todo.controls.IPIN.valid">
           <p *ngIf="todo.controls.mobilewallet.value">
             {{ "validipinError" | translate }}

@@ -407,5 +407,10 @@
   "yearsAgo": "سنين",
   "validFirstNameError": "الاسم الاول غير صالح",
   "validLastNameError": "الاسم الاخير غير صالح",
-  "ipinChange": "تغير الرقم السري"
+  "ipinChange": "تغير الرقم السري",
+  "eInvoice": "الفاتورة الالكترونيه",
+  "eInvoiceInquiry": "استعلام عن الفاتورة الالكترونيه",
+  "referenceNumber": "رقم الفاتورة",
+  "validReferenceNumberError": "الرقم غير صالح",
+  "mobileBillPaymentInquiry": "استعلام عن فاتورة موبايل"
 }

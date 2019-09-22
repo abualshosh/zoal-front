@@ -394,5 +394,10 @@
   "yearsAgo": "years ago",
   "validFirstNameError": "Invalid First Name",
   "validLastNameError": "Invalid Last Name",
-  "ipinChange": "IPIN Change"
+  "ipinChange": "IPIN Change",
+  "eInvoice": "E-Invoice",
+  "eInvoiceInquiry": "E-Invoice Inquiry",
+  "referenceNumber": "Reference Number",
+  "validReferenceNumberError": "Incorrect Reference Number",
+  "mobileBillPaymentInquiry": "Mobile Bill Payment Inquiry"
 }

@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "eInvoice" | translate }}</ion-title>
+  </ion-navbar>
+  <ion-segment
+    color="secondary"
+    (ionChange)="checkType($event)"
+    [(ngModel)]="type"
+    class=""
+  >
+    <ion-segment-button value="eInvoicePayment" class="">
+      {{ "eInvoice" | translate }}
+    </ion-segment-button>
+    <ion-segment-button value="eInvoiceInquiry" class="">
+      {{ "eInvoiceInquiry" | translate }}
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <div [hidden]="todo.controls.Card.valid">
+        <p>{{ "validcardError" | translate }}</p>
+      </div>
+      <ion-item>
+        <ion-label stacked>{{ "Card" | translate }}</ion-label>
+        <ion-select
+          okText="{{ 'Submit' | translate }}"
+          cancelText="{{ 'close' | translate }}"
+          style="padding-left:5%;"
+          no-padding
+          formControlName="Card"
+          interface="popover"
+        >
+          <ion-option *ngFor="let card of cards" [value]="card">
+            {{ card.name }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <div [hidden]="todo.controls.referenceNumber.valid">
+        <p>{{ "validReferenceNumberError" | translate }}</p>
+      </div>
+      <ion-item>
+        <ion-label stacked>{{ "referenceNumber" | translate }}</ion-label>
+        <ion-input
+          type="number"
+          formControlName="referenceNumber"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <div *ngIf="type == 'eInvoicePayment'">
+        <div [hidden]="todo.controls.Amount.valid">
+          <p>{{ "validamountError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "Amount" | translate }}</ion-label>
+          <ion-input
+            type="number"
+            formControlName="Amount"
+            required
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div [hidden]="todo.controls.IPIN.valid">
+        <p>{{ "validipinError" | translate }}</p>
+      </div>
+      <ion-item>
+        <ion-label stacked> {{ "IPIN" | translate }}</ion-label>
+        <ion-input
+          class="mask-text"
+          type="number"
+          formControlName="IPIN"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</ion-content>

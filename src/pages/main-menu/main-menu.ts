@@ -47,6 +47,12 @@ export class MainMenuPage {
       icon: "school",
       var: ""
     }
+    // {
+    //   title: "eInvoice",
+    //   component: "EInvoicePage",
+    //   icon: "custom-mobile-bill",
+    //   var: ""
+    // }
   ];
 
   gmppGovermentPages: any[] = [

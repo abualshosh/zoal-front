@@ -4,29 +4,24 @@ page-load-pages {
   }
 
   .grid-con {
-    padding: 0.5em;
-    display: grid;
-    justify-content: stretch;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    grid-gap: 0.3em 0.3em;
+    padding: 1%;
     background: map-get($colors, bar);
   }
 
   .load-grid {
-    padding: 0.5em;
-    display: grid;
-    font-size: 1em;
+    font-size: 1.3em;
     color: map-get($colors, secondary);
-    background: white;
     text-align: center;
+  }
+
+  ion-col {
     border-radius: 5%;
+    background: white;
+    border: 3px solid map-get($colors, bar);
   }
 
   .grid-icon {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20%;
-    font-size: 2.5em;
+    margin-top: 10%;
+    font-size: 3em;
   }
 }

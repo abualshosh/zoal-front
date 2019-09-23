@@ -6,14 +6,18 @@
 
 <ion-content no-padding class="masters">
   <div class="grid-con">
-    <div
+    <ion-row
+      wrap
       class="load-grid"
-      text-center
-      *ngFor="let page of pages"
-      (click)="openPage(page.component, page.var)"
     >
-      <ion-icon class="grid-icon" name="{{ page.icon }}" item-start></ion-icon>
-      <div>{{ page.title | translate }}</div>
-    </div>
+      <ion-col
+        col-6
+        text-center
+        *ngFor="let page of pages"
+        (click)="openPage(page.component, page.var)">
+        <ion-icon class="grid-icon" name="{{ page.icon }}" item-start></ion-icon>
+        <div>{{ page.title | translate }}</div>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>

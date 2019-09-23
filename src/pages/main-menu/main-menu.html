@@ -7,61 +7,85 @@
 </ion-header>
 
 <ion-content>
-  <div class="grid-con">
-    <div class="grid-item" (click)="scanQr()">
-      <ion-icon class="grid-icon" name="custom-qr-scanner"></ion-icon>
-      <div>{{ "scanQr" | translate }}</div>
-    </div>
+  <ion-grid class="grid-con">
+    <ion-row>
+      <ion-col>
+        <div class="grid-item" (click)="scanQr()">
+          <ion-icon class="grid-icon" name="custom-qr-scanner"></ion-icon>
+          <div>{{ "scanQr" | translate }}</div>
+        </div>
+      </ion-col>
+  
+      <ion-col>
+        <div class="grid-item" (click)="openPage('QrGeneratorPage')">
+          <ion-icon class="grid-icon" name="custom-barcode"></ion-icon>
+          <div>{{ "qrCode" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
 
-    <div class="grid-item" (click)="openPage('QrGeneratorPage')">
-      <ion-icon class="grid-icon" name="custom-barcode"></ion-icon>
-      <div>{{ "qrCode" | translate }}</div>
-    </div>
+    <ion-row>
+      <ion-col>
+        <div class="grid-item" (click)="openPagesList('telecomPages')">
+          <ion-icon class="grid-icon" name="custom-telecom"></ion-icon>
+          <div>{{ "telecomServices" | translate }}</div>
+        </div>
+      </ion-col>
+  
+      <ion-col>
+        <div class="grid-item" (click)="openPage('ElectricityServicesPage')">
+          <ion-icon class="grid-icon" name="custom-flash"></ion-icon>
+          <div>{{ "electricityServices" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
 
-    <div class="grid-item" (click)="openPagesList('telecomPages')">
-      <ion-icon class="grid-icon" name="custom-telecom"></ion-icon>
-      <div>{{ "telecomServices" | translate }}</div>
-    </div>
+    <ion-row>
+      <ion-col>
+        <div class="grid-item" (click)="openPagesList('govermentPages')">
+          <ion-icon class="grid-icon" name="custom-briefcase"></ion-icon>
+          <div>{{ "govermentServices" | translate }}</div>
+        </div>
+      </ion-col>
+  
+      <ion-col>
+        <div class="grid-item" (click)="openPagesList('transferPages')">
+          <ion-icon class="grid-icon" name="custom-cash"></ion-icon>
+          <div>{{ "transferServices" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
 
-    <div class="grid-item" (click)="openPage('ElectricityServicesPage')">
-      <ion-icon class="grid-icon" name="custom-flash"></ion-icon>
-      <div>{{ "electricityServices" | translate }}</div>
-    </div>
-
-    <div class="grid-item" (click)="openPagesList('govermentPages')">
-      <ion-icon class="grid-icon" name="custom-briefcase"></ion-icon>
-      <div>{{ "govermentServices" | translate }}</div>
-    </div>
-
-    <div class="grid-item" (click)="openPagesList('transferPages')">
-      <ion-icon class="grid-icon" name="custom-cash"></ion-icon>
-      <div>{{ "transferServices" | translate }}</div>
-    </div>
-
-    <div
-      class="grid-item"
-      (click)="openPage('SpecialPaymentPage', 'charityServices')"
-    >
-      <ion-icon class="grid-icon" name="custom-heart"></ion-icon>
-      <div>{{ "charityServices" | translate }}</div>
-    </div>
-
-    <div
-      *ngIf="isGmpp"
-      class="grid-item"
-      (click)="openPage('GmppTranToWalletPage', 'giftsServices')"
-    >
-      <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
-      <div>{{ "giftsServices" | translate }}</div>
-    </div>
-
-    <div
-      *ngIf="!isGmpp"
-      class="grid-item"
-      (click)="openPage('TransferToCardPage', 'giftsServices')"
-    >
-      <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
-      <div>{{ "giftsServices" | translate }}</div>
-    </div>
-  </div>
+    <ion-row>
+      <ion-col>
+        <div
+          class="grid-item"
+          (click)="openPage('SpecialPaymentPage', 'charityServices')"
+        >
+          <ion-icon class="grid-icon" name="custom-heart"></ion-icon>
+          <div>{{ "charityServices" | translate }}</div>
+      </div>
+      </ion-col>
+  
+      <ion-col *ngIf="isGmpp">
+        <div
+          class="grid-item"
+          (click)="openPage('GmppTranToWalletPage', 'giftsServices')"
+        >
+            <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
+            <div>{{ "giftsServices" | translate }}</div>
+        </div>
+      </ion-col>
+  
+      <ion-col *ngIf="!isGmpp">
+        <div
+          class="grid-item"
+          (click)="openPage('TransferToCardPage', 'giftsServices')"
+        >
+          <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
+          <div>{{ "giftsServices" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -40,13 +40,13 @@
         item-end
         name="checkmark-circle"
         color="green"
-        *ngIf="tran.responseStatus === 'Successful'"
+        *ngIf="tran.responseStatus === 'Successful' || tran.responseStatus === 'Success'"
       ></ion-icon>
       <ion-icon
         item-end
         name="close-circle"
         color="danger"
-        *ngIf="tran.responseStatus !== 'Successful'"
+        *ngIf="tran.responseStatus !== 'Successful' && tran.responseStatus !== 'Success'"
       ></ion-icon>
     </button>
   </ion-list>

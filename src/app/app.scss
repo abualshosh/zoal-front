@@ -194,13 +194,16 @@
   }
 
   .customToastClass {
-    div {
+    .toast-message {
       background-color: white;
       color: map-get($colors, secondary);
       font-weight: bold;
       text-align: center;
       border: 1px solid map-get($colors, secondary);
       border-radius: 30px;
+    }
+    div {
+      background-color: transparent;
     }
   }
 

@@ -82,4 +82,8 @@ export class TabsPage {
   selectTab() {
     this.tabRef.select(2);
   }
+
+  openCommingSoon() {
+    this.alertProvider.showToast("commingSoonTitleMessage");
+  }
 }

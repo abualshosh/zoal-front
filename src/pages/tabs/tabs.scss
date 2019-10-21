@@ -13,7 +13,12 @@ page-tabs {
     padding: 4px 4px 2px;
   }
 
-  .ion-tab-icon-md-base {
+  .md .ion-tab-icon-base {
+    min-width: 0 !important;
+    height: 32px;
+  }
+
+  .ios .ion-tab-icon-base {
     min-width: 0 !important;
     height: 32px;
   }

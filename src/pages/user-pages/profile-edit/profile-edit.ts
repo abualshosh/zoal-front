@@ -101,7 +101,9 @@ export class ProfileEditPage {
         err => {
           alert("Unable to take photo");
         }
-      );
+      ).catch(err => {
+        alert("Unable to take photo");
+      });
     }
   }
 

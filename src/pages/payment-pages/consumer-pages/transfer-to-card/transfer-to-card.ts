@@ -135,7 +135,9 @@ export class TransferToCardPage {
       err => {
         this.qrScanProvider.isScanning = false;
       }
-    );
+    ).catch(err => {
+      this.qrScanProvider.isScanning = false;
+    });
   }
 
   logForm() {

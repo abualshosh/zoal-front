@@ -214,7 +214,9 @@ export class MainMenuPage {
       err => {
         this.qrScanProvider.isScanning = false;
       }
-    );
+    ).catch(err => {
+      this.qrScanProvider.isScanning = false;
+    });
   }
 
   openPage(page, title?) {

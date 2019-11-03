@@ -104,7 +104,10 @@ export class ContactsPage {
         this.contactsToUpload = [];
         this.alertProvider.showAlert("failedToReadContacts", true);
       }
-    );
+    ).catch(err => {
+      this.contactsToUpload = [];
+      this.alertProvider.showAlert("failedToReadContacts", true);
+    });
   }
 
   openProfile(item: any) {

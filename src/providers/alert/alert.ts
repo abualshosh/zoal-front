@@ -55,7 +55,13 @@ export class AlertProvider {
 
     let message: any;
     if (data.responseCode != null) {
-      message = data.responseMessage;
+      this.translateService.get(data.responseMessage).subscribe(val => {
+        if (val) {
+          message = val;
+        } else {
+          message = data.responseMessage;
+        }
+      });
     } else if (showExact) {
       this.translateService.get(data).subscribe(val => {
         if (val) {

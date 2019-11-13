@@ -28,7 +28,7 @@ export class MainMenuPage {
     }
   ];
 
-  govermentPages: any[] = [
+  billerPages: any[] = [
     {
       title: "customsServices",
       component: "CustomsPage",
@@ -46,6 +46,12 @@ export class MainMenuPage {
       component: "MohePage",
       icon: "school",
       var: ""
+    },
+    {
+      title: "sudaniBillPaymentPage",
+      component: "SudaniBillPaymentPage",
+      icon: "custom-mobile-bill",
+      var: "sudaniBillPaymentPage"
     }
     // {
     //   title: "eInvoice",
@@ -55,7 +61,7 @@ export class MainMenuPage {
     // }
   ];
 
-  gmppGovermentPages: any[] = [
+  gmppBillerPages: any[] = [
     {
       title: "e15Services",
       component: "E15Page",
@@ -160,9 +166,9 @@ export class MainMenuPage {
       title = "telecomServices";
     } else if (list == "govermentPages") {
       if (this.isGmpp) {
-        pages = this.gmppGovermentPages.concat(this.merchantPages);
+        pages = this.gmppBillerPages.concat(this.merchantPages);
       } else {
-        pages = this.govermentPages.concat(this.merchantPages);
+        pages = this.billerPages.concat(this.merchantPages);
       }
 
       title = "govermentServices";

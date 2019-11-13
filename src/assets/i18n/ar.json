@@ -412,5 +412,6 @@
   "eInvoiceInquiry": "استعلام عن الفاتورة الالكترونيه",
   "referenceNumber": "رقم الفاتورة",
   "validReferenceNumberError": "الرقم غير صالح",
-  "mobileBillPaymentInquiry": "استعلام عن فاتورة موبايل"
+  "mobileBillPaymentInquiry": "استعلام عن فاتورة موبايل",
+  "sudaniBillPaymentPage": "سوداني ADSL"
 }

@@ -399,5 +399,6 @@
   "eInvoiceInquiry": "E-Invoice Inquiry",
   "referenceNumber": "Reference Number",
   "validReferenceNumberError": "Incorrect Reference Number",
-  "mobileBillPaymentInquiry": "Mobile Bill Payment Inquiry"
+  "mobileBillPaymentInquiry": "Mobile Bill Payment Inquiry",
+  "sudaniBillPaymentPage": "Sudani ADSL"
 }

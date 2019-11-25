@@ -77,7 +77,7 @@ export class ProfileEditPage {
       email: [
         navParams.get("user") ? this.profile.email : null,
         Validators.compose([
-          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
+          Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$')
         ])
       ],
       bio: [

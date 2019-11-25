@@ -241,6 +241,8 @@ export class MyApp {
         ";base64," +
         this.profile.image.image
       );
+    } else {
+      return "assets/img/userPlaceholder.png";
     }
   }
 }

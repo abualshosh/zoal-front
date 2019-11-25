@@ -124,6 +124,8 @@ export class ContactsPage {
         ";base64," +
         contact.image.image
       );
+    } else {
+      return "assets/img/userPlaceholder.png";
     }
   }
 }

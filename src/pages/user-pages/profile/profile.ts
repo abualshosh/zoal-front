@@ -79,6 +79,8 @@ export class ProfilePage {
           ";base64," +
           this.user.image.image
         );
+      } else {
+        return "assets/img/userPlaceholder.png";
       }
     }
   }

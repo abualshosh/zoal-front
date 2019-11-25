@@ -158,6 +158,8 @@ export class ProfileEditPage {
         ";base64," +
         this.profile.image.image
       );
+    } else {
+      return "assets/img/userPlaceholder.png";
     }
   }
 }

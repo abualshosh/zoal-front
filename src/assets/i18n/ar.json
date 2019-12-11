@@ -546,5 +546,16 @@
   "Fee Amount is greater than MaxFeeAmount": "مبلغ الرسوم أكبر من المبلغ المسموح",
   "No Configuration Found in External Application": "لم يتم العثور على تكوين في التطبيق الخارجي",
   "Invalid Dynamic Fee Amount": "مبلغ الرسوم المتغير غير صالح",
-  "System Failed To Check Duplicates": "فشل النظام في التحقق من التكرارات"
+  "System Failed To Check Duplicates": "فشل النظام في التحقق من التكرارات",
+
+  "multiCreditPage": "توريدات متعددة",
+  "account1": "الحساب الاول",
+  "account2": "الحساب الثاني",
+  "account3": "الحساب الثالث",
+  "amount1": "المبلغ الاول",
+  "amount2": "المبلغ الثاني",
+  "amount3": "المبلغ الثالث",
+  "validaccount1Error": "معلومات الحساب الاول غير صالحه",
+  "validaccount2Error": "معلومات الحساب الثاني غير صالح",
+  "validaccount3Error": "معلومات الحساب الثالث غير صالح"
 }

@@ -52,12 +52,18 @@ export class MainMenuPage {
       component: "SudaniBillPaymentPage",
       icon: "custom-mobile-bill",
       var: "sudaniBillPaymentPage"
-    }
+    },
     // {
     //   title: "eInvoice",
     //   component: "EInvoicePage",
     //   icon: "custom-mobile-bill",
     //   var: ""
+    // }
+    // {
+    //   title: "multiCreditPage",
+    //   component: "MultiCreditPage",
+    //   icon: "custom-mobile-bill",
+    //   var: "multiCreditPage"
     // }
   ];
 

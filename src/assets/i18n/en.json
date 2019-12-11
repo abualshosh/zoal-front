@@ -533,5 +533,16 @@
   "Fee Amount is greater than MaxFeeAmount": "Fee Amount is greater than MaxFeeAmount",
   "No Configuration Found in External Application": "No Configuration Found in External Application",
   "Invalid Dynamic Fee Amount": "Invalid Dynamic Fee Amount",
-  "System Failed To Check Duplicates": "System Failed To Check Duplicates"
+  "System Failed To Check Duplicates": "System Failed To Check Duplicates",
+
+  "multiCreditPage": "Multi Deposit",
+  "account1": "First Account",
+  "account2": "Second Account",
+  "account3": "Third Account",
+  "amount1": "First Amount",
+  "amount2": "Second Amount",
+  "amount3": "Third Amount",
+  "validaccount1Error": "Invalid First Account info",
+  "validaccount2Error": "Invalid Second Account info",
+  "validaccount3Error": "Invalid Third Account info"
 }

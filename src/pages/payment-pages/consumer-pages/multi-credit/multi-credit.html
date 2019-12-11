@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ "multiCreditPage" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <div [hidden]="validCard && !todo.controls.mobilewallet.value">
+        <p>{{ "validcardError" | translate }}</p>
+      </div>
+      <ion-item *ngIf="!todo.controls.mobilewallet.value">
+        <ion-label stacked>{{ "Card" | translate }}</ion-label>
+        <ion-select
+          okText="{{ 'Submit' | translate }}"
+          cancelText="{{ 'close' | translate }}"
+          (ionChange)="onSelectChange($event)"
+          style="padding-left:5%;"
+          no-padding
+          formControlName="Card"
+          interface="popover"
+        >
+          <ion-option *ngFor="let card of cards" [value]="card">
+            {{ card.name }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <div *ngIf="!merchant">
+        <div [hidden]="todo.controls.MerchantId.valid">
+          <p>{{ "validMerchantIdError" | translate }}</p>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ "MerchantId" | translate }}</ion-label>
+          <ion-select
+            okText="{{ 'Submit' | translate }}"
+            cancelText="{{ 'close' | translate }}"
+            style="padding-left:5%;"
+            no-padding
+            formControlName="MerchantId"
+            interface="popover"
+          >
+            <ion-option *ngFor="let merchant of charities" [value]="merchant">
+              {{ merchant.merchantName }}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div [hidden]="todo.controls.Amount.valid">
+        <p>{{ "validamountError" | translate }}</p>
+      </div>
+      <ion-item>
+        <ion-label stacked>{{ "totalAmount" | translate }}</ion-label>
+        <ion-input type="number" formControlName="Amount" required></ion-input>
+      </ion-item>
+
+      <ion-row>
+        <div [hidden]="todo.controls.account1.valid && todo.controls.amount1.valid">
+          <p>{{ "validaccount1Error" | translate }}</p>
+        </div>
+        <ion-col col-8>
+          <ion-item>
+            <ion-label stacked>{{ "account1" | translate }}</ion-label>
+            <ion-input type="number" formControlName="account1" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-4>
+          <ion-item>
+            <ion-label text-wrap stacked>{{ "amount1" | translate }}</ion-label>
+            <ion-input type="number" formControlName="amount1" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+     
+      <ion-row>
+        <div [hidden]="todo.controls.account2.valid && todo.controls.amount2.valid">
+          <p>{{ "validaccount2Error" | translate }}</p>
+        </div>
+        <ion-col col-8>
+          <ion-item>
+            <ion-label stacked>{{ "account2" | translate }}</ion-label>
+            <ion-input type="number" formControlName="account2" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-4>
+          <ion-item>
+            <ion-label text-wrap stacked>{{ "amount2" | translate }}</ion-label>
+            <ion-input type="number" formControlName="amount2" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <div [hidden]="todo.controls.account3.valid && todo.controls.amount3.valid">
+          <p>{{ "validaccount3Error" | translate }}</p>
+        </div>
+        <ion-col col-8>
+          <ion-item>
+            <ion-label stacked>{{ "account3" | translate }}</ion-label>
+            <ion-input type="number" formControlName="account3" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-4>
+          <ion-item>
+            <ion-label text-wrap stacked>{{ "amount3" | translate }}</ion-label>
+            <ion-input type="number" formControlName="amount3" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <div [hidden]="todo.controls.IPIN.valid">
+        <p *ngIf="todo.controls.mobilewallet.value">
+          {{ "validipinError" | translate }}
+        </p>
+        <p *ngIf="!todo.controls.mobilewallet.value">
+          {{ "validpinError" | translate }}
+        </p>
+      </div>
+      <ion-item>
+        <ion-label *ngIf="todo.controls.mobilewallet.value" stacked>
+          {{ "PIN" | translate }}</ion-label
+        >
+        <ion-label *ngIf="!todo.controls.mobilewallet.value" stacked>
+          {{ "IPIN" | translate }}</ion-label
+        >
+        <ion-input
+          class="mask-text"
+          type="number"
+          formControlName="IPIN"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <div text-center>
+        <button
+          [disabled]="!isReadyToSave"
+          ion-button
+          type="submit"
+          color="secondary"
+        >
+          {{ "Submit" | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</ion-content>

@@ -1,12 +1,4 @@
 page-about-us {
-  .header-image {
-    background-image: url(../../../assets/img/next-logo.png);
-    height: 35vh;
-    background-size: cover;
-    background-position: center center;
-    position: relative;
-    z-index: -1;
-  }
   .main-content {
     margin-top: 10px;
     margin-left: 10px;
@@ -20,6 +12,6 @@ page-about-us {
   }
 
   ion-icon {
-    font-size: 4em;
+    font-size: 3.3em;
   }
 }

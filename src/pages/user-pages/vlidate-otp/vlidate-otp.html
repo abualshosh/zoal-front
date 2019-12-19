@@ -4,34 +4,57 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <div class="splash-info">
     <div class="splash-intro">{{ "enterCode" | translate }}</div>
   </div>
+
   <div class="con">
     <form class="form">
       <ion-list>
-        <ion-item>
-          <ion-label floating>{{ "NUMBER" | translate }}</ion-label>
-          <ion-input
-            type="number"
-            [(ngModel)]="account.otp"
-            name="otp"
-          ></ion-input>
-        </ion-item>
+        <ion-row>
+          <ion-col>
+            <button ion-button clear (click)="resendOtp()" color="secondary">
+              <ion-icon name="refresh">
+                {{ "resendOtp" | translate }}
+              </ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row dir="ltr" class="OTP-border">
+          <ion-col>
+            <div>
+              <ion-input #otp1 name="1" type="tel" [(ngModel)]="otpchar1" maxlength="1" (keyup)="moveFocus(otp2)">
+              </ion-input>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-input #otp2 name="2" type="tel" [(ngModel)]="otpchar2" maxlength="1" (keyup)="moveFocus(otp3)">
+              </ion-input>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-input #otp3 name="3" type="tel" [(ngModel)]="otpchar3" maxlength="1" (keyup)="moveFocus(otp4)">
+              </ion-input>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-input #otp4 name="4" type="tel" [(ngModel)]="otpchar4" maxlength="1">
+              </ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
 
         <div text-center padding>
-          <button
-            ion-button
-            round
-            (click)="validateOtp()"
-            color="primary"
-            class="round-button"
-          >
+          <button ion-button round (click)="validateOtp()" color="primary" class="round-button">
             {{ "Submit" | translate }}
           </button>
         </div>
       </ion-list>
     </form>
+
   </div>
 </ion-content>

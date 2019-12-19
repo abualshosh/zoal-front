@@ -544,5 +544,7 @@
   "amount3": "Third Amount",
   "validaccount1Error": "Invalid First Account info",
   "validaccount2Error": "Invalid Second Account info",
-  "validaccount3Error": "Invalid Third Account info"
+  "validaccount3Error": "Invalid Third Account info",
+  "sentOtp": "Sent successfully",
+  "resendOtp": "Resend OTP"
 }

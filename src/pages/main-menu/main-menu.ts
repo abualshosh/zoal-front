@@ -59,12 +59,6 @@ export class MainMenuPage {
     //   icon: "custom-mobile-bill",
     //   var: ""
     // }
-    // {
-    //   title: "multiCreditPage",
-    //   component: "MultiCreditPage",
-    //   icon: "custom-mobile-bill",
-    //   var: "multiCreditPage"
-    // }
   ];
 
   gmppBillerPages: any[] = [

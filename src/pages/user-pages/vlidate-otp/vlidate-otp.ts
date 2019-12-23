@@ -1,11 +1,11 @@
 import { Component, ViewChild } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController, NavParams, Platform } from "ionic-angular";
 import { User } from "../../../providers/providers";
 import { MainPage } from "../../pages";
 import { TranslateService } from "@ngx-translate/core";
 import { AlertProvider } from "../../../providers/alert/alert";
 
-declare var SMSReceive: any;
+declare var SMSRetriever: any;
 
 @IonicPage()
 @Component({
@@ -35,7 +35,8 @@ export class VlidateOtpPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertProvider: AlertProvider,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    private platform: Platform
   ) {
     this.account.login = navParams.get("username");
     this.otpType = navParams.get("OtpType");
@@ -49,33 +50,30 @@ export class VlidateOtpPage {
   }
 
   start() {
-    if (typeof SMSReceive !== 'undefined') {
-      SMSReceive.startWatch(
-        () => {
-          document.addEventListener('onSMSArrive', (e: any) => {
-            this.processSMS(e.data);
-            this.stopWatch();
-          });
-        },
-        () => { console.log('watch start failed'); }
-      )
-    }
-  }
+    this.platform.ready().then(() => {
+      if (typeof SMSRetriever !== 'undefined') {
+        // SMSRetriever.getHashString((hash) => {
+        //   alert(hash)
+        // }, (err) => {
+        //   console.log(err);
+        // });
 
-  stopWatch() {
-    SMSReceive.stopWatch(
-      () => { console.log('watch stopped') },
-      () => { console.log('watch stop failed') }
-    )
+        SMSRetriever.startWatch((msg) => {
+          document.addEventListener('onSMSArrive', (args: any) => {
+            console.log(args);
+            this.processSMS(args.message);
+          });
+        }, (err) => {
+          console.log(err);
+        });
+      }
+    });
   }
 
   processSMS(data) {
-    const message = data.body;
-    if (message && message.indexOf('ZoalPay') != -1) {
-      this.account.otp = data.body.slice(0, 4);
-      this.populateOtpFields();
-      this.validateOtp();
-    }
+    this.account.otp = data.slice(4, 8);
+    this.populateOtpFields();
+    this.validateOtp();
   }
 
   validateOtp() {

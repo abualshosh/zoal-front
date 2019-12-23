@@ -1,39 +1,37 @@
 {
   "project_info": {
-    "project_number": "634382074230",
-    "firebase_url": "https://zoal-pay.firebaseio.com",
-    "project_id": "zoal-pay",
-    "storage_bucket": "zoal-pay.appspot.com"
+    "project_number": "32482931905",
+    "firebase_url": "https://zoalpay.firebaseio.com",
+    "project_id": "zoalpay",
+    "storage_bucket": "zoalpay.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:634382074230:android:c03bfcd1779070a7",
+        "mobilesdk_app_id": "1:32482931905:android:c9a5819d6858fd3b04d040",
         "android_client_info": {
           "package_name": "com.znextech.zoalpay"
         }
       },
       "oauth_client": [
         {
-          "client_id": "634382074230-3mffnevob9r2gd6ad1a064i4lc2gshdg.apps.googleusercontent.com",
+          "client_id": "32482931905-su530peubgusaji5gt4rphf3gapvodkk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDHsOizYubpos-0okTnZGSNds7Vw-ESsCY"
+          "current_key": "AIzaSyCoOSf0Tr5p_lhQgdlZJytoy3Xa721WXfo"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32482931905-su530peubgusaji5gt4rphf3gapvodkk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

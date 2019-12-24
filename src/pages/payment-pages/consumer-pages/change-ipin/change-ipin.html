@@ -9,7 +9,7 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        <div [hidden]="todo.controls.Card.valid">
+        <div *ngIf="todo.controls.Card.invalid && (todo.controls.Card.dirty || todo.controls.Card.touched)">
           <p>{{ "validcardError" | translate }}</p>
         </div>
         <ion-item>
@@ -28,40 +28,43 @@
           </ion-select>
         </ion-item>
 
-        <div [hidden]="todo.controls.IPIN.valid">
+        <div *ngIf="todo.controls.IPIN.invalid && (todo.controls.IPIN.dirty || todo.controls.IPIN.touched)">
           <p>{{ "validipinError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked> {{ "IPIN" | translate }}</ion-label>
           <ion-input
             class="mask-text"
-            type="number"
+            type="tel"
             formControlName="IPIN"
+            maxlength="4"
             required
           ></ion-input>
         </ion-item>
 
-        <div [hidden]="todo.controls.newIPIN.valid">
+        <div *ngIf="todo.controls.newIPIN.invalid && (todo.controls.newIPIN.dirty || todo.controls.newIPIN.touched)">
           <p>{{ "validnewipinError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>{{ "NEWIPIN" | translate }}</ion-label>
           <ion-input
             class="mask-text"
-            type="number"
+            type="tel"
             formControlName="newIPIN"
+            maxlength="4"
             required
           ></ion-input>
         </ion-item>
-        <div [hidden]="todo.controls.ConnewIPIN.valid">
+        <div *ngIf="todo.controls.ConnewIPIN.invalid && (todo.controls.ConnewIPIN.dirty || todo.controls.ConnewIPIN.touched)">
           <p>{{ "validConnewIPINError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>{{ "CONNEWIPIN" | translate }}</ion-label>
           <ion-input
             class="mask-text"
-            type="number"
+            type="tel"
             formControlName="ConnewIPIN"
+            maxlength="4"
             required
           ></ion-input>
         </ion-item>

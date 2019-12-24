@@ -36,7 +36,7 @@
         </div>
       </div>
       <ion-list>
-        <div [hidden]="userForm.controls.firstName.valid">
+        <div *ngIf="userForm.controls.firstName.invalid && (userForm.controls.firstName.dirty || userForm.controls.firstName.touched)">
           <p>{{ "validFirstNameError" | translate }}</p>
         </div>
         <ion-item>
@@ -44,7 +44,7 @@
           <ion-input type="text" formControlName="firstName"></ion-input>
         </ion-item>
 
-        <div [hidden]="userForm.controls.lastName.valid">
+        <div *ngIf="userForm.controls.lastName.invalid && (userForm.controls.lastName.dirty || userForm.controls.lastName.touched)">
           <p>{{ "validLastNameError" | translate }}</p>
         </div>
         <ion-item>
@@ -52,7 +52,7 @@
           <ion-input type="text" formControlName="lastName"></ion-input>
         </ion-item>
 
-        <div [hidden]="userForm.controls.email.valid">
+        <div *ngIf="userForm.controls.email.invalid && (userForm.controls.email.dirty || userForm.controls.email.touched)">
           <p>{{ "validEmailError" | translate }}</p>
         </div>
         <ion-item>
@@ -60,7 +60,7 @@
           <ion-input type="text" formControlName="email"></ion-input>
         </ion-item>
 
-        <div [hidden]="userForm.controls.bio.valid">
+        <div *ngIf="userForm.controls.bio.invalid && (userForm.controls.bio.dirty || userForm.controls.bio.touched)">
           <p>{{ "validProfileBioError" | translate }}</p>
         </div>
         <ion-item>

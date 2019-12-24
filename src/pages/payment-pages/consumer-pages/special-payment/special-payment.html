@@ -8,7 +8,7 @@
 <ion-content no-padding class="masters">
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
-      <div [hidden]="validCard && !todo.controls.mobilewallet.value">
+      <div *ngIf="todo.controls.Card.invalid && (todo.controls.Card.dirty || todo.controls.Card.touched)">
         <p>{{ "validcardError" | translate }}</p>
       </div>
       <ion-item *ngIf="!todo.controls.mobilewallet.value">
@@ -29,7 +29,7 @@
       </ion-item>
 
       <div *ngIf="!merchant">
-        <div [hidden]="todo.controls.MerchantId.valid">
+        <div *ngIf="todo.controls.MerchantId.invalid && (todo.controls.MerchantId.dirty || todo.controls.MerchantId.touched)">
           <p>{{ "validMerchantIdError" | translate }}</p>
         </div>
         <ion-item>
@@ -49,7 +49,7 @@
         </ion-item>
       </div>
 
-      <div [hidden]="todo.controls.Amount.valid">
+      <div *ngIf="todo.controls.Amount.invalid && (todo.controls.Amount.dirty || todo.controls.Amount.touched)">
         <p>{{ "validamountError" | translate }}</p>
       </div>
       <ion-item>
@@ -57,7 +57,7 @@
         <ion-input type="number" formControlName="Amount" required></ion-input>
       </ion-item>
 
-      <div [hidden]="todo.controls.IPIN.valid">
+      <div *ngIf="todo.controls.IPIN.invalid && (todo.controls.IPIN.dirty || todo.controls.IPIN.touched)">
         <p *ngIf="todo.controls.mobilewallet.value">
           {{ "validipinError" | translate }}
         </p>
@@ -74,8 +74,9 @@
         >
         <ion-input
           class="mask-text"
-          type="number"
+          type="tel"
           formControlName="IPIN"
+          maxlength="4"
           required
         ></ion-input>
       </ion-item>

@@ -14,7 +14,7 @@
   <div class="con">
     <form [formGroup]="contactForm" (ngSubmit)="sendMessage()">
       <ion-list>
-        <div [hidden]="contactForm.controls.title.valid">
+        <div *ngIf="contactForm.controls.title.invalid && (contactForm.controls.title.dirty || contactForm.controls.title.touched)">
           <p>{{ "validContactMessageTitleError" | translate }}</p>
         </div>
         <ion-item>
@@ -24,7 +24,7 @@
           <ion-input type="text" formControlName="title" required></ion-input>
         </ion-item>
 
-        <div [hidden]="contactForm.controls.message.valid">
+        <div *ngIf="contactForm.controls.message.invalid && (contactForm.controls.message.dirty || contactForm.controls.message.touched)">
           <p>{{ "validContactMessageError" | translate }}</p>
         </div>
         <ion-item>

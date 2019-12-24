@@ -12,7 +12,7 @@
       *ngIf="!isComplete"
     >
       <ion-list>
-        <div [hidden]="generateIpinForm.controls.card.valid">
+        <div *ngIf="generateIpinForm.controls.card.invalid && (generateIpinForm.controls.card.dirty || generateIpinForm.controls.card.touched)">
           <p>{{ "validcardError" | translate }}</p>
         </div>
         <ion-item>
@@ -31,7 +31,7 @@
           </ion-select>
         </ion-item>
 
-        <div [hidden]="generateIpinForm.controls.phoneNumber.valid">
+        <div *ngIf="generateIpinForm.controls.phoneNumber.invalid && (generateIpinForm.controls.phoneNumber.dirty || generateIpinForm.controls.phoneNumber.touched)">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
         <ion-item>
@@ -62,22 +62,23 @@
       *ngIf="isComplete"
     >
       <ion-list>
-        <div [hidden]="completeForm.controls.otp.valid">
+        <div *ngIf="completeForm.controls.otp.invalid && (completeForm.controls.otp.dirty || completeForm.controls.otp.touched)">
           <p>{{ "enterCode" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>{{ "OTP" | translate }}</ion-label>
           <ion-input type="number" formControlName="otp" required> </ion-input>
         </ion-item>
-        <div [hidden]="completeForm.controls.ipin.valid">
+        <div *ngIf="completeForm.controls.ipin.invalid && (completeForm.controls.ipin.dirty || completeForm.controls.ipin.touched)">
           <p>{{ "validnewipinError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>{{ "NEWIPIN" | translate }}</ion-label>
           <ion-input
             class="mask-text"
-            type="number"
+            type="tel"
             formControlName="ipin"
+            maxlength="4"
             required
           >
           </ion-input>

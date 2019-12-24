@@ -14,7 +14,7 @@
   <div class="con">
     <form [formGroup]="form" (ngSubmit)="submitForm()">
       <div *ngIf="key == 'wallets'">
-        <div [hidden]="form.controls.walletNumber.valid">
+        <div *ngIf="form.controls.walletNumber.invalid && (form.controls.walletNumber.dirty || form.controls.walletNumber.touched)">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
         <ion-item>
@@ -24,14 +24,14 @@
       </div>
 
       <div *ngIf="key == 'cards'">
-        <div [hidden]="form.controls.cardNumber.valid">
+        <div *ngIf="form.controls.cardNumber.invalid && (form.controls.cardNumber.dirty || form.controls.cardNumber.touched)">
           <p>{{ "validCardPANError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked> {{ "CardPAN" | translate }}</ion-label>
           <ion-input type="number" formControlName="cardNumber"></ion-input>
         </ion-item>
-        <div [hidden]="form.controls.expDate.valid">
+        <div *ngIf="form.controls.expDate.invalid && (form.controls.expDate.dirty || form.controls.expDate.touched)">
           <p>{{ "validExpDateError" | translate }}</p>
         </div>
         <ion-item>
@@ -50,7 +50,7 @@
       </div>
 
       <div *ngIf="key == 'favorites'">
-        <div [hidden]="form.controls.favoriteText.valid">
+        <div *ngIf="form.controls.favoriteText.invalid && (form.controls.favoriteText.dirty || form.controls.favoriteText.touched)">
           <p>{{ "validFavoriteTextError" | translate }}</p>
         </div>
         <ion-item>
@@ -59,7 +59,7 @@
         </ion-item>
       </div>
 
-      <div [hidden]="form.controls.name.valid">
+      <div *ngIf="form.controls.name.invalid && (form.controls.name.dirty || form.controls.name.touched)">
         <p>{{ "validNameError" | translate }}</p>
       </div>
       <ion-item>

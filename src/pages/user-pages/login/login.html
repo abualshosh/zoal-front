@@ -11,7 +11,7 @@
   <ion-list class="form">
     <div class="con">
       <form [formGroup]="login" (ngSubmit)="doLogin()">
-        <div *ngIf="!login.controls.PHONENUMBER.valid && submitAttempt">
+        <div *ngIf="login.controls.PHONENUMBER.invalid && (login.controls.PHONENUMBER.dirty || login.controls.PHONENUMBER.touched)">
           <p>{{ "validvoucherNumberError" | translate }}</p>
         </div>
         <ion-item>

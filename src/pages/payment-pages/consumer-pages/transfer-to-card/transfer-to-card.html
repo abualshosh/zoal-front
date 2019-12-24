@@ -9,7 +9,7 @@
   <div class="con">
     <form [formGroup]="todo" (ngSubmit)="logForm()">
       <ion-list>
-        <div [hidden]="todo.controls.Card.valid">
+        <div *ngIf="todo.controls.Card.invalid && (todo.controls.Card.dirty || todo.controls.Card.touched)">
           <p>{{ "validcardError" | translate }}</p>
         </div>
         <ion-item>
@@ -28,7 +28,7 @@
           </ion-select>
         </ion-item>
 
-        <div [hidden]="todo.controls.ToCard.valid">
+        <div *ngIf="todo.controls.ToCard.invalid && (todo.controls.ToCard.dirty || todo.controls.ToCard.touched)">
           <p>{{ "validTocardError" | translate }}</p>
         </div>
         <ion-item>
@@ -58,22 +58,24 @@
             <ion-icon name="custom-barcode"></ion-icon>
           </button>
         </ion-item>
-        <div [hidden]="todo.controls.Amount.valid">
+        <div *ngIf="todo.controls.Amount.invalid && (todo.controls.Amount.dirty || todo.controls.Amount.touched)">
           <p>{{ "validamountError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked>{{ "Amount" | translate }}</ion-label>
           <ion-input type="number" formControlName="Amount"></ion-input>
         </ion-item>
-        <div [hidden]="todo.controls.IPIN.valid">
+        <div *ngIf="todo.controls.IPIN.invalid && (todo.controls.IPIN.dirty || todo.controls.IPIN.touched)">
           <p>{{ "validipinError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked> {{ "IPIN" | translate }}</ion-label>
           <ion-input
             class="mask-text"
-            type="number"
+            type="tel"
             formControlName="IPIN"
+            maxlength="4"
+            required
           ></ion-input>
         </ion-item>
       </ion-list>

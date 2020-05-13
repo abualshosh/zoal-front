@@ -21,7 +21,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 export class SudaniBillPaymentPage {
 
   profile: any;
-
+  public type = "sudaniBillPaymentPage";
   public cards: Item[] = [];
   public wallets: Item[] = [];
   public title: any;
@@ -73,6 +73,7 @@ export class SudaniBillPaymentPage {
     public modalCtrl: ModalController,
     public navParams: NavParams
   ) {
+
     this.title = this.navParams.get("param");
 
     this.todo.controls["mobilewallet"].setValue(false);
@@ -153,6 +154,14 @@ export class SudaniBillPaymentPage {
       this.validCard = true;
     }
   }
+  checkType(_event) {
+    if (this.type === "sudaniBillPaymentPage") {
+      this.todo.controls["Amount"].enable();
+    } else {
+      this.todo.controls["Amount"].disable();
+    }
+  }
+
 
   logForm() {
     const form = this.todo.value;
@@ -181,9 +190,14 @@ export class SudaniBillPaymentPage {
         paymentInfo: "MPHONE=" + form.MPHONE,
         payeeId: this.payee.payeeId
       };
-
+      let endpoint: string;
+      if (this.type == "sudaniBillPaymentPage") {
+        endpoint = "consumer/payment";
+      } else {
+        endpoint = "consumer/getBill";
+      }
       this.serviceProvider
-        .doTransaction(request, "consumer/payment")
+        .doTransaction(request, endpoint)
         .subscribe(res => {
           if (res != null && res.responseCode == 0) {
             const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(

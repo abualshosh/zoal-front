@@ -115,7 +115,8 @@ export class TransactionHistoryPage {
     let response;
     if (transaction.ebsResponse) {
       response = JSON.parse(transaction.ebsResponse);
-
+      
+      
       let data = [];
 
       let mainData = {
@@ -140,6 +141,7 @@ export class TransactionHistoryPage {
         voucherCode: response.voucherCode,
 
         balance: balance,
+      
 
         serviceInfo: response.serviceInfo,
         fees:
@@ -155,7 +157,8 @@ export class TransactionHistoryPage {
         externalFee: response.externalFee,
         transactionAmount: response.transactionAmount,
         totalAmount: response.totalAmount,
-        transactionId: response.transactionId
+        transactionId: response.transactionId,
+        paymentInfo: response.paymentInfo ? this.fixPaymentInfo(response.paymentInfo) : null
       };
 
       data.push(bodyData);
@@ -182,12 +185,20 @@ export class TransactionHistoryPage {
           response.billInfo.netAmount = null;
 
           //MTN TopUp unneeded fields
-          response.billInfo.subNewBalance = null;
+          // response.billInfo.subNewBalance = null;
+
+          if (response.billInfo.token) {
+            response.billInfo.token = this.separateToken(response.billInfo.token)
+          }
+          if (response.billInfo.paymentInfo) {
+            console.log(response.billInfo.paymentInfo);
+            
+          }
 
           data.push(response.billInfo);
         }
       }
-
+      
       let modal = this.modalCtrl.create(
         "TransactionDetailPage",
         {
@@ -201,6 +212,19 @@ export class TransactionHistoryPage {
       modal.present();
     } else {
     }
+  }
+  
+  separateToken(token:string) {
+    let newToken = token.match(/.{1,4}/g);
+    token =newToken.join("-")
+    return token
+  }
+  fixPaymentInfo(paymentInfo: string) {
+    if (paymentInfo.includes("MPHONE=")) {
+      paymentInfo = paymentInfo.replace("MPHONE=","")
+    } else if (paymentInfo.includes("METER="))
+      paymentInfo = paymentInfo.replace("METER=", "")
+    return paymentInfo;
   }
 
   calculateFees(response) {
@@ -237,4 +261,5 @@ export class TransactionHistoryPage {
         }
       );
   }
+
 }

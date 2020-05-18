@@ -559,5 +559,6 @@
   "validaccount3Error": "معلومات الحساب الثالث غير صالح",
   "sentOtp": "تم الارسال بنجاح",
   "resendOtp": "اعادة ارسال الرقم",
-  "sudaniBillPaymentInquiry": "إستعلام عن الفاتوره"
+  "sudaniBillPaymentInquiry": "إستعلام عن الفاتوره",
+  "paymentInfo": "تفاصيل العميله"
 }

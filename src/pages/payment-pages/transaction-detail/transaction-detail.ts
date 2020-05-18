@@ -31,7 +31,8 @@ export class TransactionDetailPage {
   ) {
     this.items = this.navParams.get("data");
     this.main = this.navParams.get("main");
-
+    
+    
     this.isHistory = this.navParams.get("isHistory");
     this.isSuccess = this.navParams.get("isSuccess");
 

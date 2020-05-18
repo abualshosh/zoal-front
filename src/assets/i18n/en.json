@@ -546,5 +546,6 @@
   "validaccount3Error": "Invalid Third Account info",
   "sentOtp": "Sent successfully",
   "resendOtp": "Resend OTP",
-  "sudaniBillPaymentInquiry": "Bill Inquiry"
+  "sudaniBillPaymentInquiry": "Bill Inquiry",
+  "paymentInfo": "Payment Info"
 }

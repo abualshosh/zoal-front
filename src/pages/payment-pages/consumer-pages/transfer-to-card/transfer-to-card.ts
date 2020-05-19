@@ -56,7 +56,8 @@ export class TransferToCardPage {
     Amount: [
       "",
       Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
-    ]
+    ],
+    comment:[""]
   });
 
   constructor(
@@ -155,7 +156,8 @@ export class TransferToCardPage {
         fromAccountType: "00",
         toAccountType: "00",
         PAN: form.Card.cardNumber,
-        expDate: form.Card.expDate
+        expDate: form.Card.expDate,
+        comment:form.comment
       };
 
       this.serviceProvider

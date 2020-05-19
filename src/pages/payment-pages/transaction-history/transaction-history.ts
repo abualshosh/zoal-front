@@ -141,7 +141,8 @@ export class TransactionHistoryPage {
         voucherCode: response.voucherCode,
 
         balance: balance,
-      
+        
+        comment: transaction.comment,
 
         serviceInfo: response.serviceInfo,
         fees:

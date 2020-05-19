@@ -6,6 +6,7 @@ import {
 } from "@ionic-native/barcode-scanner";
 import { QrScanProvider } from "../../providers/qr-scan/qr-scan";
 import { Api } from "../../providers/api/api";
+import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
 @Component({
@@ -140,15 +141,24 @@ export class MainMenuPage {
     private barcodeScanner: BarcodeScanner,
     public navCtrl: NavController,
     public qrScanProvider: QrScanProvider,
-    public navParams: NavParams
+    public navParams: NavParams,
+    private translate:TranslateService
   ) {
     this.isGmpp = this.navParams.get("isGmpp");
 
     this.api.get("merchants").subscribe((res: any) => {
       res.map(merchant => {
+        let merchantName:string =""
+        if (this.translate.currentLang.match("ar")) {
+          merchantName = merchant.merchantNameArabic
+        }
+        else {
+          merchantName= merchant.merchantNameEnglish
+        }
         if (merchant.status == "biller") {
           this.merchantPages.push({
-            title: merchant.merchantName,
+            
+            title: merchantName,
             component: "SpecialPaymentPage",
             icon: "custom-mobile-bill",
             var: merchant

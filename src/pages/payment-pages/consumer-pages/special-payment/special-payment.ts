@@ -13,6 +13,7 @@ import * as uuid from "uuid";
 import { Item, StorageProvider } from "../../../../providers/storage/storage";
 import { AlertProvider } from "../../../../providers/alert/alert";
 import { Api } from "../../../../providers/api/api";
+import { TranslateService } from "@ngx-translate/core";
 
 @IonicPage()
 @Component({
@@ -32,7 +33,7 @@ export class SpecialPaymentPage {
   charities: any;
   title: string;
   merchant: any;
-
+  lang: string;
   isReadyToSave: boolean;
 
   todo = this.formBuilder.group({
@@ -62,14 +63,17 @@ export class SpecialPaymentPage {
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public api: Api,
-    public navParams: NavParams
+    public navParams: NavParams,
+    private translate:TranslateService
   ) {
+    this.lang = this.translate.currentLang;
     this.loadPaymentType();
     this.todo.controls["mobilewallet"].setValue(false);
 
     this.todo.valueChanges.subscribe(v => {
       this.isReadyToSave = this.todo.valid;
     });
+    
   }
 
   loadPaymentType() {

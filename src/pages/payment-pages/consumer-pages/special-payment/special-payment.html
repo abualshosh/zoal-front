@@ -43,7 +43,8 @@
             interface="popover"
           >
             <ion-option *ngFor="let merchant of charities" [value]="merchant">
-              {{ merchant.merchantName }}
+              <p *ngIf="lang.match('ar')">{{ merchant.merchantNameArabic }}</p>
+              <p *ngIf="lang.match('en')">{{ merchant.merchantNameEnglish}}</p>
             </ion-option>
           </ion-select>
         </ion-item>

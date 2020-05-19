@@ -547,5 +547,6 @@
   "sentOtp": "Sent successfully",
   "resendOtp": "Resend OTP",
   "sudaniBillPaymentInquiry": "Bill Inquiry",
-  "paymentInfo": "Payment Info"
+  "paymentInfo": "Payment Info",
+  "comment": "comment"
 }

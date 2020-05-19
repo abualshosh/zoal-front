@@ -560,5 +560,6 @@
   "sentOtp": "تم الارسال بنجاح",
   "resendOtp": "اعادة ارسال الرقم",
   "sudaniBillPaymentInquiry": "إستعلام عن الفاتوره",
-  "paymentInfo": "تفاصيل العميله"
+  "paymentInfo": "تفاصيل العميله",
+  "comment": "تعليق"
 }

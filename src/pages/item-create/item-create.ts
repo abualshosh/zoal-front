@@ -9,6 +9,7 @@ import {
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Item, StorageProvider } from "../../providers/storage/storage";
 import * as moment from "moment";
+import { Api } from "../../providers/api/api";
 
 @IonicPage()
 @Component({
@@ -19,7 +20,7 @@ export class ItemCreatePage {
   private form: FormGroup;
   submitAttempt = false;
   item: Item;
-  newItem: Item;
+  newItem: any;
   key: any;
   pageTitle: string;
   isReadyToSave: boolean;
@@ -30,8 +31,11 @@ export class ItemCreatePage {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public storageProvider: StorageProvider,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private api:Api
   ) {
+    console.log(JSON.parse(localStorage.getItem("profile")));
+    
     this.item = navParams.get("item");
     this.key = navParams.get("key");
 
@@ -45,7 +49,7 @@ export class ItemCreatePage {
           Validators.pattern("0[0-9]*")
         ])
       ],
-      cardNumber: [
+      pan: [
         navParams.get("item") ? this.item.cardNumber : "",
         Validators.compose([
           Validators.required,
@@ -115,7 +119,7 @@ export class ItemCreatePage {
       }
 
       if (this.key == "cards") {
-        this.newItem.cardNumber = this.form.controls["cardNumber"].value;
+        this.newItem.pan = this.form.controls["pan"].value;
         this.newItem.expDate = this.formatDate(
           this.form.controls["expDate"].value
         );
@@ -126,8 +130,12 @@ export class ItemCreatePage {
       }
 
       this.newItem.name = this.form.controls["name"].value;
+      this.newItem.id = null
+      this.newItem.profile = JSON.parse(localStorage.getItem("profile"))
 
-      this.storageProvider.addItem(this.newItem, this.key).then(item => {
+      this.api.post("cards", this.newItem).subscribe(item => {
+        console.log(item);
+        
         this.submitAttempt = false;
         this.events.publish("data:updated", "");
         this.viewCtrl.dismiss();

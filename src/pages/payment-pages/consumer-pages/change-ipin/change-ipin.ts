@@ -17,7 +17,7 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
   templateUrl: "change-ipin.html"
 })
 export class ChangeIpinPage {
-  public cards: Item[] = [];
+  public cards: any[] = [];
   submitAttempt: boolean = false;
   isReadyToSave: boolean;
 
@@ -60,7 +60,7 @@ export class ChangeIpinPage {
     public alertProvider: AlertProvider,
     public modalCtrl: ModalController,
     public navCtrl: NavController
-  ) {
+  ) {    
     this.todo.valueChanges.subscribe(v => {
       this.isReadyToSave = this.todo.valid;
     });
@@ -79,9 +79,9 @@ export class ChangeIpinPage {
   }
 
   loadData() {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
-    });
+    this.storageProvider.getCards().subscribe(res => {
+      this.cards = res.body
+      })    
   }
 
   logForm() {

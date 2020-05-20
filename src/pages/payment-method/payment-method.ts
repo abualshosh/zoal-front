@@ -17,7 +17,7 @@ import { AlertProvider } from "../../providers/alert/alert";
 })
 export class PaymentMethodPage {
   profile: any;
-  cards: Item[];
+  cards: any;
   wallets: Item[];
 
   constructor(
@@ -41,9 +41,10 @@ export class PaymentMethodPage {
   }
 
   loadCardsWallets() {
-    this.storageProvider.getCards().then(cards => {
-      this.cards = cards;
-    });
+    this.storageProvider.getCards().subscribe(res => {
+      this.cards = res.body      
+    })
+    
     this.storageProvider.getWallets().then(wallets => {
       this.wallets = wallets;
     });

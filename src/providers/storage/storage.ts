@@ -3,6 +3,8 @@ import "rxjs/add/operator/map";
 import { Storage } from "@ionic/storage";
 import "rxjs/add/observable/fromPromise";
 import { Observable } from "rxjs/Observable";
+import { Api } from "../api/api";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 
 export interface Wallet {
   id: number;
@@ -30,7 +32,7 @@ const TRANSACTIONS_KEY = "profile";
 
 @Injectable()
 export class StorageProvider {
-  constructor(private storage: Storage) {}
+  constructor(private storage: Storage, protected http: HttpClient, private api :Api) {}
 
   setTransactions(transactions): Promise<any> {
     return this.storage.set(TRANSACTIONS_KEY, transactions);
@@ -44,8 +46,8 @@ export class StorageProvider {
     return this.storage.get(WALLETS_KEY);
   }
 
-  getCards(): Promise<Item[]> {
-    return this.storage.get(CARDS_KEY);
+  getCards(): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(this.api.url+"/card-profile",{observe:'response'})
   }
 
   getFavorites(): Promise<Item[]> {

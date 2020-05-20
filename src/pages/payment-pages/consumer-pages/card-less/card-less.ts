@@ -18,7 +18,7 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
   templateUrl: "card-less.html"
 })
 export class CardLessPage {
-  public cards: Item[] = [];
+  public cards:any[] = [];
   submitAttempt: boolean = false;
   favorites: Item[];
 
@@ -77,10 +77,13 @@ export class CardLessPage {
   }
 
   loadData() {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
-    });
+  
+      this.storageProvider.getCards().subscribe(res => {
+        this.cards = res.body
+      })
+  
 
+    
     this.storageProvider.getFavorites().then(favorites => {
       this.favorites = favorites;
     });

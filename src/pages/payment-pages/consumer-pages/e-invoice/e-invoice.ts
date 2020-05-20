@@ -15,7 +15,7 @@ import * as moment from "moment";
 export class EInvoicePage {
   profile: any;
   public type = "eInvoicePayment";
-  public cards: Item[] = [];
+  public cards: any[] = [];
   public payee: any[] = [];
   submitAttempt: boolean = false;
 
@@ -69,8 +69,8 @@ export class EInvoicePage {
   }
 
   loadData() {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
+    this.storageProvider.getCards().subscribe(res => {
+      this.cards = res.body
     });
   }
 

@@ -22,7 +22,7 @@ export class SudaniBillPaymentPage {
 
   profile: any;
   public type = "sudaniBillPaymentPage";
-  public cards: Item[] = [];
+  public cards: any[] = [];
   public wallets: Item[] = [];
   public title: any;
   showWallet: boolean = false;
@@ -105,8 +105,8 @@ export class SudaniBillPaymentPage {
         this.todo.controls["Card"].disable();
       });
     } else {
-      this.storageProvider.getCards().then(cards => {
-        this.cards = cards;
+      this.storageProvider.getCards().subscribe(res => {
+        this.cards = res.body
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
         this.todo.controls["entityId"].disable();

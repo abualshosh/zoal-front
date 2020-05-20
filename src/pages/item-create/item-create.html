@@ -24,12 +24,12 @@
       </div>
 
       <div *ngIf="key == 'cards'">
-        <div *ngIf="form.controls.cardNumber.invalid && (form.controls.cardNumber.dirty || form.controls.cardNumber.touched)">
+        <div *ngIf="form.controls.pan.invalid && (form.controls.pan.dirty || form.controls.pan.touched)">
           <p>{{ "validCardPANError" | translate }}</p>
         </div>
         <ion-item>
           <ion-label stacked> {{ "CardPAN" | translate }}</ion-label>
-          <ion-input type="number" formControlName="cardNumber"></ion-input>
+          <ion-input type="number" formControlName="pan"></ion-input>
         </ion-item>
         <div *ngIf="form.controls.expDate.invalid && (form.controls.expDate.dirty || form.controls.expDate.touched)">
           <p>{{ "validExpDateError" | translate }}</p>

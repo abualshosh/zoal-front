@@ -25,7 +25,7 @@ import { QrScanProvider } from "../../../../providers/qr-scan/qr-scan";
 })
 export class TransferToCardPage {
   options: BarcodeScannerOptions;
-  public cards: Item[] = [];
+  public cards: any[] = [];
   submitAttempt: boolean = false;
 
   favorites: Item[];
@@ -98,8 +98,8 @@ export class TransferToCardPage {
   }
 
   loadData() {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
+    this.storageProvider.getCards().subscribe(res => {
+      this.cards = res.body
     });
 
     this.storageProvider.getFavorites().then(favorites => {

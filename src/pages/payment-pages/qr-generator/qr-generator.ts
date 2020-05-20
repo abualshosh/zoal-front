@@ -16,7 +16,7 @@ import { SocialSharing } from "@ionic-native/social-sharing";
   templateUrl: "qr-generator.html"
 })
 export class QrGeneratorPage {
-  public cards: Item[] = [];
+  public cards: any[] = [];
   public wallets = [];
   private todo: FormGroup;
   isGmpp: boolean;
@@ -56,17 +56,17 @@ export class QrGeneratorPage {
         this.walletQr = this.wallets[0].walletNumber;
       });
     } else {
-      this.storageProvider.getCards().then(cards => {
-        this.cards = cards;
-        this.todo.controls["Card"].setValue(cards[0]);
-        this.panQr = cards[0].cardNumber;
+      this.storageProvider.getCards().subscribe(res => {
+        this.cards = res.body
+        this.todo.controls["Card"].setValue(this.cards[0]);
+        this.panQr = this.cards[0].pan;
       });
     }
   }
 
   onChange() {
     if (!this.isGmpp) {
-      this.panQr = this.todo.value.Card.cardNumber;
+      this.panQr = this.todo.value.Card.pan;
     }
   }
 

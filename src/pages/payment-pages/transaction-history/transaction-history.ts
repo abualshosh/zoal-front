@@ -34,6 +34,8 @@ export class TransactionHistoryPage {
     public alertProvider: AlertProvider,
     public api: Api
   ) {
+    console.log(this.storageProvider.getCards());
+    
     this.alertProvider.showLoading();
     this.api.get("profile-transactions", "?page=0&size=15", null).subscribe(
       (res: any) => {
@@ -262,5 +264,7 @@ export class TransactionHistoryPage {
         }
       );
   }
+
+  
 
 }

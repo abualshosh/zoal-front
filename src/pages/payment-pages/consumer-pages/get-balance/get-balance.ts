@@ -18,7 +18,7 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
   templateUrl: "get-balance.html"
 })
 export class GetBalancePage {
-  public cards: Item[] = [];
+  public cards: any[] = [];
   submitAttempt: boolean = false;
   isReadyToSave: boolean;
 
@@ -62,9 +62,10 @@ export class GetBalancePage {
   }
 
   loadData() {
-    this.storageProvider.getCards().then(val => {
-      this.cards = val;
-    });
+    this.storageProvider.getCards().subscribe(res => {
+      this.cards = res.body
+    })
+
   }
 
   logForm() {

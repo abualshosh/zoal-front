@@ -20,7 +20,7 @@ import { AlertProvider } from "../../../../providers/alert/alert";
 })
 export class ElectricityServicesPage {
   profile: any;
-  public cards: Item[] = [];
+  public cards: any[] = [];
   public wallets: Item[] = [];
   public payee: any[] = [];
   showWallet: boolean = false;
@@ -97,8 +97,8 @@ export class ElectricityServicesPage {
         this.todo.controls["Card"].disable();
       });
     } else {
-      this.storageProvider.getCards().then(cards => {
-        this.cards = cards;
+      this.storageProvider.getCards().subscribe(cards => {
+        this.cards = cards.body;
         this.showWallet = false;
         this.todo.controls["mobilewallet"].setValue(false);
         this.todo.controls["entityId"].disable();

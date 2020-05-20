@@ -36,6 +36,7 @@ export class User {
     seq.subscribe(
       (res: any) => {
         if (res.id_token) {
+          localStorage.setItem("profile", JSON.stringify(res.profile))
           localStorage.setItem("id_token", res.id_token);
           localStorage.setItem("username", res.profile.login);
           localStorage.setItem("profileId", res.profile.id);

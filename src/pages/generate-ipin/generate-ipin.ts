@@ -69,8 +69,8 @@ export class GenerateIpinPage {
     public storageProvider: StorageProvider,
     public alertProvider: AlertProvider
   ) {
-    this.storageProvider.getCards().then(cards => {
-      this.cards = cards;
+    this.storageProvider.getCards().subscribe(cards => {
+      this.cards = cards.body;
     });
 
     this.generateIpinForm.valueChanges.subscribe(v => {

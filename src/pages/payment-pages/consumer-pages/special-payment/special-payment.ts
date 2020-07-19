@@ -92,6 +92,13 @@ export class SpecialPaymentPage {
   loadCharities() {
     this.api.get("merchants").subscribe((res: any) => {
       this.charities = res.filter(merchant => {
+        let merchantName: string = ""
+        if (this.translate.currentLang.match("ar")) {
+          merchantName = merchant.merchantNameArabic
+        }
+        else {
+          merchantName = merchant.merchantName
+        }
         return merchant.status == "charity";
       });
     });
@@ -127,8 +134,8 @@ export class SpecialPaymentPage {
       });
     }
 
-    this.storageProvider.getFavorites().then(favorites => {
-      this.favorites = favorites;
+    this.storageProvider.getFavorites().subscribe(favorites => {
+      this.favorites = favorites.body;
     });
   }
 

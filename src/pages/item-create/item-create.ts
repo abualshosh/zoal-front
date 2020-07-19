@@ -10,6 +10,7 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { Item, StorageProvider } from "../../providers/storage/storage";
 import * as moment from "moment";
 import { Api } from "../../providers/api/api";
+import { HttpResponse } from "@angular/common/http";
 
 @IonicPage()
 @Component({
@@ -21,9 +22,10 @@ export class ItemCreatePage {
   submitAttempt = false;
   item: Item;
   newItem: any;
-  key: any;
+  key: string;
   pageTitle: string;
   isReadyToSave: boolean;
+  favoriteType: any[] = ['CARD', 'MOBILE', 'METER', 'OTHER']
 
   constructor(
     public navCtrl: NavController,
@@ -35,7 +37,6 @@ export class ItemCreatePage {
     private api:Api
   ) {
     console.log(JSON.parse(localStorage.getItem("profile")));
-    
     this.item = navParams.get("item");
     this.key = navParams.get("key");
 
@@ -66,7 +67,8 @@ export class ItemCreatePage {
         navParams.get("item") ? this.item.favoriteText : "",
         Validators.required
       ],
-      name: [navParams.get("item") ? this.item.name : "", Validators.required]
+      name: [navParams.get("item") ? this.item.name : "", Validators.required],
+      favoriteType:[]
     });
 
     this.form.valueChanges.subscribe(v => {
@@ -75,7 +77,7 @@ export class ItemCreatePage {
   }
 
   ionViewDidLoad() {
-    this.checkFormType();
+    // this.checkFormType();
   }
 
   checkFormType() {
@@ -105,6 +107,7 @@ export class ItemCreatePage {
   }
 
   addItem() {
+    
     this.submitAttempt = true;
     if (this.form.valid) {
       this.newItem = new Item(Date.now());
@@ -119,6 +122,8 @@ export class ItemCreatePage {
       }
 
       if (this.key == "cards") {
+        console.log('card');
+        
         this.newItem.pan = this.form.controls["pan"].value;
         this.newItem.expDate = this.formatDate(
           this.form.controls["expDate"].value
@@ -132,14 +137,25 @@ export class ItemCreatePage {
       this.newItem.name = this.form.controls["name"].value;
       this.newItem.id = null
       this.newItem.profile = JSON.parse(localStorage.getItem("profile"))
-
-      this.api.post("cards", this.newItem).subscribe(item => {
-        console.log(item);
+      if (this.key.match("cards")) {
         
-        this.submitAttempt = false;
-        this.events.publish("data:updated", "");
-        this.viewCtrl.dismiss();
-      });
+        this.api.post("cards", this.newItem).subscribe(item => {
+          console.log(item);
+
+          this.submitAttempt = false;
+          this.events.publish("data:updated", "");
+          this.viewCtrl.dismiss();
+        });
+      } else if (this.key.match("favorites")) {
+        this.api.post("favorate", this.newItem).subscribe(item => {
+          console.log(item);
+
+          this.submitAttempt = false;
+          this.events.publish("data:updated", "");
+          this.viewCtrl.dismiss();
+        })
+      }
+ 
     }
   }
 

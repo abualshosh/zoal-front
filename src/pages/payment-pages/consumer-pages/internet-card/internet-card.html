@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-title>{{ '' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding class="masters">
+  <div class="con">
+   <ion-grid class="grid-con">
+     <ion-row>
+      <ion-col>
+        <div class="grid-item">
+          <ion-icon class="grid-icon" name="custom-qr-scanner"></ion-icon>
+          <div *ngFor="let internetCard of internetCards">{{internetCard.type.type}}</div>
+        </div>
+      </ion-col>
+  
+      
+    </ion-row>
+   </ion-grid>
+  </div>
+</ion-content>

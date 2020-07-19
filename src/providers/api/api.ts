@@ -1,15 +1,16 @@
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
  */
 @Injectable()
 export class Api {
-	public ip = "localhost:1919"; // Next Dev Server
+	public ip = "167.71.35.117:1919"; // Next Dev Server
 	// public ip = "zoalpay.znextech.com"; // Production
 	// public ip = '192.168.1.33:1919' //Work Local
-	// public ip = 'localhost:1919'
+	// public ip = 'localhost:8080'
 	public url: string = 'http://' + this.ip + '/api'
 	public wsurl: string = 'https://' + this.ip + '/websocket'
 
@@ -51,4 +52,27 @@ export class Api {
 	patch(endpoint: string, body: any, reqOpts?: any) {
 		return this.http.put(this.url + '/' + endpoint, body, reqOpts)
 	}
+	getInternetCard(req?: any): Observable<HttpResponse<any>> {
+		const options = this.createRequestOption(req);
+		return this.http
+			.get<any[]>(this.url +"internet-cards", { params: options, observe: 'response' })
+			;
+	}
+	 createRequestOption = (req?: any): HttpParams => {
+		let options: HttpParams = new HttpParams();
+		if (req) {
+			Object.keys(req).forEach(key => {
+				if (key !== 'sort') {
+					options = options.set(key, req[key]);
+				}
+			});
+			if (req.sort) {
+				req.sort.forEach(val => {
+					options = options.append('sort', val);
+				});
+			}
+		}
+		return options;
+	};
+
 }

@@ -102,8 +102,8 @@ export class TransferToCardPage {
       this.cards = res.body
     });
 
-    this.storageProvider.getFavorites().then(favorites => {
-      this.favorites = favorites;
+    this.storageProvider.getFavorites().subscribe(favorites => {
+      this.favorites = favorites.body;
     });
   }
 

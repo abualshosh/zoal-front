@@ -50,8 +50,10 @@ export class StorageProvider {
     return this.http.get<any[]>(this.api.url+"/card-profile",{observe:'response'})
   }
 
-  getFavorites(): Promise<Item[]> {
-    return this.storage.get(FAVORITES_KEY);
+  getFavorites(): Observable<HttpResponse<any[]>> {
+    // return this.storage.get(FAVORITES_KEY);
+    return this.http.get<any[]>(this.api.url +"/favorite-profile",{observe:'response'})
+
   }
 
   // CREATE

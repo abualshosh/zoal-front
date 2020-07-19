@@ -25,7 +25,7 @@ export class CustomsPage {
   public cards: any
   public payee: any[] = [];
   submitAttempt: boolean = false;
-  favorites: Item[];
+  favorites: any[];
 
   isReadyToSave: boolean;
 
@@ -87,8 +87,8 @@ export class CustomsPage {
       this.cards = res.body
     })
 
-    this.storageProvider.getFavorites().then(favorites => {
-      this.favorites = favorites;
+    this.storageProvider.getFavorites().subscribe(favorites => {
+      this.favorites = favorites.body;
     });
   }
 

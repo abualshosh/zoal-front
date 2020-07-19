@@ -41,8 +41,13 @@ export class CardWalletFavoriteDetailPage {
   }
 
   loadItems() {
-    if (this.type.match("cards")) {
+    if (this.type=="cards") {
       this.storageProvider.getCards().subscribe(res => {
+        this.items = res.body
+      })
+    }
+    if (this.type=="favorites") {
+      this.storageProvider.getFavorites().subscribe(res => {
         this.items = res.body
       })
     }

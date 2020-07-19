@@ -91,8 +91,8 @@ export class GmppLinkAccountPage {
       this.wallets = wallets;
     });
 
-    this.storageProvider.getFavorites().then(favorites => {
-      this.favorites = favorites;
+    this.storageProvider.getFavorites().subscribe(favorites => {
+      this.favorites = favorites.body;
     });
   }
 

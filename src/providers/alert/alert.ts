@@ -85,9 +85,13 @@ export class AlertProvider {
 
   showToast(message) {
     this.translateService.get(message).subscribe(val => {
+      console.log(val);
+      
       if (val) {
         message = val;
       }
+      console.log(message);
+      
     });
     let toast = this.toastCtrl.create({
       message: message,

@@ -19,7 +19,10 @@ export class AddCardModalPage {
     public viewCtrl: ViewController,
     params: NavParams
   ) {
+    
     this.myParam = params.get("myParam");
+    console.log("hi");
+    
   }
 
   addCard() {

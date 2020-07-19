@@ -53,6 +53,21 @@
         <div *ngIf="form.controls.favoriteText.invalid && (form.controls.favoriteText.dirty || form.controls.favoriteText.touched)">
           <p>{{ "validFavoriteTextError" | translate }}</p>
         </div>
+         <ion-item >
+        <ion-label stacked>{{ "Favorite" | translate }}</ion-label>
+        <ion-select
+          okText="{{ 'Submit' | translate }}"
+          cancelText="{{ 'close' | translate }}"
+          style="padding-left:5%;"
+          no-padding
+          formControlName="favoriteType"
+          interface="popover"
+        >
+          <ion-option *ngFor="let type of favoriteType" [value]="type">
+            {{ type | translate }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
         <ion-item>
           <ion-label stacked> {{ "favoriteText" | translate }}</ion-label>
           <ion-input formControlName="favoriteText"></ion-input>
@@ -69,7 +84,7 @@
 
       <div text-center>
         <button
-          [disabled]="!isReadyToSave"
+          
           ion-button
           type="submit"
           color="secondary"
@@ -80,3 +95,4 @@
     </form>
   </div>
 </ion-content>
+<!-- [disabled]="!isReadyToSave" -->

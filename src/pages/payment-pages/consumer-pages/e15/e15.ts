@@ -27,7 +27,7 @@ export class E15Page {
   public payee: any[] = [];
   validCard: boolean = false;
   isGmpp: boolean;
-  favorites: Item[];
+  favorites: any[];
 
   isReadyToSave: boolean;
 
@@ -109,8 +109,8 @@ export class E15Page {
       });
     }
 
-    this.storageProvider.getFavorites().then(favorites => {
-      this.favorites = favorites;
+    this.storageProvider.getFavorites().subscribe(favorites => {
+      this.favorites = favorites.body;
     });
   }
 

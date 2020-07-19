@@ -87,5 +87,28 @@
         </div>
       </ion-col>
     </ion-row>
+       <ion-row>
+      <ion-col>
+        <div
+          class="grid-item"
+          (click)="openPagesList('ECommercePage', 'e-commerce')"
+        >
+          <ion-icon class="grid-icon" name="custom-heart"></ion-icon>
+          <div>{{ "e-commerce" | translate }}</div>
+      </div>
+      </ion-col>
+  
+     
+  
+      <ion-col *ngIf="!isGmpp">
+        <div
+          class="grid-item"
+          (click)="openPage('InternetCardComponent','internetCard')"
+        >
+          <ion-icon class="grid-icon" name="custom-basket"></ion-icon>
+          <div>{{ "internetCards" | translate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

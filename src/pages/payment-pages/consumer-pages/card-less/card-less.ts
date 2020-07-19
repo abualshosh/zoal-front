@@ -20,7 +20,7 @@ import { StorageProvider, Item } from "../../../../providers/storage/storage";
 export class CardLessPage {
   public cards:any[] = [];
   submitAttempt: boolean = false;
-  favorites: Item[];
+  favorites: any[];
 
   isReadyToSave: boolean;
 
@@ -84,8 +84,8 @@ export class CardLessPage {
   
 
     
-    this.storageProvider.getFavorites().then(favorites => {
-      this.favorites = favorites;
+    this.storageProvider.getFavorites().subscribe(favorites => {
+      this.favorites = favorites.body;
     });
   }
 

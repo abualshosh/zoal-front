@@ -132,6 +132,16 @@ export class MainMenuPage {
     var: any;
   }[] = [];
 
+  internetServicesPages:any[] =[
+    {
+      title: "internetCards",
+      component: "InternetCardComponent",
+      icon: '',
+      var: '',
+    }
+  ]
+  eCommercePages:any[]=[]
+
   scanData: {};
   qrOptions: BarcodeScannerOptions;
   isGmpp: boolean = false;
@@ -147,13 +157,13 @@ export class MainMenuPage {
     this.isGmpp = this.navParams.get("isGmpp");
 
     this.api.get("merchants").subscribe((res: any) => {
-      res.map(merchant => {
+      res.map(merchant => {        
         let merchantName:string =""
         if (this.translate.currentLang.match("ar")) {
           merchantName = merchant.merchantNameArabic
         }
         else {
-          merchantName= merchant.merchantNameEnglish
+          merchantName= merchant.merchantName
         }
         if (merchant.status == "biller") {
           this.merchantPages.push({
@@ -167,7 +177,7 @@ export class MainMenuPage {
       });
     });
   }
-
+  
   openPagesList(list) {
     let pages;
     let title;
@@ -176,13 +186,14 @@ export class MainMenuPage {
       title = "telecomServices";
     } else if (list == "govermentPages") {
       if (this.isGmpp) {
-        pages = this.gmppBillerPages.concat(this.merchantPages);
+        pages = this.gmppBillerPages
       } else {
-        pages = this.billerPages.concat(this.merchantPages);
+        pages = this.billerPages
       }
 
       title = "govermentServices";
     } else if (list == "transferPages") {
+
       if (this.isGmpp) {
         pages = this.gmppTransferPages;
       } else {
@@ -190,6 +201,19 @@ export class MainMenuPage {
       }
 
       title = "transferServices";
+    }
+    
+    else if (list == "ECommercePage") {
+      
+      
+    if (this.isGmpp) {
+        pages = this.eCommercePages.concat(this.merchantPages)
+    } else {
+      pages = this.eCommercePages.concat(this.merchantPages)
+    }
+    
+      title = "e-commerce";
+      
     }
 
     if (this.isGmpp) {

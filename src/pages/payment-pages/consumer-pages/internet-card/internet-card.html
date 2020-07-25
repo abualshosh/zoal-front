@@ -1,23 +1,34 @@
 <ion-header>
   <ion-navbar color="secondary">
     <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
-    <ion-title>{{ '' | translate }}</ion-title>
+    <ion-title>{{ 'internetCards' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content no-padding class="masters">
-  <div class="con">
-   <ion-grid class="grid-con">
-     <ion-row>
-      <ion-col>
-        <div class="grid-item">
-          <ion-icon class="grid-icon" name="custom-qr-scanner"></ion-icon>
-          <div *ngFor="let internetCard of internetCards">{{internetCard.type.type}}</div>
-        </div>
-      </ion-col>
-  
-      
-    </ion-row>
-   </ion-grid>
-  </div>
+  <ion-grid>
+  <ion-row>
+    <ion-col>
+      Type
+    </ion-col>
+    
+  </ion-row>
+  <hr>
+
+  <ion-row *ngFor="let item of result">
+    <ion-col>
+      {{ item.type_name}}
+    </ion-col><br>
+    <ion-col >
+      <div  class="container">
+       <div class="scroll" scrollX="true">
+      <span type="button" *ngFor="let value of item.values " (click)="openModal(value)">
+        {{ value.price *rate+ '  SDG' }} 
+      </span>
+      </div>
+      </div>
+    </ion-col>
+  </ion-row>
+
+</ion-grid>
 </ion-content>

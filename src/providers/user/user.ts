@@ -35,6 +35,8 @@ export class User {
 
     seq.subscribe(
       (res: any) => {
+        console.log(res);
+        
         if (res.id_token) {
           localStorage.setItem("profile", JSON.stringify(res.profile))
           localStorage.setItem("id_token", res.id_token);
@@ -43,6 +45,7 @@ export class User {
           localStorage.setItem("Gkey", res.gmppKey);
           localStorage.setItem("Ckey", res.consumerKey);
           localStorage.setItem("ipinkey", res.ipinKey);
+          localStorage.setItem('IKey', res.internetKey)
         }
       },
       err => {

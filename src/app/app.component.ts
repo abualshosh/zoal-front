@@ -30,6 +30,10 @@ export class MyApp {
       title: "transactionHistoryPage",
       component: "TransactionHistoryPage",
       icon: "clock"
+    }, {
+      title: "internetCardHistory",
+      component: "InterCardHistoryPage",
+      icon: "clock"
     },
     {
       title: "aboutUsPage",

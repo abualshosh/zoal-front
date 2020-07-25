@@ -1,3 +1,16 @@
 internet-card {
+.container {
+    width: auto;
 
+    overflow: hidden;
+    white-space: nowrap;
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scroll {
+        overflow: auto;
+    }
+}
 }

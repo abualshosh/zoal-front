@@ -220,6 +220,7 @@ export class TransactionHistoryPage {
     token =newToken.join("-")
     return token
   }
+  
   fixPaymentInfo(paymentInfo: string) {
     if (paymentInfo.includes("MPHONE=")) {
       paymentInfo = paymentInfo.replace("MPHONE=","")

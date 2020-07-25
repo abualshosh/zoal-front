@@ -57,6 +57,10 @@
             formControlName="Amount"
             required
           ></ion-input>
+          <ion-item>
+          <ion-label stacked>{{ "comment" | translate }}</ion-label>
+          <ion-input type="text" formControlName="comment"></ion-input>
+        </ion-item>
         </ion-item>
         <div *ngIf="todo.controls.IPIN.invalid && (todo.controls.IPIN.dirty || todo.controls.IPIN.touched)">
           <p *ngIf="todo.controls.mobilewallet.value">

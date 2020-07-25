@@ -50,7 +50,8 @@ export class CustomsPage {
       "",
       Validators.compose([Validators.required, Validators.pattern("[0-9]*")])
     ],
-    Amount: ["", Validators.required]
+    Amount: ["", Validators.required],
+    comment:[""]
   });
 
   constructor(
@@ -108,6 +109,7 @@ export class CustomsPage {
     this.todo.controls["BANKCODE"].reset();
     this.todo.controls["DECLARANTCODE"].reset();
     this.todo.controls["Amount"].reset();
+    this.todo.controls["comment"].reset()
   }
 
   logForm() {
@@ -127,7 +129,8 @@ export class CustomsPage {
         toAccountType: "00",
         paymentInfo:
           "BANKCODE=" + form.BANKCODE + "/DECLARANTCODE=" + form.DECLARANTCODE,
-        payeeId: "Custom Service"
+        payeeId: "Custom Service",
+        comment:form.comment
       };
 
       let endpoint: string;
@@ -157,7 +160,8 @@ export class CustomsPage {
             };
 
             mainData = {
-              customsServices: res.tranAmount
+              customsServices: res.tranAmount,
+              comment:form.comment
             };
           } else {
             mainData = {

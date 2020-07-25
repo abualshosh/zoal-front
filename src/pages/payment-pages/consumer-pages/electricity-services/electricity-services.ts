@@ -56,6 +56,7 @@ export class ElectricityServicesPage {
 			]),
 		],
 		Amount: ['', Validators.required],
+		comment:['']
 	})
 
 	constructor(
@@ -129,6 +130,7 @@ export class ElectricityServicesPage {
 		this.todo.controls['Payee'].reset()
 		this.todo.controls['IPIN'].reset()
 		this.todo.controls['METER'].reset()
+		this.todo.controls["comment"].reset()
 		this.todo.controls['Amount'].reset()
 		if (this.cards) {
 			if (this.cards.length <= 0) {
@@ -174,6 +176,7 @@ export class ElectricityServicesPage {
 				toAccountType: '00',
 				paymentInfo: 'METER=' + form.METER,
 				payeeId: 'National Electricity Corp.',
+				comment:form.comment
 			}
 
 			this.serviceProvider
@@ -209,6 +212,7 @@ export class ElectricityServicesPage {
 							fees:
 								this.calculateFees(res) !== 0 ? this.calculateFees(res) : null,
 							date: datetime,
+							comment:form.comment
 						})
 
 						let modal = this.modalCtrl.create(

@@ -59,7 +59,8 @@ export class E15Page {
         Validators.pattern("0[0-9]*")
       ])
     ],
-    Amount: ["", Validators.required]
+    Amount: ["", Validators.required],
+    comment: ['']
   });
 
   constructor(
@@ -123,6 +124,7 @@ export class E15Page {
     this.todo.controls["INVOICENUMBER"].reset();
     this.todo.controls["PHONENUMBER"].reset();
     this.todo.controls["Amount"].reset();
+    this.todo.controls["comment"].reset()
     if (this.cards) {
       if (this.cards.length <= 0) {
         this.showWallet = true;
@@ -170,7 +172,8 @@ export class E15Page {
           form.INVOICENUMBER +
           "/PHONENUMBER=" +
           form.PHONENUMBER,
-        payeeId: "E15"
+        payeeId: "E15",
+        comment:form.comment
       };
 
       this.serviceProvider
@@ -200,7 +203,8 @@ export class E15Page {
             data.push({
               fees:
                 this.calculateFees(res) !== 0 ? this.calculateFees(res) : null,
-              date: datetime
+              date: datetime,
+              comment:form.comment
             });
 
             let modal = this.modalCtrl.create(

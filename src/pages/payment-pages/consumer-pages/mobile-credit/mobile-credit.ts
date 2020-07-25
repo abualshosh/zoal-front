@@ -71,7 +71,8 @@ export class MobileCreditPage {
         Validators.pattern("0[0-9]*")
       ])
     ],
-    Amount: ["", Validators.required]
+    Amount: ["", Validators.required],
+    comment:['']
   });
 
   constructor(
@@ -164,6 +165,7 @@ export class MobileCreditPage {
     this.todo.controls["IPIN"].reset();
     this.todo.controls["MPHONE"].reset();
     this.todo.controls["Amount"].reset();
+    this.todo.controls['comment'].reset();
     if (this.cards) {
       if (this.cards.length <= 0) {
         this.showWallet = true;
@@ -217,7 +219,9 @@ export class MobileCreditPage {
         fromAccountType: "00",
         toAccountType: "00",
         paymentInfo: "MPHONE=" + form.MPHONE,
-        payeeId: form.payeeId
+        payeeId: form.payeeId,
+        comment:form.comment
+
       };
 
       let endpoint: string;
@@ -254,7 +258,8 @@ export class MobileCreditPage {
               PhoneNumber: form.MPHONE,
               fees:
                 this.calculateFees(res) !== 0 ? this.calculateFees(res) : null,
-              date: datetime
+              date: datetime,
+              comment:form.comment
             });
 
             let modal = this.modalCtrl.create(

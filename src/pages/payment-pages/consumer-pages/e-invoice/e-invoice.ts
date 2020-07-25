@@ -101,7 +101,7 @@ export class EInvoicePage {
         IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
         tranAmount: form.Amount,
         tranCurrency: "SDG",
-        PAN: form.Card.cardNumber,
+        PAN: form.Card.pan,
         expDate: form.Card.expDate,
         authenticationType: "00",
         fromAccountType: "00",

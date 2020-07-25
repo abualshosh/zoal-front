@@ -96,7 +96,7 @@ export class ChangeIpinPage {
           newIPIN: this.serviceProvider.encrypt(tranUuid + form.newIPIN),
           tranCurrency: "SDG",
           authenticationType: "00",
-          pan: form.Card.cardNumber,
+          pan: form.Card.pan,
           expDate: form.Card.expDate
         };
 

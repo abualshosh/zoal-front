@@ -115,7 +115,7 @@ export class CardLessPage {
         authenticationType: "00",
         fromAccountType: "00",
         toAccountType: "00",
-        PAN: form.Card.cardNumber,
+        PAN: form.Card.pan,
         expDate: form.Card.expDate
       };
 

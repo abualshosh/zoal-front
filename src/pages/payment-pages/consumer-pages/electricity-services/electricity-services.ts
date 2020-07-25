@@ -165,7 +165,7 @@ export class ElectricityServicesPage {
         IPIN: this.serviceProvider.encrypt(tranUuid + form.IPIN),
         tranAmount: form.Amount,
         tranCurrency: "SDG",
-        pan: form.mobilewallet ? null : form.Card.cardNumber,
+        pan: form.mobilewallet ? null : form.Card.pan,
         expDate: form.mobilewallet ? null : form.Card.expDate,
         authenticationType: form.mobilewallet ? "10" : "00",
         entityType: form.mobilewallet ? "Mobile Wallet" : null,

@@ -102,11 +102,11 @@ export class GenerateIpinPage {
         UUID: uuid.v4(),
         phoneNumber:
           "249" + form.phoneNumber.substring(1, form.phoneNumber.length),
-        pan: form.card.cardNumber,
+        pan: form.Card.pan,
         expDate: form.card.expDate
       };
 
-      this.pan = form.card.cardNumber;
+      this.pan = form.Card.pan;
       this.expDate = form.card.expDate;
 
       this.serviceProvider

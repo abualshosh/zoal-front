@@ -196,7 +196,7 @@ export class SpecialPaymentPage {
         serviceInfo: form.MerchantId.merchantName,
         dynamicFees: form.MerchantId.dynamicFees,
         tranCurrency: "SDG",
-        pan: form.mobilewallet ? null : form.Card.cardNumber,
+        pan: form.mobilewallet ? null : form.Card.pan,
         expDate: form.mobilewallet ? null : form.Card.expDate,
         authenticationType: form.mobilewallet ? "10" : "00",
         entityType: form.mobilewallet ? "Mobile Wallet" : null,

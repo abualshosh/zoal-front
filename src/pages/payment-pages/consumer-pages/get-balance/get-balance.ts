@@ -79,7 +79,7 @@ export class GetBalancePage {
         tranCurrency: "SDG",
         authenticationType: "00",
         fromAccountType: "00",
-        pan: form.Card.cardNumber,
+        pan: form.Card.pan,
         expDate: form.Card.expDate
       };
 

@@ -163,6 +163,8 @@ export class TransferToCardPage {
       this.serviceProvider
         .doTransaction(request, "consumer/doCardTransfer")
         .subscribe(res => {
+          console.log(res);
+          
           if (res != null && res.responseCode == 0) {
             const datetime = moment(res.tranDateTime, "DDMMyyHhmmss").format(
               "DD/MM/YYYY  hh:mm:ss"
@@ -177,7 +179,8 @@ export class TransferToCardPage {
                   this.calculateFees(res) !== 0
                     ? this.calculateFees(res)
                     : null,
-                date: datetime
+                date: datetime,
+                comment: form.comment
               }
             ];
 
